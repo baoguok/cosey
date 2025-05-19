@@ -1,0 +1,42 @@
+<script lang="ts">
+import { ElDatePicker } from 'element-plus';
+import { defineComponent, h, mergeProps, type SlotsType } from 'vue';
+import { type FieldDateProps, type FieldDateSlots } from './date';
+import dayjs from 'dayjs';
+import { addNullablePlaceholder, DATE_FORMAT } from '../../../../utils';
+
+export default defineComponent(
+  (props: FieldDateProps, { slots }) => {
+    return () => {
+      if (props.readonly) {
+        const value = props.componentProps?.modelValue;
+        return addNullablePlaceholder(value, (val) => dayjs(val).format(DATE_FORMAT));
+      }
+
+      return h(
+        ElDatePicker,
+        mergeProps(
+          {
+            placeholder: '请选择',
+            style: {
+              display: 'flex',
+              width: '100%',
+            },
+          },
+          props.componentProps ?? {},
+          {
+            type: 'date',
+          },
+        ),
+        slots,
+      );
+    };
+  },
+  {
+    name: 'FieldDate',
+    inheritAttrs: false,
+    props: ['componentProps', 'componentSlots', 'readonly'],
+    slots: {} as SlotsType<FieldDateSlots>,
+  },
+);
+</script>

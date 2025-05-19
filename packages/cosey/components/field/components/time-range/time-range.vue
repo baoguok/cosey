@@ -1,0 +1,45 @@
+<script lang="ts">
+import { ElTimePicker } from 'element-plus';
+import { defineComponent, h, mergeProps, type SlotsType } from 'vue';
+import { type FieldTimeRangeProps, type FieldTimeRangeSlots } from './time-range';
+import dayjs from 'dayjs';
+import { addNullablePlaceholder, TIME_FORMAT } from '../../../../utils';
+
+export default defineComponent(
+  (props: FieldTimeRangeProps, { slots }) => {
+    return () => {
+      if (props.readonly) {
+        const value = props.componentProps?.modelValue;
+        return addNullablePlaceholder(value, (val) =>
+          val.map((item) => dayjs(item).format(TIME_FORMAT)).join(' - '),
+        );
+      }
+
+      return h(
+        ElTimePicker,
+        mergeProps(
+          {
+            startPlaceholder: '请选择',
+            endPlaceholder: '请选择',
+            style: {
+              display: 'flex',
+              width: '100%',
+            },
+          },
+          props.componentProps ?? {},
+          {
+            isRange: true,
+          },
+        ),
+        slots,
+      );
+    };
+  },
+  {
+    name: 'FieldTimeRange',
+    inheritAttrs: false,
+    props: ['componentProps', 'componentSlots', 'readonly'],
+    slots: {} as SlotsType<FieldTimeRangeSlots>,
+  },
+);
+</script>

@@ -1,0 +1,42 @@
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vueJsx from '@vitejs/plugin-vue-jsx';
+import path from 'node:path';
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+import tailwindcss from '@tailwindcss/vite';
+import { fileURLToPath } from 'node:url';
+
+// https://vitejs.dev/config/
+export default defineConfig(({ command }) => {
+  const isBuild = command === 'build';
+  return {
+    plugins: [
+      tailwindcss(),
+      vue(),
+      vueJsx(),
+      createSvgIconsPlugin({
+        iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+        svgoOptions: isBuild,
+        symbolId: 'icon-[dir]-[name]',
+      }),
+    ],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
+    },
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:8880',
+          changeOrigin: true,
+        },
+      },
+      port: 8882,
+      open: true,
+      watch: {
+        ignored: path.resolve(__dirname, './docs'),
+      },
+    },
+  };
+});
