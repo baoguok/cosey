@@ -7,8 +7,8 @@ const Api = {
 };
 
 // enums
-export const useEnumsApi = () =>
-  useRequest().map({
+export const useEnumsApi = () => {
+  return useRequest().map({
     getEnums: (http) => (params?: any) => {
       return http.get(Api.EnumsResource, {
         params,
@@ -63,3 +63,4 @@ export const useEnumsApi = () =>
       });
     },
   });
+};

@@ -8,7 +8,7 @@ export interface UseFetchOptions<T> {
   initialData?: T;
 }
 
-export function useFetch<T = unknown, U = unknown>(
+export function useFetch<T = any, U = any>(
   fetcher: (params: U) => Promise<any> | any,
   options: UseFetchOptions<T> = {},
 ) {

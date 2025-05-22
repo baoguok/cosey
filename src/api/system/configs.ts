@@ -6,8 +6,8 @@ const Api = {
 };
 
 // configs
-export const useConfigsApi = () =>
-  useRequest().map({
+export const useConfigsApi = () => {
+  return useRequest().map({
     getConfigs: (http) => (params?: any) => {
       return http.get(Api.ConfigsResource, {
         params,
@@ -30,10 +30,11 @@ export const useConfigsApi = () =>
       return http.delete(`${Api.ConfigsResource}/${id}`);
     },
   });
+};
 
 // config-groups
-export const useConfigGroupsApi = () =>
-  useRequest().map({
+export const useConfigGroupsApi = () => {
+  return useRequest().map({
     getConfigGroups: (http) => (params?: any) => {
       return http.get(Api.ConfigGroupsResource, {
         params,
@@ -56,3 +57,4 @@ export const useConfigGroupsApi = () =>
       return http.delete(`${Api.ConfigGroupsResource}/${id}`);
     },
   });
+};

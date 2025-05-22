@@ -4,10 +4,11 @@ import { markdownPlugin } from './markdown';
 import tailwindcss from '@tailwindcss/vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import injectStyles from './vite-plugin-inject-styles';
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: 'Cosey 框架',
+  title: 'Cosey Admin',
   description: 'A VitePress Site',
   vite: {
     resolve: {
@@ -15,7 +16,19 @@ export default defineConfig({
         '@': path.resolve(process.cwd(), 'docs'),
       },
     },
-    plugins: [tailwindcss(), vueJsx(), injectStyles()] as any,
+    plugins: [
+      tailwindcss(),
+      vueJsx(),
+      injectStyles(),
+      createSvgIconsPlugin({
+        iconDirs: [path.resolve(process.cwd(), 'docs/assets/icons')],
+        svgoOptions: process.env.NODE_ENV === 'production',
+        symbolId: 'icon-[dir]-[name]',
+      }),
+    ] as any,
+    // optimizeDeps: {
+    //   exclude: ['cosey'],
+    // },
     ssr: {
       noExternal: true,
     },
@@ -25,34 +38,61 @@ export default defineConfig({
       markdownPlugin(md);
     },
   },
-  head: [['link', { ref: 'icon', href: '/favicon.ico' }]],
+  head: [
+    ['link', { ref: 'icon', href: '/favicon.ico' }],
+    [
+      'script',
+      {},
+      `var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?6aaa60df631d8ed6b4e937b53f36df1a";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();`,
+    ],
+  ],
+
   themeConfig: {
-    siteTitle: 'Cosey 框架',
+    siteTitle: 'Cosey Admin',
     logo: '/logo.svg',
+    footer: {
+      message: '基于 MIT 许可发布',
+      copyright: 'Copyright © 2025 wuzhitao',
+    },
 
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: '教程', link: '/learn/start/intro' },
-      { text: '组件', link: '/components/overview' },
+      { text: '教程', link: '/guide/intro' },
+      { text: '组件', link: '/components/container' },
+      { text: '演示', link: 'https://cosey.wzt.zone/' },
     ],
 
     sidebar: {
-      '/learn/': [
+      '/guide/': [
         {
           text: '起步',
           items: [
-            { text: '介绍', link: '/learn/start/intro' },
-            { text: '安装', link: '/learn/start/installation' },
-            { text: '配置', link: '/learn/start/configuration' },
+            { text: '关于 Cosey Admin', link: '/guide/intro' },
+            { text: '快速开始', link: '/guide/quick-start' },
+            { text: '演示', link: '/guide/quick-start' },
           ],
         },
         {
           text: '基础',
           items: [
-            { text: '路由与菜单', link: '/learn/basic/intro' },
-            { text: '配置', link: '/learn/basic/installation' },
-            { text: '构建部署', link: '/learn/basic/configuration' },
+            { text: '接口请求', link: '/guide/request' },
+            { text: '认证与授权', link: '/guide/auth' },
+            { text: '路由与菜单', link: '/guide/route' },
+            { text: '布局', link: '/guide/layout' },
+            { text: '文件上传', link: '/guide/upload' },
+            { text: '样式', link: '/guide/style' },
+            { text: '构建部署', link: '/guide/build' },
           ],
+        },
+        {
+          text: '深入',
+          items: [{ text: '主题', link: '/guide/theme' }],
         },
       ],
       '/components/': [
@@ -60,10 +100,23 @@ export default defineConfig({
           text: 'Basic 基础组件',
           items: [
             {
+              text: 'Container 容器',
+              link: '/components/container',
+            },
+            {
               text: 'Grid 栅格',
               link: '/components/grid',
             },
             { text: 'Icon 图标', link: '/components/icon' },
+          ],
+        },
+        {
+          text: '配置组件',
+          items: [
+            {
+              text: 'RootConfigProvider 根全局配置',
+              link: '/components/root-config-provider',
+            },
           ],
         },
         {
@@ -120,7 +173,7 @@ export default defineConfig({
       label: '页面导航',
     },
 
-    socialLinks: [{ icon: 'github', link: 'https://github.com/vuejs/vitepress' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/sutras/cosey' }],
   },
   rewrites: {
     'markdown/:page1': ':page1',

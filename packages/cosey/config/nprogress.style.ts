@@ -1,6 +1,6 @@
 import { getGlobalStyleHook, rotation } from '../components';
 
-export default getGlobalStyleHook('co-editor-image-loading', (token) => {
+export default getGlobalStyleHook('NProgress', (token) => {
   return {
     '#nprogress': {
       pointerEvents: 'none',

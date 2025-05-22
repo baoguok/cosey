@@ -1,8 +1,7 @@
-import { computed, type ComputedRef, ref, unref, watch } from 'vue';
+import { computed, ref, unref, watch } from 'vue';
 import { kebabCase } from 'lodash-es';
 import hash from '@emotion/hash';
-import { updateCSS } from '../../../utils';
-import { type ThemeConfig, useTheme } from '../theme-context';
+import { ThemeManager, useTheme } from '../theme-context';
 import { createCacheToken } from '../createCacheToken';
 import unitlessKeys from './unitless';
 import type { AliasToken } from '../interface';
@@ -37,11 +36,11 @@ function stringifyTokenToCssVar(token: AliasToken, prefix?: string) {
 
 export const cacheToken = createCacheToken();
 
-export function useToken(theme?: ComputedRef<ThemeConfig | undefined>) {
-  const contextTheme = useTheme();
+export function useToken(themeManager?: ThemeManager) {
+  themeManager = useTheme(themeManager);
 
   const token = computed(() => {
-    const { token, algorithm, components } = unref(theme || contextTheme) || {};
+    const { token, algorithm, components } = unref(themeManager?.theme) || {};
     return cacheToken.getToken(token, algorithm, components);
   });
 
@@ -69,7 +68,7 @@ export function useToken(theme?: ComputedRef<ThemeConfig | undefined>) {
 
       let styleStr = stringifyTokenToCssVar(token.value, configContext.prefixCls.value);
       styleStr = normalizeStyle(`.${hashId.value}{${styleStr}}`);
-      updateCSS(styleStr, hashId.value);
+      themeManager.setStyle(styleStr, hashId.value);
       cache.set(hashId.value, styleStr);
     },
     {
@@ -80,5 +79,6 @@ export function useToken(theme?: ComputedRef<ThemeConfig | undefined>) {
   return {
     token,
     hashId,
+    themeManager,
   } as const;
 }

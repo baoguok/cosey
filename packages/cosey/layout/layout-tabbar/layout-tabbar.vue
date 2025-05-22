@@ -14,6 +14,7 @@
           :closable="item.meta.closable"
         >
           <template #label>
+            <Icon v-if="item.meta.icon" :name="item.meta.icon" :class="`${prefixCls}-icon`" />
             {{ item.meta.title }}
 
             <ContextMenu>
@@ -68,7 +69,7 @@ import { computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useGlobalConfig } from '../../config';
 import { useLayoutStore } from '../../store';
-import { ContextMenu, ContextMenuItem, useComponentConfig, useToken } from '../../components';
+import { ContextMenu, ContextMenuItem, Icon, useComponentConfig, useToken } from '../../components';
 import Reload from './reload.vue';
 
 import useStyle from './style';

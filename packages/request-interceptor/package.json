@@ -1,6 +1,6 @@
 {
   "name": "@cosey/request-interceptor",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "在浏览器拦截 XMLHttpRequest 和 fetch 发出的请求，并返回自定义的响应",
   "type": "module",
   "main": "index.ts",

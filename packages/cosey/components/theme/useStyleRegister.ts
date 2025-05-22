@@ -1,22 +1,13 @@
-import { computed, ComputedRef, watch } from 'vue';
+import { computed, ComputedRef, unref, watch } from 'vue';
 import { type CSSInterpolation, parseStyle } from '../cssinjs';
 import hash from '@emotion/hash';
-import type { GlobalToken } from './interface';
 import { normalizeStyle } from './util/normalizeStyle';
 import useHMR from './useHMR';
 import { useStyleInection } from './StyleContext';
 import { updateCSS } from '../../utils';
 
-export function useStyleRegister(
-  info: ComputedRef<{
-    path: string[];
-    token: GlobalToken;
-    hashId: string;
-    global?: boolean;
-  }>,
-  styleFn: () => CSSInterpolation,
-) {
-  const pathHash = computed(() => hash([...info.value.path, info.value.hashId].join('|')));
+export function useStyleRegister(path: ComputedRef<string[]>, styleFn: () => CSSInterpolation) {
+  const pathHash = computed(() => hash(unref(path).filter(Boolean).join('|')));
   const HMRUpdate = useHMR();
   const { cache } = useStyleInection();
 
@@ -27,7 +18,6 @@ export function useStyleRegister(
         const styleInterpolation = styleFn();
 
         const [parsedStr, effectStyle] = parseStyle(styleInterpolation, {
-          // hashId: info.value.global ? '' : info.value.hashId,
           // hashPriority: 'low',
         });
 

@@ -1,6 +1,6 @@
 import { TinyColor } from '@ctrl/tinycolor';
 import { capitalize } from 'lodash-es';
-import { type AliasToken, getSimpleStyleHook } from '../theme';
+import { type AliasToken, getOverrideStyleHook } from '../theme';
 
 type ColorType = 'primary' | 'success' | 'error' | 'warning' | 'info';
 
@@ -27,7 +27,7 @@ function getRGBVar(color: TinyColor) {
   return `${color.r},${color.g},${color.b}`;
 }
 
-export default getSimpleStyleHook('OverrideElementPlus', (token) => {
+export default getOverrideStyleHook('OverrideElementPlus', (token) => {
   const { hashId } = token;
 
   return {

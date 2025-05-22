@@ -1,7 +1,7 @@
 import { getGlobalStyleHook } from '../../../../theme';
-import { contrarotation, spinner } from '../../../../style';
+import { rotation, spinner } from '../../../../style';
 
-export default getGlobalStyleHook('co-editor-image-loading', (token) => {
+export default getGlobalStyleHook('EditorImageLoading', (token) => {
   return {
     '.co-editor-image-loading': {
       position: 'relative',
@@ -25,7 +25,7 @@ export default getGlobalStyleHook('co-editor-image-loading', (token) => {
           display: 'inline',
           height: 42,
           width: 42,
-          animationName: contrarotation,
+          animationName: rotation,
           animationDuration: '2s',
           animationTimingFunction: 'linear',
           animationIterationCount: 'infinite',

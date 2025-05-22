@@ -14,8 +14,6 @@
       :class="`${prefixCls}-container`"
       :style="{
         height,
-        minHeight,
-        maxHeight,
       }"
     ></div>
     <Resize />

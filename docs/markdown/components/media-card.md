@@ -28,7 +28,7 @@ media-card/size
 
 ## API
 
-### RaMediaCardProps
+### MediaCardProps
 
 | 属性  | 描述                                                 | 类型                                      | 默认值    |
 | ----- | ---------------------------------------------------- | ----------------------------------------- | --------- |
@@ -38,7 +38,7 @@ media-card/size
 | type  | 媒体类型，如果url中没有后缀则可手动指定              | 'image' \| 'video' \| 'audio'             | -         |
 | title | 鼠标移上去显示的标题                                 | string                                    | -         |
 
-### RaMediaCardExpose
+### MediaCardExpose
 
 | 属性 | 描述         | 类型       |
 | ---- | ------------ | ---------- |

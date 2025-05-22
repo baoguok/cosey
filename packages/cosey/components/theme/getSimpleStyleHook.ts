@@ -4,8 +4,8 @@ import type { AliasToken, TokenWithCommonCls } from './interface';
 import { useStyleRegister } from './useStyleRegister';
 import { useToken } from './util/useToken';
 import { tokenValueToCssVar } from './util/tokenValueToCssVar';
-import { ThemeConfig } from './theme-context';
 import { useConfig } from '../config-provider/config-provider';
+import { ThemeManager } from './theme-context';
 
 export type AliasTokenWithCommonCls = TokenWithCommonCls<AliasToken>;
 
@@ -13,22 +13,15 @@ export function getSimpleStyleHook(
   component: string,
   styleFn: (token: AliasTokenWithCommonCls) => CSSInterpolation,
 ) {
-  return (
-    _prefixCls: ComputedRef<string> | string = '',
-    theme?: ComputedRef<ThemeConfig | undefined>,
-  ) => {
+  return (_prefixCls: ComputedRef<string> | string = '', themeManager?: ThemeManager) => {
     const prefixCls = computed(() => unref(_prefixCls));
 
-    const { token, hashId } = useToken(theme);
+    const { token, hashId } = useToken(themeManager);
 
     const configContext = useConfig();
 
     useStyleRegister(
-      computed(() => ({
-        path: [component, prefixCls.value],
-        token: token.value,
-        hashId: hashId.value,
-      })),
+      computed(() => ['__simple', component, prefixCls.value]),
       () => {
         const componentCls = `.${prefixCls.value}`;
 

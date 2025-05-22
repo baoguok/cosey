@@ -18,31 +18,31 @@ file-card/basic
 
 ## API
 
-### RaFileCardProps
+### FileCardProps
 
 | 属性  | 描述  | 类型   | 默认值 |
 | ----- | ----- | ------ | ------ |
 | prop1 | 属性1 | string | -      |
 
-### RaFileCardSlots
+### FileCardSlots
 
 | 插槽    | 描述           | 属性 |
 | ------- | -------------- | ---- |
 | default | 自定义默认内容 | -    |
 
-### RaFileCardEmits
+### FileCardEmits
 
 | 事件  | 描述       | 类型                        |
 | ----- | ---------- | --------------------------- |
 | click | 点击时触发 | (event: MouseEvent) => void |
 
-### RaFileCardExpose
+### FileCardExpose
 
 | 属性   | 描述 | 类型       |
 | ------ | ---- | ---------- |
 | method | 描述 | () => void |
 
-### RaFileCardOptions
+### FileCardOptions
 
 | 属性 | 描述 | 类型   | 默认值 |
 | ---- | ---- | ------ | ------ |

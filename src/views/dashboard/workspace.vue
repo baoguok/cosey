@@ -18,5 +18,9 @@
 <script lang="ts" setup>
 import { useUserStore } from 'cosey';
 
+defineOptions({
+  name: 'Workspace',
+});
+
 const userStore = useUserStore();
 </script>

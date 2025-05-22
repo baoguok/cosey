@@ -19,6 +19,7 @@ const getDndSortStyle: GenerateStyle<DndSortToken, CSSObject> = (token) => {
         marginInlineEnd: token.marginXS,
         width: token.size,
         flex: 'none',
+        color: token.colorTextSecondary,
         cursor: 'grab',
 
         '&:active': {

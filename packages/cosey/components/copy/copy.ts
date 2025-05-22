@@ -7,10 +7,6 @@ export interface CopySlots {
   default?: (props: Record<string, never>) => any;
 }
 
-export interface CopyEmits {
-  (e: 'click'): void;
-}
+export interface CopyEmits {}
 
-export interface CopyExpose {
-  method: () => void;
-}
+export interface CopyExpose {}

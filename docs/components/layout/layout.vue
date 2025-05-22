@@ -1,23 +1,20 @@
 <template>
   <ConfigProvider :theme="themeConfig">
-    <Layout />
+    <CustomLayout />
   </ConfigProvider>
 </template>
 
 <script lang="ts" setup>
-import DefaultTheme from 'vitepress/theme';
 import {
   ConfigProvider,
   darkAlgorithm,
   defaultAlgorithm,
   useUploadProvide,
 } from 'cosey/components';
-import { useOverrideVitePress } from './override-vite-press';
 import { computed } from 'vue';
 import { useData } from 'vitepress';
 import { upload } from '../../api/upload';
-
-const { Layout } = DefaultTheme;
+import CustomLayout from './custom-layout.vue';
 
 const { isDark } = useData();
 
@@ -30,6 +27,4 @@ const themeConfig = computed(() => {
 useUploadProvide({
   request: upload,
 });
-
-useOverrideVitePress(themeConfig);
 </script>

@@ -13,6 +13,7 @@ export default defineRoutes({
       meta: {
         title: '外链',
         icon: 'carbon:launch',
+        type: 'group',
       },
       children: [
         {

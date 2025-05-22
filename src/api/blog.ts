@@ -6,8 +6,8 @@ const Api = {
   PosttypesResource: '/blog/post-types',
 };
 
-export const usePostsApi = () =>
-  useRequest().map({
+export const usePostsApi = () => {
+  return useRequest().map({
     getPosts: (http) => (params?: any) => {
       return http.get(Api.PostsResource, {
         params,
@@ -30,9 +30,10 @@ export const usePostsApi = () =>
       return http.delete(`${Api.PostsResource}/${id}`);
     },
   });
+};
 
-export const usePostCommentsApi = () =>
-  useRequest().map({
+export const usePostCommentsApi = () => {
+  return useRequest().map({
     getPostComments: (http) => (params?: any) => {
       return http.get(Api.PostCommentsResource, {
         params,
@@ -55,9 +56,10 @@ export const usePostCommentsApi = () =>
       return http.delete(`${Api.PostCommentsResource}/${id}`);
     },
   });
+};
 
-export const usePosttypesApi = () =>
-  useRequest().map({
+export const usePosttypesApi = () => {
+  return useRequest().map({
     getPosttypes: (http) => (params?: any) => {
       return http.get(Api.PosttypesResource, {
         params,
@@ -80,3 +82,4 @@ export const usePosttypesApi = () =>
       return http.delete(`${Api.PosttypesResource}/${id}`);
     },
   });
+};

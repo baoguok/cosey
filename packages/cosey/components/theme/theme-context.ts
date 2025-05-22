@@ -1,6 +1,7 @@
 import { ComputedRef, inject, InjectionKey, provide } from 'vue';
 import type { AliasToken, MapToken, OverrideToken, SeedToken } from './interface';
 import { type DerivativeFunc } from '../cssinjs';
+import { updateCSSByStyle } from '../../utils';
 
 export type MappingAlgorithm = DerivativeFunc<SeedToken, MapToken>;
 
@@ -11,14 +12,53 @@ export interface ThemeConfig {
   inherit?: boolean;
 }
 
+export class ThemeManager {
+  theme?: ComputedRef<ThemeConfig | undefined>;
+
+  overrideStyles: Record<string, HTMLStyleElement | null | undefined> = {};
+
+  style: HTMLStyleElement | null | undefined = null;
+
+  constructor(theme?: ComputedRef<ThemeConfig | undefined>) {
+    this.theme = theme;
+  }
+
+  setStyle(styleStr: string, hashId: string) {
+    this.style = updateCSSByStyle(this.style, styleStr, hashId);
+  }
+
+  setOverrideStyle(styleStr: string, pathHash: string, hashId: string) {
+    this.overrideStyles[pathHash] = updateCSSByStyle(
+      this.overrideStyles[pathHash],
+      styleStr,
+      hashId,
+    );
+  }
+
+  destroy() {
+    this.style?.remove();
+    Object.values(this.overrideStyles).forEach((style) => {
+      style?.remove();
+    });
+  }
+}
+
 export type ThemeContext = ComputedRef<ThemeConfig | undefined>;
 
-const themeContextKey = Symbol('themeContext') as InjectionKey<ThemeContext>;
+const themeContextKey = Symbol('themeContext') as InjectionKey<ThemeManager>;
 
-export const useThemeProvide = (theme: ComputedRef<ThemeConfig | undefined>) => {
-  provide(themeContextKey, theme);
+export const useThemeProvide = (themeManager: ThemeManager) => {
+  provide(themeContextKey, themeManager);
 };
 
-export const useTheme = () => {
-  return inject(themeContextKey, null);
+let defaultTheme: ThemeManager | undefined = undefined;
+
+export const useTheme = (themeManager?: ThemeManager) => {
+  let mergedThemeManager = themeManager || inject(themeContextKey, defaultTheme);
+
+  if (!mergedThemeManager) {
+    mergedThemeManager = defaultTheme = new ThemeManager();
+  }
+
+  return mergedThemeManager;
 };

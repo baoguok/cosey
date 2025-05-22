@@ -1,5 +1,19 @@
 <template>
-  <co-highlight></co-highlight>
+  <co-highlight :code="code" lang="json"></co-highlight>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const code = `{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "npm.packageManager": "pnpm",
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  }
+}`;
+</script>

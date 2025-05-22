@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, onUnmounted } from 'vue';
 import useMergeTheme from './useMergeTheme';
 import {
   useConfig,
@@ -15,6 +15,7 @@ import {
 } from './config-provider';
 import { useThemeProvide } from '../theme';
 import useOverrideElementPlus from './override-element-plus';
+import { ThemeManager } from '../theme/theme-context';
 
 defineOptions({
   name: 'ConfigProvider',
@@ -46,10 +47,16 @@ const configProvider: ConfigProviderInnerProps = {
 useConfigProvide(configProvider);
 
 // theme
-useThemeProvide(mergedTheme);
+const themeManager = new ThemeManager(mergedTheme);
+
+onUnmounted(() => {
+  themeManager.destroy();
+});
+
+useThemeProvide(themeManager);
 
 // override ElementPlus
-const { hashId } = useOverrideElementPlus('', mergedTheme);
+const { hashId } = useOverrideElementPlus(themeManager);
 
 onMounted(() => {
   if (!parentContext.theme) {

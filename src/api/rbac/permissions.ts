@@ -4,8 +4,8 @@ const Api = {
   PermissionsResource: '/rbac/permissions',
 };
 
-export const usePermissionsApi = () =>
-  useRequest().map({
+export const usePermissionsApi = () => {
+  return useRequest().map({
     getPermissions: (http) => (params?: any) => {
       return http.get(Api.PermissionsResource, {
         params,
@@ -36,3 +36,4 @@ export const usePermissionsApi = () =>
       return http.get(`${Api.PermissionsResource}/${id}/parent/tree`);
     },
   });
+};

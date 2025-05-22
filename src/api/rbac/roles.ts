@@ -4,8 +4,8 @@ const Api = {
   RolesResource: '/rbac/roles',
 };
 
-export const useRolesApi = () =>
-  useRequest().map({
+export const useRolesApi = () => {
+  return useRequest().map({
     getRoles: (http) => (params?: any) => {
       return http.get(Api.RolesResource, {
         params,
@@ -36,3 +36,4 @@ export const useRolesApi = () =>
       return http.patch(`${Api.RolesResource}/${id}/permissions`, data);
     },
   });
+};

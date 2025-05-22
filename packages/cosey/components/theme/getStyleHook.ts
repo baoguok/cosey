@@ -4,8 +4,8 @@ import type { ComponentTokenMap, GlobalToken, TokenWithCommonCls } from './inter
 import { useStyleRegister } from './useStyleRegister';
 import { useToken } from './util/useToken';
 import { tokenValueToCssVar } from './util/tokenValueToCssVar';
-import { ThemeConfig } from './theme-context';
 import { useConfig } from '../config-provider/config-provider';
+import { ThemeManager } from './theme-context';
 
 export type OverrideTokenWithoutDerivative = ComponentTokenMap;
 export type OverrideComponent = keyof OverrideTokenWithoutDerivative;
@@ -29,22 +29,15 @@ export function getStyleHook<ComponentName extends OverrideComponent>(
     | OverrideTokenWithoutDerivative[ComponentName]
     | ((token: GlobalToken) => OverrideTokenWithoutDerivative[ComponentName]),
 ) {
-  return (
-    _prefixCls: ComputedRef<string> | string = '',
-    theme?: ComputedRef<ThemeConfig | undefined>,
-  ) => {
+  return (_prefixCls: ComputedRef<string> | string = '', themeManager?: ThemeManager) => {
     const prefixCls = computed(() => unref(_prefixCls));
 
-    const { token, hashId } = useToken(theme);
+    const { token, hashId } = useToken(themeManager);
 
     const configContext = useConfig();
 
     useStyleRegister(
-      computed(() => ({
-        path: [component, prefixCls.value],
-        token: token.value,
-        hashId: hashId.value,
-      })),
+      computed(() => ['__default', component, prefixCls.value]),
       () => {
         const componentCls = `.${prefixCls.value}`;
 

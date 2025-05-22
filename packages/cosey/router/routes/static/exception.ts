@@ -1,7 +1,7 @@
 import { defineRoutes } from '../../utils';
-import MergedLayoutException from '../../../layout/layout-exception';
-import MergedLayoutForbidden from '../../../layout/layout-forbidden';
-import MergedLayoutInternalServerError from '../../../layout/layout-internal-server-error';
+import MergedLayoutException from '../../../layout/merged/layout-exception';
+import MergedLayoutForbidden from '../../../layout/merged/layout-forbidden';
+import MergedLayoutInternalServerError from '../../../layout/merged/layout-internal-server-error';
 import { NotFoundRoute } from '../../not-found';
 
 /**

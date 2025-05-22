@@ -11,7 +11,7 @@ export function insertCSS(styleStr: string, styleId?: string) {
 }
 
 export function findCSSNode(styleId: string) {
-  return document.querySelector(`[data-id="${styleId}"]`);
+  return document.querySelector(`[data-id="${styleId}"]`) as HTMLStyleElement | null;
 }
 
 export function updateCSS(styleStr: string, styleId: string) {
@@ -19,6 +19,22 @@ export function updateCSS(styleStr: string, styleId: string) {
     const style = findCSSNode(styleId);
     if (style) {
       style.innerHTML = styleStr;
+      return style;
+    } else {
+      return insertCSS(styleStr, styleId);
+    }
+  }
+}
+
+export function updateCSSByStyle(
+  style: HTMLStyleElement | undefined | null,
+  styleStr: string,
+  styleId: string,
+) {
+  if (isClient()) {
+    if (style) {
+      style.innerHTML = styleStr;
+      style.dataset.id = styleId;
       return style;
     } else {
       return insertCSS(styleStr, styleId);

@@ -18,7 +18,7 @@ video-card/basic
 
 ## API
 
-### RaVideoCardProps
+### VideoCardProps
 
 | 属性                  | 描述                                | 类型                                      | 默认值    |
 | --------------------- | ----------------------------------- | ----------------------------------------- | --------- |
@@ -29,7 +29,7 @@ video-card/basic
 | teleported            | viewer 自身是否插入至 body 元素上。 | boolean                                   | false     |
 | size                  | 视频容器大小                        | 'mini' \| 'small' \| 'default' \| 'large' | 'default' |
 
-### RaVideoCardEmits
+### VideoCardEmits
 
 | 事件  | 描述              | 类型       |
 | ----- | ----------------- | ---------- |

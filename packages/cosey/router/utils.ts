@@ -5,12 +5,12 @@ import { type RouteRecordRaw } from 'vue-router';
  * 定义单个路由节点
  */
 export function defineRoute(route: RouteRecordRaw) {
-  function recur(route: RouteRecordRaw): RouteRecordRaw {
+  function recur(route: RouteRecordRaw, index = 0, parent?: RouteRecordRaw): RouteRecordRaw {
     const meta = route.meta || {};
-    return {
+
+    const newRoute = {
       ...route,
       name: route.name || uuid(),
-      children: Array.isArray(route.children) ? route.children.map(recur) : undefined,
       meta: {
         ...meta,
         closable: meta.closable ?? true,
@@ -18,6 +18,18 @@ export function defineRoute(route: RouteRecordRaw) {
         authentication: meta.authentication ?? true,
       },
     } as RouteRecordRaw;
+
+    if (Array.isArray(route.children)) {
+      newRoute.children = route.children.map((item, index) => recur(item, index, newRoute));
+    }
+
+    if (parent && !parent.redirect && index === 0) {
+      parent.redirect = {
+        name: newRoute.name,
+      };
+    }
+
+    return newRoute;
   }
 
   return recur(route);

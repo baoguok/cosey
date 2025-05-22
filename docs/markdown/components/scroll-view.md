@@ -18,7 +18,7 @@ scroll-view/basic
 
 ## API
 
-### RaScrollViewSlots
+### ScrollViewSlots
 
 | 插槽    | 描述           | 属性 |
 | ------- | -------------- | ---- |

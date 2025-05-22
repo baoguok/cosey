@@ -38,7 +38,7 @@ type plaintext = 'plaintext' | 'text' | 'txt';
 
 export interface HighlightProps {
   code?: string;
-  lang?: xml | json | js | ts | plaintext | 'css' | 'scss' | 'less';
+  lang?: xml | json | js | ts | plaintext | 'css' | 'scss' | 'less' | (string & {});
 }
 
 export interface HighlightSlots {

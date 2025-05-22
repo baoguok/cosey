@@ -18,31 +18,31 @@ only-child/basic
 
 ## API
 
-### RaOnlyChildProps
+### OnlyChildProps
 
 | 属性  | 描述  | 类型   | 默认值 |
 | ----- | ----- | ------ | ------ |
 | prop1 | 属性1 | string | -      |
 
-### RaOnlyChildSlots
+### OnlyChildSlots
 
 | 插槽    | 描述           | 属性 |
 | ------- | -------------- | ---- |
 | default | 自定义默认内容 | -    |
 
-### RaOnlyChildEmits
+### OnlyChildEmits
 
 | 事件  | 描述       | 类型                        |
 | ----- | ---------- | --------------------------- |
 | click | 点击时触发 | (event: MouseEvent) => void |
 
-### RaOnlyChildExpose
+### OnlyChildExpose
 
 | 属性   | 描述 | 类型       |
 | ------ | ---- | ---------- |
 | method | 描述 | () => void |
 
-### RaOnlyChildOptions
+### OnlyChildOptions
 
 | 属性 | 描述 | 类型   | 默认值 |
 | ---- | ---- | ------ | ------ |

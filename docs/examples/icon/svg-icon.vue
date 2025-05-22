@@ -1,3 +1,3 @@
 <template>
-  <co-icon name="carbon:code" />
+  <co-icon name="svg:vite" />
 </template>

@@ -21,7 +21,7 @@
         v-bind="holderBinder"
         :class="`${prefixCls}-item-holder`"
       >
-        <Icon name="co:draggable" size="xl" />
+        <Icon name="co:draggable" size="lg" />
       </div>
       <div :class="`${prefixCls}-item-label`">
         {{ column.label }}

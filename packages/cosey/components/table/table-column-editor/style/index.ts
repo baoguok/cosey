@@ -63,6 +63,7 @@ const getTableColumnEditorStyle: GenerateStyle<TableColumnEditorToken, CSSObject
       [`${componentCls}-item-holder`]: {
         width: token.size,
         flex: 'none',
+        color: token.colorTextSecondary,
         cursor: 'grab',
 
         '&:active': {

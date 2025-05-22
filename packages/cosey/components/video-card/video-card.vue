@@ -7,7 +7,7 @@
   >
     <video :src="src" :class="`${prefixCls}-video`" />
     <div :class="`${prefixCls}-play-mask`">
-      <Icon name="co:play-filled" :class="`${prefixCls}-play-icon`" />
+      <Icon name="co:play-circle-outline" :class="`${prefixCls}-play-icon`" />
     </div>
   </div>
 

@@ -8,7 +8,7 @@
 
 ### 基础使用
 
-使用 `#reference` 来放置我们的触发元素。
+使用 `#reference` 来放置触发元素。
 
 ::: demo
 
@@ -38,20 +38,20 @@ context-menu/sub-menu
 
 ## API
 
-### RaContextMenuProps
+### ContextMenuProps
 
 | 属性     | 描述     | 类型    | 默认值 |
 | -------- | -------- | ------- | ------ |
 | disabled | 是否禁用 | boolean | false  |
 
-### RaContextMenuSlots
+### ContextMenuSlots
 
 | 插槽      | 描述                     | 属性 |
 | --------- | ------------------------ | ---- |
 | default   | 菜单内容                 | -    |
 | reference | 触发菜单显示的 HTML 元素 | -    |
 
-### RaContextMenuEmits
+### ContextMenuEmits
 
 | 事件    | 描述                                                  | 类型                 |
 | ------- | ----------------------------------------------------- | -------------------- |
@@ -59,14 +59,14 @@ context-menu/sub-menu
 | open    | 上下文菜单显示时触发                                  | () => void           |
 | close   | 上下文菜单隐藏时触发                                  | () => void           |
 
-### RaContextMenuExpose
+### ContextMenuExpose
 
 | 属性  | 描述           | 类型                           |
 | ----- | -------------- | ------------------------------ |
 | open  | 打开上下文菜单 | (x: number, y: number) => void |
 | close | 关闭上下文菜单 | () => void                     |
 
-### RaContextMenuItemProps
+### ContextMenuItemProps
 
 | 属性     | 描述                                | 类型    | 默认值 |
 | -------- | ----------------------------------- | ------- | ------ |
@@ -76,7 +76,7 @@ context-menu/sub-menu
 | icon     | 自定义图标                          | string  | -      |
 | title    | 菜单标题                            | string  | -      |
 
-### RaContextSubMenuProps
+### ContextSubMenuProps
 
 | 属性     | 描述           | 类型    | 默认值 |
 | -------- | -------------- | ------- | ------ |
@@ -85,7 +85,7 @@ context-menu/sub-menu
 | icon     | 自定义图标     | string  | -      |
 | title    | 菜单标题       | string  | -      |
 
-### RaContextSubMenuSlots
+### ContextSubMenuSlots
 
 | 插槽    | 描述       | 属性 |
 | ------- | ---------- | ---- |

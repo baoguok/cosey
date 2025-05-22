@@ -4,7 +4,6 @@ export default defineRoutes({
   path: '/rbac',
   name: 'Rbac',
   component: MergedLayoutBase,
-  redirect: '/rbac/admins',
   meta: {
     title: '访问控制',
     icon: 'carbon:user-access',

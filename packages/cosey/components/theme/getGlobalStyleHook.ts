@@ -1,13 +1,13 @@
-import { computed, ComputedRef, watch } from 'vue';
+import { computed, watch } from 'vue';
 import type { CSSInterpolation } from '../cssinjs';
 import { useMounted } from '../../hooks';
 import type { AliasToken } from './interface';
 import { useStyleRegister } from './useStyleRegister';
 import { useToken } from './util/useToken';
 import { tokenValueToCssVar } from './util/tokenValueToCssVar';
-import { ThemeConfig } from './theme-context';
 import { useConfig } from '../config-provider/config-provider';
 import { isClient } from '../../utils';
+import { ThemeManager } from './theme-context';
 
 const oldGlobalClass = new Set<string>();
 
@@ -15,18 +15,13 @@ export function getGlobalStyleHook(
   component: string,
   styleFn: (token: AliasToken) => CSSInterpolation,
 ) {
-  return (theme?: ComputedRef<ThemeConfig | undefined>) => {
-    const { token, hashId } = useToken(theme);
+  return (themeManager?: ThemeManager) => {
+    const { token, hashId } = useToken(themeManager);
 
     const configContext = useConfig();
 
     useStyleRegister(
-      computed(() => ({
-        path: [component],
-        token: token.value,
-        hashId: hashId.value,
-        global: true,
-      })),
+      computed(() => ['__global', component]),
       () => {
         const cssVar = tokenValueToCssVar(token.value, configContext.prefixCls.value);
 

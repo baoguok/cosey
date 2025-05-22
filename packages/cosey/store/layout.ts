@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { useRoute, type RouteLocationNormalized } from 'vue-router';
+import { RouteMeta, useRoute } from 'vue-router';
 import { getBreadcrumbRoutes, getMenusMap, type MenuItem } from '../router';
 import { useGlobalConfig } from '../config';
 import { computed, nextTick, ref, watch } from 'vue';
@@ -14,7 +14,7 @@ export type LayoutMenuType =
 
 export interface LayoutTab {
   name: string;
-  meta: RouteLocationNormalized['meta'];
+  meta: RouteMeta;
 }
 
 export const useLayoutStore = defineStore('cosey-layout', () => {
@@ -27,7 +27,7 @@ export const useLayoutStore = defineStore('cosey-layout', () => {
   const collapse = ref(layoutConfig.collapse);
 
   /****************************************************************
-   * 🧩 响应式
+   * 响应式
    ****************************************************************/
 
   // 当前是否为移动设备（根据屏幕大小）

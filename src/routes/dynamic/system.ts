@@ -4,7 +4,6 @@ export default defineRoutes({
   path: '/system',
   name: 'System',
   component: MergedLayoutBase,
-  redirect: '/system/enums',
   meta: {
     title: '系统管理',
     icon: 'carbon:settings',

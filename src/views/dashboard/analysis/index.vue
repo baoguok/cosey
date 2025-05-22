@@ -31,4 +31,8 @@ import Education from './education.vue';
 import Stature from './stature.vue';
 import Hobby from './hobby.vue';
 import Constellation from './constellation.vue';
+
+defineOptions({
+  name: 'Analysis',
+});
 </script>

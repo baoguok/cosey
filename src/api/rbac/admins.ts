@@ -4,8 +4,8 @@ const Api = {
   AdminsResource: '/rbac/admins',
 };
 
-export const useAdminsApi = () =>
-  useRequest().map({
+export const useAdminsApi = () => {
+  return useRequest().map({
     getAdmins: (http) => (params?: any) => {
       return http.get(Api.AdminsResource, {
         params,
@@ -28,3 +28,4 @@ export const useAdminsApi = () =>
       return http.delete(`${Api.AdminsResource}/${id}`);
     },
   });
+};

@@ -18,7 +18,7 @@ image-card/basic
 
 ## API
 
-### RaImageCardProps
+### ImageCardProps
 
 在 <el-link type="primary" href="https://element-plus.org/zh-CN/component/image.html#image-attributes" target="_blank">Image Attributes</el-link> 基础上，添加了以下属性。
 
@@ -26,10 +26,10 @@ image-card/basic
 | ---- | ------------ | ----------------------------------------- | --------- |
 | size | 图片容器尺寸 | 'mini' \| 'small' \| 'default' \| 'large' | 'default' |
 
-### RaImageCardSlots
+### ImageCardSlots
 
 同 <el-link type="primary" href="https://element-plus.org/zh-CN/component/image.html#image-slots" target="_blank">Image Slots</el-link> 。
 
-### RaImageCardEmits
+### ImageCardEmits
 
 同 <el-link type="primary" href="https://element-plus.org/zh-CN/component/image.html#image-events" target="_blank">Image Events</el-link> 。

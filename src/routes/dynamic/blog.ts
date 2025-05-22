@@ -4,7 +4,6 @@ export default defineRoutes({
   path: '/blog',
   name: 'Blog',
   component: MergedLayoutBase,
-  redirect: '/blog/posts',
   meta: {
     title: '博客管理',
     icon: 'carbon:blog',

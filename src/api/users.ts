@@ -4,8 +4,8 @@ const Api = {
   UsersResource: '/users',
 };
 
-export const useUsersApi = () =>
-  useRequest().map({
+export const useUsersApi = () => {
+  return useRequest().map({
     getUsers: (http) => (params?: any) => {
       return http.get(Api.UsersResource, {
         params,
@@ -32,3 +32,4 @@ export const useUsersApi = () =>
       return http.patch(`${Api.UsersResource}/bulk-silent`, data);
     },
   });
+};

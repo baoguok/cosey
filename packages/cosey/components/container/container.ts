@@ -1,7 +1,6 @@
 import type { InjectionKey } from 'vue';
 
 export interface ContainerProps {
-  title?: string;
   fullPage?: boolean;
 }
 

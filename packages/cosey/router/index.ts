@@ -54,7 +54,7 @@ export function createCoseyRouter(options: CoseyRouterOptions = {}) {
     },
     restOptions,
     {
-      routes: [...staticRoutes, ...customStaticRoutes],
+      routes: getAllStaticRoutes(),
     },
   );
 
@@ -77,7 +77,7 @@ declare module 'vue-router' {
     // 是否在菜单中隐藏子级菜单，默认值 false
     hideChildrenInMenu?: boolean;
 
-    // 打平子级菜单，就好像父级菜单不存在一样，默认值 false
+    // 打平子级菜单，只显示子级菜单，不显示父菜单，默认值 false
     flatChildrenInMenu?: boolean;
 
     // 菜单类型，默认值 undefined

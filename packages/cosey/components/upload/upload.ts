@@ -25,7 +25,6 @@ export interface UploadProps {
   single?: boolean;
   readonly?: boolean;
   disabled?: boolean;
-  action?: string;
   selectOnly?: boolean;
   size?: MediaCardBaseProps['size'];
   request?: UploadContext['request'];
@@ -35,7 +34,6 @@ export const defaultUploadProps = {
   accept: '',
   limit: 0,
   validateEvent: true,
-  action: '/upload',
   size: 'large' as const,
 };
 

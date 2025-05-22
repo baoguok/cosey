@@ -1,5 +1,5 @@
 <template>
-  <Button :active="isActive" @click="toolbar?.list(type, isActive)">
+  <Button :active="isActive" @click="toolbar?.list(type)">
     <Icon :name="mapIcons[type]" />
   </Button>
 </template>

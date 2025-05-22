@@ -1,5 +1,10 @@
 <template>
-  <pre :class="[hashId, prefixCls]"><code class="hljs" v-html="highlightedCode"></code></pre>
+  <div :class="[hashId, prefixCls]">
+    <pre><code class="hljs" v-html="highlightedCode"></code></pre>
+    <div :class="`${prefixCls}-copy`">
+      <Copy :text="code" :class="`${prefixCls}-copy`" />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -13,6 +18,7 @@ import {
 import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
 import { computed } from 'vue';
+import Copy from '../copy/copy.vue';
 
 defineOptions({
   name: 'Highlight',

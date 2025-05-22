@@ -20,7 +20,7 @@ export const defaultHttpConfig = {
   headers: {} as Record<string, string>,
 
   /**
-   * 认证的框架
+   * HTTP 认证方案
    */
   authScheme: 'Bearer',
 

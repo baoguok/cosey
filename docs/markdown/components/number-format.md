@@ -48,15 +48,15 @@ number-format/animate
 
 ## API
 
-### RaNumberFormatProps
+### NumberFormatProps
 
-| 属性           | 描述                                                                                                                                   | 类型                                 | 默认值    |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | --------- |
-| value          | 要展示的数值                                                                                                                           | number \| string                     | -         |
-| precision      | 小数个数                                                                                                                               | number                               | 0         |
-| animate        | 是否动画                                                                                                                               | boolean                              | false     |
-| duration       | 动画持续时间，单位毫秒                                                                                                                 | number                               | 1500      |
-| locales        | BCP 47 语言标签，<a target="_blank" href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">详见</a> | string                               | 'zh-Hans' |
-| type           | 格式化样式                                                                                                                             | 'currency' \| 'decimal' \| 'percent' | 'decimal' |
-| currency       | 货币类型，<a target="_blank" href="https://github.com/unicode-org/cldr/blob/main/common/bcp47/currency.xml">详见</a>                   | string                               | 'CNY'     |
-| before-display | 在格式化后的值展示前进行处理                                                                                                           | (value: string) => string            | -         |
+| 属性           | 描述                                                                                                        | 类型                                 | 默认值    |
+| -------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------ | --------- |
+| value          | 要展示的数值                                                                                                | number \| string                     | -         |
+| precision      | 小数个数                                                                                                    | number                               | 0         |
+| animate        | 是否动画                                                                                                    | boolean                              | false     |
+| duration       | 动画持续时间，单位毫秒                                                                                      | number                               | 1500      |
+| locales        | BCP 47 语言标签，[详见](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry) | string                               | 'zh-Hans' |
+| type           | 格式化样式                                                                                                  | 'currency' \| 'decimal' \| 'percent' | 'decimal' |
+| currency       | 货币类型，[详见](https://github.com/unicode-org/cldr/blob/main/common/bcp47/currency.xml)                   | string                               | 'CNY'     |
+| before-display | 在格式化后的值展示前进行处理                                                                                | (value: string) => string            | -         |

@@ -2,7 +2,7 @@
 
 ## 简介
 
-24 栅格系统，使用方式和接口同 `element-plus Layout`，但响应式断点是相对于容器宽度，而非视口大小。
+24 栅格系统，使用方式和接口同 [element-plus Layout](https://element-plus.org/zh-CN/component/layout.html)，但响应式断点是相对于容器宽度，而非视口大小。
 
 ### 基础使用
 
@@ -84,7 +84,7 @@ grid/breakpoints
 
 ## API
 
-### RaRowProps
+### RowProps
 
 在 <el-link type="primary" href="https://element-plus.org/zh-CN/component/layout.html#row-attributes" target="_blank">Row Attributes</el-link> 基础上，添加了以下属性。
 
@@ -92,14 +92,14 @@ grid/breakpoints
 | ----------- | ---------- | -------- | --------------------------- |
 | breakpoints | 自定义断点 | number[] | [576, 768, 992, 1200, 1600] |
 
-### RaRowSlots
+### RowSlots
 
 同 <el-link type="primary" href="https://element-plus.org/zh-CN/component/layout.html#row-slots" target="_blank">Row Slots</el-link> 。
 
-### RaColProps
+### ColProps
 
 同 <el-link type="primary" href="https://element-plus.org/zh-CN/component/layout.html#col-attributes" target="_blank">Col Attributes</el-link> 。
 
-### RaColSlots
+### ColSlots
 
 同 <el-link type="primary" href="https://element-plus.org/zh-CN/component/layout.html#col-slots" target="_blank">Col Slots</el-link> 。

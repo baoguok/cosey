@@ -4,8 +4,6 @@ export interface EditorProps {
   modelValue?: string;
   placeholder?: string;
   height?: string;
-  minHeight?: string;
-  maxHeight?: string;
   readonly?: boolean;
   validateEvent?: boolean;
   request?: UploadContext['request'];

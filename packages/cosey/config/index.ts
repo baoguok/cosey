@@ -16,35 +16,35 @@ import { type RouteRecordRaw } from 'vue-router';
 import { createPersist } from '../hooks';
 
 export interface LayoutComponents {
-  aside?: string | Component;
-  auth?: string | Component;
   base?: string | Component;
-  brand?: string | Component;
-  breadcrumb?: string | Component;
-  changePassword?: string | Component;
-  colorScheme?: string | Component;
-  content?: string | Component;
-  empty?: string | Component;
-  exception?: string | Component;
-  forbidden?: string | Component;
-  header?: string | Component;
-  iframe?: string | Component;
-  internalServerError?: string | Component;
-  login?: string | Component;
-  main?: string | Component;
-  mask?: string | Component;
-  menu?: string | Component;
-  notFound?: string | Component;
-  search?: string | Component;
   sidebar?: string | Component;
   snugAside?: string | Component;
   snugMenu?: string | Component;
-  switchEffect?: string | Component;
-  tabbar?: string | Component;
+  aside?: string | Component;
+  menu?: string | Component;
+  mask?: string | Component;
+  content?: string | Component;
+  header?: string | Component;
+  topbar?: string | Component;
+  brand?: string | Component;
   toggle?: string | Component;
   topSnugMenu?: string | Component;
-  topbar?: string | Component;
+  breadcrumb?: string | Component;
+  search?: string | Component;
+  colorScheme?: string | Component;
   user?: string | Component;
+  tabbar?: string | Component;
+  main?: string | Component;
+  iframe?: string | Component;
+  switchEffect?: string | Component;
+  auth?: string | Component;
+  login?: string | Component;
+  changePassword?: string | Component;
+  exception?: string | Component;
+  forbidden?: string | Component;
+  notFound?: string | Component;
+  internalServerError?: string | Component;
+  empty?: string | Component;
 }
 
 export interface LayoutSlots {

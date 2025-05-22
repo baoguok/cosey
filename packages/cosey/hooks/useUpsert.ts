@@ -1,7 +1,7 @@
 import { deepAssign, uuid } from '../utils';
 import { ElMessage } from 'element-plus';
 import { cloneDeep, pick } from 'lodash-es';
-import { computed, onMounted, reactive, ref, useTemplateRef } from 'vue';
+import { computed, onMounted, reactive, Ref, ref, ShallowRef, useTemplateRef } from 'vue';
 
 const mapTypeTitle = {
   edit: '编辑',
@@ -12,7 +12,7 @@ export interface UseUpsertExposeOptions {
   success?: () => any;
 }
 
-export interface UseUpsertExpose<Row extends Record<string, any>, Data> {
+export interface UseUpsertExpose<Row extends Record<string, any>, Data = any> {
   edit: (row: Row) => any;
   add: () => any;
   setData: (data: Data) => UseUpsertExpose<Row, Data>;
@@ -39,11 +39,31 @@ export interface UseUpsertOptions<Model, Row = Model, Data = Model> {
   editSuccessText?: string;
 }
 
+export interface UseUpsertReturn<
+  Model extends Record<string, any>,
+  Row extends Record<string, any> = Model,
+  Data = any,
+> extends UseUpsertExpose<Row, Data> {
+  dialogProps: {
+    modelvalue: boolean;
+    'onUpdate:modelValue': (value: boolean) => void;
+    title: string;
+  };
+  formProps: {
+    model: Model;
+    ref: string;
+    submit: () => Promise<void>;
+  };
+  formRef: any;
+  data: Ref<Data | undefined>;
+  expose: UseUpsertExpose<Row, Data>;
+}
+
 export function useUpsert<
   Model extends Record<string, any>,
   Row extends Record<string, any> = Model,
   Data = any,
->(options: UseUpsertOptions<Model, Row>) {
+>(options: UseUpsertOptions<Model, Row>): UseUpsertReturn<Model, Row> {
   const {
     model,
     stuffTitle,
@@ -78,7 +98,7 @@ export function useUpsert<
       visible.value = value;
     },
     title: mergedTitle,
-  });
+  }) as unknown as UseUpsertReturn<Model, Row, Data>['dialogProps'];
 
   // form
   const formRefKey = uuid();
@@ -106,7 +126,7 @@ export function useUpsert<
     model,
     ref: formRefKey,
     submit: onSubmit,
-  });
+  }) as unknown as UseUpsertReturn<Model, Row, Data>['formProps'];
 
   // data
   const data = ref<Data>();
@@ -146,23 +166,33 @@ export function useUpsert<
     },
   };
 
-  return {
+  const result: UseUpsertReturn<Model, Row, Data> = {
+    ...expose,
     dialogProps,
     formProps,
     formRef,
     data,
-    ...expose,
     expose,
   };
+
+  return result;
 }
 
 export interface UseExternalUpsertOptions {
   success?: () => any;
 }
 
+export interface UseExternalUpsertReturn<Row extends Record<string, any>, Data> {
+  add: () => void;
+  edit: (row: Row) => void;
+  setData: (data: Data) => void;
+  expose: Readonly<ShallowRef<UseUpsertExpose<Row, Data> | null>>;
+  ref: string;
+}
+
 export function useOuterUpsert<Row extends Record<string, any>, Data>(
   options: UseExternalUpsertOptions,
-) {
+): UseExternalUpsertReturn<Row, Data> {
   const refKey = uuid();
 
   const expose = useTemplateRef<UseUpsertExpose<Row, Data>>(refKey);
@@ -177,7 +207,6 @@ export function useOuterUpsert<Row extends Record<string, any>, Data>(
 
   const setData = (data: Data) => {
     expose.value?.setData(data);
-    return result;
   };
 
   onMounted(() => {

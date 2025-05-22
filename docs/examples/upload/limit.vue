@@ -1,5 +1,5 @@
 <template>
-  <co-upload v-model="value" action="/upload" multiple :limit="3" @change="onChange" />
+  <co-upload v-model="value" multiple :limit="3" @change="onChange" />
 </template>
 
 <script lang="ts" setup>

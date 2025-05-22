@@ -17,6 +17,11 @@ export default getSimpleStyleHook('LayoutTabbar', (token) => {
         borderBlockEnd: `${token.lineWidth} ${token.lineType} ${token.colorBorder}`,
       },
 
+      [`${componentCls}-icon`]: {
+        marginInlineEnd: token.marginXXS,
+        fontSize: 18,
+      },
+
       '.el-tabs': {
         '--el-tabs-header-height': 32,
       },

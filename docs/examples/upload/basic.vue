@@ -1,5 +1,5 @@
 <template>
-  <co-upload v-model="value" action="/upload" @change="onChange" />
+  <co-upload v-model="value" @change="onChange" />
 </template>
 
 <script lang="ts" setup>

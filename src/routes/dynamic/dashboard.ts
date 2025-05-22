@@ -7,7 +7,6 @@ export default defineRoutes({
   path: '/dashboard',
   name: 'Dashboard',
   component: MergedLayoutBase,
-  redirect: '/dashboard/workspace',
   meta: {
     title: '仪表板',
     icon: 'carbon:dashboard',
@@ -28,7 +27,7 @@ export default defineRoutes({
     },
     {
       path: 'analysis',
-      name: 'analysis',
+      name: 'Analysis',
       component: () => import('@/views/dashboard/analysis/index.vue'),
       meta: {
         title: '分析页',

@@ -86,10 +86,17 @@ function renderMenu(menuItems: MenuItem[]) {
         return <ElSubMenu index={item.name} v-slots={slots}></ElSubMenu>;
       }
 
+      const menuRoute = item.route;
+      const active =
+        menuRoute.children?.length &&
+        menuRoute.meta.hideChildrenInMenu &&
+        route.matched.some((item) => item.name === menuRoute.name);
+
       return (
         <ElMenuItem
           key={item.name}
           index={item.name}
+          class={{ 'is-active': active }}
           onClick={() => onMenuItemClick(item)}
           v-slots={{
             title: titleVNode,

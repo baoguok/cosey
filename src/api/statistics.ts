@@ -4,8 +4,8 @@ const Api = {
   StatisticsResource: '/statistics',
 };
 
-export const useStatisticsApi = () =>
-  useRequest().map({
+export const useStatisticsApi = () => {
+  return useRequest().map({
     getStatOverview: (http) => (params?: any) => {
       return http.get(`${Api.StatisticsResource}/overview`, {
         params,
@@ -42,3 +42,4 @@ export const useStatisticsApi = () =>
       });
     },
   });
+};

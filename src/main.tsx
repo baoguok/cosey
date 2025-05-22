@@ -1,24 +1,25 @@
-import './styles/index.css';
+import '@/styles/index.css';
 
 import { createApp } from 'vue';
 import { createCosey } from 'cosey';
 import App from '@/App.vue';
-import { dynamicRoutes, staticRoutes } from './routes';
-import { useUploadApi } from './api/common';
-import { useAuthApi } from './api/rbac/auth';
+import { dynamicRoutes, staticRoutes } from '@/routes';
+import { useUploadApi } from '@/api/common';
+import { useAuthApi } from '@/api/rbac/auth';
 
 import { AbilityBuilder, createMongoAbility, defineAbility } from '@casl/ability';
 import { ABILITY_TOKEN } from '@casl/vue';
 
-import LayoutSetting from './components/layout-setting';
-import LayoutHttpMessage from './components/layout-http-message';
-import LoginTips from './components/login-tips.vue';
+import LayoutSetting from '@/components/layout-setting';
+import LayoutHttpMessage from '@/components/layout-http-message';
+import LoginTips from '@/components/login-tips.vue';
 
 import 'virtual:svg-icons-register';
 import { icons as carbonIcons } from '@iconify-json/carbon';
 import { addIconifyIcon } from 'cosey/components';
 
 import { createMock } from '@cosey/mock';
+import { createWebHistory } from 'vue-router';
 
 addIconifyIcon('carbon', carbonIcons);
 
@@ -33,7 +34,7 @@ async function bootstrap() {
 
   // cosey
   const cosey = createCosey({
-    router: { dynamic: dynamicRoutes, static: staticRoutes },
+    router: { dynamic: dynamicRoutes, static: staticRoutes, history: createWebHistory() },
     http: {
       baseURL: import.meta.env.VITE_BASE_URL,
     },

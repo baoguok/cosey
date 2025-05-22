@@ -6,6 +6,8 @@ import Layout from '@/components/layout/layout.vue';
 
 import './style.css';
 
+import 'virtual:svg-icons-register';
+
 import 'virtual:ssr-style.css';
 
 import { registerGlobalComponents } from 'cosey';

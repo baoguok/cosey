@@ -11,11 +11,23 @@ const getMaskStyle: GenerateStyle<MaskToken, CSSObject> = (token) => {
 
   return {
     [componentCls]: {
-      padding: token.paddingSM,
-      overflow: 'auto',
-      color: '#abb2bf',
-      background: '#282c34',
-      borderRadius: token.borderRadius,
+      position: 'relative',
+
+      pre: {
+        padding: token.paddingSM,
+        overflow: 'auto',
+        color: '#abb2bf',
+        background: '#282c34',
+        borderRadius: token.borderRadius,
+      },
+
+      [`${componentCls}-copy`]: {
+        position: 'absolute',
+        top: token.sizeXXS,
+        right: token.sizeXXS,
+        zIndex: 10,
+        color: token.colorWhite,
+      },
 
       ...getHljs(),
     },

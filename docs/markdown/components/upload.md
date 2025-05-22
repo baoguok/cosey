@@ -4,11 +4,13 @@
 
 通过点击上传文件，封装了上传逻辑、双向绑定和表单验证，使其像 ElInput 一样易用。
 
+文件上传依赖于 `createCosey api.upload` 接口，需要保证接口返回一个文件地址。
+
 ## 代码演示
 
 ### 基础使用
 
-使用 `v-model` 进行双向绑定，内容使用 `singleUpload()` 函数上传文件并接收返回的 url，可根据具体接口修改 `singleUpload()` 的返回值。
+使用 `v-model` 进行双向绑定。
 
 ::: demo
 
@@ -48,29 +50,29 @@ upload/select-only
 
 ## API
 
-### RaUploadProps
+### UploadProps
 
-| 属性           | 描述                                                         | 类型                                      | 默认值    |
-| -------------- | ------------------------------------------------------------ | ----------------------------------------- | --------- |
-| accept         | 允许选择的文件类型                                           | string                                    | ''        |
-| limit          | 允许上传文件的最大数量，0表示无限制                          | number                                    | 0         |
-| multiple       | 是否支持多选文件                                             | boolean                                   | false     |
-| model-value    | 绑定的值                                                     | string \| File \| (string \ File)[]       | -         |
-| validate-event | 是否触发表单验证                                             | boolean                                   | true      |
-| single         | 是否只绑定一个值（`string` 或 `File`，而非数组）             | boolean                                   | false     |
-| readonly       | 是否只读                                                     | boolean                                   | -         |
-| disabled       | 是否禁用                                                     | boolean                                   | -         |
-| action         | 请求 `URL`                                                   | string                                    | '/upload' |
-| select-only    | 仅选择文件，将其和其他表单项一并交由表单通过 `FormData` 上传 | boolean                                   | false     |
-| size           | 列表项的尺寸                                                 | 'mini' \| 'small' \| 'default' \| 'large' | 'default' |
+| 属性           | 描述                                                         | 类型                                                          | 默认值    |
+| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------- | --------- |
+| accept         | 允许选择的文件类型                                           | string                                                        | ''        |
+| limit          | 允许上传文件的最大数量，0表示无限制                          | number                                                        | 0         |
+| multiple       | 是否支持多选文件                                             | boolean                                                       | false     |
+| model-value    | 绑定的值                                                     | string \| File \| (string \ File)[]                           | -         |
+| validate-event | 是否触发表单验证                                             | boolean                                                       | true      |
+| single         | 是否只绑定一个值（`string` 或 `File`，而非数组）             | boolean                                                       | false     |
+| readonly       | 是否只读                                                     | boolean                                                       | -         |
+| disabled       | 是否禁用                                                     | boolean                                                       | -         |
+| select-only    | 仅选择文件，将其和其他表单项一并交由表单通过 `FormData` 上传 | boolean                                                       | false     |
+| size           | 列表项的尺寸                                                 | 'mini' \| 'small' \| 'default' \| 'large'                     | 'default' |
+| request        | 上传接口                                                     | (data: Blob, config?: AxiosRequestConfig) => Promise\<string> | -         |
 
-### RaUploadSlots
+### UploadSlots
 
 | 插槽    | 描述           | 属性 |
 | ------- | -------------- | ---- |
 | default | 自定义默认内容 | -    |
 
-### RaUploadEmits
+### UploadEmits
 
 | 事件               | 描述               | 类型                                                  |
 | ------------------ | ------------------ | ----------------------------------------------------- |

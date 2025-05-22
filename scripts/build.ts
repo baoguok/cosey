@@ -4,7 +4,7 @@ import child_process from 'node:child_process';
 import consola from 'consola';
 import { rimraf } from 'rimraf';
 import { glob } from 'glob';
-import fse from 'fs-extra';
+import fse, { copy } from 'fs-extra';
 
 import { mapPackageDirName, packagesDir, distDir, dependenciesTypes } from './utils/const';
 import { flow, selectPackage, type Steps } from './utils/flow';
@@ -182,6 +182,10 @@ async function writePkgJson() {
   }
 }
 
+async function copyReadme() {
+  await copy(path.resolve(process.cwd(), 'README.md'), path.resolve(pkgDistDir, 'README.md'));
+}
+
 async function build() {
   pkgName = await selectPackage();
   pkgDistDir = path.resolve(distDir, pkgName);
@@ -194,6 +198,10 @@ async function build() {
     [compile, `编译`, true],
     [writePkgJson, `写入 package.json 文件`],
   ];
+
+  if (pkgName === 'cosey') {
+    steps.push([copyReadme, '复制 README.md']);
+  }
 
   await flow(steps);
 }

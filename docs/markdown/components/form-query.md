@@ -2,7 +2,7 @@
 
 ## 简介
 
-`RaFormQuery` 是预设了栅格布局的 `RaForm` 组件，拥有相同的接口，并添加了折叠功能，通常和表格组件一起使用。
+`FormQuery` 是预设了栅格布局的 `Form` 组件，拥有相同的接口，并添加了折叠功能，通常和表格组件一起使用。
 
 ## 代码演示
 
@@ -56,29 +56,29 @@ form-query/vertical
 
 ## API
 
-### RaFormQueryProps
+### FormQueryProps
 
-继承 `RaFormProps` ，并有以下额外属性或默认值。
+继承 `FormProps` ，并有以下额外属性或默认值。
 
-| 属性       | 描述                                                                                                                        | 类型       | 默认值                                   |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------------------- |
-| grid       | 是否开启栅格化模式                                                                                                          | boolean    | true                                     |
-| col-props  | 栅格化模式下设置所有 `field` 共同的 `RaCol` 的属性                                                                          | RaColProps | \{ xs: 24, sm: 12, md: 8, lg: 6, xl: 6 } |
-| min-fields | 自定义折叠状态下默认显示的表单控件数量，小于 0，则显示一行控件； 等于 0，则显示所有控件；数量大于等于控件数量则隐藏展开按钮 | number     | -1                                       |
-| collapsed  | 是否折叠超出的表单项                                                                                                        | boolean    | true                                     |
+| 属性       | 描述                                                                                                                        | 类型     | 默认值                                   |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------- | -------- | ---------------------------------------- |
+| grid       | 是否开启栅格化模式                                                                                                          | boolean  | true                                     |
+| col-props  | 栅格化模式下设置所有 `field` 共同的 `Col` 的属性                                                                            | ColProps | \{ xs: 24, sm: 12, md: 8, lg: 6, xl: 6 } |
+| min-fields | 自定义折叠状态下默认显示的表单控件数量，小于 0，则显示一行控件； 等于 0，则显示所有控件；数量大于等于控件数量则隐藏展开按钮 | number   | -1                                       |
+| collapsed  | 是否折叠超出的表单项                                                                                                        | boolean  | true                                     |
 
-### RaFormQuerySlots
+### FormQuerySlots
 
-同 `RaFormSlots`。
+同 `FormSlots`。
 
-### RaFormQueryEmits
+### FormQueryEmits
 
-继承 `RaFormEmits` ，并有以下额外事件。
+继承 `FormEmits` ，并有以下额外事件。
 
 | 事件             | 描述               | 类型                         |
 | ---------------- | ------------------ | ---------------------------- |
 | update:collapsed | 折叠状态改变时触发 | (collapsed: boolean) => void |
 
-### RaFormQueryExpose
+### FormQueryExpose
 
-同 `RaFormExpose`。
+同 `FormExpose`。

@@ -40,7 +40,7 @@ long-text/max-height
 
 ## API
 
-### RaLongTextProps
+### LongTextProps
 
 | 属性       | 描述                 | 类型             | 默认值 |
 | ---------- | -------------------- | ---------------- | ------ |
@@ -49,7 +49,7 @@ long-text/max-height
 | max-width  | tooltip 最大显示宽度 | number \| string | 690    |
 | max-height | tooltip 最大显示宽度 | number \| string | 320    |
 
-### RaLongTextSlots
+### LongTextSlots
 
 | 插槽    | 描述           | 属性 |
 | ------- | -------------- | ---- |

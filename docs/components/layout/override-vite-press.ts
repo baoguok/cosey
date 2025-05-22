@@ -1,12 +1,6 @@
-import { type ComputedRef } from 'vue';
-import {
-  type ThemeConfig,
-  getGlobalStyleHook,
-  seedToken,
-  defaultGenerateColorPalettes,
-} from 'cosey/components';
+import { seedToken, defaultGenerateColorPalettes, getOverrideStyleHook } from 'cosey/components';
 
-const useStyle = getGlobalStyleHook('OverrideVitepress', (token) => {
+const useStyle = getOverrideStyleHook('OverrideVitepress', (token) => {
   const purpleColors = defaultGenerateColorPalettes(seedToken.purple);
   const blueColors = defaultGenerateColorPalettes(seedToken.blue);
   const greenColors = defaultGenerateColorPalettes(seedToken.green);
@@ -15,10 +9,10 @@ const useStyle = getGlobalStyleHook('OverrideVitepress', (token) => {
 
   return {
     ':root': {
-      '--vp-c-gray-1': token.colorFill,
-      '--vp-c-gray-2': token.colorFillSecondary,
-      '--vp-c-gray-3': token.colorFillTertiary,
-      '--vp-c-gray-soft': token.colorFillQuaternary,
+      // '--vp-c-gray-1': token.colorFill,
+      // '--vp-c-gray-2': token.colorFillSecondary,
+      // '--vp-c-gray-3': token.colorFillTertiary,
+      // '--vp-c-gray-soft': token.colorFillQuaternary,
 
       '--vp-c-indigo-1': blueColors[10],
       '--vp-c-indigo-2': blueColors[9],
@@ -45,24 +39,22 @@ const useStyle = getGlobalStyleHook('OverrideVitepress', (token) => {
       '--vp-c-red-3': redColors[8],
       '--vp-c-red-soft': redColors[3],
 
-      '--vp-c-border': token.colorBorder,
-      '--vp-c-divider': token.colorBorderSecondary,
-      '--vp-c-gutter': token.colorBorderSecondary,
+      // '--vp-c-border': token.colorBorder,
+      // '--vp-c-divider': token.colorBorderSecondary,
+      // '--vp-c-gutter': token.colorBorderSecondary,
 
-      '--vp-c-text-1': token.colorText,
-      '--vp-c-text-2': token.colorTextSecondary,
-      '--vp-c-text-3': token.colorTextTertiary,
+      // '--vp-c-text-1': token.colorText,
+      // '--vp-c-text-2': token.colorTextSecondary,
+      // '--vp-c-text-3': token.colorTextTertiary,
 
       '--vp-font-family-base': token.fontFamily,
       '--vp-font-family-mono': token.fontFamilyCode,
 
-      '--vp-code-color': token.colorText,
+      // '--vp-code-color': token.colorText,
 
       '--vp-layout-max-width': '100vw',
 
       '.vp-doc': {
-        // 覆盖
-
         table: {
           display: 'table',
           margin: 0,
@@ -98,26 +90,26 @@ const useStyle = getGlobalStyleHook('OverrideVitepress', (token) => {
 
           tbody: {
             'td:nth-child(1)': {
-              fontWeight: token.fontWeightStrong,
+              // fontWeight: token.fontWeightStrong,
             },
             'td:nth-child(3)': {
-              color: token.magenta,
-              fontSize: 13,
+              // color: token.magenta,
+              // fontSize: 13,
             },
             'td:nth-child(4)': {
-              fontSize: 13,
+              // fontSize: 13,
             },
           },
         },
       },
 
       '.content-container': {
-        maxWidth: '100% !important',
+        maxWidth: '1200px !important',
       },
     },
   };
 });
 
-export const useOverrideVitePress = (theme?: ComputedRef<ThemeConfig | undefined>) => {
-  useStyle(theme);
+export const useOverrideVitePress = () => {
+  useStyle();
 };

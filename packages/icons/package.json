@@ -1,7 +1,7 @@
 {
   "name": "@cosey/icons",
-  "version": "0.1.2",
-  "description": "Coesy Admin 专用图标",
+  "version": "0.1.5",
+  "description": "Cosey Admin 专用图标",
   "type": "module",
   "main": "index.ts",
   "module": "index.ts",

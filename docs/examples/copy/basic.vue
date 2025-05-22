@@ -1,5 +1,3 @@
 <template>
-  <co-copy></co-copy>
+  <co-copy :text="'复制文本'"></co-copy>
 </template>
-
-<script lang="ts" setup></script>

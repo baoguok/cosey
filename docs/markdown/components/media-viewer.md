@@ -18,31 +18,31 @@ media-viewer/basic
 
 ## API
 
-### RaMediaViewerProps
+### MediaViewerProps
 
 | 属性  | 描述  | 类型   | 默认值 |
 | ----- | ----- | ------ | ------ |
 | prop1 | 属性1 | string | -      |
 
-### RaMediaViewerSlots
+### MediaViewerSlots
 
 | 插槽    | 描述           | 属性 |
 | ------- | -------------- | ---- |
 | default | 自定义默认内容 | -    |
 
-### RaMediaViewerEmits
+### MediaViewerEmits
 
 | 事件  | 描述       | 类型                        |
 | ----- | ---------- | --------------------------- |
 | click | 点击时触发 | (event: MouseEvent) => void |
 
-### RaMediaViewerExpose
+### MediaViewerExpose
 
 | 属性   | 描述 | 类型       |
 | ------ | ---- | ---------- |
 | method | 描述 | () => void |
 
-### RaMediaViewerOptions
+### MediaViewerOptions
 
 | 属性 | 描述 | 类型   | 默认值 |
 | ---- | ---- | ------ | ------ |

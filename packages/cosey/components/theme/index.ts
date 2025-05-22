@@ -21,6 +21,7 @@ import { getSimpleStyleHook } from './getSimpleStyleHook';
 import { useThemeProvide, type ThemeConfig } from './theme-context';
 import { extractCacheStyle, extractStyle } from './extractStyle';
 import { StyleCache, StyleProvider } from './StyleContext';
+import { getOverrideStyleHook } from './getOverrideStyleHook';
 
 type GenerateStyle<ComponentToken extends object = AliasToken, ReturnType = CSSInterpolation> = (
   token: ComponentToken,
@@ -35,6 +36,7 @@ export {
   getStyleHook,
   getSimpleStyleHook,
   getGlobalStyleHook,
+  getOverrideStyleHook,
   useThemeProvide,
   defaultGenerateColorPalettes,
   darkGenerateColorPalettes,

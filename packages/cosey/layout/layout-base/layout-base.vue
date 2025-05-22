@@ -33,6 +33,9 @@
             <MergedLayoutToggle
               v-if="layoutStore.isMobile || layoutStore.isVertical || layoutStore.isBiserial"
             />
+            <MergedLayoutBreadcrumb
+              v-if="!layoutStore.isMobile && (layoutStore.isVertical || layoutStore.isBiserial)"
+            />
             <MergedLayoutTopSnugMenu
               v-if="
                 !layoutStore.isMobile &&
@@ -43,9 +46,6 @@
               v-if="!layoutStore.isMobile && layoutStore.isHorizontal"
               mode="horizontal"
               style="flex: 1"
-            />
-            <MergedLayoutBreadcrumb
-              v-if="!layoutStore.isMobile && (layoutStore.isVertical || layoutStore.isBiserial)"
             />
           </template>
           <template #right>

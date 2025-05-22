@@ -4,6 +4,11 @@ import { defineStore } from 'pinia';
 import { getAllDynamicRoutes } from '../router';
 import { usePersist } from '../hooks';
 import { TOKEN_NAME } from '../constant';
+/**
+ * 用于解决ts错误提示：
+ * The inferred type of '' cannot be named without a reference to '.pnpm/@vue+shared@3.5.13/node_modules/@vue/shared'. This is likely not portable. A type annotation is necessary.
+ */
+import type {} from '@vue/shared';
 import { useGlobalConfig } from '../config';
 import { warningOnce } from '../utils';
 import { NOT_FOUND_ROUTE_NAME, NotFoundRoute } from '../router/not-found';
@@ -71,6 +76,8 @@ export const useUserStore = defineStore('cosey-user', () => {
         nickname,
         avatar,
       };
+
+      return userInfo.value;
     });
   };
 
