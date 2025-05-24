@@ -1,2 +1,2 @@
-export const TOKEN_NAME = 'token';
-export const ROUTER_TO = 'routerTo';
+export const TOKEN_NAME = 'Cosey:token';
+export const ROUTER_TO = 'Cosey:routerTo';

@@ -1,5 +1,7 @@
 <div align="center">
-  <img width="160" src="https://fastly.jsdelivr.net/npm/@gunny/files@latest/cosey-logo.svg" />
+  <p>
+    <img width="160" src="https://fastly.jsdelivr.net/npm/@gunny/files@latest/cosey-logo.svg" />
+  </p>
 
   <p>一个基于 Vue3 + TypeScript + Vite 的后台管理框架</p>
 

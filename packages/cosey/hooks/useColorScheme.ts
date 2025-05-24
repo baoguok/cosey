@@ -10,7 +10,7 @@ import { isClient } from '../utils';
 
 const colorSchemeContextSymbol = Symbol('colorScheme');
 
-const colorSchemeKey = 'colorScheme';
+const colorSchemeKey = 'Cosey:colorScheme';
 
 type ColorScheme = 'dark' | 'light' | 'auto';
 type AppliedColorScheme = 'dark' | 'light';

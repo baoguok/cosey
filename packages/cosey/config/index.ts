@@ -8,12 +8,11 @@ import { type RequiredHttpConfig, type HttpConfig, defaultHttpConfig } from './h
 import { type RequiredApiConfig, type ApiConfig, defaultApiConfig } from './api';
 
 import { defaultsDeep } from 'lodash-es';
-import Persist from '@gunny/persist';
 import { type App, type Component, type InjectionKey, type VNodeChild, inject } from 'vue';
 
 import { type CoseyRouterOptions } from '../router';
 import { type RouteRecordRaw } from 'vue-router';
-import { createPersist } from '../hooks';
+import { createPersist, persistContextKey } from '../hooks';
 
 export interface LayoutComponents {
   base?: string | Component;
@@ -67,7 +66,6 @@ export type CoseyOptions = {
 };
 
 export interface GlobalConfig {
-  persist?: Persist;
   router: RequiredRouterConfig;
   http: RequiredHttpConfig;
   layout: RequiredLayoutConfig;
@@ -97,8 +95,9 @@ export function provideGlobalConfig(app: App, options: CoseyOptions) {
 
   const persistConfig = defaultsDeep(persist, defaultPersistConfig);
 
+  app.provide(persistContextKey, createPersist(persistConfig.name, persistConfig.type));
+
   app.provide(globalConfigContextKey, {
-    persist: createPersist(persistConfig.name, persistConfig.type),
     router: defaultsDeep({ homePath, loginPath, changePasswordPath }, defaultRouterConfig),
     http: defaultsDeep(http, defaultHttpConfig),
     layout: defaultsDeep(layout, defaultLayoutConfig),
