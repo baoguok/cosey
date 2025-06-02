@@ -1,7 +1,16 @@
 import { deepAssign, uuid } from '../utils';
 import { ElMessage } from 'element-plus';
 import { cloneDeep, pick } from 'lodash-es';
-import { computed, onMounted, reactive, Ref, ref, ShallowRef, useTemplateRef } from 'vue';
+import {
+  type ShallowRef,
+  type Ref,
+  computed,
+  onMounted,
+  reactive,
+  ref,
+  shallowRef,
+  useTemplateRef,
+} from 'vue';
 
 const mapTypeTitle = {
   edit: '编辑',
@@ -25,10 +34,7 @@ export interface UseUpsertOptions<Model, Row = Model, Data = Model> {
   title?: string;
   stuffTitle?: string;
   model: Model;
-  show?: <T extends UpsertType, R extends T extends 'edit' ? Row : undefined>(
-    type: T,
-    row: R,
-  ) => any;
+  show?: () => void;
   details?: (row: Row) => any;
   beforeFill?: (row: Row) => any;
   beforeSubmit?: (model: Model) => Data | Promise<Data>;
@@ -57,6 +63,8 @@ export interface UseUpsertReturn<
   formRef: any;
   data: Ref<Data | undefined>;
   expose: UseUpsertExpose<Row, Data>;
+  row: ShallowRef<Row | undefined>;
+  type: Ref<UpsertType>;
 }
 
 export function useUpsert<
@@ -129,22 +137,24 @@ export function useUpsert<
   }) as unknown as UseUpsertReturn<Model, Row, Data>['formProps'];
 
   // data
-  const data = ref<Data>();
+  const data = shallowRef<Data>();
+  const row = shallowRef<Row>();
 
   // expose
   let exposeOptions: UseUpsertExposeOptions;
 
   const expose: UseUpsertExpose<Row, Data> = {
-    edit: async (row: Row) => {
+    edit: async (_row: Row) => {
       type.value = 'edit';
+      row.value = _row;
       deepAssign(model, initialModel);
 
       visible.value = true;
-      show?.(type.value, row);
+      show?.();
 
-      let filledRow = row;
+      let filledRow = _row;
       if (details) {
-        filledRow = await details(row);
+        filledRow = await details(_row);
       }
       filledRow = { ...filledRow };
       filledRow = beforeFill?.(filledRow) || filledRow;
@@ -152,10 +162,11 @@ export function useUpsert<
     },
     add: () => {
       type.value = 'add';
+      row.value = undefined;
       deepAssign(model, initialModel);
 
       visible.value = true;
-      show?.(type.value, undefined);
+      show?.();
     },
     setData: (_data: Data) => {
       data.value = _data;
@@ -173,6 +184,8 @@ export function useUpsert<
     formRef,
     data,
     expose,
+    row,
+    type,
   };
 
   return result;

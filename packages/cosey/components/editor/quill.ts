@@ -12,6 +12,7 @@ import { AlignStyle } from './formats/align';
 import Video from './formats/video';
 import Image from './formats/image';
 // import List from './formats/list';
+import Kbd from './formats/kbd';
 
 export function register() {
   Quill.register(
@@ -28,6 +29,7 @@ export function register() {
       'formats/video': Video,
       'formats/image': Image,
       // 'formats/list': List,
+      'formats/kbd': Kbd,
     },
     true,
   );

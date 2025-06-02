@@ -46,13 +46,13 @@ export function walkTree<INode extends Record<any, any>>(
 ) {
   return tree.some((node) => {
     const result = callback(node);
-    if (result) {
+    if (result === true) {
       return true;
     }
     const children = node[childrenKey];
     if (Array.isArray(children) && children.length) {
       const result = walkTree(children, childrenKey, callback);
-      if (result) {
+      if (result === true) {
         return true;
       }
     }

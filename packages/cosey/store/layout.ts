@@ -20,7 +20,6 @@ export interface LayoutTab {
 export const useLayoutStore = defineStore(
   'cosey-layout',
   () => {
-    console.log('useLayoutStore');
     const { layout: layoutConfig } = useGlobalConfig();
     const route = useRoute();
 

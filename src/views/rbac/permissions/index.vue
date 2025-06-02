@@ -50,7 +50,7 @@ import { reactive } from 'vue';
 import { useAbility } from '@casl/vue';
 
 defineOptions({
-  name: 'BlogPostTypes',
+  name: 'RbacPermissions',
 });
 
 const { can, cannot } = useAbility();

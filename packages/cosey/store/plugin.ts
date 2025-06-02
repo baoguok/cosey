@@ -30,8 +30,6 @@ export function piniaPluginPersist(context: PiniaPluginContext) {
   watch(
     pickKeys.map((key) => () => store[key]),
     () => {
-      console.log('>>> watch', pickKeys);
-
       persistIns.set(persistKey, Object.fromEntries(pickKeys.map((key) => [key, store[key]])));
     },
   );

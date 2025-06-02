@@ -176,6 +176,16 @@ export const getQuillArticleStyle: GenerateStyle<EditorToken, CSSObject> = (toke
       borderRadius: token.borderRadiusSM,
       backgroundColor: '#f0f0f0',
     },
+
+    kbd: {
+      padding: `2px 6px`,
+      fontSize: '.875em',
+      color: token.colorText,
+      backgroundColor: token.colorBgContainer,
+      border: `${token.lineType} ${token.lineWidth} ${token.colorBorder}`,
+      borderRadius: token.borderRadiusXS,
+      boxShadow: `0 2px 0 -1px ${token.colorBgContainer}, 0 2px ${token.colorBorder}`,
+    },
   };
 };
 

@@ -1,5 +1,5 @@
 import { useRoute, useRouter } from 'vue-router';
-import axios, { type CreateAxiosDefaults } from 'axios';
+import axios, { AxiosError, type CreateAxiosDefaults } from 'axios';
 import { ElMessage } from 'element-plus';
 import { defaults, get, pick } from 'lodash-es';
 import { usePersist } from '../hooks';
@@ -7,6 +7,7 @@ import { useUserStore } from '../store';
 import { ROUTER_TO, TOKEN_NAME } from '../constant';
 import { Http } from './Http';
 import { useGlobalConfig } from '../config';
+import { isObject } from '../utils';
 
 export function useRequest(config: CreateAxiosDefaults = {}) {
   const persist = usePersist();
@@ -14,6 +15,31 @@ export function useRequest(config: CreateAxiosDefaults = {}) {
   const router = useRouter();
   const route = useRoute();
   const { http: httpConfig, router: routerConfig } = useGlobalConfig();
+
+  const handleError = (resData: any) => {
+    const httpPath = httpConfig.path;
+    const code = get(resData, httpPath.code);
+    const message = get(resData, httpPath.message) || 'Error';
+    const data = get(resData, httpPath.data);
+
+    if (code !== httpConfig.code.success) {
+      ElMessage.error({
+        message,
+        duration: httpConfig.errorDuration,
+      });
+
+      if (code === httpConfig.code.forbidden) {
+        router.push(routerConfig.homePath);
+      } else if (code === httpConfig.code.unauthorized) {
+        if (persist.get(TOKEN_NAME)) {
+          userStore.logout(persist.get(ROUTER_TO) || route.fullPath);
+        }
+      }
+
+      return Promise.reject(new Error(message));
+    }
+    return data;
+  };
 
   const createAxios = () => {
     const axiosIns = axios.create(
@@ -43,35 +69,24 @@ export function useRequest(config: CreateAxiosDefaults = {}) {
     axiosIns.interceptors.response.use(
       (response) => {
         const { data: resData } = response;
-        const httpPath = httpConfig.path;
-        const code = get(resData, httpPath.code);
-        const message = get(resData, httpPath.message) || 'Error';
-        const data = get(resData, httpPath.data);
-
-        if (code !== httpConfig.code.success) {
+        return handleError(resData);
+      },
+      (error: Error | AxiosError) => {
+        if (
+          error instanceof AxiosError &&
+          error.response &&
+          isObject(error.response.data) &&
+          get(error.response.data, httpConfig.path.code)
+        ) {
+          return handleError(error.response.data);
+        } else {
           ElMessage.error({
-            message,
+            message: error.message,
             duration: httpConfig.errorDuration,
           });
 
-          if (code === httpConfig.code.forbidden) {
-            router.push(routerConfig.homePath);
-          } else if (code === httpConfig.code.unauthorized) {
-            if (persist.get(TOKEN_NAME)) {
-              userStore.logout(persist.get(ROUTER_TO) || route.fullPath);
-            }
-          }
-
-          return Promise.reject(new Error(message));
+          return Promise.reject(error);
         }
-        return data;
-      },
-      (error: Error) => {
-        ElMessage.error({
-          message: error.message,
-          duration: httpConfig.errorDuration,
-        });
-        return Promise.reject(error);
       },
     );
 

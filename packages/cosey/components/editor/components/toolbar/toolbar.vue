@@ -50,6 +50,9 @@
     <ButtonGroup>
       <FormatsClean />
     </ButtonGroup>
+    <ButtonGroup>
+      <FormatsSource />
+    </ButtonGroup>
   </div>
 </template>
 
@@ -85,6 +88,7 @@ import FormatsVideo from './formats/video.vue';
 import FormatsTable from './formats/table.vue';
 import FormatsFormula from './formats/formula.vue';
 import FormatsClean from './formats/clean.vue';
+import FormatsSource from './formats/source.vue';
 
 defineProps<{}>();
 
