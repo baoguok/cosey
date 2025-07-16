@@ -53,7 +53,13 @@ const floatingEl = useTemplateRef('floatingRef');
 const { x, y, floating } = useFloating(referenceEl, floatingEl, {
   placement: 'top',
   strategy: 'absolute',
-  middleware: [offset(0), flip(), shift()],
+  middleware: [
+    offset(0),
+    flip(),
+    shift({
+      crossAxis: true,
+    }),
+  ],
 });
 
 watch(
@@ -89,6 +95,7 @@ watch(
             const table = row.parent.parent;
 
             referenceEl.value = table.domNode;
+            console.log(table.domNode);
           } else {
             referenceEl.value = null;
           }

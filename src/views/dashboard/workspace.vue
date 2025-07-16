@@ -12,6 +12,10 @@
         </div>
       </div>
     </el-card>
+
+    <el-card shadow="never" class="mt-4">
+      <co-editor-v2></co-editor-v2>
+    </el-card>
   </co-container>
 </template>
 

@@ -9,15 +9,17 @@
     ]"
   >
     <Toolbar />
-    <div
-      ref="element"
-      :class="`${prefixCls}-container`"
-      :style="{
-        height,
-      }"
-    ></div>
-    <Resize />
-    <TableToolbar />
+    <div :class="`${prefixCls}-container`">
+      <div
+        ref="element"
+        :class="`${prefixCls}-editor`"
+        :style="{
+          height,
+        }"
+      ></div>
+      <Resize />
+      <TableToolbar />
+    </div>
   </div>
 </template>
 

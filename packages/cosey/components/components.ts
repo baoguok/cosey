@@ -8,6 +8,7 @@ import { ContextMenu, ContextMenuItem, ContextSubMenu } from './context-menu';
 import { Copy } from './copy';
 import { DndSort, DndSortItem } from './dnd-sort';
 import { Editor } from './editor';
+import { EditorV2 } from './editor-v2';
 import { Field } from './field';
 import { FileCard } from './file-card';
 import { Form, FormItem } from './form';
@@ -58,6 +59,7 @@ declare module 'vue' {
     CoDndSort: typeof DndSort;
     CoDndSortItem: typeof DndSortItem;
     CoEditor: typeof Editor;
+    CoEditorV2: typeof EditorV2;
     CoField: typeof Field;
     CoFileCard: typeof FileCard;
     CoForm: typeof Form;
@@ -111,6 +113,7 @@ export {
   DndSort,
   DndSortItem,
   Editor,
+  EditorV2,
   Field,
   FileCard,
   Form,

@@ -13,12 +13,14 @@ import Video from './formats/video';
 import Image from './formats/image';
 // import List from './formats/list';
 import Kbd from './formats/kbd';
+import Table from './modules/table';
 
 export function register() {
   Quill.register(
     {
       'modules/imageUploader': ImageUploader,
       'modules/customList': CustomList,
+      'modules/table': Table,
 
       'formats/formula': Formula,
       'formats/size': SizeStyle,

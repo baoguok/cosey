@@ -1,0 +1,33 @@
+import { useEditor } from 'slate-vue3';
+import { Element } from 'slate-vue3/core';
+import { Editor } from 'slate-vue3/core';
+import { ref, watch } from 'vue';
+
+export function useBlockList(types: string[], initial?: string) {
+  const editor = useEditor();
+
+  const current = ref(initial);
+
+  watch(
+    () => editor.selection,
+    () => {
+      if (!editor.selection) {
+        current.value = initial;
+      } else {
+        const [match] = Array.from(
+          Editor.nodes(editor, {
+            at: Editor.unhangRange(editor, editor.selection),
+            match: (n) => !Editor.isEditor(n) && Element.isElement(n) && types.includes(n.type),
+          }),
+        );
+
+        current.value = (match && (match[0] as Element).type) || initial;
+      }
+    },
+    {
+      deep: true,
+    },
+  );
+
+  return current;
+}

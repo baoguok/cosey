@@ -16,7 +16,7 @@ async function createFiles(compDir: string, pascalName: string, kebabName: strin
   await fse.outputFile(
     path.resolve(compDir, `${kebabName}.vue`),
     `<template>
-  <div :class="[hashId, prefixCls"]></div>
+  <div :class="[hashId, prefixCls]"></div>
 </template>
 
 <script setup lang="ts">
@@ -27,7 +27,7 @@ import {
   type ${pascalName}Expose,
 } from './${kebabName}';
 import useStyle from './style';
-import { useComponentConfig } from '../../config-provider';
+import { useComponentConfig } from '../config-provider';
 
 defineOptions({
   name: '${pascalName}',
@@ -101,35 +101,35 @@ export default getSimpleStyleHook('${pascalName}', (token) => {
   );
 }
 
-async function declareGlobalComponent(PascalName: string, externalPascalName: string) {
-  await replaceFileContent(
-    path.resolve(process.cwd(), 'packages/cosey/components/global.d.ts'),
-    (content) => {
-      return (
-        `declare module 'vue' {\n  export interface GlobalComponents {\n` +
-        [
-          ...new Set(
-            content
-              .split(/[{}]/)[2]
-              .trim()
-              .split('\n')
-              .map((item) => item.trim())
-              .concat([
-                `${externalPascalName}: (typeof import('cosey/components'))['${PascalName}'];`,
-              ])
-              .sort()
-              .map((item) => `    ${item}`),
-          ),
-        ].join('\n') +
-        `\n  }\n}\n\nexport {}\n`
-      );
-    },
-  );
-}
+// async function declareGlobalComponent(PascalName: string, externalPascalName: string) {
+//   await replaceFileContent(
+//     path.resolve(process.cwd(), 'packages/cosey/components/global.d.ts'),
+//     (content) => {
+//       return (
+//         `declare module 'vue' {\n  export interface GlobalComponents {\n` +
+//         [
+//           ...new Set(
+//             content
+//               .split(/[{}]/)[2]
+//               .trim()
+//               .split('\n')
+//               .map((item) => item.trim())
+//               .concat([
+//                 `${externalPascalName}: (typeof import('cosey/components'))['${PascalName}'];`,
+//               ])
+//               .sort()
+//               .map((item) => `    ${item}`),
+//           ),
+//         ].join('\n') +
+//         `\n  }\n}\n\nexport {}\n`
+//       );
+//     },
+//   );
+// }
 
 async function exportInstalledComponent(pascalName: string, kebabName: string) {
   await replaceFileContent(
-    path.resolve(process.cwd(), 'packages/components/components.ts'),
+    path.resolve(process.cwd(), 'packages/cosey/components/components.ts'),
     (content) => {
       return content.replace(/(?:^export .*? from .*$\n)+/m, (m) => {
         return (
@@ -146,7 +146,7 @@ async function exportInstalledComponent(pascalName: string, kebabName: string) {
 
 async function componentLibEntry(kebabName: string) {
   await replaceFileContent(
-    path.resolve(process.cwd(), 'packages/components/index.ts'),
+    path.resolve(process.cwd(), 'packages/cosey/components/index.ts'),
     (content) => {
       return content.replace(/(?:^export \* from .*$\n)+/m, (m) => {
         return (
@@ -290,10 +290,10 @@ export async function newComponent() {
   const kebabName = kebabCase(enName);
   const externalKebabName = `${ns}-${kebabName}`;
   const pascalName = upperFirst(camelCase(kebabName));
-  const externalPascalName = `${capitalize(ns)}${pascalName}`;
+  // const externalPascalName = `${capitalize(ns)}${pascalName}`;
   const cnName = compForm.cnName;
 
-  const compDir = path.resolve(process.cwd(), `packages/components/${kebabName}`);
+  const compDir = path.resolve(process.cwd(), `packages/cosey/components/${kebabName}`);
 
   const exampleFile = path.resolve(process.cwd(), `docs/examples/${kebabName}/basic.vue`);
 
@@ -309,7 +309,7 @@ export async function newComponent() {
 
   const steps = [
     ['创建组件', () => createFiles(compDir, pascalName, kebabName)],
-    ['声明全局组件', () => declareGlobalComponent(pascalName, externalPascalName)],
+    // ['声明全局组件', () => declareGlobalComponent(pascalName, externalPascalName)],
     ['导出要安装的组件', () => exportInstalledComponent(pascalName, kebabName)],
     ['组件库入口', () => componentLibEntry(kebabName)],
     ['创建 markdown 文件', () => createMarkdown(markdownFile, pascalName, cnName, kebabName)],

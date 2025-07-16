@@ -6,8 +6,10 @@ export * from './config-provider';
 export * from './container';
 export * from './context-menu';
 export * from './copy';
+export * from './cssinjs';
 export * from './dnd-sort';
 export * from './editor';
+export * from './editor-v2';
 export * from './field';
 export * from './file-card';
 export * from './form';
@@ -44,7 +46,6 @@ export * from './transition-group';
 export * from './upload';
 export * from './video-card';
 export * from './video-viewer';
-export * from './cssinjs';
 
 import { type App } from 'vue';
 import * as components from './components';

@@ -137,8 +137,16 @@ export const getQuillArticleStyle: GenerateStyle<EditorToken, CSSObject> = (toke
       },
     },
 
+    'ol, ul': {
+      paddingInlineStart: token.paddingXL,
+    },
+
     ol: {
-      paddingInlineStart: '1.5em',
+      listStyleType: 'decimal',
+    },
+
+    ul: {
+      listStyleType: 'disc',
     },
 
     a: {
@@ -297,6 +305,7 @@ const getEditorStyle: GenerateStyle<EditorToken, CSSInterpolation> = (token) => 
 
   const toolbarCls = `${componentCls}-toolbar`;
   const containerCls = `${componentCls}-container`;
+  const editorCls = `${componentCls}-editor`;
 
   return {
     [componentCls]: {
@@ -309,11 +318,9 @@ const getEditorStyle: GenerateStyle<EditorToken, CSSInterpolation> = (token) => 
 
       [containerCls]: {
         position: 'relative',
-        height: '100%',
-        margin: 0,
-        fontSize: token.fontSize,
         border: `1px solid ${token.colorBorder}`,
         borderRadius: token.borderRadius,
+        overflow: 'hidden',
       },
 
       [`${toolbarCls} ~ ${containerCls}`]: {
@@ -326,6 +333,13 @@ const getEditorStyle: GenerateStyle<EditorToken, CSSInterpolation> = (token) => 
         [`${toolbarCls}, ${containerCls}`]: {
           borderColor: token.colorError,
         },
+      },
+
+      [editorCls]: {
+        position: 'relative',
+        height: '100%',
+        margin: 0,
+        fontSize: token.fontSize,
       },
 
       ...getQuillClipboardStyle(token),
