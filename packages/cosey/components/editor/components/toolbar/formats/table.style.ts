@@ -34,10 +34,10 @@ export default getSimpleStyleHook('EditorTable', (token) => {
         width: token.size,
         height: token.size,
 
-        borderBottom: `${token.lineWidth} ${token.lineType} ${token.colorBorderSecondary}`,
+        borderBlockEnd: `${token.lineWidth} ${token.lineType} ${token.colorBorderSecondary}`,
 
         '&:not(:last-child)': {
-          borderRight: `${token.lineWidth} ${token.lineType} ${token.colorBorderSecondary}`,
+          borderInlineEnd: `${token.lineWidth} ${token.lineType} ${token.colorBorderSecondary}`,
         },
 
         '&.is-selected': {

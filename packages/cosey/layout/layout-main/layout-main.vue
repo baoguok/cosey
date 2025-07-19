@@ -32,7 +32,7 @@ const layoutStore = useLayoutStore();
 
 const mainStyle = computed(() => {
   return {
-    marginTop: layoutStore.headerHeight + 'px',
+    marginBlockStart: layoutStore.headerHeight + 'px',
   };
 });
 </script>

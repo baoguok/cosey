@@ -4,14 +4,14 @@ export default defineRoutes({
   path: '/website',
   component: MergedLayoutBase,
   meta: {
-    title: '外部页面',
+    title: 'website.externalPages',
     icon: 'carbon:application-web',
   },
   children: [
     {
       path: 'link',
       meta: {
-        title: '外链',
+        title: 'website.externalLinks',
         icon: 'carbon:launch',
         type: 'group',
       },
@@ -37,7 +37,7 @@ export default defineRoutes({
     {
       path: 'iframe',
       meta: {
-        title: '内嵌',
+        title: 'website.embedded',
         icon: 'carbon:ibm-consulting-advantage-application',
       },
       children: [

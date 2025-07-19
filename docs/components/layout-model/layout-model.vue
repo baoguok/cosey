@@ -151,7 +151,7 @@ const onMouseleave = (block: string) => {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
-    margin-top: 12px;
+    margin-block-start: 12px;
   }
   .block {
     display: inline-flex;
@@ -174,7 +174,7 @@ const onMouseleave = (block: string) => {
     position: relative;
     width: 100%;
     height: 500px;
-    margin-top: 16px;
+    margin-block-start: 16px;
 
     [data-block] {
       transition: 0.15s;
@@ -194,18 +194,18 @@ const onMouseleave = (block: string) => {
 
       [data-block='sidebar'] {
         position: absolute;
-        top: var(--topbar-height);
-        left: 0;
-        bottom: 0;
+        inset-block-start: var(--topbar-height);
+        inset-inline-start: 0;
+        inset-block-end: 0;
         width: var(--sidebar-width);
-        border-right: 1px solid var(--stacks-color);
+        border-inline-end: 1px solid var(--stacks-color);
         background-color: transparent;
       }
 
       [data-block='snugAside'] {
         position: absolute;
-        top: 0;
-        left: 0;
+        inset-block-start: 0;
+        inset-inline-start: 0;
         width: var(--snug-aside-width);
         height: 100%;
         padding: 8px;
@@ -219,12 +219,12 @@ const onMouseleave = (block: string) => {
 
       [data-block='aside'] {
         position: absolute;
-        top: 0;
-        left: var(--snug-aside-width);
+        inset-block-start: 0;
+        inset-inline-start: var(--snug-aside-width);
         width: var(--aside-width);
         height: 100%;
         padding: 8px;
-        border-left: 1px solid var(--stacks-color);
+        border-inline-start: 1px solid var(--stacks-color);
 
         [data-block='menu'] {
           box-sizing: content-box;
@@ -244,12 +244,12 @@ const onMouseleave = (block: string) => {
         padding: 4px;
         align-items: center;
         gap: 4px;
-        border-bottom: 1px solid var(--stacks-color);
+        border-block-end: 1px solid var(--stacks-color);
 
         [data-block='brand'] {
           width: var(--aside-width);
           height: 40px;
-          margin-left: 16px;
+          margin-inline-start: 16px;
         }
 
         [data-block='toggle'] {
@@ -290,7 +290,7 @@ const onMouseleave = (block: string) => {
         [data-block='search'] {
           width: 110px;
           height: 26px;
-          margin-left: auto;
+          margin-inline-start: auto;
           border-radius: 999px;
         }
 
@@ -307,8 +307,8 @@ const onMouseleave = (block: string) => {
 
           .dropdown {
             position: absolute;
-            top: calc(100% + 2px);
-            right: 0;
+            inset-block-start: calc(100% + 2px);
+            inset-block-end: 0;
             width: 120px;
             height: 120px;
           }
@@ -317,16 +317,16 @@ const onMouseleave = (block: string) => {
 
       [data-block='tabbar'] {
         height: var(--tabbar-height);
-        margin-left: var(--sidebar-width);
-        border-bottom: 1px solid var(--stacks-color);
+        margin-inline-start: var(--sidebar-width);
+        border-block-end: 1px solid var(--stacks-color);
       }
 
       [data-block='content'] {
         position: absolute;
-        top: var(--header-height);
-        left: var(--sidebar-width);
-        right: 0;
-        bottom: 0;
+        inset-block-start: var(--header-height);
+        inset-inline-start: var(--sidebar-width);
+        inset-inline-end: 0;
+        inset-block-end: 0;
         background-color: transparent;
       }
 

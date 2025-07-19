@@ -15,7 +15,7 @@ export default getSimpleStyleHook('LayoutHttpMessage', (token) => {
         height: '100%',
 
         '.el-tabs__header .el-tabs__item': {
-          paddingLeft: 0,
+          paddingInlineStart: 0,
         },
       },
 

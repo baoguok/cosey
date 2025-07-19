@@ -4,6 +4,7 @@ import { useTwoWayBinding } from '../../hooks';
 import { defineTemplate, createMergedExpose } from '../../utils';
 import { type FormDialogButtonProps, type FormDialogSlots } from '../form-dialog';
 import { ElButton } from 'element-plus';
+import { useLocale } from '../../hooks';
 
 interface UseBubbleTemplateOptions {
   props: {
@@ -21,6 +22,8 @@ interface UseBubbleTemplateOptions {
 
 export function useBubbleTemplate(options: UseBubbleTemplateOptions) {
   const { props, emit, slots, exposeKeys } = options;
+
+  const { t } = useLocale();
 
   const formBubbleData = ref<FormBubbleData>();
 
@@ -99,12 +102,12 @@ export function useBubbleTemplate(options: UseBubbleTemplateOptions) {
                   loading={formBubbleData.value?.submitting}
                   onClick={confirm}
                 >
-                  {props.confirmText}
+                  {t(props.confirmText)}
                 </ElButton>
               )}
               {!props.hideCancel && (
                 <ElButton {...props.cancelProps} onClick={cancel}>
-                  {props.cancelText}
+                  {t(props.cancelText)}
                 </ElButton>
               )}
             </>

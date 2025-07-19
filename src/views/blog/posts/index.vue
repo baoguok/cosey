@@ -3,7 +3,7 @@
     <co-table v-bind="tableProps">
       <template #toolbar-left>
         <el-button v-if="can('create', 'blog_post')" type="primary" @click="upsert.add()">
-          新增
+          {{ t('common.add') }}
         </el-button>
       </template>
       <template #action="{ row }">
@@ -11,7 +11,7 @@
           :actions="[
             {
               hidden: cannot('read', 'blog_comment'),
-              label: '评论',
+              label: t('post.comment'),
               icon: 'carbon:chat',
               onClick: () => {
                 postComments?.open(row.id);
@@ -19,7 +19,7 @@
             },
             {
               hidden: cannot('update', 'blog_post'),
-              label: '编辑',
+              label: t('common.edit'),
               icon: 'carbon:edit',
               onClick: () => {
                 upsert.edit(row);
@@ -27,11 +27,11 @@
             },
             {
               hidden: cannot('delete', 'blog_post'),
-              label: '删除',
+              label: t('common.delete'),
               icon: 'carbon:trash-can',
               type: 'danger',
               popconfirm: {
-                title: '确定删除？',
+                title: t('common.confirmDelete'),
                 confirm: () => onDelete(row.id),
               },
             },
@@ -53,8 +53,11 @@ import PostsUpsert from './post-upsert.vue';
 import { useOuterUpsert } from 'cosey/hooks';
 import { useTable } from 'cosey/components';
 import PostComments from './post-comments.vue';
-import { useTemplateRef } from 'vue';
+import { computed, useTemplateRef } from 'vue';
 import { useAbility } from '@casl/vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 defineOptions({
   name: 'BlogPosts',
@@ -64,30 +67,32 @@ const { can, cannot } = useAbility();
 
 const { getPosts, deletePost } = usePostsApi();
 
-const [tableProps, { reload }] = useTable({
-  api: getPosts,
-  columns: [
-    { prop: 'id', label: 'ID' },
-    { prop: 'postType.name', label: '分类名称' },
-    { prop: 'title', label: '标题' },
-    { prop: 'digest', label: '摘要' },
-    { prop: 'createdAt', label: '创建时间', renderer: 'datetime' },
-    { prop: 'updatedAt', label: '更新时间', renderer: 'datetime' },
-  ],
-  actionColumn: {
-    label: '操作',
-    slots: 'action',
-    fixed: 'right',
-    minWidth: 200,
-  },
-  height: '100%',
-  formProps: {
-    schemes: [
-      { prop: 'postTypeName', label: '分类名称' },
-      { prop: 'title', label: '标题' },
+const [tableProps, { reload }] = useTable(
+  computed(() => ({
+    api: getPosts,
+    columns: [
+      { prop: 'id', label: 'ID' },
+      { prop: 'postType.name', label: t('post.categoryName') },
+      { prop: 'title', label: t('post.title') },
+      { prop: 'digest', label: t('post.summary') },
+      { prop: 'createdAt', label: t('common.creationTime'), renderer: 'datetime' },
+      { prop: 'updatedAt', label: t('common.updateTime'), renderer: 'datetime' },
     ],
-  },
-});
+    actionColumn: {
+      label: t('common.actions'),
+      slots: 'action',
+      fixed: 'right',
+      minWidth: 200,
+    },
+    height: '100%',
+    formProps: {
+      schemes: [
+        { prop: 'postTypeName', label: t('post.categoryName') },
+        { prop: 'title', label: t('post.title') },
+      ],
+    },
+  })),
+);
 
 const upsert = useOuterUpsert({
   success() {
@@ -97,7 +102,7 @@ const upsert = useOuterUpsert({
 
 const onDelete = async (id: number) => {
   return deletePost(id).then(() => {
-    ElMessage.success('删除成功');
+    ElMessage.success(t('common.deleteSuccess'));
     reload();
   });
 };

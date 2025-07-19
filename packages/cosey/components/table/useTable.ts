@@ -1,10 +1,10 @@
-import { computed, mergeProps } from 'vue';
+import { computed, MaybeRef, mergeProps, unref } from 'vue';
 import { type TableExpose, type TableProps, tableExposeKeys } from './table';
 import { createMergedExpose } from '../../utils';
 
 export type UseTableProps = TableProps & { [prop: PropertyKey]: any };
 
-export function useTable(props: UseTableProps): [UseTableProps, TableExpose] {
+export function useTable(props: MaybeRef<UseTableProps>): [UseTableProps, TableExpose] {
   let tableRef: TableExpose;
 
   const getExpose = (expose: TableExpose) => {
@@ -16,7 +16,7 @@ export function useTable(props: UseTableProps): [UseTableProps, TableExpose] {
       {
         getExpose,
       },
-      props,
+      unref(props),
     );
   });
 

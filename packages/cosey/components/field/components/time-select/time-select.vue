@@ -3,9 +3,12 @@ import { ElTimeSelect } from 'element-plus';
 import { defineComponent, h, mergeProps, type SlotsType } from 'vue';
 import { type FieldTimeSelectProps, type FieldTimeSelectSlots } from './time-select';
 import { addNullablePlaceholder } from '../../../../utils';
+import { useLocale } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldTimeSelectProps, { slots }) => {
+    const { t } = useLocale();
+
     return () => {
       if (props.readonly) {
         return addNullablePlaceholder(props.componentProps?.modelValue);
@@ -15,7 +18,7 @@ export default defineComponent(
         ElTimeSelect,
         mergeProps(
           {
-            placeholder: '请选择',
+            placeholder: t('co.common.pleaseSelect'),
             style: {
               verticalAlign: 'top',
             },

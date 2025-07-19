@@ -22,7 +22,7 @@ export default getSimpleStyleHook('DocsDemo', (token) => {
         height: token.sizeXXL,
         paddingInline: token.padding,
         paddingBlock: token.paddingXS,
-        borderTop: `${token.lineWidth} ${token.lineType} ${token.colorBorder}`,
+        borderBlockStart: `${token.lineWidth} ${token.lineType} ${token.colorBorder}`,
       },
 
       [`${componentCls}-code`]: {
@@ -35,12 +35,12 @@ export default getSimpleStyleHook('DocsDemo', (token) => {
       [`${componentCls}-fold`]: {
         position: 'sticky',
         insetInline: 0,
-        bottom: 0,
+        insetBlockEnd: 0,
         zIndex: 10,
         overflow: 'hidden',
         borderBottomLeftRadius: 'inherit',
         borderBottomRightRadius: 'inherit',
-        borderTop: `${token.lineWidth} ${token.lineType} ${token.colorBorder}`,
+        borderBlockStart: `${token.lineWidth} ${token.lineType} ${token.colorBorder}`,
         backgroundColor: token.colorBgContainer,
         marginInlineStart: 1,
 
@@ -50,7 +50,7 @@ export default getSimpleStyleHook('DocsDemo', (token) => {
         },
 
         '&-text': {
-          marginLeft: token.marginXXS,
+          marginInlineStart: token.marginXXS,
         },
       },
     },

@@ -6,8 +6,8 @@ export default getSimpleStyleHook('EditorResize', (token) => {
   return {
     [componentCls]: {
       position: 'absolute',
-      top: 0,
-      left: 0,
+      insetBlockStart: 0,
+      insetInlineStart: 0,
       display: 'none',
       outline: `3px solid ${token.colorPrimaryBorder}`,
 
@@ -23,34 +23,34 @@ export default getSimpleStyleHook('EditorResize', (token) => {
 
         '&-nw': {
           cursor: 'nw-resize',
-          top: 0,
-          left: 0,
+          insetBlockStart: 0,
+          insetInlineStart: 0,
           transform: 'translate(-50%, -50%)',
         },
         '&-ne': {
           cursor: 'ne-resize',
-          top: 0,
-          right: 0,
+          insetBlockStart: 0,
+          insetInlineEnd: 0,
           transform: 'translate(50%, -50%)',
         },
         '&-sw': {
           cursor: 'sw-resize',
-          bottom: 0,
-          left: 0,
+          insetBlockEnd: 0,
+          insetInlineStart: 0,
           transform: 'translate(-50%, 50%)',
         },
         '&-se': {
           cursor: 'se-resize',
-          bottom: 0,
-          right: 0,
+          insetBlockEnd: 0,
+          insetInlineEnd: 0,
           transform: 'translate(50%, 50%)',
         },
       },
 
       [`${componentCls}-align`]: {
         position: 'absolute',
-        bottom: '100%',
-        left: '50%',
+        insetBlockEnd: '100%',
+        insetInlineStart: '50%',
         display: 'flex',
         columnGap: token.padding,
         paddingInline: token.paddingXS,
@@ -64,8 +64,8 @@ export default getSimpleStyleHook('EditorResize', (token) => {
 
       [`${componentCls}-size`]: {
         position: 'absolute',
-        right: token.sizeXXS,
-        bottom: token.sizeXXS,
+        insetInlineEnd: token.sizeXXS,
+        insetBlockEnd: token.sizeXXS,
         paddingInline: token.paddingXXS,
         fontSize: token.fontSizeSM,
         lineHeight: token.lineHeight,
@@ -75,12 +75,12 @@ export default getSimpleStyleHook('EditorResize', (token) => {
         backgroundColor: token.colorBgElevated,
 
         '&.is-outside': {
-          left: '100%',
-          right: 'auto',
-          top: '100%',
-          bottom: 'auto',
-          marginLeft: token.sizeXS,
-          marginTop: token.sizeXS,
+          insetInlineStart: '100%',
+          insetInlineEnd: 'auto',
+          insetBlockStart: '100%',
+          insetBlockEnd: 'auto',
+          marginInlineStart: token.sizeXS,
+          marginBlockStart: token.sizeXS,
         },
       },
     },

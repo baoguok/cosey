@@ -11,8 +11,8 @@ const getMaskStyle: GenerateStyle<MaskToken, CSSObject> = (token) => {
   return {
     [componentCls]: {
       position: 'absolute',
-      top: 0,
-      left: 0,
+      insetBlockStart: 0,
+      insetInlineStart: 0,
       width: '100%',
       height: '100%',
       backgroundColor: token.colorBgMask,

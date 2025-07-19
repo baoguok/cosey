@@ -69,8 +69,8 @@ watch(
 const floatingStyle = computed(() => {
   return {
     display: floating.value ? 'flex' : 'none',
-    top: y.value + 'px',
-    left: x.value + 'px',
+    insetBlockStart: y.value + 'px',
+    insetInlineStart: x.value + 'px',
   };
 });
 

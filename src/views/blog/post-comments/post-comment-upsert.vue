@@ -4,7 +4,7 @@
       <co-form-item
         v-model="model.content"
         prop="content"
-        label="内容"
+        :label="t('post.content')"
         required
         field-type="textarea"
       />
@@ -13,9 +13,12 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useUpsert } from 'cosey/hooks';
 import { usePostCommentsApi } from '@/api/blog';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { addPostComment, updatePostComment } = usePostCommentsApi();
 
@@ -33,15 +36,17 @@ const model = reactive<Model>({
 
 const editId = ref<number>();
 
-const { dialogProps, formProps, expose } = useUpsert<Model, Row>({
-  stuffTitle: '评论',
-  model,
-  beforeFill(row) {
-    editId.value = row.id;
-  },
-  add: () => addPostComment(model),
-  edit: () => updatePostComment(editId.value!, model),
-});
+const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
+  computed(() => ({
+    stuffTitle: t('post.comment'),
+    model,
+    beforeFill(row) {
+      editId.value = row.id;
+    },
+    add: () => addPostComment(model),
+    edit: () => updatePostComment(editId.value!, model),
+  })),
+);
 
 defineExpose(expose);
 </script>

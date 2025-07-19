@@ -44,7 +44,7 @@
         <el-menu default-active="1-1">
           <el-sub-menu index="1">
             <template #title>
-              <co-icon name="carbon:reminder-medical" class="mr-1" />
+              <co-icon name="carbon:reminder-medical" class="me-1" />
               <span>Navigator One</span>
             </template>
             <el-menu-item-group title="Group One">
@@ -53,15 +53,15 @@
             </el-menu-item-group>
           </el-sub-menu>
           <el-menu-item index="2">
-            <co-icon name="carbon:menu" class="mr-1" />
+            <co-icon name="carbon:menu" class="me-1" />
             <span>Navigator Two</span>
           </el-menu-item>
           <el-menu-item index="3" disabled>
-            <co-icon name="carbon:document" class="mr-1" />
+            <co-icon name="carbon:document" class="me-1" />
             <span>Navigator Three</span>
           </el-menu-item>
           <el-menu-item index="4">
-            <co-icon name="carbon:settings" class="mr-1" />
+            <co-icon name="carbon:settings" class="me-1" />
             <span>Navigator Four</span>
           </el-menu-item>
         </el-menu>
@@ -229,14 +229,14 @@ onMounted(() => {
 <style scoped>
 :deep(ul) {
   list-style: none;
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 .popup-static {
   position: relative !important;
   display: flex !important;
-  top: 0 !important;
-  left: 0 !important;
+  inset-block-start: 0 !important;
+  inset-inline-start: 0 !important;
   transform: none !important;
   z-index: 0 !important;
 }

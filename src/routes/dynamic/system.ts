@@ -5,7 +5,7 @@ export default defineRoutes({
   name: 'System',
   component: MergedLayoutBase,
   meta: {
-    title: '系统管理',
+    title: 'system.system',
     icon: 'carbon:settings',
     order: 90,
     authority: (ability) =>
@@ -17,7 +17,7 @@ export default defineRoutes({
       name: 'SystemEnums',
       component: () => import('@/views/system/enums/index.vue'),
       meta: {
-        title: '枚举管理',
+        title: 'system.enums',
         icon: 'carbon:enumeration-definition',
         authority: (ability) => ability.can('read', 'system_enum'),
       },
@@ -27,7 +27,7 @@ export default defineRoutes({
       name: 'SystemConfigs',
       component: () => import('@/views/system/configs/index.vue'),
       meta: {
-        title: '系统配置',
+        title: 'system.configuration',
         icon: 'carbon:cloud-satellite-config',
         authority: (ability) => ability.can('read', 'system_config'),
       },

@@ -294,6 +294,15 @@ export const options = [
   },
 ];
 
+export const virtualOptions = Array(100)
+  .fill(0)
+  .map((_, i) => {
+    return {
+      value: `Option${i}`,
+      label: `Option${i}`,
+    };
+  });
+
 export interface Option {
   key: number;
   label: string;

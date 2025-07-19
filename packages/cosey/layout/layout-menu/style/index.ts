@@ -6,7 +6,7 @@ export default getSimpleStyleHook('LayoutMenu', (token) => {
   return {
     [componentCls]: {
       width: '100%',
-      borderRight: '0 !important',
+      borderInlineEnd: '0 !important',
       borderBlockEnd: '0 !important',
 
       '&.is-horizontal': {

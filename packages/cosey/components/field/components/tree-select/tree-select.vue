@@ -3,9 +3,12 @@ import { ElTreeSelect } from 'element-plus';
 import { defineComponent, h, mergeProps, type SlotsType, computed } from 'vue';
 import { type FieldTreeSelectProps, type FieldTreeSelectSlots } from './tree-select';
 import { getTreeLabelByValue, addNullablePlaceholder } from '../../../../utils';
+import { useLocale } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldTreeSelectProps, { slots }) => {
+    const { t } = useLocale();
+
     const componentProps = computed(() => {
       return props.componentProps ?? {};
     });
@@ -35,7 +38,7 @@ export default defineComponent(
         ElTreeSelect,
         mergeProps(
           {
-            placeholder: '请选择',
+            placeholder: t('co.common.pleaseSelect'),
             clearable: true,
             style: {
               verticalAlign: 'top',

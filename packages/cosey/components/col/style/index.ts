@@ -28,17 +28,17 @@ export const getColSizeStyle = (token: ColToken, size: RowSize | null): CSSObjec
         },
 
         [`${prefixCls}-${sizeFrag}offset-${i}`]: {
-          marginLeft: (1 / rowColumns) * i * 100 + '%',
+          marginInlineStart: (1 / rowColumns) * i * 100 + '%',
         },
 
         [`${prefixCls}-${sizeFrag}pull-${i}`]: {
           position: 'relative',
-          right: (1 / rowColumns) * i * 100 + '%',
+          insetInlineEnd: (1 / rowColumns) * i * 100 + '%',
         },
 
         [`${prefixCls}-${sizeFrag}push-${i}`]: {
           position: 'relative',
-          right: (1 / rowColumns) * i * 100 + '%',
+          insetInlineEnd: (1 / rowColumns) * i * 100 + '%',
         },
       };
     })

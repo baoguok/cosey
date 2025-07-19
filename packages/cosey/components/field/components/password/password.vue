@@ -4,9 +4,12 @@ import { computed, defineComponent, h, mergeProps, ref, type SlotsType } from 'v
 import { type FieldPasswordProps, type FieldPasswordSlots } from './password';
 import { addNullablePlaceholder } from '../../../../utils';
 import { Hide as IconHide, View as IconView } from '@element-plus/icons-vue';
+import { useLocale } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldPasswordProps, { slots }) => {
+    const { t } = useLocale();
+
     const nsInput = useNamespace('input');
 
     const passwordVisible = ref(false);
@@ -46,7 +49,7 @@ export default defineComponent(
         ElInput,
         mergeProps(
           {
-            placeholder: '请输入',
+            placeholder: t('co.common.pleaseInput'),
             clearable: true,
             showPassword: true,
             type: 'password',

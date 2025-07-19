@@ -6,8 +6,8 @@ export default getSimpleStyleHook('LayoutSidebar', (token) => {
   return {
     [componentCls]: {
       position: 'fixed',
-      top: 0,
-      left: 0,
+      insetBlockStart: 0,
+      insetInlineStart: 0,
       zIndex: 1020,
       display: 'flex',
       backgroundColor: token.colorBgContainer,

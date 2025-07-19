@@ -78,7 +78,7 @@ const colClass = computed(() => {
 const colStyle = computed(() => {
   const styles: CSSProperties = {};
   if (rowContext.gutter) {
-    styles.paddingLeft = styles.paddingRight = `${rowContext.gutter / 2}px`;
+    styles.paddingInlineStart = styles.paddingInlineEnd = `${rowContext.gutter / 2}px`;
   }
   return styles;
 });

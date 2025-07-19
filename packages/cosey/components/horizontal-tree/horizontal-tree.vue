@@ -1,6 +1,8 @@
 <template>
   <div :class="[hashId, prefixCls]">
-    <div v-if="tableTree.length === 0" :class="`${prefixCls}-empty`">暂无数据</div>
+    <div v-if="tableTree.length === 0" :class="`${prefixCls}-empty`">
+      {{ t('co.common.noData') }}
+    </div>
     <table v-else>
       <thead v-if="showCheckbox && !checkStrictly">
         <tr>
@@ -11,7 +13,7 @@
                 :indeterminate="checkAllIndeterminate"
                 @change="onCheckAllChange"
               >
-                所有
+                {{ t('co.common.checkAll') }}
               </el-checkbox>
             </div>
           </td>
@@ -90,6 +92,7 @@ import { useComponentConfig } from '../config-provider';
 import { extraTreeToTable, isString, mapTree, walkTree } from '../../utils';
 import { computed, watch } from 'vue';
 import { type CheckableNode, useTreeCheck } from '../../hooks';
+import { useLocale } from '../../hooks';
 
 defineOptions({
   name: 'HorizontalTree',
@@ -104,6 +107,8 @@ const emit = defineEmits<HorizontalTreeEmits>();
 const { prefixCls } = useComponentConfig('horizontal-tree', props);
 
 const { hashId } = useStyle(prefixCls);
+
+const { t } = useLocale();
 
 const propNames = computed(() => {
   return Object.assign(

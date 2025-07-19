@@ -3,7 +3,7 @@
     <slot></slot>
 
     <template #content>
-      <div :class="`${prefixCls}-title`">预设</div>
+      <div :class="`${prefixCls}-title`">{{ t('co.colorPicker.preset') }}</div>
       <div :class="`${prefixCls}-preset`">
         <div v-for="(row, i) in colorPalettes" :key="i" :class="`${prefixCls}-row`">
           <div v-for="(color, j) in row" :key="j" :class="`${prefixCls}-item`">
@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <div :class="`${prefixCls}-title`">最近使用</div>
+      <div :class="`${prefixCls}-title`">{{ t('co.colorPicker.recents') }}</div>
       <div :class="`${prefixCls}-row`">
         <div v-for="(color, i) in mapHistoryColors" :key="i" :class="`${prefixCls}-item`">
           <button
@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <div :class="`${prefixCls}-title`">手动设置</div>
+      <div :class="`${prefixCls}-title`">{{ t('co.colorPicker.manual') }}</div>
       <div :class="`${prefixCls}-manual`">
         <button
           v-if="isEyeDropperSupported"
@@ -48,7 +48,7 @@
         <ElInput
           v-model="inputColor"
           size="small"
-          placeholder="请输入"
+          :placeholder="t('co.common.pleaseInput')"
           :class="[`${prefixCls}-input`]"
         />
         <button
@@ -79,9 +79,7 @@ import { Icon } from '../../../icon';
 import { ElInput } from 'element-plus';
 import { TinyColor } from '@ctrl/tinycolor';
 import { useHistoryColor } from './useHistoryColor';
-
-const { prefixCls } = useComponentConfig('editor-color-picker');
-const { hashId } = useStyle(prefixCls);
+import { useLocale } from '../../../../hooks';
 
 const props = defineProps<{
   visible?: boolean;
@@ -92,6 +90,11 @@ const emit = defineEmits<{
   (e: 'select', color: string): void;
   (e: 'clear'): void;
 }>();
+
+const { prefixCls } = useComponentConfig('editor-color-picker');
+const { hashId } = useStyle(prefixCls);
+
+const { t } = useLocale();
 
 const innerVisible = computed({
   get() {

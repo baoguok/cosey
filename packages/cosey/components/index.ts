@@ -52,7 +52,7 @@ import * as components from './components';
 const installer = {
   install(app: App) {
     Object.keys(components).forEach((key) => {
-      app.use(components[key as keyof typeof components]);
+      app.use((components as any)[key]);
     });
   },
 };

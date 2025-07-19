@@ -3,11 +3,16 @@
     <Icon name="co:repo-source-code" />
   </Button>
 
-  <ElDialog title="源码" v-model="visible" width="992px" style="max-width: calc(100vw - 32px)">
+  <ElDialog
+    :title="t('co.editor.sourceCode')"
+    v-model="visible"
+    width="992px"
+    style="max-width: calc(100vw - 32px)"
+  >
     <ElInput v-model="value" type="textarea" :rows="26" />
     <template #footer>
-      <ElButton @click="onCancel">取消</ElButton>
-      <ElButton type="primary" @click="onConfirm">确定</ElButton>
+      <ElButton @click="onCancel">{{ t('co.common.cancel') }}</ElButton>
+      <ElButton type="primary" @click="onConfirm">{{ t('co.common.confirm') }}</ElButton>
     </template>
   </ElDialog>
 </template>
@@ -18,6 +23,9 @@ import { toolbarContextKey } from '../toolbarContext';
 import Button from '../../button.vue';
 import { ElDialog, ElInput, ElButton } from 'element-plus';
 import Icon from '../../../../icon';
+import { useLocale } from '../../../../../hooks';
+
+const { t } = useLocale();
 
 const { quill } = inject(toolbarContextKey)!;
 

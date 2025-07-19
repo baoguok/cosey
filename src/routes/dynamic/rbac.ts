@@ -5,7 +5,7 @@ export default defineRoutes({
   name: 'Rbac',
   component: MergedLayoutBase,
   meta: {
-    title: '访问控制',
+    title: 'rbac.accessControl',
     icon: 'carbon:user-access',
     order: 100,
     authority: (ability) =>
@@ -19,7 +19,7 @@ export default defineRoutes({
       name: 'RbacAdmins',
       component: () => import('@/views/rbac/admins/index.vue'),
       meta: {
-        title: '账号管理',
+        title: 'rbac.accounts',
         icon: 'carbon:user-admin',
         authority: (ability) => ability.can('read', 'rbac_user'),
       },
@@ -29,7 +29,7 @@ export default defineRoutes({
       name: 'RbacRoles',
       component: () => import('@/views/rbac/roles/index.vue'),
       meta: {
-        title: '角色管理',
+        title: 'rbac.roles',
         icon: 'carbon:user-role',
         authority: (ability) => ability.can('read', 'rbac_role'),
       },
@@ -39,7 +39,7 @@ export default defineRoutes({
       name: 'RbacPermissions',
       component: () => import('@/views/rbac/permissions/index.vue'),
       meta: {
-        title: '权限管理',
+        title: 'rbac.permissions',
         icon: 'carbon:rule',
         authority: (ability) => ability.can('read', 'rbac_permission'),
       },

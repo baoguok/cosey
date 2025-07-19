@@ -9,14 +9,14 @@
       <FormItem
         v-model="formModel.width"
         prop="width"
-        label="宽度"
+        :label="t('co.editor.width')"
         field-type="input"
         :col-props="{ span: 12 }"
       />
       <FormItem
         v-model="formModel.height"
         prop="height"
-        label="高度"
+        :label="t('co.editor.height')"
         field-type="input"
         :col-props="{ span: 12 }"
       />
@@ -32,6 +32,9 @@ import Icon from '../../../../icon';
 import { FormDialog } from '../../../../form-dialog';
 import { Form, FormItem } from '../../../../form';
 import Quill from 'quill';
+import { useLocale } from '../../../../../hooks';
+
+const { t } = useLocale();
 
 const { quill } = inject(toolbarContextKey)!;
 
@@ -42,7 +45,10 @@ let currentTarget: HTMLVideoElement | null = null;
 
 const actionType = ref<'update' | 'insert'>('insert');
 
-const title = computed(() => `${actionType.value === 'update' ? '编辑' : '插入'}视频`);
+const title = computed(
+  () =>
+    `${actionType.value === 'update' ? t('co.editor.edit') : t('co.editor.insert')}${t('co.editor.video')}`,
+);
 
 const formModel = reactive({
   url: '',

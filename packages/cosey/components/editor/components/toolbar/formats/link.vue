@@ -6,12 +6,22 @@
   <FormDialog v-model="visible" :title="title" width="sm">
     <Form :model="formModel" label-width="auto" :submit="onSubmit">
       <FormItem v-model="formModel.url" prop="url" label="URL" field-type="input" />
-      <FormItem v-model="formModel.text" prop="text" label="展示的文本" field-type="input" />
-      <FormItem v-model="formModel.title" prop="title" label="标题" field-type="input" />
+      <FormItem
+        v-model="formModel.text"
+        prop="text"
+        :label="t('co.editor.displayedText')"
+        field-type="input"
+      />
+      <FormItem
+        v-model="formModel.title"
+        prop="title"
+        :label="t('co.editor.leading')"
+        field-type="input"
+      />
       <FormItem
         v-model="formModel.target"
         prop="target"
-        label="打开链接在"
+        :label="t('co.editor.openLinkAt')"
         field-type="select"
         :field-props="{
           options: targetOptions,
@@ -23,8 +33,8 @@
   <ContextMenu ref="contextMenu" @command="onCommand">
     <ContextMenuItem icon="co:link" :title="title" command="upsert" />
     <template v-if="actionType === 'update'">
-      <ContextMenuItem icon="co:unlink" title="删除链接" command="remove" />
-      <ContextMenuItem icon="co:launch" title="打开链接" command="open" />
+      <ContextMenuItem icon="co:unlink" :title="t('co.editor.removeLink')" command="remove" />
+      <ContextMenuItem icon="co:launch" :title="t('co.editor.openLink')" command="open" />
     </template>
   </ContextMenu>
 </template>
@@ -40,6 +50,9 @@ import { Form, FormItem } from '../../../../form';
 import { ContextMenu, ContextMenuItem } from '../../../../context-menu';
 import Quill, { Range } from 'quill';
 import { Link } from '../../../formats/link';
+import { useLocale } from '../../../../../hooks';
+
+const { t } = useLocale();
 
 const { quill, toolbar } = inject(toolbarContextKey)!;
 
@@ -85,7 +98,10 @@ const visible = ref(false);
 
 const actionType = ref<'update' | 'insert'>('insert');
 
-const title = computed(() => `${actionType.value === 'update' ? '编辑' : '插入'}链接`);
+const title = computed(
+  () =>
+    `${actionType.value === 'update' ? t('co.editor.edit') : t('co.editor.insert')}${t('co.editor.link')}`,
+);
 
 const formModel = reactive({
   url: '',
@@ -95,8 +111,8 @@ const formModel = reactive({
 });
 
 const targetOptions = [
-  { label: '当前窗口', value: '_self' },
-  { label: '新窗口', value: '_blank' },
+  { label: t('co.editor.currentWindow'), value: '_self' },
+  { label: t('co.editor.newWindow'), value: '_blank' },
 ];
 
 const getSelectedInfo = () => {

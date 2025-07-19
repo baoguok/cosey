@@ -1,14 +1,14 @@
 <template>
   <el-dialog
     v-model="visible"
-    title="枚举项"
+    :title="t('enum.enumItem')"
     :style="{ maxWidth: 'calc(100vw - 32px)' }"
     :width="1200"
   >
     <co-table v-bind="tableProps">
       <template #toolbar-left>
         <el-button v-if="can('create', 'system_enum_item')" type="primary" @click="upsert.add()">
-          新增
+          {{ t('common.add') }}
         </el-button>
       </template>
       <template #action="{ row }">
@@ -16,7 +16,7 @@
           :actions="[
             {
               hidden: cannot('update', 'system_enum_item'),
-              label: '编辑',
+              label: t('common.edit'),
               icon: 'carbon:edit',
               onClick: () => {
                 upsert.edit(row);
@@ -24,11 +24,11 @@
             },
             {
               hidden: cannot('delete', 'system_enum_item'),
-              label: '删除',
+              label: t('common.delete'),
               icon: 'carbon:trash-can',
               type: 'danger',
               popconfirm: {
-                title: '确定删除？',
+                title: t('common.confirmDelete'),
                 confirm: () => onDelete(row.id),
               },
             },
@@ -48,8 +48,11 @@ import Upsert from './enum-item-upsert.vue';
 import { useOuterUpsert } from 'cosey/hooks';
 import { useTable } from 'cosey/components';
 import { useRoute } from 'vue-router';
-import { nextTick, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import { useAbility } from '@casl/vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 defineOptions({
   name: 'SystemEnumItems',
@@ -63,31 +66,33 @@ const route = useRoute();
 
 const { getEnumItems, deleteEnumItem } = useEnumsApi();
 
-const [tableProps, { reload }] = useTable({
-  api: (params) => getEnumItems(enumId.value!, params),
-  columns: [
-    { prop: 'id', label: 'ID' },
-    { prop: 'name', label: '名称' },
-    { prop: 'value', label: '值' },
-    { prop: 'createdAt', label: '创建时间', renderer: 'datetime' },
-    { prop: 'updatedAt', label: '更新时间', renderer: 'datetime' },
-  ],
-  actionColumn: {
-    label: '操作',
-    slots: 'action',
-    fixed: 'right',
-    minWidth: 280,
-  },
-  height: '100%',
-  formProps: {
-    schemes: [
-      { prop: 'name', label: '名称' },
-      { prop: 'value', label: '值' },
+const [tableProps, { reload }] = useTable(
+  computed(() => ({
+    api: (params) => getEnumItems(enumId.value!, params),
+    columns: [
+      { prop: 'id', label: 'ID' },
+      { prop: 'name', label: t('enum.name') },
+      { prop: 'value', label: t('enum.name') },
+      { prop: 'createdAt', label: t('common.creationTime'), renderer: 'datetime' },
+      { prop: 'updatedAt', label: t('common.updateTime'), renderer: 'datetime' },
     ],
-  },
+    actionColumn: {
+      label: t('common.actions'),
+      slots: 'action',
+      fixed: 'right',
+      minWidth: 280,
+    },
+    height: '100%',
+    formProps: {
+      schemes: [
+        { prop: 'name', label: t('enum.name') },
+        { prop: 'value', label: t('enum.name') },
+      ],
+    },
 
-  immediate: false,
-});
+    immediate: false,
+  })),
+);
 
 const upsert = useOuterUpsert<object, number>({
   success() {
@@ -97,7 +102,7 @@ const upsert = useOuterUpsert<object, number>({
 
 const onDelete = async (id: number) => {
   return deleteEnumItem(route.params.enumId as unknown as number, id).then(() => {
-    ElMessage.success('删除成功');
+    ElMessage.success(t('common.deleteSuccess'));
     reload();
   });
 };

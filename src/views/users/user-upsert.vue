@@ -2,55 +2,60 @@
   <co-form-dialog v-bind="dialogProps" width="lg" ref="dialog">
     <co-form v-bind="formProps" label-width="auto" width="md">
       <co-form-group>
-        <co-form-item v-model="model.nickname" prop="nickname" label="昵称" />
-        <co-form-item v-model="model.mobile" prop="mobile" label="手机号" />
-        <co-form-item v-model="model.name" prop="name" label="姓名" />
+        <co-form-item v-model="model.nickname" prop="nickname" :label="t('user.nickname')" />
+        <co-form-item v-model="model.mobile" prop="mobile" :label="t('user.phone')" />
+        <co-form-item v-model="model.name" prop="name" :label="t('user.name')" />
         <co-form-item
           v-model="model.gender"
           prop="gender"
-          label="性别"
+          :label="t('user.gender')"
           field-type="radiogroup"
           :field-props="{
             options: mock.genders,
           }"
         />
-        <co-form-item v-model="model.birthday" prop="birthday" label="生日" field-type="date" />
+        <co-form-item
+          v-model="model.birthday"
+          prop="birthday"
+          :label="t('user.birthday')"
+          field-type="date"
+        />
         <co-form-item
           v-model="model.constellation"
           prop="constellation"
-          label="星座"
+          :label="t('user.zodiac')"
           field-type="select"
           :field-props="{ options: mock.zodiacSigns }"
         />
-        <co-form-item v-model="model.height" prop="height" label="身高(cm)" />
-        <co-form-item v-model="model.weight" prop="weight" label="体重(kg)" />
+        <co-form-item v-model="model.height" prop="height" :label="t('user.height')" />
+        <co-form-item v-model="model.weight" prop="weight" :label="t('user.weight')" />
         <co-form-item
           v-model="model.qualification"
           prop="qualification"
-          label="学历"
+          :label="t('user.education')"
           field-type="select"
           :field-props="{ options: mock.qualifications }"
         />
         <co-form-item
           v-model="model.trait"
           prop="trait"
-          label="特质"
+          :label="t('user.traits')"
           field-type="select"
           :field-props="{ options: mock.traits }"
         />
         <co-form-item
           v-model="model.friendshipType"
           prop="friendshipType"
-          label="交友类型"
+          :label="t('user.datingType')"
           field-type="select"
           :field-props="{ options: mock.friendshipTypes }"
         />
-        <co-form-item v-model="model.signature" prop="signature" label="个性签名" />
+        <co-form-item v-model="model.signature" prop="signature" :label="t('user.signature')" />
       </co-form-group>
       <co-form-item
         v-model="model.hobbies"
         prop="hobbies"
-        label="爱好"
+        :label="t('user.hobbies')"
         width="auto"
         field-type="checkboxgroup"
         :field-props="{ options: mock.hobbies, max: 4 }"
@@ -58,7 +63,7 @@
       <co-form-item
         v-model="model.avatar"
         prop="avatar"
-        label="头像"
+        :label="t('user.avatar')"
         width="md"
         field-type="upload"
         :field-props="{ single: true }"
@@ -68,10 +73,13 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useUsersApi } from '@/api/users';
 import { useUpsert } from 'cosey/hooks';
 import * as mock from '@gunny/mock';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { addUser, updateUser } = useUsersApi();
 
@@ -117,15 +125,17 @@ const model = reactive<Model>({
 
 const editId = ref<number>();
 
-const { dialogProps, formProps, expose } = useUpsert<Model, Row>({
-  stuffTitle: '用户',
-  model,
-  beforeFill(row) {
-    editId.value = row.id;
-  },
-  add: () => addUser(model),
-  edit: () => updateUser(editId.value!, model),
-});
+const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
+  computed(() => ({
+    stuffTitle: t('user.user'),
+    model,
+    beforeFill(row) {
+      editId.value = row.id;
+    },
+    add: () => addUser(model),
+    edit: () => updateUser(editId.value!, model),
+  })),
+);
 
 defineExpose(expose);
 </script>

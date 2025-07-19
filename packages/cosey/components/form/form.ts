@@ -40,11 +40,11 @@ export const formProps = {
   },
   submitText: {
     type: String,
-    default: '提交',
+    default: 'co.form.submit',
   },
   resetText: {
     type: String,
-    default: '重置',
+    default: 'co.form.reset',
   },
   submitProps: {
     type: Object as PropType<ButtonProps>,

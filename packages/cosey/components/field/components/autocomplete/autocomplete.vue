@@ -3,9 +3,12 @@ import { ElAutocomplete } from 'element-plus';
 import { defineComponent, h, mergeProps, type SlotsType } from 'vue';
 import { type FieldAutocompleteProps, type FieldAutocompleteSlots } from './autocomplete';
 import { addNullablePlaceholder } from '../../../../utils';
+import { useLocale } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldAutocompleteProps, { slots }) => {
+    const { t } = useLocale();
+
     return () => {
       if (props.readonly) {
         const value = props.componentProps?.modelValue;
@@ -16,7 +19,7 @@ export default defineComponent(
         ElAutocomplete,
         mergeProps(
           {
-            placeholder: '请输入',
+            placeholder: t('co.common.pleaseInput'),
             clearable: true,
             style: {
               display: 'flex',

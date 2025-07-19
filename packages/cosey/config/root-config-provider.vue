@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
 import { computed, provide, reactive } from 'vue';
-import { useColorSchemeProvide, useLocaleProvide } from '../hooks';
+import { useColorSchemeProvide } from '../hooks';
 import { getAlgorithm, RootConfigProviderProps } from './root-config-provider';
 import { ConfigProvider, containerContextKey, useUploadProvide } from '../components';
 import { useLayoutStore } from '../store';
@@ -42,9 +42,6 @@ const mergedConfigProviderProps = computed(() => {
     theme: themeConfig.value,
   };
 });
-
-// locale
-const { locale } = useLocaleProvide();
 
 // upload
 const apiConfig = useGlobalConfig()?.api;

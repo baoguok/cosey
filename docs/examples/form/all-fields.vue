@@ -98,7 +98,12 @@
       field-type="select"
       :field-props="{ options }"
     />
-    <!-- <co-form-item label="selectv2" field-type="selectv2" /> -->
+    <co-form-item
+      v-model="formModel.selectv2"
+      label="selectv2"
+      field-type="selectv2"
+      :field-props="{ options: virtualOptions }"
+    />
     <co-form-item v-model="formModel.slider" label="slider" field-type="slider" />
     <co-form-item v-model="formModel.switch" label="switch" field-type="switch" />
     <co-form-item v-model="formModel.input" label="input" field-type="input" />
@@ -135,7 +140,15 @@
 
 <script lang="ts" setup>
 import { reactive, ref, useTemplateRef } from 'vue';
-import { loadAll, treeSelectData, cascaderOptions, options, generateData, Option } from './data';
+import {
+  loadAll,
+  treeSelectData,
+  cascaderOptions,
+  options,
+  virtualOptions,
+  generateData,
+  Option,
+} from './data';
 
 const readonly = ref(false);
 
@@ -187,6 +200,7 @@ const formModel = reactive({
   rate: 3,
   segmented: 'Option2',
   select: 'Option2',
+  selectv2: 'Option2',
   slider: 75,
   switch: true,
   input: '一段文本',

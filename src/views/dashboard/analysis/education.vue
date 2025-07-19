@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never">
     <template #header>
-      <span>学历数据统计</span>
+      <span>{{ t('analysis.educationStats') }}</span>
     </template>
     <div ref="elRef" style="height: 300px"></div>
   </el-card>
@@ -10,58 +10,62 @@
 <script lang="ts" setup>
 import { useStatisticsApi } from '@/api/statistics';
 import { useEcharts, useFetch } from 'cosey/hooks';
-import { useTemplateRef } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { getStatEducation } = useStatisticsApi();
 
 const elRef = useTemplateRef('elRef');
 
-const { setOption } = useEcharts(elRef, {
-  option: {
-    dataset: {
-      source: [],
-      dimensions: [
-        'qualification',
+const sourceData = ref<any[]>([]);
+
+useEcharts(
+  elRef,
+  computed(() => ({
+    option: {
+      dataset: {
+        source: sourceData.value,
+        dimensions: [
+          'qualification',
+          {
+            name: 'male',
+            displayName: t('analysis.male'),
+          },
+          {
+            name: 'female',
+            displayName: t('analysis.female'),
+          },
+        ],
+      },
+      tooltip: {},
+      legend: {
+        right: 0,
+      },
+      xAxis: { type: 'category', name: t('analysis.education') },
+      yAxis: {
+        name: t('analysis.quantity'),
+      },
+      series: [
         {
-          name: 'male',
-          displayName: '男',
+          type: 'line',
+          stack: 'x',
+          areaStyle: {},
         },
         {
-          name: 'female',
-          displayName: '女',
+          type: 'line',
+          stack: 'x',
+          areaStyle: {},
         },
       ],
     },
-    tooltip: {},
-    legend: {
-      right: 0,
-    },
-    xAxis: { type: 'category', name: '学历' },
-    yAxis: {
-      name: '数量',
-    },
-    series: [
-      {
-        type: 'line',
-        stack: 'x',
-        areaStyle: {},
-      },
-      {
-        type: 'line',
-        stack: 'x',
-        areaStyle: {},
-      },
-    ],
-  },
-});
+  })),
+);
 
-useFetch<Record<string, any>>(() => getStatEducation(), {
+useFetch<any[]>(() => getStatEducation(), {
   onSuccess(data) {
-    setOption({
-      dataset: {
-        source: data,
-      },
-    });
+    sourceData.value = data;
   },
 });
 </script>

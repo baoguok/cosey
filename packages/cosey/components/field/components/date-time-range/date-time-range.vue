@@ -4,9 +4,12 @@ import { defineComponent, h, mergeProps, type SlotsType } from 'vue';
 import { type FieldDateTimeRangeProps, type FieldDateTimeRangeSlots } from './date-time-range';
 import dayjs from 'dayjs';
 import { addNullablePlaceholder, DATE_TIME_FORMAT } from '../../../../utils';
+import { useLocale } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldDateTimeRangeProps, { slots }) => {
+    const { t } = useLocale();
+
     return () => {
       if (props.readonly) {
         const value = props.componentProps?.modelValue;
@@ -19,8 +22,8 @@ export default defineComponent(
         ElDatePicker,
         mergeProps(
           {
-            startPlaceholder: '请选择',
-            endPlaceholder: '请选择',
+            startPlaceholder: t('co.common.pleaseSelect'),
+            endPlaceholder: t('co.common.pleaseSelect'),
             defaultTime: [new Date(0, 0, 1, 0, 0, 0), new Date(0, 0, 1, 23, 59, 59)],
             style: {
               display: 'flex',

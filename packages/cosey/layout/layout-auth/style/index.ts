@@ -15,8 +15,8 @@ export default getSimpleStyleHook('LayoutAuth', (token) => {
 
       [`${componentCls}-bg`]: {
         position: 'absolute',
-        top: 0,
-        left: 0,
+        insetBlockStart: 0,
+        insetInlineStart: 0,
         width: '100%',
         height: '100%',
         background: `linear-gradient(154deg, transparent 35%, ${token.colorPrimaryBg} 35%, ${token.colorPrimaryBgHover} 50%, ${token.colorPrimaryBg} 65%, transparent 65%)`,
@@ -39,15 +39,15 @@ export default getSimpleStyleHook('LayoutAuth', (token) => {
 
       [`${componentCls}-brand`]: {
         position: 'fixed',
-        top: token.size,
-        left: token.size,
+        insetBlockStart: token.size,
+        insetInlineStart: token.size,
         zIndex: 10,
       },
 
       [`${componentCls}-widget`]: {
         position: 'fixed',
-        top: token.size,
-        right: token.size,
+        insetBlockStart: token.size,
+        insetInlineEnd: token.size,
         zIndex: 10,
         display: 'flex',
         paddingInline: token.padding,

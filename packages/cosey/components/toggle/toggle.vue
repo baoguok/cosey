@@ -10,6 +10,7 @@ import { computed, ref, watch } from 'vue';
 import { ElButton } from 'element-plus';
 import { type ToggleProps, type ToggleSlots, type ToggleEmits } from './toggle';
 import Icon from '../icon/icon.vue';
+import { useLocale } from '../../hooks';
 
 defineOptions({
   name: 'Toggle',
@@ -21,6 +22,8 @@ defineSlots<ToggleSlots>();
 
 const emit = defineEmits<ToggleEmits>();
 
+const { t } = useLocale();
+
 const innerValue = ref(props.modelValue);
 
 watch(
@@ -31,7 +34,7 @@ watch(
 );
 
 const text = computed(() => {
-  return innerValue.value ? '展开' : '收起';
+  return innerValue.value ? t('co.toggle.unfold') : t('co.toggle.fold');
 });
 
 const handleClick = () => {

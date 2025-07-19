@@ -1,46 +1,59 @@
-import { inject, provide, ref } from 'vue';
-import zh_cn from 'element-plus/es/locale/lang/zh-cn';
-import en from 'element-plus/es/locale/lang/en';
-import dayjs from 'dayjs';
-import dayjsZh from 'dayjs/locale/zh-cn';
-import dayEn from 'dayjs/locale/en';
+import {
+  type InjectionKey,
+  type MaybeRef,
+  type Ref,
+  computed,
+  inject,
+  isRef,
+  ref,
+  unref,
+} from 'vue';
+import { type Language } from '../locale';
+import { get } from 'lodash-es';
+import zhCn from '../locale/lang/zh-cn';
 
-const mapLocale = {
-  zh_CN: {
-    ep: zh_cn,
-    dayjs: dayjsZh,
-  },
-  en_US: {
-    ep: en,
-    dayjs: dayEn,
-  },
+export type TranslatorOption = Record<string, string | number>;
+export type Translator = (path: string, option?: TranslatorOption) => string;
+export type LocaleContext = {
+  locale: Ref<Language>;
+  lang: Ref<string>;
+  t: Translator;
 };
 
-const localeContextSymbol = Symbol('locale');
+export const buildTranslator =
+  (locale: MaybeRef<Language>): Translator =>
+  (path, option) =>
+    translate(path, option, unref(locale));
 
-export function useLocaleProvide() {
-  const locale = ref();
+export const translate = (
+  path: string,
+  option: undefined | TranslatorOption,
+  locale: Language,
+): string =>
+  (get(locale, path, path) as string).replace(
+    /\{(\w+)\}/g,
+    (_, key) => `${option?.[key] ?? `{${key}}`}`,
+  );
 
-  const setLocale = (language: keyof typeof mapLocale) => {
-    const lang = mapLocale[language];
-    locale.value = lang.ep;
-    dayjs.locale(lang.dayjs);
+export const buildLocaleContext = (locale: MaybeRef<Language>): LocaleContext => {
+  const lang = computed(() => unref(locale).name);
+  const localeRef = isRef(locale) ? locale : ref(locale);
+  return {
+    lang,
+    locale: localeRef,
+    t: buildTranslator(locale),
   };
+};
 
-  setLocale('zh_CN');
+export const localeContextKey: InjectionKey<Ref<Language | undefined>> = Symbol('localeContextKey');
 
-  const context = {
-    locale,
-    setLocale,
-  };
+export const outsideLocale = ref<Language>(zhCn);
 
-  provide(localeContextSymbol, context);
+export const getOutsideLocale = () => {
+  return useLocale(outsideLocale);
+};
 
-  return context;
-}
-
-export function useLocale() {
-  return inject<ReturnType<typeof useLocaleProvide>>(localeContextSymbol) as ReturnType<
-    typeof useLocaleProvide
-  >;
-}
+export const useLocale = (localeOverrides?: Ref<Language | undefined>) => {
+  const locale = localeOverrides || inject(localeContextKey, ref())!;
+  return buildLocaleContext(computed(() => locale.value || zhCn));
+};

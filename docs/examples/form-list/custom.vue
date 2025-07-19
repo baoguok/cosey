@@ -62,12 +62,7 @@
                       :rules="[{ required: true }]"
                     />
                   </el-space>
-                  <el-button
-                    class="absolute top-3 right-3"
-                    link
-                    type="danger"
-                    @click="remove(index)"
-                  >
+                  <el-button class="absolute end-3 top-3" link type="danger" @click="remove(index)">
                     <co-icon name="carbon:trash-can" size="lg" />
                   </el-button>
                 </el-card>
@@ -76,7 +71,7 @@
           </co-dnd-sort>
 
           <el-button plain class="w-full" @click="() => add()">
-            <co-icon name="carbon:add-large" class="mr-1" />
+            <co-icon name="carbon:add-large" class="me-1" />
             新增
           </el-button>
         </div>

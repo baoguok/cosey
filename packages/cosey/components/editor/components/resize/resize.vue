@@ -98,8 +98,8 @@ const setOverlayRect = (rect: Rect) => {
     const height = ~~rect.height;
 
     overlayStyle.value = {
-      left: ~~(rect.x - parentRect.x) + 'px',
-      top: ~~(rect.y - parentRect.y) + 'px',
+      insetInlineStart: ~~(rect.x - parentRect.x) + 'px',
+      insetBlockStart: ~~(rect.y - parentRect.y) + 'px',
       width: width + 'px',
       height: height + 'px',
     };

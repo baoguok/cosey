@@ -23,8 +23,8 @@ const getMaskStyle: GenerateStyle<MaskToken, CSSObject> = (token) => {
 
       [`${componentCls}-copy`]: {
         position: 'absolute',
-        top: token.sizeXXS,
-        right: token.sizeXXS,
+        insetBlockStart: token.sizeXXS,
+        insetInlineEnd: token.sizeXXS,
         zIndex: 10,
         color: token.colorWhite,
       },

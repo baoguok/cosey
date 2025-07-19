@@ -73,7 +73,7 @@ export default defineComponent(
                   style: {
                     width: checkboxWidth.value,
                   },
-                  class: '!mr-0',
+                  class: '!me-0',
                 },
               ),
             ),

@@ -16,9 +16,9 @@ export default getGlobalStyleHook('EditorImageLoading', (token) => {
 
       div: {
         position: 'absolute',
-        top: '50%',
+        insetBlockStart: '50%',
         width: '100%',
-        marginTop: -20,
+        marginBlockStart: -20,
         textAlign: 'center',
 
         svg: {

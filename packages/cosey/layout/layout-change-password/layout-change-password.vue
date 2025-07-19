@@ -1,14 +1,17 @@
 <template>
   <div :class="[hashId, prefixCls]">
-    <div :class="`${prefixCls}-title`">修改密码</div>
+    <div :class="`${prefixCls}-title`">{{ t('co.auth.changePassword') }}</div>
     <el-form ref="formRef" :model="formState" @keyup.enter.prevent="onSubmit">
-      <el-form-item prop="oldPassword" :rules="[{ required: true, message: '请输入原密码' }]">
+      <el-form-item
+        prop="oldPassword"
+        :rules="[{ required: true, message: t('co.auth.enterCurrentPassword') }]"
+      >
         <el-input
           v-model="formState.oldPassword"
           type="password"
           show-password
           size="large"
-          placeholder="原密码"
+          :placeholder="t('co.auth.currentPassword')"
         >
           <template #prefix>
             <co-icon name="co:password" :class="`${prefixCls}-icon`" />
@@ -16,13 +19,16 @@
         </el-input>
       </el-form-item>
 
-      <el-form-item prop="newPassword" :rules="[{ required: true, message: '请输入新密码' }]">
+      <el-form-item
+        prop="newPassword"
+        :rules="[{ required: true, message: t('co.auth.enterNewPassword') }]"
+      >
         <el-input
           v-model="formState.newPassword"
           type="password"
           show-password
           size="large"
-          placeholder="新密码"
+          :placeholder="t('co.auth.newPassword')"
         >
           <template #prefix>
             <co-icon name="co:password" :class="`${prefixCls}-icon`" />
@@ -33,12 +39,12 @@
       <el-form-item
         prop="confirmNewPassword"
         :rules="[
-          { required: true, message: '请输入确认密码' },
+          { required: true, message: t('co.auth.enterConfirmPassword') },
           {
             validator(_, value) {
               return value === formState.newPassword;
             },
-            message: '两次密码不一致',
+            message: t('co.auth.passwordNotMatch'),
             trigger: 'blur',
           },
         ]"
@@ -48,7 +54,7 @@
           type="password"
           show-password
           size="large"
-          placeholder="确认密码"
+          :placeholder="t('co.auth.confirmPassword')"
         >
           <template #prefix>
             <co-icon name="co:password" :class="`${prefixCls}-icon`" />
@@ -64,13 +70,13 @@
           :loading="loading"
           @click="onSubmit"
         >
-          修改密码
+          {{ t('co.auth.changePassword') }}
         </el-button>
       </el-form-item>
 
       <el-form-item>
         <el-button size="large" :class="`${prefixCls}-button`" @click="router.back()">
-          返回
+          {{ t('co.common.back') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -84,6 +90,9 @@ import { useComponentConfig } from '../../components';
 import useStyle from './style';
 import { useUserStore } from '../../store';
 import { ElMessage, type FormInstance, ElButton } from 'element-plus';
+import { useLocale } from '../../hooks';
+
+const { t } = useLocale();
 
 const { prefixCls } = useComponentConfig('layout-change-password');
 
@@ -114,7 +123,7 @@ const onSubmit = () => {
         newPassword: formState.newPassword,
       })
       .then(() => {
-        ElMessage.success('修改成功，请重新登录');
+        ElMessage.success(t('co.auth.loginAgain'));
         userStore.logout();
       })
       .catch(() => {})

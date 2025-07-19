@@ -33,7 +33,7 @@
             type="primary"
             @click="emit('cancel')"
           >
-            取消上传
+            {{ t('co.upload.cancelUpload') }}
           </el-button>
           <el-button
             v-if="file.status === 'error'"
@@ -43,7 +43,7 @@
             :style="{ marginInlineStart: 0 }"
             @click="emit('re-upload')"
           >
-            重新上传
+            {{ t('co.upload.reUpload') }}
           </el-button>
           <el-button
             link
@@ -52,7 +52,7 @@
             :style="{ marginInlineStart: 0 }"
             @click="emit('remove')"
           >
-            删除
+            {{ t('co.common.delete') }}
           </el-button>
         </div>
       </div>
@@ -70,6 +70,7 @@ import { ElButton } from 'element-plus';
 import { isString } from '../../utils';
 import { MediaCard } from '../media-card';
 import Icon from '../icon/icon.vue';
+import { useLocale } from '../../hooks';
 
 import { useComponentConfig } from '../config-provider';
 
@@ -82,6 +83,8 @@ const props = defineProps<UploadItemProps>();
 const emit = defineEmits<UploadItemEmits>();
 
 const { prefixCls } = useComponentConfig('upload');
+
+const { t } = useLocale();
 
 const progressStatus = {
   success: 'success',

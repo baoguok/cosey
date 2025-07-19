@@ -4,9 +4,12 @@ import { defineComponent, h, mergeProps, type SlotsType } from 'vue';
 import { type FieldTimeProps, type FieldTimeSlots } from './time';
 import dayjs from 'dayjs';
 import { addNullablePlaceholder, TIME_FORMAT } from '../../../../utils';
+import { useLocale } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldTimeProps, { slots }) => {
+    const { t } = useLocale();
+
     return () => {
       if (props.readonly) {
         const value = props.componentProps?.modelValue;
@@ -17,7 +20,7 @@ export default defineComponent(
         ElTimePicker,
         mergeProps(
           {
-            placeholder: '请选择',
+            placeholder: t('co.common.pleaseSelect'),
             style: {
               display: 'flex',
               width: '100%',

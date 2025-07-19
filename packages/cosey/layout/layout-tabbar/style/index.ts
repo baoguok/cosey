@@ -8,7 +8,7 @@ export default getSimpleStyleHook('LayoutTabbar', (token) => {
       display: 'flex',
       alignItems: 'stretch',
       paddingBlockStart: token.paddingXS,
-      transition: `margin-left ${token.motionDurationSlow}`,
+      transition: `margin-inline-start ${token.motionDurationSlow}`,
 
       '&::before, &::after': {
         content: '""',

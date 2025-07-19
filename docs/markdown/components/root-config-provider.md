@@ -28,10 +28,11 @@
 
 ### RootConfigProviderProps
 
-| 属性  | 描述     | 类型                               | 默认值 |
-| ----- | -------- | ---------------------------------- | ------ |
-| theme | 主题配置 | ThemeConfig                        | -      |
-| table | 表格配置 | [TableConfig](./table#tableconfig) | -      |
+| 属性   | 描述         | 类型                                                                                      | 默认值 |
+| ------ | ------------ | ----------------------------------------------------------------------------------------- | ------ |
+| theme  | 主题配置     | ThemeConfig                                                                               | -      |
+| table  | 表格配置     | [TableConfig](./table#tableconfig)                                                        | -      |
+| locale | 翻译文本对象 | object [Languages](https://github.com/sutras/cosey/tree/main/packages/cosey/locale/lang/) | -      |
 
 #### ThemeConfig
 

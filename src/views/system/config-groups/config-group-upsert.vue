@@ -1,15 +1,18 @@
 <template>
   <co-form-dialog v-bind="dialogProps">
     <co-form v-bind="formProps" label-width="auto" width="sm">
-      <co-form-item v-model="model.name" prop="name" label="名称" required />
+      <co-form-item v-model="model.name" prop="name" :label="t('config.name')" required />
     </co-form>
   </co-form-dialog>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useConfigGroupsApi } from '@/api/system/configs';
 import { useUpsert } from 'cosey/hooks';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { addConfigGroup, updateConfigGroup } = useConfigGroupsApi();
 
@@ -27,15 +30,17 @@ const model = reactive<Model>({
 
 const editId = ref<number>();
 
-const { dialogProps, formProps, expose } = useUpsert<Model, Row>({
-  stuffTitle: '配置',
-  model,
-  beforeFill(row) {
-    editId.value = row.id;
-  },
-  add: () => addConfigGroup(model),
-  edit: () => updateConfigGroup(editId.value!, model),
-});
+const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
+  computed(() => ({
+    stuffTitle: t('config.config'),
+    model,
+    beforeFill(row) {
+      editId.value = row.id;
+    },
+    add: () => addConfigGroup(model),
+    edit: () => updateConfigGroup(editId.value!, model),
+  })),
+);
 
 defineExpose(expose);
 </script>

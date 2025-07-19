@@ -7,10 +7,10 @@
       :submit="onSubmit"
       :class="[hashId, prefixCls]"
     >
-      <FormItem v-model="formModel.filename" label="文件名" prop="filename" />
+      <FormItem v-model="formModel.filename" :label="t('co.table.filename')" prop="filename" />
       <FormItem
         v-model="formModel.bookType"
-        label="文件类型"
+        :label="t('co.table.fileType')"
         prop="bookType"
         field-type="select"
         :field-props="{
@@ -18,7 +18,7 @@
           onChange: onBookTypeChange,
         }"
       />
-      <FormItem v-model="formModel.fields" label="选择字段" prop="fields">
+      <FormItem v-model="formModel.fields" :label="t('co.table.selectField')" prop="fields">
         <Panel max-height="240px">
           <template #header>
             <el-checkbox
@@ -26,7 +26,7 @@
               :indeterminate="checkAllIndeterminate"
               @change="onCheckAllChange"
             >
-              全部
+              {{ t('co.common.checkAll') }}
             </el-checkbox>
           </template>
           <List :node-list="tree" style="--el-checkbox-height: 24px" />
@@ -34,7 +34,7 @@
       </FormItem>
       <FormItem
         v-model="formModel.params"
-        label="参数配置"
+        :label="t('co.table.paramConfig')"
         prop="params"
         field-type="checkboxgroup"
         :field-props="paramsFieldProps"
@@ -67,6 +67,7 @@ import { Panel } from '../../panel';
 import useStyle from './style';
 import { useComponentConfig } from '../../config-provider';
 import { CheckableNode, useTreeCheck } from '../../../hooks';
+import { useLocale } from '../../../hooks';
 
 defineOptions({
   name: 'TableExport',
@@ -80,6 +81,8 @@ const { prefixCls } = useComponentConfig('table-export');
 
 const { hashId } = useStyle(prefixCls);
 
+const { t } = useLocale();
+
 const mergedProps = computed(() => {
   return mergeProps(reactiveOmit(props, omittedTableExportProps), attrs);
 });
@@ -87,15 +90,17 @@ const mergedProps = computed(() => {
 defineEmits<TableExportEmits>();
 
 const getDefaultFilename = () => {
-  return '导出-' + formatAsBasicDateTime(new Date());
+  return `${t('co.table.export')}-` + formatAsBasicDateTime(new Date());
 };
 
-const bookTypeOptions = bookFormats.map((bookType) => {
-  return {
-    label: `${bookType.label} (*${bookType.ext})`,
-    value: bookType.type,
-  };
-});
+const bookTypeOptions = computed(() =>
+  bookFormats.map((bookType) => {
+    return {
+      label: `${t(bookType.label)} (*${bookType.ext})`,
+      value: bookType.type,
+    };
+  }),
+);
 
 type Params = 'head' | 'grouping';
 
@@ -106,19 +111,19 @@ interface ParamOption {
 }
 
 const mapTypeParamOptions: Record<ExportBookType, ParamOption[]> = {
-  csv: [{ label: '表头', value: 'head', checked: true }],
-  txt: [{ label: '表头', value: 'head', checked: true }],
+  csv: [{ label: t('co.table.header'), value: 'head', checked: true }],
+  txt: [{ label: t('co.table.header'), value: 'head', checked: true }],
   xml: [
-    { label: '表头', value: 'head', checked: true },
-    { label: '分组表头', value: 'grouping', checked: true },
+    { label: t('co.table.header'), value: 'head', checked: true },
+    { label: t('co.table.groupHeader'), value: 'grouping', checked: true },
   ],
   html: [
-    { label: '表头', value: 'head', checked: true },
-    { label: '分组表头', value: 'grouping', checked: true },
+    { label: t('co.table.header'), value: 'head', checked: true },
+    { label: t('co.table.groupHeader'), value: 'grouping', checked: true },
   ],
   xlsx: [
-    { label: '表头', value: 'head', checked: true },
-    { label: '分组表头', value: 'grouping', checked: true },
+    { label: t('co.table.header'), value: 'head', checked: true },
+    { label: t('co.table.groupHeader'), value: 'grouping', checked: true },
   ],
 };
 
@@ -223,6 +228,6 @@ const getScheme = (): ExportExcelScheme => {
 const onSubmit = async () => {
   await exportExcel(getScheme(), props.data);
 
-  ElMessage.success('导出成功');
+  ElMessage.success(t('co.common.exportSuccess'));
 };
 </script>

@@ -5,22 +5,25 @@ import { type FieldWeekProps, type FieldWeekSlots } from './week';
 import dayjs from 'dayjs';
 import weekOfYear from 'dayjs/plugin/weekOfYear.js';
 import { addNullablePlaceholder } from '../../../../utils';
+import { useLocale } from '../../../../hooks';
 
 dayjs.extend(weekOfYear);
 
 export default defineComponent(
   (props: FieldWeekProps, { slots }) => {
+    const { t } = useLocale();
+
     return () => {
       if (props.readonly) {
         const value = props.componentProps?.modelValue;
-        return addNullablePlaceholder(value, (val) => dayjs(val).format('YYYY-第w周'));
+        return addNullablePlaceholder(value, (val) => dayjs(val).format(t('co.editor.weekOfYear')));
       }
 
       return h(
         ElDatePicker,
         mergeProps(
           {
-            placeholder: '请选择',
+            placeholder: t('co.common.pleaseSelect'),
             style: {
               display: 'flex',
               width: '100%',

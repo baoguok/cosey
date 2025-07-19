@@ -3,21 +3,21 @@
     <co-table v-bind="tableProps">
       <template #toolbar-left>
         <el-button v-if="can('create', 'user')" type="primary" @click="upsert.add()">
-          新增
+          {{ t('common.add') }}
         </el-button>
         <el-button
           v-if="can('update', 'user')"
           type="primary"
-          @click="onBatchSilent('确定禁言？', 1)"
+          @click="onBatchSilent(t('user.confirmMute'), 1)"
         >
-          批量禁言
+          {{ t('user.batchMute') }}
         </el-button>
         <el-button
           v-if="can('update', 'user')"
           type="primary"
-          @click="onBatchSilent('确定取消禁言？', 0)"
+          @click="onBatchSilent(t('user.confirmUnmute'), 0)"
         >
-          批量取消禁言
+          {{ t('user.batchUnmute') }}
         </el-button>
       </template>
       <template #action="{ row }">
@@ -25,7 +25,7 @@
           :actions="[
             {
               hidden: cannot('update', 'user'),
-              label: '编辑',
+              label: t('common.edit'),
               icon: 'carbon:edit',
               onClick: () => {
                 upsert.edit(row);
@@ -33,11 +33,11 @@
             },
             {
               hidden: cannot('delete', 'user'),
-              label: '删除',
+              label: t('common.delete'),
               icon: 'carbon:trash-can',
               type: 'danger',
               popconfirm: {
-                title: '确定删除？',
+                title: t('common.confirmDelete'),
                 confirm: () => onDelete(row.id),
               },
             },
@@ -59,6 +59,10 @@ import { useTable } from 'cosey/components';
 import * as mock from '@gunny/mock';
 import { useAbility } from '@casl/vue';
 import { warningConfirm } from 'cosey/utils';
+import { useI18n } from 'vue-i18n';
+import { computed } from 'vue';
+
+const { t } = useI18n();
 
 defineOptions({
   name: 'Users',
@@ -68,78 +72,80 @@ const { can, cannot } = useAbility();
 
 const { getUsers, deleteUser, updateUser, updateBulkSilent } = useUsersApi();
 
-const [tableProps, { reload, getSelectionRows }] = useTable({
-  api: getUsers,
-  columns: [
-    {
-      type: 'selection',
-    },
-    { prop: 'id', label: 'ID' },
-    { prop: 'nickname', label: '昵称' },
-    {
-      label: '联系方式',
-      columns: [
-        { prop: 'name', label: '姓名' },
-        { prop: 'mobile', label: '手机号' },
-        { prop: 'address', label: '地址', renderer: 'longtext', minWidth: 120 },
-      ],
-    },
-    { prop: 'gender', label: '性别' },
-    {
-      prop: 'silent',
-      label: '禁言',
-      renderer: {
-        type: 'switch',
-        api: (value, row) => updateUser(row.id, { silent: value }),
-        props: { activeValue: 1, inactiveValue: 0 },
-      },
-    },
-    { prop: 'birthday', label: '生日', renderer: 'date', sortable: 'custom' },
-    { prop: 'constellation', label: '星座' },
-    { prop: 'height', label: '身高(cm)', sortable: 'custom' },
-    { prop: 'weight', label: '体重(kg)', sortable: 'custom' },
-    { prop: 'avatar', label: '头像', renderer: 'media' },
-    { prop: 'qualification', label: '学历' },
-    { prop: 'trait', label: '特质' },
-    { prop: 'friendshipType', label: '交友类型' },
-    { prop: 'hobbies', label: '爱好', renderer: 'tag' },
-    { prop: 'signature', label: '个性签名' },
-    { prop: 'createdAt', label: '创建时间', renderer: 'datetime' },
-    { prop: 'updatedAt', label: '更新时间', renderer: 'datetime' },
-  ],
-  actionColumn: {
-    label: '操作',
-    slots: 'action',
-    fixed: 'right',
-    minWidth: 150,
-  },
-  height: '100%',
-  formProps: {
-    schemes: [
-      { prop: 'nickname', label: '昵称' },
-      { prop: 'mobile', label: '手机号' },
-      { prop: 'name', label: '姓名' },
+const [tableProps, { reload, getSelectionRows }] = useTable(
+  computed(() => ({
+    api: getUsers,
+    columns: [
       {
-        prop: 'gender',
-        label: '性别',
-        fieldType: 'select',
-        fieldProps: { options: mock.genders },
+        type: 'selection',
       },
-      { prop: 'birthday', label: '生日', fieldType: 'daterange' },
+      { prop: 'id', label: 'ID' },
+      { prop: 'nickname', label: t('user.nickname') },
+      {
+        label: t('user.contact'),
+        columns: [
+          { prop: 'name', label: t('user.name') },
+          { prop: 'mobile', label: t('user.phone') },
+          { prop: 'address', label: t('user.address'), renderer: 'longtext', minWidth: 120 },
+        ],
+      },
+      { prop: 'gender', label: t('user.gender') },
       {
         prop: 'silent',
-        label: '禁言',
-        fieldType: 'select',
-        fieldProps: {
-          options: [
-            { label: '是', value: 1 },
-            { label: '否', value: 0 },
-          ],
+        label: t('user.mute'),
+        renderer: {
+          type: 'switch',
+          api: (value, row) => updateUser(row.id, { silent: value }),
+          props: { activeValue: 1, inactiveValue: 0 },
         },
       },
+      { prop: 'birthday', label: t('user.birthday'), renderer: 'date', sortable: 'custom' },
+      { prop: 'constellation', label: t('user.zodiac') },
+      { prop: 'height', label: t('user.height'), sortable: 'custom' },
+      { prop: 'weight', label: t('user.weight'), sortable: 'custom' },
+      { prop: 'avatar', label: t('user.avatar'), renderer: 'media' },
+      { prop: 'qualification', label: t('user.education') },
+      { prop: 'trait', label: t('user.traits') },
+      { prop: 'friendshipType', label: t('user.datingType') },
+      { prop: 'hobbies', label: t('user.hobbies'), renderer: 'tag' },
+      { prop: 'signature', label: t('user.signature') },
+      { prop: 'createdAt', label: t('common.creationTime'), renderer: 'datetime' },
+      { prop: 'updatedAt', label: t('common.updateTime'), renderer: 'datetime' },
     ],
-  },
-});
+    actionColumn: {
+      label: t('common.actions'),
+      slots: 'action',
+      fixed: 'right',
+      minWidth: 150,
+    },
+    height: '100%',
+    formProps: {
+      schemes: [
+        { prop: 'nickname', label: t('user.nickname') },
+        { prop: 'mobile', label: t('user.phone') },
+        { prop: 'name', label: t('user.name') },
+        {
+          prop: 'gender',
+          label: t('user.gender'),
+          fieldType: 'select',
+          fieldProps: { options: mock.genders },
+        },
+        { prop: 'birthday', label: t('user.birthday'), fieldType: 'daterange' },
+        {
+          prop: 'silent',
+          label: t('user.mute'),
+          fieldType: 'select',
+          fieldProps: {
+            options: [
+              { label: t('common.yes'), value: 1 },
+              { label: t('common.no'), value: 0 },
+            ],
+          },
+        },
+      ],
+    },
+  })),
+);
 
 const upsert = useOuterUpsert({
   success() {
@@ -149,7 +155,7 @@ const upsert = useOuterUpsert({
 
 const onDelete = async (id: number) => {
   return deleteUser(id).then(() => {
-    ElMessage.success('删除成功');
+    ElMessage.success(t('common.deleteSuccess'));
     reload();
   });
 };
@@ -157,14 +163,14 @@ const onDelete = async (id: number) => {
 const onBatchSilent = (message: string, value: number) => {
   const ids = getSelectionRows().map((item: any) => item.id);
   if (ids.length === 0) {
-    ElMessage('请勾选');
+    ElMessage(t('common.pleaseSelect'));
   } else {
     warningConfirm(message).then(() =>
       updateBulkSilent({
         ids,
         value,
       }).then(() => {
-        ElMessage.success('操作成功');
+        ElMessage.success(t('common.operationSuccess'));
         reload();
       }),
     );

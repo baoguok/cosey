@@ -3,9 +3,12 @@ import { ElInputTag } from 'element-plus';
 import { defineComponent, h, type SlotsType } from 'vue';
 import { type FieldInputTagProps, type FieldInputTagSlots } from './input-tag';
 import { addNullablePlaceholder } from '../../../../utils';
+import { useLocale } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldInputTagProps, { slots }) => {
+    const { t } = useLocale();
+
     return () => {
       if (props.readonly) {
         const value = props.componentProps?.modelValue;
@@ -15,7 +18,7 @@ export default defineComponent(
       return h(
         ElInputTag,
         {
-          placeholder: '请输入',
+          placeholder: t('co.common.pleaseInput'),
           clearable: true,
           ...props.componentProps,
         },

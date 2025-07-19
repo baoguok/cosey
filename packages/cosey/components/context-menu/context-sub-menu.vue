@@ -95,8 +95,8 @@ const zIndex = ref(0);
 
 const subStyle = computed(() => {
   return {
-    top: `${y.value}px`,
-    left: `${x.value}px`,
+    insetBlockStart: `${y.value}px`,
+    insetInlineStart: `${x.value}px`,
     zIndex: zIndex.value,
   };
 });

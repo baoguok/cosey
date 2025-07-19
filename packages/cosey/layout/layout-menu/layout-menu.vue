@@ -12,6 +12,9 @@ import { defineTemplate } from '../../utils';
 import { Icon, useComponentConfig } from '../../components';
 
 import useStyle from './style';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 defineOptions({
   name: 'LayoutMenu',
@@ -73,7 +76,7 @@ function renderMenu(menuItems: MenuItem[]) {
             }}
           />
         );
-      const titleVNode = () => <span>{item.title}</span>;
+      const titleVNode = () => <span>{t(item.title ?? '')}</span>;
 
       if (item.children && item.children.length > 0) {
         const slots = {

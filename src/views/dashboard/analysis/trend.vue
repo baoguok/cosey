@@ -2,7 +2,7 @@
   <el-card shadow="never">
     <template #header>
       <div class="flex items-center justify-between">
-        <span>活跃趋势</span>
+        <span>{{ t('analysis.activityTrend') }}</span>
         <div>
           <el-segmented
             v-model="model.type"
@@ -20,47 +20,51 @@
 <script lang="ts" setup>
 import { useStatisticsApi } from '@/api/statistics';
 import { useEcharts, useFetch } from 'cosey/hooks';
-import { reactive, ref, useTemplateRef } from 'vue';
+import { computed, reactive, ref, useTemplateRef } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { getStatTrend } = useStatisticsApi();
 
 const elRef = useTemplateRef('elRef');
 
-const { setOption } = useEcharts(elRef, {
-  option: {
-    dataset: {
-      source: [],
-      dimensions: ['label', 'value'],
-    },
-    tooltip: {},
-    xAxis: { type: 'category' },
-    yAxis: {
-      name: '数量',
-    },
-    series: {
-      type: 'bar',
-    },
-  },
-});
+const sourceData = ref<any[]>([]);
 
-const options = ref([
-  { label: '今日', value: 'day' },
-  { label: '本周', value: 'week' },
-  { label: '本月', value: 'month' },
-  { label: '全年', value: 'year' },
+useEcharts(
+  elRef,
+  computed(() => ({
+    option: {
+      dataset: {
+        source: sourceData.value,
+        dimensions: ['label', 'value'],
+      },
+      tooltip: {},
+      xAxis: { type: 'category' },
+      yAxis: {
+        name: t('analysis.quantity'),
+      },
+      series: {
+        type: 'bar',
+      },
+    },
+  })),
+);
+
+const options = computed(() => [
+  { label: t('analysis.today'), value: 'day' },
+  { label: t('analysis.thisWeek'), value: 'week' },
+  { label: t('analysis.thisMonth'), value: 'month' },
+  { label: t('analysis.thisYear'), value: 'year' },
 ]);
 
 const model = reactive({
   type: 'day',
 });
 
-const { isFetching, execute } = useFetch<Record<string, any>>(() => getStatTrend(model), {
+const { isFetching, execute } = useFetch<any[]>(() => getStatTrend(model), {
   onSuccess(data) {
-    setOption({
-      dataset: {
-        source: data,
-      },
-    });
+    sourceData.value = data;
   },
 });
 

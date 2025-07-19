@@ -1,11 +1,13 @@
 import { computed, type ComputedRef, inject, InjectionKey, provide } from 'vue';
 import { type TableConfig } from '../table';
 import { type ThemeConfig } from '../theme';
+import { type Language } from '../../locale';
 
 export interface ConfigProviderProps {
   prefixCls?: string;
   theme?: ThemeConfig;
   table?: TableConfig;
+  locale?: Language;
 }
 
 export interface ConfigProviderInnerProps {

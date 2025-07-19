@@ -4,7 +4,7 @@
       <co-form-item
         v-model="model.postTypeId"
         prop="postTypeId"
-        label="分类"
+        :label="t('post.category')"
         required
         field-type="select"
         :field-props="{
@@ -13,18 +13,18 @@
           valueKey: 'id',
         }"
       />
-      <co-form-item v-model="model.title" prop="title" label="标题" required />
+      <co-form-item v-model="model.title" prop="title" :label="t('post.title')" required />
       <co-form-item
         v-model="model.digest"
         prop="digest"
-        label="摘要"
+        :label="t('post.summary')"
         required
         field-type="textarea"
         :field-props="{
           rows: 2,
         }"
       />
-      <co-form-item prop="content" label="内容" required>
+      <co-form-item prop="content" :label="t('post.content')" required>
         <co-editor v-model="model.content" height="400px" />
       </co-form-item>
     </co-form>
@@ -32,10 +32,13 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useUpsert } from 'cosey/hooks';
 import { usePostsApi, usePosttypesApi } from '@/api/blog';
 import { ElMessageBox } from 'element-plus';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { addPost, updatePost, getPost } = usePostsApi();
 
@@ -68,24 +71,26 @@ const editId = ref<number>();
 
 const { getPosttypes } = usePosttypesApi();
 
-const { dialogProps, formProps, expose } = useUpsert<Model, Row>({
-  stuffTitle: '文章',
-  model,
-  async show() {
-    postTypes.value = (await getPosttypes()).list;
-  },
-  details(row) {
-    return getPost(row.id);
-  },
-  beforeFill(row) {
-    editId.value = row.id;
-  },
-  add: () => addPost(model),
-  edit: () => updatePost(editId.value!, model),
-});
+const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
+  computed(() => ({
+    stuffTitle: t('post.article'),
+    model,
+    async show() {
+      postTypes.value = (await getPosttypes()).list;
+    },
+    details(row) {
+      return getPost(row.id);
+    },
+    beforeFill(row) {
+      editId.value = row.id;
+    },
+    add: () => addPost(model),
+    edit: () => updatePost(editId.value!, model),
+  })),
+);
 
 const onBeforeClose = (done: any) => {
-  ElMessageBox.confirm('确定关闭？', '提示', {
+  ElMessageBox.confirm(t('common.confirmClose'), t('common.prompt'), {
     type: 'warning',
   }).then(() => {
     done();

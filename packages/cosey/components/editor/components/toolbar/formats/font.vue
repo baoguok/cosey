@@ -8,6 +8,9 @@ import Select from '../../select.vue';
 import { Toolbar } from '../toolbar';
 import { toolbarContextKey } from '../toolbarContext';
 import { fonts } from '../../../formats/font';
+import { useLocale } from '../../../../../hooks';
+
+const { t } = useLocale();
 
 const { toolbar } = inject(toolbarContextKey)!;
 
@@ -23,7 +26,7 @@ const list = computed(() => {
   });
   return [
     {
-      label: '默认字体',
+      label: t('co.editor.defaultFont'),
       value: false,
     },
     ...sizeList,

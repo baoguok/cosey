@@ -1,5 +1,6 @@
 import { ElMessageBox, type ElMessageBoxOptions } from 'element-plus';
 import { type VNode } from 'vue';
+import { getOutsideLocale } from '../hooks';
 
 export function warningConfirm(
   message: string | VNode | (() => VNode),
@@ -7,8 +8,10 @@ export function warningConfirm(
 ) {
   const promise = new CustomPromise(() => {});
 
+  const { t } = getOutsideLocale();
+
   ElMessageBox({
-    title: '警告',
+    title: t('co.common.warning'),
     ...options,
     type: 'warning',
     message,
