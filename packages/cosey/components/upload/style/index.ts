@@ -60,8 +60,8 @@ const getUploadStyle: GenerateStyle<UploadToken, CSSObject> = (token) => {
 
       [`${componentCls}-remove`]: {
         position: 'absolute',
-        top: 0,
-        right: 0,
+        insetBlockStart: 0,
+        insetInlineEnd: 0,
         zIndex: 10,
         display: 'flex',
         width: token.sizeMD,

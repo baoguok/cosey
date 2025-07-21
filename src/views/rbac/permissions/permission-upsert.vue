@@ -4,7 +4,7 @@
       <co-form-item
         v-model="model.pid"
         prop="pid"
-        label="父权限"
+        :label="t('rbac.parentPermission')"
         field-type="treeselect"
         :field-props="{
           data: permissionTree,
@@ -15,27 +15,36 @@
           },
         }"
       />
-      <co-form-item v-model="model.name" prop="name" label="名称" required />
-      <co-form-item v-model="model.subject" prop="subject" label="资源" required />
-      <co-form-item v-model="model.action" prop="action" label="动作" required />
+      <co-form-item v-model="model.name" prop="name" :label="t('rbac.name')" required />
+      <co-form-item v-model="model.subject" prop="subject" :label="t('rbac.resource')" required />
+      <co-form-item v-model="model.action" prop="action" :label="t('rbac.action')" required />
       <co-form-item
         v-model="model.conditions"
         prop="conditions"
-        label="条件"
+        :label="t('rbac.condition')"
         field-type="textarea"
         :field-props="{
           rows: 3,
         }"
       />
-      <co-form-item v-model="model.order" prop="order" label="排序" field-type="number" required />
+      <co-form-item
+        v-model="model.order"
+        prop="order"
+        :label="t('common.sort')"
+        field-type="number"
+        required
+      />
     </co-form>
   </co-form-dialog>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useFetch, useUpsert } from 'cosey/hooks';
 import { usePermissionsApi } from '@/api/rbac/permissions';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { addPermission, updatePermission, getPermissionParentTree, getPermissionTree } =
   usePermissionsApi();
@@ -76,24 +85,26 @@ const model = reactive<Model>({
 
 const editId = ref<number>();
 
-const { dialogProps, formProps, expose } = useUpsert<Model, Row>({
-  stuffTitle: '权限',
-  model,
-  show(type, row) {
-    execute({ type, row });
-  },
-  beforeFill(row) {
-    editId.value = row.id;
-  },
-  beforeSubmit() {
-    return {
-      ...model,
-      pid: model.pid || null,
-    };
-  },
-  add: (data) => addPermission(data),
-  edit: (data) => updatePermission(editId.value!, data),
-});
+const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
+  computed(() => ({
+    stuffTitle: t('rbac.permission'),
+    model,
+    show(type, row) {
+      execute({ type, row });
+    },
+    beforeFill(row) {
+      editId.value = row.id;
+    },
+    beforeSubmit() {
+      return {
+        ...model,
+        pid: model.pid || null,
+      };
+    },
+    add: (data) => addPermission(data),
+    edit: (data) => updatePermission(editId.value!, data),
+  })),
+);
 
 defineExpose(expose);
 </script>

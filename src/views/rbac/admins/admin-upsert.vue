@@ -1,13 +1,18 @@
 <template>
   <co-form-dialog v-bind="dialogProps" width="fit-content">
     <co-form v-bind="formProps" label-width="auto" width="md">
-      <co-form-item v-model="model.username" prop="username" label="用户名" required />
-      <co-form-item v-model="model.password" prop="password" label="密码" field-type="password" />
-      <co-form-item v-model="model.nickname" prop="nickname" label="昵称" required />
+      <co-form-item v-model="model.username" prop="username" :label="t('rbac.username')" required />
+      <co-form-item
+        v-model="model.password"
+        prop="password"
+        :label="t('rbac.password')"
+        field-type="password"
+      />
+      <co-form-item v-model="model.nickname" prop="nickname" :label="t('rbac.nickname')" required />
       <co-form-item
         v-model="model.roles"
         prop="roles"
-        label="角色"
+        :label="t('rbac.role')"
         required
         field-type="select"
         :field-props="{
@@ -17,7 +22,7 @@
           labelKey: 'name',
         }"
       />
-      <co-form-item prop="avatar" label="头像">
+      <co-form-item prop="avatar" :label="t('rbac.avatar')">
         <co-upload v-model="model.avatar" single />
       </co-form-item>
     </co-form>
@@ -25,10 +30,13 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useAdminsApi } from '@/api/rbac/admins';
 import { useRolesApi } from '@/api/rbac/roles';
 import { useUpsert } from 'cosey/hooks';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { addAdmin, updateAdmin } = useAdminsApi();
 const { getRoles } = useRolesApi();
@@ -69,20 +77,22 @@ onMounted(() => {
   });
 });
 
-const { dialogProps, formProps, expose } = useUpsert<Model, Row>({
-  stuffTitle: '管理员',
-  model,
-  beforeFill(row) {
-    editId.value = row.id;
+const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
+  computed(() => ({
+    stuffTitle: t('rbac.admin'),
+    model,
+    beforeFill(row) {
+      editId.value = row.id;
 
-    return {
-      ...row,
-      roles: row.roles.map((item) => item.id),
-    };
-  },
-  add: () => addAdmin(model),
-  edit: () => updateAdmin(editId.value!, model),
-});
+      return {
+        ...row,
+        roles: row.roles.map((item) => item.id),
+      };
+    },
+    add: () => addAdmin(model),
+    edit: () => updateAdmin(editId.value!, model),
+  })),
+);
 
 defineExpose(expose);
 </script>

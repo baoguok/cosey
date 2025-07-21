@@ -3,7 +3,7 @@
     <co-table v-bind="tableProps">
       <template #toolbar-left>
         <el-button v-if="can('create', 'rbac_role')" type="primary" @click="roleUpsert.add()">
-          新增
+          {{ t('common.add') }}
         </el-button>
       </template>
       <template #action="{ row }">
@@ -11,7 +11,7 @@
           :actions="[
             {
               hidden: cannot('update', 'rbac_role'),
-              label: '权限',
+              label: t('rbac.permission'),
               icon: 'carbon:rule-draft',
               onClick: () => {
                 permissionsUpsert.edit(row);
@@ -19,7 +19,7 @@
             },
             {
               hidden: cannot('update', 'rbac_role'),
-              label: '编辑',
+              label: t('common.edit'),
               icon: 'carbon:edit',
               onClick: () => {
                 roleUpsert.edit(row);
@@ -27,11 +27,11 @@
             },
             {
               hidden: cannot('delete', 'rbac_role'),
-              label: '删除',
+              label: t('common.delete'),
               icon: 'carbon:trash-can',
               type: 'danger',
               popconfirm: {
-                title: '确定删除？',
+                title: t('common.confirmDelete'),
                 confirm: () => onDelete(row.id),
               },
             },
@@ -53,6 +53,10 @@ import { useTable } from 'cosey/components';
 import PermissionsUpsert from './permissions-upsert.vue';
 import RoleUpsert from './role-upsert.vue';
 import { useAbility } from '@casl/vue';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 defineOptions({
   name: 'RbacRoles',
@@ -62,22 +66,24 @@ const { can, cannot } = useAbility();
 
 const { deleteRole, getRoles } = useRolesApi();
 
-const [tableProps, { reload }] = useTable({
-  api: getRoles,
-  columns: [
-    { prop: 'id', label: 'ID' },
-    { prop: 'name', label: '角色名' },
-    { prop: 'createdAt', label: '创建时间', renderer: 'datetime' },
-    { prop: 'updatedAt', label: '更新时间', renderer: 'datetime' },
-  ],
-  actionColumn: {
-    label: '操作',
-    slots: 'action',
-    minWidth: 200,
-    fixed: 'right',
-  },
-  height: '100%',
-});
+const [tableProps, { reload }] = useTable(
+  computed(() => ({
+    api: getRoles,
+    columns: [
+      { prop: 'id', label: 'ID' },
+      { prop: 'name', label: t('rbac.roleName') },
+      { prop: 'createdAt', label: t('common.creationTime'), renderer: 'datetime' },
+      { prop: 'updatedAt', label: t('common.updateTime'), renderer: 'datetime' },
+    ],
+    actionColumn: {
+      label: t('common.actions'),
+      slots: 'action',
+      minWidth: 200,
+      fixed: 'right',
+    },
+    height: '100%',
+  })),
+);
 
 const roleUpsert = useOuterUpsert({
   success() {
@@ -93,7 +99,7 @@ const permissionsUpsert = useOuterUpsert({
 
 const onDelete = async (id: number) => {
   return deleteRole(id).then(() => {
-    ElMessage.success('删除成功');
+    ElMessage.success(t('common.deleteSuccess'));
     reload();
   });
 };

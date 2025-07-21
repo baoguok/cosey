@@ -29,7 +29,7 @@ export interface FieldSelectConvertedGroup {
 export type FieldSelectConvertedOption = FieldSelectConvertedGroup | FieldSelectObjectOption;
 
 export interface FieldSelectProps extends FieldComponentCommonProps {
-  componentProps?: Partial<ExtractPropTypes<typeof SelectProps>> & {
+  componentProps?: Partial<ExtractPropTypes<SelectProps>> & {
     'onUpdate:modelValue'?: (value: any) => void;
     onChange?: (value: any) => void;
     onVisibleChange?: (visible: boolean) => void;
@@ -75,11 +75,11 @@ export type FieldSelectExpose = {
   blur: () => void;
 };
 
-export function flatGroup(options: FieldSelectConvertedOption[]) {
+export function flatGroup(options: FieldSelectConvertedOption[], children = 'children') {
   return options
     .map((option) => {
-      if ('children' in option) {
-        return option.children;
+      if (children in option) {
+        return option[children as keyof typeof option];
       }
       return option;
     })

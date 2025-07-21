@@ -3,9 +3,12 @@ import { ElMention } from 'element-plus';
 import { defineComponent, h, type SlotsType, mergeProps } from 'vue';
 import { type FieldMentionProps, type FieldMentionSlots } from './mention';
 import { addNullablePlaceholder } from '../../../../utils';
+import { useLocale } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldMentionProps, { slots }) => {
+    const { t } = useLocale();
+
     return () => {
       if (props.readonly) {
         return addNullablePlaceholder(props.componentProps?.modelValue);
@@ -15,7 +18,7 @@ export default defineComponent(
         ElMention,
         mergeProps(
           {
-            placeholder: '请输入',
+            placeholder: t('co.common.pleaseInput'),
             clearable: true,
             style: {
               display: 'flex',

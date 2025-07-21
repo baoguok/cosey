@@ -7,6 +7,9 @@ import { computed, inject, ref, watch } from 'vue';
 import Select from '../../select.vue';
 import { Toolbar } from '../toolbar';
 import { toolbarContextKey } from '../toolbarContext';
+import { useLocale } from '../../../../../hooks';
+
+const { t } = useLocale();
 
 const { toolbar } = inject(toolbarContextKey)!;
 
@@ -36,7 +39,7 @@ const list = computed(() => {
   });
   return [
     {
-      label: '默认字号',
+      label: t('co.editor.defaultFontSize'),
       value: false,
     },
     ...sizeList,

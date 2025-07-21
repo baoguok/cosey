@@ -7,14 +7,14 @@ class FontStyleAttributor extends Parchment.StyleAttributor {
 }
 
 export const fonts = [
-  // 中文
+  // chiness
   ['Microsoft YaHei', '"Microsoft YaHei"'],
   ['PingFang SC', '"PingFang SC"'],
   ['Hiragino Sans GB', '"Hiragino Sans GB"'],
   ['SimSun', 'SimSun'],
   ['STHeiti', 'STHeiti'],
 
-  // 英文
+  // english
   ['Andale Mono', '"andale mono", monospace'],
   ['Arial', 'arial, helvetica, sans-serif'],
   ['Arial Black', '"arial black", sans-serif'],

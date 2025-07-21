@@ -5,9 +5,10 @@
  * 2. 自行销毁
  * 3. 自动调整图表尺寸
  * 4. 修改默认主题
+ * 5. 响应式渲染
  */
 
-import { computed, onBeforeUnmount, ref, type Ref, watch } from 'vue';
+import { computed, MaybeRef, onBeforeUnmount, ref, type Ref, unref, watch } from 'vue';
 import { echarts, type ECOption } from '../utils';
 import { useResizeObserver } from './useResizeObserver';
 
@@ -26,7 +27,10 @@ type OptionArgs =
       },
     ];
 
-export function useEcharts(elRef: Ref<HTMLElement | null>, options: UseEchartsOptions = {}) {
+export function useEcharts(
+  elRef: Ref<HTMLElement | null>,
+  options: MaybeRef<UseEchartsOptions> = {},
+) {
   let chart: ReturnType<typeof echarts.init> | null = null;
 
   const dispose = () => {
@@ -40,7 +44,14 @@ export function useEcharts(elRef: Ref<HTMLElement | null>, options: UseEchartsOp
     dispose();
   });
 
-  const optionQueue = ref<OptionArgs[]>(options.option ? [[options.option]] : []);
+  const optionQueue = ref<OptionArgs[]>(unref(options).option ? [[unref(options).option!]] : []);
+
+  watch(
+    () => unref(options),
+    () => {
+      setOption(unref(options).option || {});
+    },
+  );
 
   const setOption = (...args: OptionArgs) => {
     optionQueue.value = [...optionQueue.value, args];
@@ -49,7 +60,13 @@ export function useEcharts(elRef: Ref<HTMLElement | null>, options: UseEchartsOp
   const doSetOption = () => {
     if (chart && optionQueue.value.length) {
       for (const option of optionQueue.value) {
-        chart.setOption(...(option as [any]));
+        if (option.length === 1) {
+          chart.setOption(option[0], {
+            notMerge: true,
+          });
+        } else {
+          chart.setOption(...(option as [any]));
+        }
       }
       optionQueue.value = [];
     }

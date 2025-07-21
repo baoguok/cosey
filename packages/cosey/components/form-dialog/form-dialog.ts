@@ -4,11 +4,11 @@ import { type PropType, type EmitFn, type ExtractPropTypes } from 'vue';
 export const formDialogButtonProps = {
   confirmText: {
     type: String,
-    default: '确定',
+    default: 'co.common.confirm',
   },
   cancelText: {
     type: String,
-    default: '取消',
+    default: 'co.common.cancel',
   },
   confirmProps: {
     type: Object as PropType<ButtonProps>,

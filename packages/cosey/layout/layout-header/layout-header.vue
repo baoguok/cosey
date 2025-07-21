@@ -24,10 +24,10 @@ const layoutStore = useLayoutStore();
 const locked = useLockscreenObserver();
 
 const headerStyle = computed(() => {
-  const left = layoutStore.includeHorizontal ? 0 : layoutStore.sidebarWidth + 'px';
+  const insetInlineStart = layoutStore.includeHorizontal ? 0 : layoutStore.sidebarWidth + 'px';
 
-  const paddingRight = locked.value ? window.innerWidth - document.body.offsetWidth + 'px' : 0;
+  const paddingInlineEnd = locked.value ? window.innerWidth - document.body.offsetWidth + 'px' : 0;
 
-  return { left, paddingRight };
+  return { insetInlineStart, paddingInlineEnd };
 });
 </script>

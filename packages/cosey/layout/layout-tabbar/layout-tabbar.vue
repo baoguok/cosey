@@ -15,37 +15,37 @@
         >
           <template #label>
             <Icon v-if="item.meta.icon" :name="item.meta.icon" :class="`${prefixCls}-icon`" />
-            {{ item.meta.title }}
+            {{ _t(item.meta.title ?? '') }}
 
             <ContextMenu>
               <template #reference>
                 <div :class="`${prefixCls}-context-menu-reference`"></div>
               </template>
               <ContextMenuItem
-                title="重新加载"
+                :title="t('co.common.reload')"
                 icon="co:rotate-360"
                 :disabled="item.name !== layoutStore.activeTab"
                 @click="layoutStore.reload()"
               />
               <ContextMenuItem
-                title="关闭"
+                :title="t('co.common.close')"
                 icon="co:close-large"
                 :disabled="!item.meta.closable"
                 divided
                 @click="closeTab(item.name)"
               />
               <ContextMenuItem
-                title="关闭左侧标签页"
+                :title="t('co.tabbar.closeLeftTabs')"
                 :disabled="index === 0 || index === 1"
                 @click="closeLeftTabs(item.name, index)"
               />
               <ContextMenuItem
-                title="关闭右侧标签页"
+                :title="t('co.tabbar.closeRightTabs')"
                 :disabled="index === layoutStore.tabList.length - 1"
                 @click="closeRightTabs(item.name, index)"
               />
               <ContextMenuItem
-                title="关闭其他标签页"
+                :title="t('co.tabbar.closeOtherTabs')"
                 :disabled="
                   layoutStore.tabList.length === 1 ||
                   (layoutStore.tabList.length === 2 && index === 1)
@@ -73,10 +73,16 @@ import { ContextMenu, ContextMenuItem, Icon, useComponentConfig, useToken } from
 import Reload from './reload.vue';
 
 import useStyle from './style';
+import { useLocale } from '../../hooks';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({
   name: 'LayoutTabbar',
 });
+
+const { t } = useLocale();
+
+const { t: _t } = useI18n();
 
 const { prefixCls } = useComponentConfig('layout-tabbar');
 
@@ -162,10 +168,10 @@ const onTabRemove = (name: string | number) => {
 };
 
 const tabbarStyle = computed(() => {
-  const marginLeft = layoutStore.includeHorizontal ? layoutStore.sidebarWidth + 'px' : 0;
+  const marginInlineStart = layoutStore.includeHorizontal ? layoutStore.sidebarWidth + 'px' : 0;
 
   return {
-    marginLeft,
+    marginInlineStart,
   };
 });
 </script>

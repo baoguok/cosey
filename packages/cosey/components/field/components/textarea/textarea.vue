@@ -3,9 +3,12 @@ import { ElInput } from 'element-plus';
 import { defineComponent, h, type SlotsType } from 'vue';
 import { type FieldTextareaProps, type FieldTextareaSlots } from './textarea';
 import { addNullablePlaceholder } from '../../../../utils';
+import { useLocale } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldTextareaProps, { slots }) => {
+    const { t } = useLocale();
+
     return () => {
       if (props.readonly) {
         return addNullablePlaceholder(props.componentProps?.modelValue);
@@ -14,7 +17,7 @@ export default defineComponent(
       return h(
         ElInput,
         {
-          placeholder: '请输入',
+          placeholder: t('co.common.pleaseInput'),
           clearable: true,
           ...props.componentProps,
           type: 'textarea',

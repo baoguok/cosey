@@ -19,3 +19,4 @@ export * from './useRectObserver';
 export * from './useTreeCheck';
 export * from './useOptionalComponent';
 export * from './useMounted';
+export * from './useDir';

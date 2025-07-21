@@ -13,10 +13,10 @@
               :loading="submitting"
               @click="() => submit()"
             >
-              {{ submitText }}
+              {{ t(submitText) }}
             </el-button>
             <el-button v-if="!hideReset" v-bind="resetProps" @click="reset">
-              {{ resetText }}
+              {{ t(resetText) }}
             </el-button>
           </slot>
         </div>
@@ -42,6 +42,7 @@ import { OptionalWrapper } from '../optional-wrapper';
 import FormItem from './form-item.vue';
 import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
+import { useLocale } from '../../hooks';
 
 defineOptions({
   name: 'Form',
@@ -56,6 +57,8 @@ defineEmits<FormEmits>();
 const { prefixCls } = useComponentConfig('form', props);
 
 const { hashId } = useStyle(prefixCls);
+
+const { t } = useLocale();
 
 const { elFormProps, expose, reset, resetFields, submit, clearValidate, submitting } =
   useFormTemplate<FormProps>(props);

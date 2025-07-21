@@ -50,11 +50,11 @@ export async function wb2xlsx(wb: WorkBook, mime: string) {
     [
       `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>`,
       `<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">`,
-      `<Application>WPS 表格</Application>`,
+      `<Application>WPS Table</Application>`,
       `<HeadingPairs>`,
       `<vt:vector size="2" baseType="variant">`,
       `<vt:variant>`,
-      `<vt:lpstr>工作表</vt:lpstr>`,
+      `<vt:lpstr>Worksheet</vt:lpstr>`,
       `</vt:variant>`,
       `<vt:variant>`,
       `<vt:i4>${wb.sheets.length}</vt:i4>`,

@@ -28,9 +28,9 @@ interface ColorSchemeContext {
 }
 
 export const colorSchemeOptions: ColorSchemeOption[] = [
-  { label: '跟随系统', icon: 'co:circle-half-full', value: 'auto' },
-  { label: '浅色', icon: 'co:sun', value: 'light' },
-  { label: '深色', icon: 'co:moon', value: 'dark' },
+  { label: 'co.colorScheme.auto', icon: 'co:circle-half-full', value: 'auto' },
+  { label: 'co.colorScheme.light', icon: 'co:sun', value: 'light' },
+  { label: 'co.colorScheme.dark', icon: 'co:moon', value: 'dark' },
 ];
 
 export function useColorSchemeProvide() {

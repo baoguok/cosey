@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never">
     <template #header>
-      <span>体态分布</span>
+      <span>{{ t('analysis.bodyTypeDistribution') }}</span>
     </template>
     <div ref="elRef" style="height: 300px"></div>
   </el-card>
@@ -10,116 +10,118 @@
 <script lang="ts" setup>
 import { useStatisticsApi } from '@/api/statistics';
 import { useEcharts, useFetch } from 'cosey/hooks';
-import { useTemplateRef } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { getStatStature } = useStatisticsApi();
 
 const elRef = useTemplateRef('elRef');
 
-const { setOption } = useEcharts(elRef, {
-  option: {
-    dataset: [
-      {
-        source: [],
-        dimensions: ['gender', 'weight', 'height'],
-      },
-      {
-        transform: [
-          {
-            type: 'filter',
-            config: {
-              dimension: 'gender',
-              value: '男',
-            },
-          },
-        ],
-      },
-      {
-        transform: [
-          {
-            type: 'filter',
-            config: {
-              dimension: 'gender',
-              value: '女',
-            },
-          },
-        ],
-      },
-    ],
-    legend: {
-      right: 0,
-    },
-    tooltip: {
-      axisPointer: {
-        type: 'cross',
-      },
-    },
-    xAxis: {
-      type: 'value',
-      name: '体重',
-      axisLabel: {
-        formatter: '{value} kg',
-      },
-      splitLine: {
-        show: false,
-      },
-      min: 'dataMin',
-    },
-    yAxis: {
-      type: 'value',
-      name: '身高',
-      axisLabel: {
-        formatter: '{value} cm',
-      },
-      splitLine: {
-        show: false,
-      },
-      min: 'dataMin',
-    },
-    series: [
-      {
-        type: 'scatter',
-        name: '男',
-        encode: {
-          x: 'weight',
-          y: 'height',
-        },
-        datasetIndex: 1,
-        markLine: {
-          lineStyle: {
-            type: 'solid',
-          },
-          data: [{ type: 'average', name: 'AVG' }],
-        },
-      },
-      {
-        type: 'scatter',
-        name: '女',
-        encode: {
-          x: 'weight',
-          y: 'height',
-        },
-        datasetIndex: 2,
-        markLine: {
-          lineStyle: {
-            type: 'solid',
-          },
-          data: [{ type: 'average', name: 'AVG' }],
-        },
-      },
-    ],
-  },
-});
+const sourceData = ref<any[]>([]);
 
-useFetch<Record<string, any>>(() => getStatStature(), {
-  onSuccess(data) {
-    setOption({
+useEcharts(
+  elRef,
+  computed(() => ({
+    option: {
       dataset: [
         {
-          source: data,
+          source: sourceData.value,
+          dimensions: ['gender', 'weight', 'height'],
+        },
+        {
+          transform: [
+            {
+              type: 'filter',
+              config: {
+                dimension: 'gender',
+                value: '男',
+              },
+            },
+          ],
+        },
+        {
+          transform: [
+            {
+              type: 'filter',
+              config: {
+                dimension: 'gender',
+                value: '女',
+              },
+            },
+          ],
         },
       ],
-    });
+      legend: {
+        right: 0,
+      },
+      tooltip: {
+        axisPointer: {
+          type: 'cross',
+        },
+      },
+      xAxis: {
+        type: 'value',
+        name: t('analysis.weight'),
+        axisLabel: {
+          formatter: '{value} kg',
+        },
+        splitLine: {
+          show: false,
+        },
+        min: 'dataMin',
+      },
+      yAxis: {
+        type: 'value',
+        name: t('analysis.height'),
+        axisLabel: {
+          formatter: '{value} cm',
+        },
+        splitLine: {
+          show: false,
+        },
+        min: 'dataMin',
+      },
+      series: [
+        {
+          type: 'scatter',
+          name: t('analysis.male'),
+          encode: {
+            x: 'weight',
+            y: 'height',
+          },
+          datasetIndex: 1,
+          markLine: {
+            lineStyle: {
+              type: 'solid',
+            },
+            data: [{ type: 'average', name: 'AVG' }],
+          },
+        },
+        {
+          type: 'scatter',
+          name: t('analysis.female'),
+          encode: {
+            x: 'weight',
+            y: 'height',
+          },
+          datasetIndex: 2,
+          markLine: {
+            lineStyle: {
+              type: 'solid',
+            },
+            data: [{ type: 'average', name: 'AVG' }],
+          },
+        },
+      ],
+    },
+  })),
+);
+
+useFetch<any[]>(() => getStatStature(), {
+  onSuccess(data) {
+    sourceData.value = data;
   },
 });
 </script>

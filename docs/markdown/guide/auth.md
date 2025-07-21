@@ -19,9 +19,7 @@ Cosey 封装了认证流程：
 
 可以看到，登录和用户信息接口是基础且必须的，需要在 `createCosey` 配置项 `api` 进行配置：
 
-```ts
-// main.ts
-
+```ts [main.ts]
 import { createCosey } from 'cosey';
 import { useAuthApi } from '@/api/auth';
 
@@ -112,9 +110,7 @@ createCosey({
 
 然后创建 `ability` 实例：
 
-```ts
-// main.ts
-
+```ts [main.ts]
 import { AbilityBuilder, createMongoAbility, defineAbility } from '@casl/ability';
 import { ABILITY_TOKEN } from '@casl/vue';
 

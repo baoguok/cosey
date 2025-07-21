@@ -5,8 +5,10 @@
       <FormItem :class="`${prefixCls}-form-item-buttons`">
         <div :class="`${prefixCls}-buttons`">
           <slot name="button" :reset="reset" :submit="submit" :submitting="submitting">
-            <el-button @click="() => submit()" type="primary" :loading="submitting">查询</el-button>
-            <el-button @click="reset">重置</el-button>
+            <el-button @click="() => submit()" type="primary" :loading="submitting">
+              {{ t('co.form.search') }}
+            </el-button>
+            <el-button @click="reset">{{ t('co.form.reset') }}</el-button>
           </slot>
           <Toggle v-if="showToggle" v-model="innerCollapsed" />
         </div>
@@ -35,6 +37,7 @@ import { useTwoWayBinding } from '../../hooks';
 import { defineTemplate } from '../../utils';
 import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
+import { useLocale } from '../../hooks';
 
 defineOptions({
   name: 'FormQuery',
@@ -49,6 +52,8 @@ const emit = defineEmits<FormQueryEmits>();
 const { prefixCls } = useComponentConfig('form-query', props);
 
 const { hashId } = useStyle(prefixCls);
+
+const { t } = useLocale();
 
 // main
 const { elFormProps, expose, reset, submit, submitting } = useFormTemplate<FormQueryProps>(props);

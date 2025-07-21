@@ -5,7 +5,7 @@
         <div class="flex items-center justify-between">
           <div class="flex-1">
             <div class="label text-sm font-bold text-(--el-text-color-secondary)">
-              {{ column.label }}
+              {{ t(column.label) }}
             </div>
             <div class="text-2xl font-bold">
               <el-skeleton animated :loading="isFetching" :throttle="{ trailing: 500 }">
@@ -37,6 +37,9 @@ import { useStatisticsApi } from '@/api/statistics';
 import { useFetch } from 'cosey/hooks';
 import { type NumberFormatProps } from 'cosey/components';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { getStatOverview } = useStatisticsApi();
 
@@ -50,24 +53,24 @@ const columns = ref<
   }[]
 >([
   {
-    label: '总充值人民币',
+    label: 'analysis.totalRechargeCNY',
     prop: 'total_money',
     icon: 'carbon:money',
     type: 'currency',
     precision: 2,
   },
   {
-    label: '总用户数',
+    label: 'analysis.totalUsers',
     prop: 'total_user',
     icon: 'carbon:user-multiple',
   },
   {
-    label: '已认证用户数',
+    label: 'analysis.verifiedUsers',
     prop: 'total_verified_user',
     icon: 'carbon:user-identification',
   },
   {
-    label: '总注册设备数',
+    label: 'analysis.registeredDevices',
     prop: 'total_device',
     icon: 'carbon:devices',
   },

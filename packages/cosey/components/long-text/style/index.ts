@@ -22,8 +22,8 @@ const getLongTextStyle: GenerateStyle<LongTextToken, CSSObject> = (token) => {
 
       [`${componentCls}-copy`]: {
         position: 'absolute',
-        top: token.sizeXXS,
-        right: token.sizeXXS,
+        insetBlockStart: token.sizeXXS,
+        insetInlineEnd: token.sizeXXS,
         zIndex: 10,
       },
     },

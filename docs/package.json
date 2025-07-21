@@ -18,19 +18,20 @@
     "@vitejs/plugin-vue-jsx": "^4.1.1",
     "axios": "^1.7.9",
     "consola": "^3.3.3",
-    "element-plus": "^2.9.10",
+    "element-plus": "^2.10.4",
     "glob": "^11.0.2",
     "markdown-it-container": "^4.0.0",
     "tailwindcss": "^4.0.9",
     "vite": "^6.0.3",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vitepress": "^1.6.3"
+    "vitepress": "^1.6.3",
+    "vitepress-plugin-group-icons": "^1.6.1"
   },
   "peerDependencies": {
     "@tailwindcss/vite": "^4.0.9",
     "@types/markdown-it-container": "^2.0.10",
     "axios": "^1.7.9",
-    "element-plus": "^2.9.10",
+    "element-plus": "^2.10.4",
     "markdown-it-container": "^4.0.0",
     "tailwindcss": "^4.0.9",
     "vitepress": "^1.6.3"

@@ -24,13 +24,20 @@ export function getStyle(el: HTMLElement, prop: keyof CSSStyleDeclaration) {
 }
 
 /**
+ *
+ */
+export function getDir(el?: HTMLElement | null) {
+  return ((el && getStyle(el, 'direction')) as string) || 'ltr';
+}
+
+/**
  * 获取元素内容盒子宽度
  */
 export function getContextBoxWidth(el: HTMLElement) {
   return (
     el.clientWidth -
-    parseFloat(getStyle(el, 'paddingLeft') as string) -
-    parseFloat(getStyle(el, 'paddingRight') as string)
+    parseFloat(getStyle(el, 'paddingInlineStart') as string) -
+    parseFloat(getStyle(el, 'paddingInlineEnd') as string)
   );
 }
 

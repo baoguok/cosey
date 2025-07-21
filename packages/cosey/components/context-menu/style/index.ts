@@ -62,8 +62,8 @@ const getCommonPanelStyle: GenerateStyle<ContextMenuToken, CSSObject> = (token) 
   const { componentCls } = token;
   return {
     position: 'fixed',
-    left: 0,
-    top: 0,
+    insetInlineStart: 0,
+    insetBlockStart: 0,
     paddingBlock: token.paddingXXS,
     border: `${token.lineWidth} ${token.lineType} ${token.colorBorderSecondary}`,
     borderRadius: token.borderRadius,

@@ -6,9 +6,9 @@
         :indeterminate="isIndeterminate"
         @change="handleCheckAllChange"
       >
-        全选
+        {{ t('co.editor.checkAll') }}
       </el-checkbox>
-      <div :style="{ marginLeft: 'auto', fontSize: token.fontSizeSM }">
+      <div :style="{ marginInlineStart: 'auto', fontSize: token.fontSizeSM }">
         {{ modelValue.length }} / {{ options.length }}
       </div>
     </template>
@@ -21,6 +21,7 @@ import { type CheckboxValueType } from 'element-plus';
 import { ref, watch } from 'vue';
 import { Panel } from '../../../panel';
 import { useToken } from '../../../theme';
+import { useLocale } from '../../../../hooks';
 
 defineOptions({
   name: 'CheckboxGroupPanel',
@@ -38,6 +39,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:modelValue', value: any[]): void;
 }>();
+
+const { t } = useLocale();
 
 const { token } = useToken();
 

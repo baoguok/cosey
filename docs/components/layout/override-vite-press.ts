@@ -74,7 +74,7 @@ const useStyle = getOverrideStyleHook('OverrideVitepress', (token) => {
           marginBlock: token.margin,
 
           'li + li': {
-            marginTop: token.marginXS,
+            marginBlockStart: token.marginXS,
           },
         },
 

@@ -10,11 +10,16 @@ import {
   ref,
   shallowRef,
   useTemplateRef,
+  MaybeRef,
+  unref,
 } from 'vue';
 
+import { useLocale } from '../hooks';
+import { toRefs } from '@vueuse/core';
+
 const mapTypeTitle = {
-  edit: '编辑',
-  add: '新增',
+  edit: 'co.common.edit',
+  add: 'co.common.add',
 };
 
 export interface UseUpsertExposeOptions {
@@ -34,7 +39,7 @@ export interface UseUpsertOptions<Model, Row = Model, Data = Model> {
   title?: string;
   stuffTitle?: string;
   model: Model;
-  show?: () => void;
+  show?: (type: UpsertType, row?: Row) => void;
   details?: (row: Row) => any;
   beforeFill?: (row: Row) => any;
   beforeSubmit?: (model: Model) => Data | Promise<Data>;
@@ -71,7 +76,7 @@ export function useUpsert<
   Model extends Record<string, any>,
   Row extends Record<string, any> = Model,
   Data = any,
->(options: UseUpsertOptions<Model, Row>): UseUpsertReturn<Model, Row> {
+>(options: MaybeRef<UseUpsertOptions<Model, Row>>): UseUpsertReturn<Model, Row> {
   const {
     model,
     stuffTitle,
@@ -85,7 +90,9 @@ export function useUpsert<
     add,
     edit,
     success,
-  } = options;
+  } = toRefs(computed(() => unref(options)));
+
+  const { t, lang } = useLocale();
 
   const type = ref<UpsertType>('add');
 
@@ -93,10 +100,13 @@ export function useUpsert<
   const visible = ref(false);
 
   const mergedTitle = computed(() => {
-    return title || mapTypeTitle[type.value] + (stuffTitle || '');
+    return (
+      unref(title) ||
+      t(mapTypeTitle[type.value]) + (lang.value === 'zh-cn' ? '' : ' ') + (unref(stuffTitle) || '')
+    );
   });
 
-  const initialModel = cloneDeep(model);
+  const initialModel = cloneDeep(unref(model));
 
   const modelKeys = Object.keys(initialModel);
 
@@ -114,19 +124,19 @@ export function useUpsert<
   const formRef = useTemplateRef(formRefKey);
 
   const onSubmit = async () => {
-    const data = (await beforeSubmit?.(model)) || model;
+    const data = (await unref(beforeSubmit)?.(unref(model))) || unref(model);
 
     let res: any;
 
     if (type.value === 'add') {
-      res = await add?.(data);
-      ElMessage.success(addSuccessText || '新增成功');
+      res = await unref(add)?.(data);
+      ElMessage.success(unref(addSuccessText) || t('co.common.addSuccess'));
     } else {
-      res = await edit?.(data);
-      ElMessage.success(editSuccessText || '编辑成功');
+      res = await unref(edit)?.(data);
+      ElMessage.success(unref(editSuccessText) || t('co.common.editSuccess'));
     }
 
-    success?.(res);
+    unref(success)?.(res);
     exposeOptions?.success?.();
   };
 
@@ -147,26 +157,26 @@ export function useUpsert<
     edit: async (_row: Row) => {
       type.value = 'edit';
       row.value = _row;
-      deepAssign(model, initialModel);
+      deepAssign(unref(model), initialModel);
 
       visible.value = true;
-      show?.();
+      unref(show)?.(type.value, row.value);
 
       let filledRow = _row;
-      if (details) {
-        filledRow = await details(_row);
+      if (unref(details)) {
+        filledRow = await unref(details)!(_row);
       }
       filledRow = { ...filledRow };
-      filledRow = beforeFill?.(filledRow) || filledRow;
-      Object.assign(model, pick(filledRow, modelKeys));
+      filledRow = unref(beforeFill)?.(filledRow) || filledRow;
+      Object.assign(unref(model), pick(filledRow, modelKeys));
     },
     add: () => {
       type.value = 'add';
       row.value = undefined;
-      deepAssign(model, initialModel);
+      deepAssign(unref(model), initialModel);
 
       visible.value = true;
-      show?.();
+      unref(show)?.(type.value);
     },
     setData: (_data: Data) => {
       data.value = _data;

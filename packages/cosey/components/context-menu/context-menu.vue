@@ -85,8 +85,8 @@ watch(visible, (visible) => {
 
 const pointStyle = computed(() => {
   return {
-    left: `${pointX.value}px`,
-    top: `${pointY.value}px`,
+    insetInlineStart: `${pointX.value}px`,
+    insetBlockStart: `${pointY.value}px`,
     zIndex: zIndex.value,
   };
 });
@@ -99,8 +99,8 @@ const backdropStyle = computed(() => {
 
 const menuStyle = computed(() => {
   return {
-    left: `${x.value}px`,
-    top: `${y.value}px`,
+    insetInlineStart: `${x.value}px`,
+    insetBlockStart: `${y.value}px`,
     zIndex: zIndex.value,
   };
 });

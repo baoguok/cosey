@@ -38,6 +38,7 @@ import {
 import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
 import { useToken } from '../theme';
+import { useLocale } from '../../hooks';
 
 defineOptions({
   name: 'FormList',
@@ -59,6 +60,8 @@ const slots = defineSlots<FormListSlots<T>>();
 const emit = defineEmits<FormListEmits>();
 
 const attrs = useAttrs() as any;
+
+const { t } = useLocale();
 
 const { prefixCls } = useComponentConfig('form-list', props);
 
@@ -264,7 +267,7 @@ const template = defineTemplate(() => {
             {!mergedReadonly.value && showAddButton.value && (
               <ElButton link type="primary" onClick={handleAdd}>
                 <Icon name="co:add-large" class={`${prefixCls.value}-plus-icon`} />
-                {props.addText}
+                {t(props.addText)}
               </ElButton>
             )}
           </div>

@@ -5,7 +5,7 @@ export default defineRoutes({
   name: 'Blog',
   component: MergedLayoutBase,
   meta: {
-    title: '博客管理',
+    title: 'post.blog',
     icon: 'carbon:blog',
     authority: (ability) =>
       ability.can('read', 'blog_type') ||
@@ -18,7 +18,7 @@ export default defineRoutes({
       name: 'BlogPostTypes',
       component: () => import('@/views/blog/post-types/index.vue'),
       meta: {
-        title: '分类管理',
+        title: 'post.categories',
         icon: 'carbon:category',
         authority: (ability) => ability.can('read', 'blog_type'),
       },
@@ -28,7 +28,7 @@ export default defineRoutes({
       name: 'BlogPosts',
       component: () => import('@/views/blog/posts/index.vue'),
       meta: {
-        title: '文章管理',
+        title: 'post.articles',
         icon: 'carbon:document',
         authority: (ability) => ability.can('read', 'blog_post'),
       },
@@ -38,7 +38,7 @@ export default defineRoutes({
       name: 'BlogPostComments',
       component: () => import('@/views/blog/post-comments/index.vue'),
       meta: {
-        title: '评论管理',
+        title: 'post.comments',
         icon: 'carbon:chat',
         authority: (ability) => ability.can('read', 'blog_comment'),
       },

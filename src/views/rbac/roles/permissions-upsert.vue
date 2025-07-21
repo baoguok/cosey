@@ -23,7 +23,10 @@
 import { usePermissionsApi } from '@/api/rbac/permissions';
 import { useRolesApi } from '@/api/rbac/roles';
 import { useFetch, useUpsert } from 'cosey/hooks';
-import { nextTick, reactive, ref, useTemplateRef } from 'vue';
+import { computed, nextTick, reactive, ref, useTemplateRef } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { getPermissionTree } = usePermissionsApi();
 const { getRolePermissions, updateRolePermissions } = useRolesApi();
@@ -40,18 +43,20 @@ const model = reactive<Model>({
 
 const editId = ref<number>();
 
-const { dialogProps, formProps, expose } = useUpsert<Model, { id: number }>({
-  stuffTitle: '权限',
-  model,
-  show(_, row) {
-    editId.value = row!.id;
-    execute();
-  },
-  edit: () =>
-    updateRolePermissions(editId.value!, {
-      permissionIds: treeRef.value?.getCheckedKeys(),
-    }),
-});
+const { dialogProps, formProps, expose } = useUpsert<Model, { id: number }>(
+  computed(() => ({
+    stuffTitle: t('rbac.permission'),
+    model,
+    details(row) {
+      editId.value = row!.id;
+      execute();
+    },
+    edit: () =>
+      updateRolePermissions(editId.value!, {
+        permissionIds: treeRef.value?.getCheckedKeys(),
+      }),
+  })),
+);
 
 defineExpose(expose);
 

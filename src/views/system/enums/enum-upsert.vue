@@ -1,16 +1,19 @@
 <template>
   <co-form-dialog v-bind="dialogProps">
     <co-form v-bind="formProps" label-width="auto" width="sm">
-      <co-form-item v-model="model.name" prop="name" label="名称" required />
-      <co-form-item v-model="model.remark" prop="remark" label="备注" />
+      <co-form-item v-model="model.name" prop="name" :label="t('enum.name')" required />
+      <co-form-item v-model="model.remark" prop="remark" :label="t('enum.remark')" />
     </co-form>
   </co-form-dialog>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useEnumsApi } from '@/api/system/enums';
 import { useUpsert } from 'cosey/hooks';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { addEnum, updateEnum } = useEnumsApi();
 
@@ -30,15 +33,17 @@ const model = reactive<Model>({
 
 const editId = ref<number>();
 
-const { dialogProps, formProps, expose } = useUpsert<Model, Row>({
-  stuffTitle: '枚举',
-  model,
-  beforeFill(row) {
-    editId.value = row.id;
-  },
-  add: () => addEnum(model),
-  edit: () => updateEnum(editId.value!, model),
-});
+const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
+  computed(() => ({
+    stuffTitle: t('enum.enum'),
+    model,
+    beforeFill(row) {
+      editId.value = row.id;
+    },
+    add: () => addEnum(model),
+    edit: () => updateEnum(editId.value!, model),
+  })),
+);
 
 defineExpose(expose);
 </script>

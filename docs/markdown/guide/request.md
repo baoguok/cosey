@@ -6,9 +6,7 @@ cosey 对 `axios` 进行了封装，对外提供了 `useRequest` 钩子来创建
 
 通常接口根据不同模块存放在不同的文件中，例如博客模块的接口，就可以这样存放和定义：
 
-```ts
-// `api/blog.ts`
-
+```ts [api/blog.ts]
 import { useRequest } from 'cosey';
 
 const Api = {

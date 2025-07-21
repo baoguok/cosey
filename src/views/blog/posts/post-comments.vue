@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     v-model="visible"
-    title="评论"
+    :title="t('post.comment')"
     :style="{ maxWidth: 'calc(100vw - 32px)' }"
     :width="1200"
   >
@@ -11,7 +11,7 @@
           :actions="[
             {
               hidden: cannot('update', 'blog_comment'),
-              label: '编辑',
+              label: t('common.edit'),
               icon: 'carbon:edit',
               onClick: () => {
                 upsert.edit(row);
@@ -19,11 +19,11 @@
             },
             {
               hidden: cannot('delete', 'blog_comment'),
-              label: '删除',
+              label: t('common.delete'),
               icon: 'carbon:trash-can',
               type: 'danger',
               popconfirm: {
-                title: '确定删除？',
+                title: t('common.confirmDelete'),
                 confirm: () => onDelete(row.id),
               },
             },
@@ -43,7 +43,10 @@ import { usePostCommentsApi } from '@/api/blog';
 import { useTable } from 'cosey/components';
 import { useOuterUpsert } from 'cosey/hooks';
 import { ElMessage } from 'element-plus';
-import { nextTick, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { cannot } = useAbility();
 
@@ -53,32 +56,34 @@ const visible = ref(false);
 
 const { getPostComments, deletePostComment } = usePostCommentsApi();
 
-const [tableProps, { reload }] = useTable({
-  api: getPostComments,
-  columns: [
-    { prop: 'id', label: 'ID' },
-    { prop: 'user.nickname', label: '用户' },
-    { prop: 'content', label: '内容' },
-    { prop: 'createdAt', label: '创建时间', renderer: 'datetime' },
-    { prop: 'updatedAt', label: '更新时间', renderer: 'datetime' },
-  ],
-  actionColumn: {
-    label: '操作',
-    slots: 'action',
-    fixed: 'right',
-    minWidth: 140,
-  },
-  height: '100%',
+const [tableProps, { reload }] = useTable(
+  computed(() => ({
+    api: getPostComments,
+    columns: [
+      { prop: 'id', label: 'ID' },
+      { prop: 'user.nickname', label: t('post.user') },
+      { prop: 'content', label: t('post.content') },
+      { prop: 'createdAt', label: t('common.creationTime'), renderer: 'datetime' },
+      { prop: 'updatedAt', label: t('common.updateTime'), renderer: 'datetime' },
+    ],
+    actionColumn: {
+      label: t('common.actions'),
+      slots: 'action',
+      fixed: 'right',
+      minWidth: 140,
+    },
+    height: '100%',
 
-  immediate: false,
+    immediate: false,
 
-  beforeFetch(params) {
-    return {
-      ...params,
-      postId: postId.value,
-    };
-  },
-});
+    beforeFetch(params) {
+      return {
+        ...params,
+        postId: postId.value,
+      };
+    },
+  })),
+);
 
 const upsert = useOuterUpsert({
   success() {
@@ -88,7 +93,7 @@ const upsert = useOuterUpsert({
 
 const onDelete = async (id: number) => {
   return deletePostComment(id).then(() => {
-    ElMessage.success('删除成功');
+    ElMessage.success(t('common.deleteSuccess'));
     reload();
   });
 };

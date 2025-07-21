@@ -8,6 +8,7 @@ import classNames from 'classnames';
 
 import useStyle from './style';
 import { useComponentConfig } from '../../config-provider';
+import { useLocale } from '../../../hooks';
 
 const TableColumn = defineComponent({
   // 使用和ep一样的组件名
@@ -19,6 +20,8 @@ const TableColumn = defineComponent({
 
   setup(props: TableColumnProps) {
     const { prefixCls } = useComponentConfig('table-column');
+
+    const { t } = useLocale();
 
     const { hashId } = useStyle(prefixCls);
 
@@ -34,7 +37,7 @@ const TableColumn = defineComponent({
 
       if (!obj.formatter) {
         obj.formatter = (row, column, cellValue, index) => {
-          return renderer({ cellValue, row, column, index }, obj.renderer);
+          return renderer({ cellValue, row, column, index }, obj.renderer, t);
         };
 
         const renderType = typeof obj.renderer === 'object' ? obj.renderer.type : obj.renderer!;

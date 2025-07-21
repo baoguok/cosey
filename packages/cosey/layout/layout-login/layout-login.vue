@@ -1,22 +1,28 @@
 <template>
   <div :class="[hashId, prefixCls]">
-    <div :class="`${prefixCls}-title`">登录</div>
+    <div :class="`${prefixCls}-title`">{{ t('co.auth.login') }}</div>
     <el-form ref="formRef" :model="formState" @keyup.enter.prevent="onSubmit">
-      <el-form-item prop="username" :rules="[{ required: true, message: '请输入用户名' }]">
-        <el-input v-model="formState.username" size="large" placeholder="用户名">
+      <el-form-item
+        prop="username"
+        :rules="[{ required: true, message: t('co.auth.enterUsername') }]"
+      >
+        <el-input v-model="formState.username" size="large" :placeholder="t('co.auth.username')">
           <template #prefix>
             <co-icon name="co:user" :class="`${prefixCls}-icon`" />
           </template>
         </el-input>
       </el-form-item>
 
-      <el-form-item prop="password" :rules="[{ required: true, message: '请输入密码' }]">
+      <el-form-item
+        prop="password"
+        :rules="[{ required: true, message: t('co.auth.enterPassword') }]"
+      >
         <el-input
           v-model="formState.password"
           type="password"
           show-password
           size="large"
-          placeholder="密码"
+          :placeholder="t('co.auth.password')"
         >
           <template #prefix>
             <co-icon name="co:password" :class="`${prefixCls}-icon`" />
@@ -31,7 +37,7 @@
         :loading="loading"
         @click="onSubmit"
       >
-        登录
+        {{ t('co.auth.login') }}
       </el-button>
     </el-form>
   </div>
@@ -43,6 +49,9 @@ import { useUserStore } from '../../store';
 import { reactive, ref, useTemplateRef } from 'vue';
 import { useComponentConfig } from '../../components';
 import useStyle from './style';
+import { useLocale } from '../../hooks';
+
+const { t } = useLocale();
 
 const { prefixCls } = useComponentConfig('layout-login');
 const { hashId } = useStyle(prefixCls);

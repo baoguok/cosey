@@ -2,12 +2,12 @@
   <co-container full-page>
     <co-table v-bind="tableProps">
       <template #toolbar-left>
-        <el-button-group class="mr-4">
-          <el-button @click="expandAll()">展开所有</el-button>
-          <el-button @click="collapseAll()">折叠所有</el-button>
+        <el-button-group class="me-4">
+          <el-button @click="expandAll()">{{ t('common.expandAll') }}</el-button>
+          <el-button @click="collapseAll()">{{ t('common.collapseAll') }}</el-button>
         </el-button-group>
         <el-button v-if="can('create', 'rbac_permission')" type="primary" @click="upsert.add()">
-          新增
+          {{ t('common.add') }}
         </el-button>
       </template>
       <template #action="{ row }">
@@ -15,7 +15,7 @@
           :actions="[
             {
               hidden: cannot('update', 'rbac_permission'),
-              label: '编辑',
+              label: t('common.edit'),
               icon: 'carbon:edit',
               onClick: () => {
                 upsert.edit(row);
@@ -23,11 +23,11 @@
             },
             {
               hidden: cannot('delete', 'rbac_permission'),
-              label: '删除',
+              label: t('common.delete'),
               icon: 'carbon:trash-can',
               type: 'danger',
               popconfirm: {
-                title: '确定删除？',
+                title: t('common.confirmDelete'),
                 confirm: () => onDelete(row.id),
               },
             },
@@ -48,6 +48,9 @@ import { ElMessage } from 'element-plus';
 import { usePermissionsApi } from '@/api/rbac/permissions';
 import { reactive } from 'vue';
 import { useAbility } from '@casl/vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 defineOptions({
   name: 'RbacPermissions',
@@ -65,14 +68,14 @@ const [tableProps, { reload, expandAll, collapseAll }] = useTable(
     },
     rowKey: 'id',
     columns: [
-      { prop: 'name', label: '名称', minWidth: 200 },
-      { prop: 'subject', label: '资源', minWidth: 180 },
-      { prop: 'action', label: '动作' },
-      { prop: 'conditions', label: '条件' },
-      { prop: 'order', label: '排序' },
+      { prop: 'name', label: t('rbac.name'), minWidth: 200 },
+      { prop: 'subject', label: t('rbac.resource'), minWidth: 180 },
+      { prop: 'action', label: t('rbac.action') },
+      { prop: 'conditions', label: t('rbac.condition') },
+      { prop: 'order', label: t('common.sort') },
     ],
     actionColumn: {
-      label: '操作',
+      label: t('common.actions'),
       slots: 'action',
       fixed: 'right',
       minWidth: 140,
@@ -90,7 +93,7 @@ const upsert = useOuterUpsert({
 
 const onDelete = async (id: number) => {
   return deletePermission(id).then(() => {
-    ElMessage.success('删除成功');
+    ElMessage.success(t('common.deleteSuccess'));
     reload();
   });
 };

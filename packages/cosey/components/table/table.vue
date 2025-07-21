@@ -26,7 +26,12 @@
           <slot name="toolbar-right"></slot>
           <div v-if="toolbarConfig" :class="`${prefixCls}-toolbar-preset`">
             <div v-if="toolbarConfig.reload">
-              <el-tooltip content="刷新" placement="top" :show-after="200" :hide-after="0">
+              <el-tooltip
+                :content="t('co.common.reload')"
+                placement="top"
+                :show-after="200"
+                :hide-after="0"
+              >
                 <el-button circle>
                   <Icon
                     name="co:rotate-360"
@@ -44,7 +49,12 @@
             </div>
 
             <div v-if="toolbarConfig.export">
-              <el-tooltip content="导出" placement="top" :show-after="200" :hide-after="0">
+              <el-tooltip
+                :content="t('co.table.export')"
+                placement="top"
+                :show-after="200"
+                :hide-after="0"
+              >
                 <el-button circle @click="exportVisible = true">
                   <Icon name="co:download" size="md" />
                 </el-button>
@@ -52,7 +62,7 @@
 
               <TableExport
                 v-model="exportVisible"
-                title="导出数据"
+                :title="t('co.table.exportData')"
                 :columns="renderedColumns"
                 :data="tableData"
               />
@@ -60,7 +70,7 @@
 
             <div v-if="toolbarConfig.fullScreen">
               <el-tooltip
-                :content="isFullPage ? '退出全屏' : '全屏'"
+                :content="isFullPage ? t('co.table.exitFullScreen') : t('co.table.fullScreen')"
                 placement="top"
                 :show-after="200"
                 :hide-after="0"
@@ -72,7 +82,12 @@
             </div>
 
             <div v-if="toolbarConfig.setting">
-              <el-tooltip content="列设置" placement="top" :show-after="200" :hide-after="0">
+              <el-tooltip
+                :content="t('co.table.columnSettings')"
+                placement="top"
+                :show-after="200"
+                :hide-after="0"
+              >
                 <el-button ref="setting-ref" circle>
                   <Icon name="co:settings-adjust" size="md" />
                 </el-button>
@@ -154,6 +169,7 @@ import { useZIndex } from 'element-plus';
 
 import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
+import { useLocale } from '../../hooks';
 
 defineOptions({
   name: 'Table',
@@ -162,6 +178,8 @@ defineOptions({
 const props = defineProps(tableProps);
 
 const slots = defineSlots<TableSlots>();
+
+const { t } = useLocale();
 
 const { prefixCls } = useComponentConfig('table');
 
@@ -313,7 +331,7 @@ const reload = () => {
 };
 
 // expand
-const innerExpandRowKeys = ref<string[]>();
+const innerExpandRowKeys = ref<(string | number)[]>();
 
 watch(
   () => props.expandRowKeys,

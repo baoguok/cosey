@@ -7,8 +7,8 @@ export default getGlobalStyleHook('NProgress', (token) => {
 
       '.bar': {
         position: 'fixed',
-        top: 0,
-        left: 0,
+        insetBlockStart: 0,
+        insetInlineStart: 0,
         zIndex: 1030,
         width: '100%',
         height: '2px',
@@ -18,7 +18,7 @@ export default getGlobalStyleHook('NProgress', (token) => {
       '.peg': {
         display: 'block',
         position: 'absolute',
-        right: 0,
+        insetInlineEnd: 0,
         width: 100,
         height: '100%',
         boxShadow: `0 0 10px ${token.colorPrimary}, 0 0 5px ${token.colorPrimary}`,
@@ -28,8 +28,8 @@ export default getGlobalStyleHook('NProgress', (token) => {
 
       '.spinner': {
         position: 'fixed',
-        top: 15,
-        right: 15,
+        insetBlockStart: 15,
+        insetInlineEnd: 15,
         zIndex: 1030,
         display: 'block',
       },

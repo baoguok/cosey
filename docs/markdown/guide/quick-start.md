@@ -134,8 +134,7 @@ bun add cosey@latest @iconify-json/carbon
 
 使用 `RootConfigProvider` 组件包裹 `router-view` 组件，以便提供全局且必要的配置：
 
-```html {3,5,9}
-<!-- App.vue -->
+```html {3,5,9} [App.vue]
 <template>
   <RootConfigProvider>
     <RouterView />
@@ -150,9 +149,7 @@ bun add cosey@latest @iconify-json/carbon
 
 创建后台首页文件：
 
-```html
-<!-- src/views/dashboard/workspace.vue -->
-
+```vue [src/views/dashboard/workspace.vue]
 <template>
   <co-container>
     <el-avatar :size="80" :src="userStore.userInfo?.avatar" />
@@ -161,16 +158,14 @@ bun add cosey@latest @iconify-json/carbon
 </template>
 
 <script lang="ts" setup>
-  import { useUserStore } from 'cosey';
-  const userStore = useUserStore();
+import { useUserStore } from 'cosey';
+const userStore = useUserStore();
 </script>
 ```
 
 创建路由定义：
 
-```ts
-// src/routes/dynamic/dashboard.ts
-
+```ts [src/routes/dynamic/dashboard.ts]
 import { MergedLayoutBase, defineRoutes } from 'cosey';
 
 /**
@@ -201,9 +196,7 @@ export default defineRoutes({
 
 创建统一导出路由文件：
 
-```ts
-// src/routes/index.ts
-
+```ts [src/routes/index.ts]
 import { mergeRouteModules } from 'cosey';
 
 // 批量导入动态路由模块
@@ -221,9 +214,7 @@ cosey 中路由分为动态路由和静态路由，动态路由需要经过身�
 
 新建 `auth.ts` 文件来保存认证相关的接口：
 
-```ts
-// src/api/auth.ts
-
+```ts [src/api/auth.ts]
 import { useRequest } from 'cosey';
 
 const Api = {
@@ -250,9 +241,7 @@ export const useAuthApi = () =>
 
 使用 `createCosey` 创建 `cosey` 对象，配置路由（cosey 会创建路由，无需再次创建），配置接口，并安装为 vue 插件：
 
-```ts
-// main.ts
-
+```ts [main.ts]
 import { createCosey } from 'cosey';
 import { useAuthApi } from '@/api/auth';
 import { dynamicRoutes, staticRoutes } from '@/routes';

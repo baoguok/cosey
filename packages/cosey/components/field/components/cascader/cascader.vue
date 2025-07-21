@@ -3,9 +3,12 @@ import { ElCascader } from 'element-plus';
 import { computed, defineComponent, h, mergeProps, type SlotsType } from 'vue';
 import { type FieldCascaderProps, type FieldCascaderSlots } from './cascader';
 import { getTreeLabelByValue, addNullablePlaceholder } from '../../../../utils';
+import { useLocale } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldCascaderProps, { slots }) => {
+    const { t } = useLocale();
+
     const componentProps = computed(() => {
       return props.componentProps ?? {};
     });
@@ -37,7 +40,7 @@ export default defineComponent(
         ElCascader,
         mergeProps(
           {
-            placeholder: '请选择',
+            placeholder: t('co.common.pleaseSelect'),
             clearable: true,
             style: {
               display: 'flex',

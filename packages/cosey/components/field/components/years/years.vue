@@ -4,9 +4,12 @@ import { defineComponent, h, mergeProps, type SlotsType } from 'vue';
 import { type FieldYearsProps, type FieldYearsSlots } from './years';
 import dayjs from 'dayjs';
 import { addNullablePlaceholder } from '../../../../utils';
+import { useLocale } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldYearsProps, { slots }) => {
+    const { t } = useLocale();
+
     return () => {
       if (props.readonly) {
         const value = props.componentProps?.modelValue;
@@ -19,7 +22,7 @@ export default defineComponent(
         ElDatePicker,
         mergeProps(
           {
-            placeholder: '请选择',
+            placeholder: t('co.common.pleaseSelect'),
             style: {
               display: 'flex',
               width: '100%',

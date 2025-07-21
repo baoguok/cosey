@@ -14,8 +14,8 @@ const getScrollViewStyle: GenerateStyle<ScrollViewToken, CSSObject> = (token) =>
 
       ' &::before, &::after': {
         position: 'absolute',
-        left: 0,
-        right: 0,
+        insetInlineStart: 0,
+        insetInlineEnd: 0,
         height: 40,
         zIndex: 1,
         content: '""',
@@ -25,12 +25,12 @@ const getScrollViewStyle: GenerateStyle<ScrollViewToken, CSSObject> = (token) =>
       },
 
       '&::before': {
-        top: 0,
+        insetBlockStart: 0,
         background: `linear-gradient(to bottom, ${token.colorBgElevated}, transparent)`,
       },
 
       '&::after': {
-        bottom: 0,
+        insetBlockEnd: 0,
         background: `linear-gradient(to top, ${token.colorBgElevated}, transparent)`,
       },
 
@@ -61,9 +61,9 @@ const getScrollViewStyle: GenerateStyle<ScrollViewToken, CSSObject> = (token) =>
 
       [`${componentCls}-track`]: {
         position: 'absolute',
-        top: 2,
-        right: 2,
-        bottom: 2,
+        insetBlockStart: 2,
+        insetInlineEnd: 2,
+        insetBlockEnd: 2,
         width: 6,
         touchAction: 'none',
         backgroundColor: 'transparent',
@@ -78,8 +78,8 @@ const getScrollViewStyle: GenerateStyle<ScrollViewToken, CSSObject> = (token) =>
 
       [`${componentCls}-thumb`]: {
         position: 'absolute',
-        top: 0,
-        left: 0,
+        insetBlockStart: 0,
+        insetInlineStart: 0,
         width: '100%',
         borderRadius: token.borderRadius,
         backgroundColor: token.colorTextTertiary,

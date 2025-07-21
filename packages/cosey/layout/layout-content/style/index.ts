@@ -9,7 +9,7 @@ export default getSimpleStyleHook('LayoutContent', (token) => {
       flexDirection: 'column',
       flex: 1,
       minWidth: 0,
-      transition: `margin-left ${token.motionDurationSlow}`,
+      transition: `margin-inline-start ${token.motionDurationSlow}`,
     },
   };
 });

@@ -37,6 +37,7 @@ import Icon from '../icon/icon.vue';
 import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
 import { useUpload } from '../upload-context';
+import { useLocale } from '../../hooks';
 
 defineOptions({
   name: 'Upload',
@@ -47,6 +48,8 @@ const props = withDefaults(defineProps<UploadProps>(), defaultUploadProps);
 defineSlots<UploadSlots>();
 
 const emit = defineEmits<UploadEmits>();
+
+const { t } = useLocale();
 
 const { prefixCls } = useComponentConfig('upload');
 
@@ -126,7 +129,11 @@ const onSelect = async () => {
 
   if (mergedLimit.value && fileList.value.length + files.length > mergedLimit.value) {
     emit('exceed');
-    ElMessage.warning(`最多只能上传${mergedLimit.value}个文件`);
+    ElMessage.warning(
+      t('co.upload.maxUpload', {
+        num: mergedLimit.value,
+      }),
+    );
     return;
   }
 

@@ -8,7 +8,7 @@ export default getSimpleStyleHook('LayoutSnugAside', (token) => {
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
-      borderRight: `${token.lineWidth} ${token.lineType} ${token.colorBorder}`,
+      borderInlineEnd: `${token.lineWidth} ${token.lineType} ${token.colorBorder}`,
       transition: `width ${token.motionDurationSlow}`,
 
       '&.is-hide': {

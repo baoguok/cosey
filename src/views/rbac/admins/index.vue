@@ -3,7 +3,7 @@
     <co-table v-bind="tableProps">
       <template #toolbar-left>
         <el-button v-if="can('create', 'rbac_user')" type="primary" @click="upsert.add()">
-          新增
+          {{ t('common.add') }}
         </el-button>
       </template>
       <template #action="{ row }">
@@ -11,7 +11,7 @@
           :actions="[
             {
               hidden: cannot('update', 'rbac_user'),
-              label: '编辑',
+              label: t('common.edit'),
               icon: 'carbon:edit',
               onClick: () => {
                 upsert.edit(row);
@@ -19,11 +19,11 @@
             },
             {
               hidden: cannot('delete', 'rbac_user') || row.id === userStore.userInfo?.id,
-              label: '删除',
+              label: t('common.delete'),
               icon: 'carbon:trash-can',
               type: 'danger',
               popconfirm: {
-                title: '确定删除？',
+                title: t('common.confirmDelete'),
                 confirm: () => onDelete(row.id),
               },
             },
@@ -44,6 +44,10 @@ import { useOuterUpsert } from 'cosey/hooks';
 import { useUserStore } from 'cosey';
 import { useTable } from 'cosey/components';
 import { useAbility } from '@casl/vue';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 defineOptions({
   name: 'RbacAdmins',
@@ -54,32 +58,34 @@ const { can, cannot } = useAbility();
 const { getAdmins, deleteAdmin } = useAdminsApi();
 const userStore = useUserStore();
 
-const [tableProps, { reload }] = useTable({
-  api: getAdmins,
-  columns: [
-    { prop: 'id', label: 'ID' },
-    { prop: 'username', label: '用户名' },
-    { prop: 'nickname', label: '昵称' },
-    { prop: 'avatar', label: '头像', renderer: 'media' },
-    {
-      prop: 'roles',
-      label: '角色',
-      renderer: {
-        type: 'tag',
-        path: 'name',
+const [tableProps, { reload }] = useTable(
+  computed(() => ({
+    api: getAdmins,
+    columns: [
+      { prop: 'id', label: 'ID' },
+      { prop: 'username', label: t('rbac.username') },
+      { prop: 'nickname', label: t('rbac.nickname') },
+      { prop: 'avatar', label: t('rbac.avatar'), renderer: 'media' },
+      {
+        prop: 'roles',
+        label: t('rbac.role'),
+        renderer: {
+          type: 'tag',
+          path: 'name',
+        },
       },
+      { prop: 'createdAt', label: t('common.creationTime'), renderer: 'datetime' },
+      { prop: 'updatedAt', label: t('common.updateTime'), renderer: 'datetime' },
+    ],
+    actionColumn: {
+      label: t('common.actions'),
+      slots: 'action',
+      fixed: 'right',
+      minWidth: 140,
     },
-    { prop: 'createdAt', label: '创建时间', renderer: 'datetime' },
-    { prop: 'updatedAt', label: '更新时间', renderer: 'datetime' },
-  ],
-  actionColumn: {
-    label: '操作',
-    slots: 'action',
-    fixed: 'right',
-    minWidth: 140,
-  },
-  height: '100%',
-});
+    height: '100%',
+  })),
+);
 
 const upsert = useOuterUpsert({
   success() {
@@ -89,7 +95,7 @@ const upsert = useOuterUpsert({
 
 const onDelete = async (id: number) => {
   return deleteAdmin(id).then(() => {
-    ElMessage.success('删除成功');
+    ElMessage.success(t('common.deleteSuccess'));
     reload();
   });
 };

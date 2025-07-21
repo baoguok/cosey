@@ -1,9 +1,8 @@
 import { type FieldComponentCommonProps } from '../common';
-import { type ExtractPropTypes } from 'vue';
-import { SelectProps } from 'element-plus/es/components/select-v2/src/defaults.mjs';
+import { type SelectV2Props } from 'element-plus/es/components/select-v2/src/defaults.mjs';
 
 export interface FieldSelectV2Props extends FieldComponentCommonProps {
-  componentProps?: Partial<ExtractPropTypes<typeof SelectProps>> & {
+  componentProps?: Partial<SelectV2Props> & {
     'onUpdate:modelValue'?: (value: any) => void;
     onChange?: (value: any) => void;
     onVisibleChange?: (visible: boolean) => void;
@@ -12,6 +11,9 @@ export interface FieldSelectV2Props extends FieldComponentCommonProps {
     onBlur?: (event: FocusEvent) => void;
     onFocus?: (event: FocusEvent) => void;
     [key: PropertyKey]: any;
+  } & {
+    labelKey?: string;
+    valueKey?: string;
   };
   componentSlots?: Partial<FieldSelectV2Slots>;
 }
@@ -41,3 +43,14 @@ export type FieldSelectV2Expose = {
   focus: () => void;
   blur: () => void;
 };
+
+export function flatGroup(options: SelectV2Props['options'], children = 'options') {
+  return options
+    .map((option) => {
+      if (children in option) {
+        return option[children as keyof typeof option];
+      }
+      return option;
+    })
+    .flat();
+}

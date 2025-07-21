@@ -16,7 +16,7 @@
           :indeterminate="checkAllIndeterminate"
           @change="onCheckAllChange"
         >
-          全部
+          {{ t('co.common.checkAll') }}
         </el-checkbox>
       </div>
       <el-scrollbar :max-height="maxHeight">
@@ -25,10 +25,14 @@
         </div>
       </el-scrollbar>
       <div :class="`${prefixCls}-footer`">
-        <el-button size="small" link @click="reset">恢复默认</el-button>
-        <div style="margin-left: auto">
-          <el-button size="small" link @click="cancel">取消</el-button>
-          <el-button size="small" link type="primary" @click="confirm">确定</el-button>
+        <el-button size="small" link @click="reset">{{ t('co.table.restoreDefault') }}</el-button>
+        <div style="margin-inline-start: auto">
+          <el-button size="small" link @click="cancel">
+            {{ t('co.common.cancel') }}
+          </el-button>
+          <el-button size="small" link type="primary" @click="confirm">
+            {{ t('co.common.confirm') }}
+          </el-button>
         </div>
       </div>
     </div>
@@ -53,6 +57,7 @@ import { useTreeCheck } from '../../../hooks';
 import { type TableColumnProps } from '../table-column/table-column';
 import { mapTree, walkTree } from '../../../utils';
 import { ElButton } from 'element-plus';
+import { useLocale } from '../../../hooks';
 
 defineOptions({
   name: 'TableColumnEditor',
@@ -63,6 +68,8 @@ const props = withDefaults(defineProps<TableColumnEditorProps>(), defaultTableCo
 const emit = defineEmits<TableColumnEditorEmits>();
 
 const { prefixCls } = useComponentConfig('table-column-editor');
+
+const { t } = useLocale();
 
 const { hashId } = useStyle(prefixCls);
 

@@ -3,24 +3,26 @@
     <el-popconfirm v-if="popconfirm" v-bind="popconfirm">
       <template #reference>
         <el-button v-bind="omit(buttonProps, 'popconfirm')" style="margin: 0">
-          <Icon v-if="icon" :name="icon" :style="{ marginRight: token.marginXXS + 'px' }" />
+          <Icon v-if="icon" :name="icon" :style="{ marginInlineEnd: token.marginXXS + 'px' }" />
           {{ label }}
         </el-button>
       </template>
       <template #actions="{ confirm, cancel }">
-        <el-button size="small" @click="(event) => onCancel(event, cancel)">否</el-button>
+        <el-button size="small" @click="(event) => onCancel(event, cancel)">
+          {{ t('co.common.no') }}
+        </el-button>
         <el-button
           type="danger"
           size="small"
           :loading="loading"
           @click="(event) => onConfirm(event, confirm)"
         >
-          是
+          {{ t('co.common.yes') }}
         </el-button>
       </template>
     </el-popconfirm>
     <el-button v-else v-bind="buttonProps" style="margin: 0">
-      <Icon v-if="icon" :name="icon" :style="{ marginRight: token.marginXXS + 'px' }" />
+      <Icon v-if="icon" :name="icon" :style="{ marginInlineEnd: token.marginXXS + 'px' }" />
       {{ label }}
     </el-button>
   </template>
@@ -33,6 +35,7 @@ import { tableActionItemProps } from './item';
 import { computed, ref } from 'vue';
 import Icon from '../icon/icon.vue';
 import { useToken } from '../theme';
+import { useLocale } from '../../hooks';
 
 defineOptions({
   name: 'TableActionItem',
@@ -40,6 +43,8 @@ defineOptions({
 });
 
 const props = defineProps(tableActionItemProps);
+
+const { t } = useLocale();
 
 const { token } = useToken();
 

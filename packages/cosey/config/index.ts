@@ -44,6 +44,7 @@ export interface LayoutComponents {
   notFound?: string | Component;
   internalServerError?: string | Component;
   empty?: string | Component;
+  locale?: string | Component;
 }
 
 export interface LayoutSlots {

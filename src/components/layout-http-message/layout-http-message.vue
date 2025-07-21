@@ -7,18 +7,20 @@
     <el-drawer
       v-model="open"
       size="720px"
-      title="报文"
+      :title="t('httpMessage.message')"
       append-to-body
       :header-class="`${prefixCls}-header`"
       :class="[hashId, prefixCls]"
     >
       <template #header>
         <el-button-group>
-          <el-button text bg @click="httpMessageManager.clearHttpMessage()">清除</el-button>
+          <el-button text bg @click="httpMessageManager.clearHttpMessage()">
+            {{ t('httpMessage.clear') }}
+          </el-button>
         </el-button-group>
       </template>
 
-      <el-empty v-if="httpMessageList.length === 0" description="无请求" />
+      <el-empty v-if="httpMessageList.length === 0" :description="t('httpMessage.noRequest')" />
       <el-tabs v-else tab-position="left" :class="`${prefixCls}-tabs`">
         <el-tab-pane
           v-for="(message, i) in httpMessageList"
@@ -32,24 +34,27 @@
           </template>
           <el-tabs :class="`${prefixCls}-right-tabs`">
             <div :class="`${prefixCls}-right-tabs-wrapper`">
-              <el-tab-pane label="标头">
+              <el-tab-pane :label="t('httpMessage.headers')">
                 <el-descriptions
                   :column="1"
                   label-width="160px"
                   border
-                  title="常规"
+                  :title="t('httpMessage.general')"
                   size="small"
-                  :style="{ marginBottom: token.marginLG + 'px' }"
+                  :style="{ marginBlockEnd: token.marginLG + 'px' }"
                 >
-                  <el-descriptions-item label="请求 URL">
+                  <el-descriptions-item :label="t('httpMessage.requestUrl')">
                     <div style="word-break: break-all">
                       {{ message.normal?.url }}
                     </div>
                   </el-descriptions-item>
-                  <el-descriptions-item label="请求 Method">
+                  <el-descriptions-item :label="t('httpMessage.requestMethod')">
                     {{ message.normal?.method }}
                   </el-descriptions-item>
-                  <el-descriptions-item v-if="message.normal?.status" label="状态代码">
+                  <el-descriptions-item
+                    v-if="message.normal?.status"
+                    :label="t('httpMessage.statusCode')"
+                  >
                     <span>{{ message.normal?.status.code }}</span>
                     <span>{{ message.normal?.status.text }}</span>
                   </el-descriptions-item>
@@ -59,9 +64,9 @@
                   :column="1"
                   label-width="160px"
                   border
-                  title="响应标头"
+                  :title="t('httpMessage.responseHeaders')"
                   size="small"
-                  :style="{ marginBottom: token.marginLG + 'px' }"
+                  :style="{ marginBlockEnd: token.marginLG + 'px' }"
                 >
                   <el-descriptions-item
                     v-for="item in message.res.headers"
@@ -77,7 +82,7 @@
                   :column="1"
                   label-width="160px"
                   border
-                  title="请求标头"
+                  :title="t('httpMessage.requestHeaders')"
                   size="small"
                 >
                   <el-descriptions-item
@@ -93,14 +98,14 @@
               </el-tab-pane>
               <el-tab-pane
                 v-if="message.payload.searchParams?.length || message.payload.body"
-                label="负载"
+                :label="t('httpMessage.payload')"
               >
                 <el-descriptions
                   v-if="message.payload.searchParams?.length"
                   :column="1"
                   label-width="160px"
                   border
-                  title="查询字符串参数"
+                  :title="t('httpMessage.queryStringParameters')"
                   size="small"
                 >
                   <el-descriptions-item
@@ -116,23 +121,23 @@
                 <div v-if="message.payload.body">
                   <div
                     :style="{
-                      marginBottom: token.marginSM + 'px',
+                      marginBlockEnd: token.marginSM + 'px',
                       fontWeight: 'bold',
                     }"
                   >
-                    请求负载
+                    {{ t('httpMessage.requestPayload') }}
                   </div>
                   <HttpBodyPreview :type="message.payload.type" :body="message.payload.body" />
                 </div>
               </el-tab-pane>
-              <el-tab-pane label="预览">
+              <el-tab-pane :label="t('httpMessage.preview')">
                 <HttpBodyPreview
                   v-if="message.res"
                   :type="message.res.type"
                   :body="message.res.body"
                 />
               </el-tab-pane>
-              <!-- <el-tab-pane label="响应">
+              <!-- <el-tab-pane :label="t('httpMessage.response')">
                 {{ message.res?.body }}
               </el-tab-pane> -->
             </div>
@@ -151,6 +156,9 @@ import HttpBodyPreview from './http-body-preview.vue';
 
 import useStyle from './style';
 import { type HttpMessage, HttpMessageManager } from '@cosey/mock';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 defineOptions({
   name: 'LayoutHttpMessage',

@@ -12,18 +12,18 @@
       <el-dropdown-menu :class="[hashId, `${prefixCls}-dropdown`]">
         <el-dropdown-item @click="toHome">
           <Icon name="co:home" size="lg" />
-          <span :class="`${prefixCls}-item-title`">首页</span>
+          <span :class="`${prefixCls}-item-title`">{{ t('co.common.home') }}</span>
         </el-dropdown-item>
 
         <component :is="UserMenu" />
 
         <el-dropdown-item @click="toChangePassword">
           <Icon name="co:password" size="lg" />
-          <span :class="`${prefixCls}-item-title`">修改密码</span>
+          <span :class="`${prefixCls}-item-title`">{{ t('co.auth.changePassword') }}</span>
         </el-dropdown-item>
         <el-dropdown-item divided @click="logout">
           <Icon name="co:logout" size="lg" />
-          <span :class="`${prefixCls}-item-title`">退出</span>
+          <span :class="`${prefixCls}-item-title`">{{ t('co.auth.logout') }}</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </template>
@@ -38,10 +38,13 @@ import { Icon, useComponentConfig } from '../../components';
 
 import useStyle from './style';
 import { defineTemplate } from '../../utils';
+import { useLocale } from '../../hooks';
 
 defineOptions({
   name: 'LayoutUserMenu',
 });
+
+const { t } = useLocale();
 
 const { prefixCls } = useComponentConfig('layout-user-menu');
 

@@ -395,6 +395,10 @@ type FieldSelectOption =
   | boolean;
 ```
 
+#### selectv2
+
+同 `element-plus` 的 [ElSelectV2](https://element-plus.org/zh-CN/component/select-v2.html) 组件。
+
 #### slider
 
 同 `element-plus` 的 [ElSlider](https://element-plus.org/zh-CN/component/slider.html) 组件。

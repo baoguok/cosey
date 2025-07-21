@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted } from 'vue';
+import { computed, onMounted, onUnmounted, provide, watch } from 'vue';
 import useMergeTheme from './useMergeTheme';
 import {
   useConfig,
@@ -16,6 +16,8 @@ import {
 import { useThemeProvide } from '../theme';
 import useOverrideElementPlus from './override-element-plus';
 import { ThemeManager } from '../theme/theme-context';
+import { localeContextKey, outsideLocale } from '../../hooks';
+import { en } from '../../locale';
 
 defineOptions({
   name: 'ConfigProvider',
@@ -45,6 +47,19 @@ const configProvider: ConfigProviderInnerProps = {
 };
 
 useConfigProvide(configProvider);
+
+// locale
+provide(
+  localeContextKey,
+  computed(() => props.locale),
+);
+
+watch(
+  () => props.locale,
+  () => {
+    outsideLocale.value = props.locale || en;
+  },
+);
 
 // theme
 const themeManager = new ThemeManager(mergedTheme);

@@ -4,7 +4,7 @@
       <Icon v-if="layoutStore.isMobile" size="xl" name="co:search" />
       <div v-else :class="`${prefixCls}-button-wrapper`">
         <Icon name="co:search" size="lg" />
-        <span :class="`${prefixCls}-button-text`">搜索</span>
+        <span :class="`${prefixCls}-button-text`">{{ t('co.form.search') }}</span>
         <span :class="`${prefixCls}-button-kbd`">
           {{ controlKey }}
           <kbd>K</kbd>
@@ -23,7 +23,7 @@
         <el-input
           ref="input"
           v-model="searchValue"
-          placeholder="搜索页面"
+          :placeholder="t('co.search.searchPage')"
           size="large"
           :class="`${prefixCls}-input`"
           clearable
@@ -35,7 +35,9 @@
         </el-input>
       </template>
       <el-scrollbar :class="`${prefixCls}-content`" max-height="calc(100vh - 15vh - 50px - 150px)">
-        <div v-if="searchResult.length === 0" :class="`${prefixCls}-empty`">暂无搜索结果</div>
+        <div v-if="searchResult.length === 0" :class="`${prefixCls}-empty`">
+          {{ t('co.search.noResults') }}
+        </div>
         <template v-else>
           <div
             v-for="(item, index) in searchResult"
@@ -59,16 +61,16 @@
         <div :class="`${prefixCls}-footer`">
           <div>
             <Icon name="co:return" />
-            <span :class="`${prefixCls}-footer-text`">选择</span>
+            <span :class="`${prefixCls}-footer-text`">{{ t('co.search.select') }}</span>
           </div>
           <div>
             <Icon name="co:arrow-up" />
             <Icon name="co:arrow-down" />
-            <span :class="`${prefixCls}-footer-text`">切换</span>
+            <span :class="`${prefixCls}-footer-text`">{{ t('co.search.switch') }}</span>
           </div>
           <div>
             <small>Esc</small>
-            <span :class="`${prefixCls}-footer-text`">关闭</span>
+            <span :class="`${prefixCls}-footer-text`">{{ t('co.common.close') }}</span>
           </div>
         </div>
       </template>
@@ -89,10 +91,16 @@ import { Icon, useComponentConfig } from '../../components';
 import useStyle from './style';
 import { type InputInstance, ElButton } from 'element-plus';
 import { useTimeoutFn } from '@vueuse/core';
+import { useLocale } from '../../hooks';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({
   name: 'LayoutSearch',
 });
+
+const { t } = useLocale();
+
+const { t: _t } = useI18n();
 
 const { prefixCls } = useComponentConfig('layout-search');
 
@@ -115,7 +123,7 @@ const menuOptions = computed(() => {
 
   function recur(items: MenuItem[], parent?: string) {
     items.forEach((item) => {
-      const label = parent ? parent + ' > ' + (item.title as string) : (item.title as string);
+      const label = parent ? parent + ' > ' + _t(item.title as string) : _t(item.title as string);
 
       if (!item.children || item.children.length === 0) {
         result.push({

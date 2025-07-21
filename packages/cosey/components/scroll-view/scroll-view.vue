@@ -64,7 +64,7 @@ const hide = ref(false);
 const thumbStyle = computed(() => {
   return {
     height: height.value + 'px',
-    top: top.value + 'px',
+    insetBlockStart: top.value + 'px',
   };
 });
 

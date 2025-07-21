@@ -11,8 +11,8 @@ const getCloseStyle: GenerateStyle<CloseToken, CSSObject> = (token) => {
   return {
     [componentCls]: {
       position: 'absolute',
-      top: 40,
-      right: 40,
+      insetBlockStart: 40,
+      insetInlineEnd: 40,
       zIndex: 10,
       boxSizing: 'border-box',
       display: 'flex',

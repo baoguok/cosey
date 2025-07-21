@@ -18,6 +18,7 @@
     "docs:dev": "tsx ./scripts/build-docs-comp.ts && cross-env NODE_ENV=development vitepress dev docs --force --port 5174",
     "docs:build": "tsx ./scripts/build-docs-comp.ts && cross-env NODE_ENV=production vitepress build docs",
     "docs:preview": "vitepress preview docs",
+    "docs:add-cosey": "pnpm -F @cosey/docs add file:../lib-dist/cosey",
     "cosey:version": "tsx ./scripts/version.ts",
     "cosey:build": "tsx ./scripts/build.ts",
     "cosey:publish": "tsx ./scripts/publish.ts",
@@ -36,9 +37,11 @@
     "@tailwindcss/vite": "^4.0.9",
     "axios": "^1.7.9",
     "cosey": "workspace:^",
-    "element-plus": "^2.9.10",
+    "dayjs": "^1.11.13",
+    "element-plus": "^2.10.4",
     "lodash-es": "^4.17.21",
     "vue": "^3.5.13",
+    "vue-i18n": "^11.1.10",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {

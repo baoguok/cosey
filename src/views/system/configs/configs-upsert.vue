@@ -4,7 +4,7 @@
       <co-form-item
         v-model="model.groupId"
         prop="groupId"
-        label="配置组"
+        :label="t('config.configGroup')"
         field-type="select"
         :field-props="{
           options: configGroups,
@@ -13,12 +13,12 @@
         }"
         required
       />
-      <co-form-item v-model="model.name" prop="name" label="名称" required />
+      <co-form-item v-model="model.name" prop="name" :label="t('config.name')" required />
       <co-form-item v-model="model.key" prop="key" label="Key" required />
       <co-form-item
         v-model="model.type"
         prop="type"
-        label="类型"
+        :label="t('config.type')"
         required
         field-type="radiogroup"
         :field-props="{
@@ -31,7 +31,7 @@
         v-if="model.type === 'textarea'"
         v-model="model.typeModel.textarea"
         prop="typeModel.textarea"
-        label="值"
+        :label="t('config.value')"
         field-type="textarea"
         :field-props="{
           rows: 3,
@@ -42,14 +42,14 @@
         v-if="model.type === 'text'"
         v-model="model.typeModel.text"
         prop="typeModel.text"
-        label="值"
+        :label="t('config.value')"
         required
       />
       <co-form-item
         v-if="model.type === 'number'"
         v-model="model.typeModel.number"
         prop="typeModel.number"
-        label="值"
+        :label="t('config.value')"
         field-type="number"
         required
       />
@@ -57,12 +57,12 @@
         v-if="model.type === 'bool'"
         v-model="model.typeModel.bool"
         prop="typeModel.bool"
-        label="值"
+        :label="t('config.value')"
         field-type="radiogroup"
         :field-props="{
           options: [
-            { value: true, label: '是' },
-            { value: false, label: '否' },
+            { value: true, label: t('config.yes') },
+            { value: false, label: t('config.no') },
           ],
         }"
         required
@@ -71,7 +71,7 @@
         v-if="model.type === 'album'"
         v-model="model.typeModel.album"
         prop="typeModel.album"
-        label="值"
+        :label="t('config.value')"
         field-type="upload"
         :field-props="{
           limit: 12,
@@ -83,7 +83,7 @@
         v-if="model.type === 'image'"
         v-model="model.typeModel.image"
         prop="typeModel.image"
-        label="值"
+        :label="t('config.value')"
         field-type="upload"
         :field-props="{
           single: true,
@@ -95,11 +95,14 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useConfigGroupsApi, useConfigsApi } from '@/api/system/configs';
 import { useFetch, useUpsert } from 'cosey/hooks';
 import { useEnumsApi } from '@/api/system/enums';
 import { omit } from 'lodash-es';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const { addConfig, updateConfig } = useConfigsApi();
 
@@ -152,17 +155,19 @@ const convertModel = () => {
   return omit(model, ['typeModel']);
 };
 
-const { dialogProps, formProps, expose } = useUpsert<Model, Row>({
-  stuffTitle: '配置',
-  model,
-  beforeFill(row) {
-    editId.value = row.id;
+const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
+  computed(() => ({
+    stuffTitle: t('config.config'),
+    model,
+    beforeFill(row) {
+      editId.value = row.id;
 
-    model.typeModel[row.type!] = row.value as any;
-  },
-  add: () => addConfig(convertModel()),
-  edit: () => updateConfig(editId.value!, convertModel()),
-});
+      model.typeModel[row.type!] = row.value as any;
+    },
+    add: () => addConfig(convertModel()),
+    edit: () => updateConfig(editId.value!, convertModel()),
+  })),
+);
 
 defineExpose(expose);
 

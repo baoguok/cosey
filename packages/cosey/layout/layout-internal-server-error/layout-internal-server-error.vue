@@ -1,8 +1,8 @@
 <template>
-  <el-result icon="error" title="500" sub-title="对不起，服务器错误。">
+  <el-result icon="error" title="500" :sub-title="t('co.exception.serverError')">
     <template #extra>
       <router-link :to="routerConfig.homePath">
-        <el-button type="primary">返回主页</el-button>
+        <el-button type="primary">{{ t('co.exception.backToHome') }}</el-button>
       </router-link>
     </template>
   </el-result>
@@ -11,6 +11,9 @@
 <script setup lang="ts">
 import { ElButton } from 'element-plus';
 import { useGlobalConfig } from '../../config';
+import { useLocale } from '../../hooks';
+
+const { t } = useLocale();
 
 defineOptions({
   name: 'LayoutInternalServerError',

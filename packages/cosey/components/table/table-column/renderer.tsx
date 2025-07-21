@@ -6,6 +6,7 @@ import { type LongTextProps, LongText } from '../../long-text';
 import { type MediaCardProps, MediaCard } from '../../media-card';
 import { type MediaCardGroupProps, MediaCardGroup } from '../../media-card-group';
 import { ref } from 'vue';
+import { type Translator } from '../../../hooks';
 
 interface RendererOptions {
   cellValue: any;
@@ -76,6 +77,7 @@ export const mapRendererColumnProps: Record<string, TableColumnProps> = {
 export function renderer<T extends RendererType>(
   { cellValue, row }: RendererOptions,
   type: RendererType = 'text',
+  t: Translator,
 ) {
   if (isEmpty(cellValue)) {
     return '';
@@ -132,7 +134,7 @@ export function renderer<T extends RendererType>(
               try {
                 await obj.api?.(val, row);
                 value.value = val;
-                ElMessage.success('修改成功');
+                ElMessage.success(t('co.common.editSuccess'));
               } catch {
                 void 0;
               } finally {

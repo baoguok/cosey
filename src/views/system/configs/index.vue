@@ -3,14 +3,14 @@
     <co-table v-bind="tableProps">
       <template #toolbar-left>
         <el-button v-if="can('create', 'system_config')" type="primary" @click="upsert.add()">
-          新增
+          {{ t('common.add') }}
         </el-button>
         <el-button
           v-if="can('read', 'system_config_group')"
           type="primary"
           @click="configGroupsRef?.open()"
         >
-          配置组
+          {{ t('config.configGroup') }}
         </el-button>
       </template>
       <template #action="{ row }">
@@ -18,7 +18,7 @@
           :actions="[
             {
               hidden: cannot('update', 'system_config'),
-              label: '编辑',
+              label: t('common.edit'),
               icon: 'carbon:edit',
               onClick: () => {
                 upsert.edit(row);
@@ -26,11 +26,11 @@
             },
             {
               hidden: cannot('delete', 'system_config'),
-              label: '删除',
+              label: t('common.delete'),
               icon: 'carbon:trash-can',
               type: 'danger',
               popconfirm: {
-                title: '确定删除？',
+                title: t('common.confirmDelete'),
                 confirm: () => onDelete(row.id),
               },
             },
@@ -51,9 +51,12 @@ import { useConfigGroupsApi, useConfigsApi } from '@/api/system/configs';
 import ConfigUpsert from './configs-upsert.vue';
 import { useFetch, useOuterUpsert } from 'cosey/hooks';
 import { LongText, MediaCard, MediaCardGroup, useTable } from 'cosey/components';
-import { ref, useTemplateRef } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
 import ConfigGroups from '../config-groups/index.vue';
 import { useAbility } from '@casl/vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 defineOptions({
   name: 'SystemConfigs',
@@ -66,60 +69,62 @@ const { getConfigGroups } = useConfigGroupsApi();
 
 const configGroupOptions = ref<any[]>([]);
 
-const [tableProps, { reload }] = useTable({
-  api: getConfigs,
-  columns: [
-    { prop: 'id', label: 'ID' },
-    { prop: 'group.name', label: '所属组' },
-    { prop: 'name', label: '名称', minWidth: 200 },
-    {
-      prop: 'value',
-      label: '值',
-      minWidth: 300,
-      formatter(row, _, cellValue) {
-        switch (row.type) {
-          case 'textarea':
-            return <LongText text={cellValue} />;
-          case 'image':
-            return <MediaCard src={cellValue} />;
-          case 'album':
-            return <MediaCardGroup srcset={cellValue} size="small" />;
-          case 'bool':
-            return cellValue ? '是' : '否';
-          case 'text':
-          case 'number':
-            return cellValue;
-        }
-      },
-    },
-    { prop: 'key', label: 'Key' },
-    { prop: 'createdAt', label: '创建时间', renderer: 'datetime' },
-    { prop: 'updatedAt', label: '更新时间', renderer: 'datetime' },
-  ],
-  actionColumn: {
-    label: '操作',
-    slots: 'action',
-    fixed: 'right',
-    minWidth: 140,
-  },
-  height: '100%',
-  formProps: {
-    schemes: [
+const [tableProps, { reload }] = useTable(
+  computed(() => ({
+    api: getConfigs,
+    columns: [
+      { prop: 'id', label: 'ID' },
+      { prop: 'group.name', label: t('config.belongGroup') },
+      { prop: 'name', label: t('config.name'), minWidth: 200 },
       {
-        prop: 'groupId',
-        label: '所属组',
-        fieldType: 'select',
-        fieldProps: {
-          options: configGroupOptions,
-          labelKey: 'name',
-          valueKey: 'id',
+        prop: 'value',
+        label: t('config.value'),
+        minWidth: 300,
+        formatter(row, _, cellValue) {
+          switch (row.type) {
+            case 'textarea':
+              return <LongText text={cellValue} />;
+            case 'image':
+              return <MediaCard src={cellValue} />;
+            case 'album':
+              return <MediaCardGroup srcset={cellValue} size="small" />;
+            case 'bool':
+              return cellValue ? t('common.yes') : t('common.no');
+            case 'text':
+            case 'number':
+              return cellValue;
+          }
         },
       },
-      { prop: 'name', label: '名称' },
       { prop: 'key', label: 'Key' },
+      { prop: 'createdAt', label: t('common.creationTime'), renderer: 'datetime' },
+      { prop: 'updatedAt', label: t('common.updateTime'), renderer: 'datetime' },
     ],
-  },
-});
+    actionColumn: {
+      label: t('common.actions'),
+      slots: 'action',
+      fixed: 'right',
+      minWidth: 140,
+    },
+    height: '100%',
+    formProps: {
+      schemes: [
+        {
+          prop: 'groupId',
+          label: t('config.belongGroup'),
+          fieldType: 'select',
+          fieldProps: {
+            options: configGroupOptions,
+            labelKey: 'name',
+            valueKey: 'id',
+          },
+        },
+        { prop: 'name', label: t('config.name') },
+        { prop: 'key', label: 'Key' },
+      ],
+    },
+  })),
+);
 
 const upsert = useOuterUpsert({
   success() {
@@ -129,7 +134,7 @@ const upsert = useOuterUpsert({
 
 const onDelete = async (id: number) => {
   return deleteConfig(id).then(() => {
-    ElMessage.success('删除成功');
+    ElMessage.success(t('common.deleteSuccess'));
     reload();
   });
 };

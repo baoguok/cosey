@@ -5,6 +5,9 @@ import tailwindcss from '@tailwindcss/vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import injectStyles from './vite-plugin-inject-styles';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
+
+import pkg from '../../../packages/cosey/package.json' with { type: 'json' };
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -25,6 +28,7 @@ export default defineConfig({
         svgoOptions: process.env.NODE_ENV === 'production',
         symbolId: 'icon-[dir]-[name]',
       }),
+      groupIconVitePlugin(),
     ] as any,
     // optimizeDeps: {
     //   exclude: ['cosey'],
@@ -36,6 +40,7 @@ export default defineConfig({
   markdown: {
     config(md) {
       markdownPlugin(md);
+      md.use(groupIconMdPlugin);
     },
   },
   head: [
@@ -61,10 +66,18 @@ export default defineConfig({
       copyright: 'Copyright © 2025 wuzhitao',
     },
 
+    search: {
+      provider: 'local',
+    },
+
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '教程', link: '/guide/intro' },
       { text: '组件', link: '/components/container' },
+      {
+        text: pkg.version,
+        items: [],
+      },
       { text: '演示', link: 'https://cosey.wzt.zone/' },
     ],
 
@@ -75,7 +88,6 @@ export default defineConfig({
           items: [
             { text: '关于 Cosey Admin', link: '/guide/intro' },
             { text: '快速开始', link: '/guide/quick-start' },
-            { text: '演示', link: '/guide/quick-start' },
           ],
         },
         {
@@ -92,7 +104,10 @@ export default defineConfig({
         },
         {
           text: '深入',
-          items: [{ text: '主题', link: '/guide/theme' }],
+          items: [
+            { text: '主题', link: '/guide/theme' },
+            { text: '国际化', link: '/guide/i18n' },
+          ],
         },
       ],
       '/components/': [

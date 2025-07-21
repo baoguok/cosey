@@ -24,8 +24,8 @@ const getQuillClipboardStyle: GenerateStyle<EditorToken, CSSObject> = () => {
   return {
     '.ql-clipboard': {
       position: 'absolute',
-      left: -100000,
-      top: '50%',
+      insetInlineStart: -100000,
+      insetBlockStart: '50%',
       height: 1,
       overflowY: 'hidden',
 
@@ -74,7 +74,7 @@ const getIndent = () => {
         return {
           ...obj,
           [`li.ql-indent-${num}`]: {
-            paddingLeft: `${3 * num + LIST_STYLE_OUTER_WIDTH}em`,
+            paddingInlineStart: `${3 * num + LIST_STYLE_OUTER_WIDTH}em`,
           },
         };
       }, {}),
@@ -90,7 +90,7 @@ export const getQuillArticleStyle: GenerateStyle<EditorToken, CSSObject> = (toke
         return {
           ...obj,
           [`.ql-indent-${num}`]: {
-            paddingLeft: `${3 * num}em`,
+            paddingInlineStart: `${3 * num}em`,
           },
         };
       }, {}),
@@ -98,7 +98,7 @@ export const getQuillArticleStyle: GenerateStyle<EditorToken, CSSObject> = (toke
     'p, ol, pre, blockquote, h1, h2, h3, h4, h5, h6': {
       margin: 0,
       padding: 0,
-      marginBottom: token.marginSM,
+      marginBlockEnd: token.marginSM,
     },
 
     'h1, h2, h3, h4, h5, h6': {
@@ -171,10 +171,10 @@ export const getQuillArticleStyle: GenerateStyle<EditorToken, CSSObject> = (toke
     },
 
     blockquote: {
-      borderLeft: `4px solid ${token.colorBorder}`,
-      marginBottom: 5,
-      marginTop: 5,
-      paddingLeft: 16,
+      borderInlineStart: `4px solid ${token.colorBorder}`,
+      marginBlockEnd: 5,
+      marginBlockStart: 5,
+      paddingInlineStart: 16,
     },
 
     code: {
@@ -268,8 +268,8 @@ const getQuillEditorStyle: GenerateStyle<EditorToken, CSSObject> = (token) => {
 
       '&.ql-blank::before': {
         position: 'absolute',
-        left: token.padding,
-        right: token.padding,
+        insetInlineStart: token.padding,
+        insetInlineEnd: token.padding,
         color: token.colorTextPlaceholder,
         content: 'attr(data-placeholder)',
         fontStyle: 'italic',
@@ -278,8 +278,8 @@ const getQuillEditorStyle: GenerateStyle<EditorToken, CSSObject> = (token) => {
 
       '.ql-code-block-container': {
         position: 'relative',
-        marginBottom: 5,
-        marginTop: 5,
+        marginBlockEnd: 5,
+        marginBlockStart: 5,
         paddingBlock: 5,
         paddingInline: 10,
         overflow: 'visible',
@@ -289,8 +289,8 @@ const getQuillEditorStyle: GenerateStyle<EditorToken, CSSObject> = (token) => {
         backgroundColor: '#23241f',
 
         '.ql-ui': {
-          right: 5,
-          top: 5,
+          insetInlineEnd: 5,
+          insetBlockStart: 5,
           color: token.colorText,
           backgroundColor: token.colorBgElevated,
           appearance: 'auto',
@@ -324,7 +324,7 @@ const getEditorStyle: GenerateStyle<EditorToken, CSSInterpolation> = (token) => 
       },
 
       [`${toolbarCls} ~ ${containerCls}`]: {
-        borderTop: 0,
+        borderBlockStart: 0,
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
       },

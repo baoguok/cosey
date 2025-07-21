@@ -8,6 +8,9 @@ import Select from '../../select.vue';
 import { useToken } from '../../../../theme';
 import { Toolbar } from '../toolbar';
 import { toolbarContextKey } from '../toolbarContext';
+import { useLocale } from '../../../../../hooks';
+
+const { t } = useLocale();
 
 const { token } = useToken();
 
@@ -20,7 +23,7 @@ type HeaderValue = typeof headings | false;
 const list = computed(() => {
   const headingList = headings.map((heading) => {
     return {
-      label: `标题 ${heading}`,
+      label: `${t('co.editor.leading')} ${heading}`,
       value: heading,
       style: {
         fontSize: token.value[`fontSizeHeading${heading}`] + 'px',
@@ -32,7 +35,7 @@ const list = computed(() => {
 
   return [
     {
-      label: '正文',
+      label: t('co.editor.mainBody'),
       value: false,
       style: {
         lineHeight: token.value['lineHeight'],

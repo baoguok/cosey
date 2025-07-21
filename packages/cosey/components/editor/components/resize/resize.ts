@@ -28,7 +28,11 @@ export const getAlign = (el?: HTMLElement): ResizeAlign | null => {
   if (style.float === 'right') {
     return 'right';
   }
-  if (style.marginLeft === 'auto' && style.marginRight === 'auto' && style.display === 'block') {
+  if (
+    style.marginInlineStart === 'auto' &&
+    style.marginInlineEnd === 'auto' &&
+    style.display === 'block'
+  ) {
     return 'center';
   }
   return null;
@@ -85,32 +89,32 @@ export const setAlignStyle = (el: HTMLElement, align: ResizeAlign | null) => {
       style = {
         display: '',
         float: '',
-        marginLeft: '',
-        marginRight: '',
+        marginInlineStart: '',
+        marginInlineEnd: '',
       };
       break;
     case 'left':
       style = {
         display: '',
         float: 'left',
-        marginLeft: '',
-        marginRight: '',
+        marginInlineStart: '',
+        marginInlineEnd: '',
       };
       break;
     case 'center':
       style = {
         display: 'block',
         float: '',
-        marginLeft: 'auto',
-        marginRight: 'auto',
+        marginInlineStart: 'auto',
+        marginInlineEnd: 'auto',
       };
       break;
     case 'right':
       style = {
         display: '',
         float: 'right',
-        marginLeft: '',
-        marginRight: '',
+        marginInlineStart: '',
+        marginInlineEnd: '',
       };
       break;
   }

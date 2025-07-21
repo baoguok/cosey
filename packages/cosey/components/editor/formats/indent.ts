@@ -35,7 +35,7 @@ class IndentAttributor extends Parchment.StyleAttributor {
   }
 }
 
-const IndentStyle = new IndentAttributor('indent', 'padding-left', {
+const IndentStyle = new IndentAttributor('indent', 'padding-inline-start', {
   scope: Parchment.Scope.BLOCK,
   whitelist: Array(INDENT_STEP * 9)
     .fill(0)

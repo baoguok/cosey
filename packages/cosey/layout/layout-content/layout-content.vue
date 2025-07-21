@@ -22,7 +22,7 @@ const layoutStore = useLayoutStore();
 
 const contentStyle = computed(() => {
   return {
-    marginLeft: layoutStore.sidebarWidth + 'px',
+    marginInlineStart: layoutStore.sidebarWidth + 'px',
   };
 });
 </script>

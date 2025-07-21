@@ -12,9 +12,12 @@ import {
 } from './select';
 import { getLabelByValue, addNullablePlaceholder } from '../../../../utils';
 import { omit } from 'lodash-es';
+import { useLocale } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldSelectProps, { slots }) => {
+    const { t } = useLocale();
+
     const componentProps = computed(() => props.componentProps || {});
 
     const omittedProps = computed(() => omit(componentProps.value, fieldSelectOmitKeys));
@@ -70,7 +73,7 @@ export default defineComponent(
         ElSelect,
         mergeProps(
           {
-            placeholder: '请选择',
+            placeholder: t('co.common.pleaseSelect'),
             clearable: true,
             style: {
               verticalAlign: 'top',

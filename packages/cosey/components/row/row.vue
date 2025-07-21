@@ -71,7 +71,7 @@ const rowStyle = computed(() => {
     return styles;
   }
 
-  styles.marginRight = styles.marginLeft = `-${props.gutter / 2}px`;
+  styles.marginInlineEnd = styles.marginInlineStart = `-${props.gutter / 2}px`;
   return styles;
 });
 

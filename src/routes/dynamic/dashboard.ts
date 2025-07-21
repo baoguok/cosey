@@ -8,7 +8,7 @@ export default defineRoutes({
   name: 'Dashboard',
   component: MergedLayoutBase,
   meta: {
-    title: '仪表板',
+    title: 'dashboard.dashboard',
     icon: 'carbon:dashboard',
     order: -10,
     authority: (ability) => ability.can('read', 'analysis') || ability.can('read', 'workspace'),
@@ -19,7 +19,7 @@ export default defineRoutes({
       name: 'Workspace',
       component: () => import('@/views/dashboard/workspace.vue'),
       meta: {
-        title: '工作台',
+        title: 'dashboard.workspace',
         icon: 'carbon:workspace',
         closable: false,
         authority: (ability) => ability.can('read', 'workspace'),
@@ -30,7 +30,7 @@ export default defineRoutes({
       name: 'Analysis',
       component: () => import('@/views/dashboard/analysis/index.vue'),
       meta: {
-        title: '分析页',
+        title: 'dashboard.analytics',
         icon: 'carbon:analytics',
         authority: (ability) => ability.can('read', 'analysis'),
       },

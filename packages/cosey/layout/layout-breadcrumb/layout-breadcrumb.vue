@@ -4,10 +4,10 @@
       <template
         v-if="route.name === item.route.name || (item.children && item.children.length > 0)"
       >
-        {{ item.route.meta?.title }}
+        {{ t(item.route.meta?.title ?? '') }}
       </template>
       <router-link v-else :to="{ name: String(item.route.name) }">
-        {{ item.route.meta?.title }}
+        {{ t(item.route.meta?.title ?? '') }}
       </router-link>
     </el-breadcrumb-item>
   </el-breadcrumb>
@@ -18,10 +18,13 @@ import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { type MenuNode, getBreadcrumbRoutes } from '../../router';
 import { useLayoutStore } from '../../store';
+import { useI18n } from 'vue-i18n';
 
 defineOptions({
   name: 'LayoutBreadcrumb',
 });
+
+const { t } = useI18n();
 
 const layoutStore = useLayoutStore();
 

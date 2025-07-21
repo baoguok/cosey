@@ -28,7 +28,7 @@ export interface FormListProps<T = FormListRow> extends Omit<FormItemProps<'inpu
 export const defaultFormListProps = {
   ...defaultFormItemProps,
   modelValue: () => [],
-  addText: '新增',
+  addText: 'co.common.add',
 };
 
 export interface FormListSlots<T = FormListRow> extends Omit<ElFormItemSlots, 'default'> {

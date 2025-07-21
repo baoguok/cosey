@@ -1,5 +1,5 @@
 <template>
-  <el-button class="mr-4" @click="onClick">随机数</el-button>
+  <el-button class="me-4" @click="onClick">随机数</el-button>
   <co-number-format :value="value" animate />
 </template>
 

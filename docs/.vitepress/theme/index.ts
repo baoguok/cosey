@@ -17,6 +17,8 @@ import { createMock } from '@cosey/mock';
 import { icons as carbonIcons } from '@iconify-json/carbon';
 import { addIconifyIcon } from 'cosey/components';
 
+import 'virtual:group-icons.css';
+
 addIconifyIcon('carbon', carbonIcons);
 
 function getComponentName(key: string) {
