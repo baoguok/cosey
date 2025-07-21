@@ -26,6 +26,7 @@ dist-ssr
 
 # vitepress
 docs/.vitepress/cache
+docs/.vitepress/cache*
 
 temp-components
 temp
