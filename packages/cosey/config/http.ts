@@ -25,6 +25,11 @@ export const defaultHttpConfig = {
   authScheme: 'Bearer',
 
   /**
+   * Token 添加到的请求头字段的键名
+   */
+  authHeaderKey: 'Authorization',
+
+  /**
    * 获取属性的路径
    */
   path: {

@@ -51,7 +51,7 @@ export function useRequest(config: CreateAxiosDefaults = {}) {
         Object.assign(config, httpConfig.headers);
         const token = persist.get(TOKEN_NAME);
         if (token) {
-          config.headers.Authorization = httpConfig.authScheme
+          config.headers[httpConfig.authHeaderKey] = httpConfig.authScheme
             ? `${httpConfig.authScheme} ${token}`
             : token;
         }
