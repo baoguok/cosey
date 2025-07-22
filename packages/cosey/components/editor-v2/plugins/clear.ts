@@ -1,4 +1,4 @@
-import { Editor, Element, Text, Transforms } from 'slate-vue3/core';
+import { Editor, Element, Point, Range, Text, Transforms } from 'slate-vue3/core';
 import { DOMEditor } from 'slate-vue3/dom';
 
 declare module 'slate-vue3/core' {
@@ -38,16 +38,28 @@ export function withClear(editor: Editor) {
       }),
     );
 
+    if (!editor.selection || Range.isCollapsed(editor.selection)) {
+      return;
+    }
+
     elementNodes.forEach(([node, path]) => {
-      const newProps: Record<string, any> = {};
-      Object.keys(node).forEach((key) => {
-        // 保留元素类型（type）和必要的结构属性（如list的level）
-        if (key !== 'type' && key !== 'children' && key !== 'level') {
-          newProps[key] = undefined; // 清除align/color等
+      const [selectionStart, selectionEnd] = Range.edges(editor.selection!);
+      const [elementStart, elementEnd] = Range.edges(Editor.range(editor, path));
+
+      if (
+        Point.compare(selectionStart, elementStart) <= 0 &&
+        Point.compare(selectionEnd, elementEnd) >= 0
+      ) {
+        const newProps: Record<string, any> = {};
+        Object.keys(node).forEach((key) => {
+          // 保留元素类型（type）和必要的结构属性（如list的level）
+          if (key !== 'type' && key !== 'children' && key !== 'level') {
+            newProps[key] = undefined; // 清除align/color等
+          }
+        });
+        if (Object.keys(newProps).length > 0) {
+          Transforms.setNodes(editor, newProps, { at: path });
         }
-      });
-      if (Object.keys(newProps).length > 0) {
-        Transforms.setNodes(editor, newProps, { at: path });
       }
     });
   };
