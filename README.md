@@ -59,3 +59,13 @@ Cosey 基于 element-plus 并补充了众多组件，意在使开发者更加专
 ## 开源协议
 
 本项目基于 [MIT](https://zh.wikipedia.org/wiki/MIT%E8%A8%B1%E5%8F%AF%E8%AD%89) 协议，请自由地享受和参与开源。
+
+## 构建流程
+
+- 更新版本 `npm run cosey:version`
+- 构建库 `npm run cosey:build`
+- 发布库 `npm run cosey:publish`
+- 打包案例 `npm run build`
+- 打包文档 `npm run docs:build`
+- 部署案例和文档 `npm run cosey:deploy`
+- 暂存提交代码
