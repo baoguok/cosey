@@ -17,7 +17,7 @@
 
         <component :is="UserMenu" />
 
-        <el-dropdown-item @click="toChangePassword">
+        <el-dropdown-item v-if="apiConfig.changePassword" @click="toChangePassword">
           <Icon name="co:password" size="lg" />
           <span :class="`${prefixCls}-item-title`">{{ t('co.auth.changePassword') }}</span>
         </el-dropdown-item>
@@ -54,7 +54,7 @@ const router = useRouter();
 
 const userStore = useUserStore();
 
-const { router: routerConfig, slots: slotsConfig } = useGlobalConfig();
+const { router: routerConfig, slots: slotsConfig, api: apiConfig } = useGlobalConfig();
 
 const UserMenu = defineTemplate(() => slotsConfig.userMenu?.());
 
