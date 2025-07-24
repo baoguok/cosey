@@ -84,6 +84,18 @@ const TableColumn = defineComponent({
       return result;
     });
 
+    const renderLabel = () => (
+      <span class={`${prefixCls.value}-label`}>{mergedProps.value.label}</span>
+    );
+
+    const renderTooltip = () => (
+      <>
+        <ElTooltip content={mergedProps.value.tooltip} placement="top">
+          <Icon name="carbon:help" style={{ marginInlineStart: token.value.marginXXS + 'px' }} />
+        </ElTooltip>
+      </>
+    );
+
     return () =>
       mergedProps.value.hidden ? null : (
         <ElTableColumn
@@ -91,20 +103,12 @@ const TableColumn = defineComponent({
           v-slots={{
             ...slots.value,
             header:
-              slots.value.header ||
-              (mergedProps.value.tooltip
-                ? () => (
-                    <>
-                      <span class={`${prefixCls.value}-label`}>{mergedProps.value.label}</span>
-                      <ElTooltip content={mergedProps.value.tooltip} placement="top">
-                        <Icon
-                          name="carbon:help"
-                          style={{ marginInlineStart: token.value.marginXXS + 'px' }}
-                        />
-                      </ElTooltip>
-                    </>
-                  )
-                : undefined),
+              slots.value.header && mergedProps.value.tooltip
+                ? (...args: any[]) => {
+                    return [slots.value.header!(...(args as [any])), renderTooltip()];
+                  }
+                : slots.value.header ||
+                  (mergedProps.value.tooltip ? () => [renderLabel(), renderTooltip()] : undefined),
             default: (slotProps: any) =>
               mergedProps.value.columns
                 ? mergedProps.value.columns.map((column) => <TableColumn {...column}></TableColumn>)

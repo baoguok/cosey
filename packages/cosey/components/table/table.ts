@@ -2,7 +2,7 @@ import { TableColumnCtx, type PaginationProps } from 'element-plus';
 import elTableProps from 'element-plus/es/components/table/src/table/defaults.mjs';
 import { type PropType, type ExtractPropTypes } from 'vue';
 import { type TableColumnProps } from './table-column/table-column';
-import { omit } from 'lodash-es';
+import { camelCase, omit, upperFirst } from 'lodash-es';
 import {
   TableQueryExpose,
   tableQueryExposeKeys,
@@ -19,6 +19,42 @@ export interface ToolbarConfig {
   fullScreen?: boolean;
   setting?: boolean;
 }
+
+export const tableEmitEvents = [
+  'select-all',
+  'expand-change',
+  'current-change',
+  'select',
+  'selection-change',
+  'cell-mouse-enter',
+  'cell-mouse-leave',
+  'cell-contextmenu',
+  'cell-click',
+  'cell-dblclick',
+  'row-click',
+  'row-contextmenu',
+  'row-dblclick',
+  'header-click',
+  'header-contextmenu',
+  'sort-change',
+  'filter-change',
+  'header-dragend',
+];
+
+export const tableEmitOnEvents = tableEmitEvents.map((item) => [
+  item,
+  'on' + upperFirst(camelCase(item)),
+]);
+
+export const tableEmitOnProps = tableEmitOnEvents.reduce(
+  (obj, [, onName]) => {
+    obj[onName] = {
+      type: Function,
+    };
+    return obj;
+  },
+  {} as Record<string, { type: (...args: any[]) => any }>,
+);
 
 const tableExtraProps = {
   api: {
@@ -78,28 +114,6 @@ export interface TableSlots {
 }
 
 export const elSlotsName = ['default', 'append', 'empty'] as const;
-
-type TableEmitEvents =
-  | 'select-all'
-  | 'expand-change'
-  | 'current-change'
-  | 'select'
-  | 'selection-change'
-  | 'cell-mouse-enter'
-  | 'cell-mouse-leave'
-  | 'cell-contextmenu'
-  | 'cell-click'
-  | 'cell-dblclick'
-  | 'row-click'
-  | 'row-contextmenu'
-  | 'row-dblclick'
-  | 'header-click'
-  | 'header-contextmenu'
-  | 'sort-change'
-  | 'filter-change'
-  | 'header-dragend';
-
-export type TableEmits = (event: TableEmitEvents, ...args: any[]) => void;
 
 export interface TableCustomExpose {
   reload: () => void;

@@ -147,7 +147,6 @@ import { reactiveComputed, reactiveOmit } from '@vueuse/core';
 import { type TableInstance, type PaginationProps, ElButton, useZIndex } from 'element-plus';
 import {
   type TableSlots,
-  type TableEmits,
   type TableExpose,
   type ToolbarConfig,
   tableProps,
@@ -155,6 +154,8 @@ import {
   elSlotsName,
   omittedTableProps,
   defaultTableConfig,
+  tableEmitEvents,
+  tableEmitOnEvents,
 } from './table';
 import { type TableColumnProps } from './table-column/table-column';
 import TableColumn from './table-column/table-column.vue';
@@ -185,6 +186,18 @@ const props = defineProps(tableProps);
 
 const slots = defineSlots<TableSlots>();
 
+const emit = defineEmits(tableEmitEvents);
+
+const eventObject = tableEmitOnEvents.reduce(
+  (obj, [name, onName]) => {
+    obj[onName] = (...args: any[]) => {
+      emit(name, ...args);
+    };
+    return obj;
+  },
+  {} as Record<string, (...args: any[]) => void>,
+);
+
 const { t } = useLocale();
 
 const { prefixCls } = useComponentConfig('table');
@@ -200,8 +213,6 @@ const tableKeys = reactiveComputed(() => {
 const passedElSlotsName = computed(() => {
   return elSlotsName.filter((name) => !!slots[name as keyof TableSlots]);
 });
-
-defineEmits<TableEmits>();
 
 const elTableRef = ref<TableInstance>();
 const tableQueryRef = useTemplateRef('tableQuery');
@@ -236,9 +247,13 @@ const onSortChange = ({
 
 // props
 const elTableProps = computed(() => {
-  return mergeProps(reactiveOmit(props, omittedTableProps), {
-    onSortChange,
-  });
+  return mergeProps(
+    reactiveOmit(props, omittedTableProps),
+    {
+      onSortChange,
+    },
+    eventObject,
+  );
 });
 
 const containerStyle = computed(() => {
