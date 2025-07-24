@@ -1,13 +1,13 @@
 <template>
-  <el-dropdown placement="bottom">
-    <div :class="[hashId, prefixCls]">
+  <el-dropdown placement="bottom" trigger="click">
+    <el-button link :class="[hashId, prefixCls]">
       <el-avatar :size="32" :src="userStore.userInfo?.avatar">
         <Icon name="co:user" />
       </el-avatar>
       <span :class="`${prefixCls}-name`">
         {{ userStore.userInfo?.nickname }}
       </span>
-    </div>
+    </el-button>
     <template #dropdown>
       <el-dropdown-menu :class="[hashId, `${prefixCls}-dropdown`]">
         <el-dropdown-item @click="toHome">
@@ -39,6 +39,8 @@ import { Icon, useComponentConfig } from '../../components';
 import useStyle from './style';
 import { defineTemplate } from '../../utils';
 import { useLocale } from '../../hooks';
+import { ref } from 'vue';
+import { ElLoading } from 'element-plus';
 
 defineOptions({
   name: 'LayoutUserMenu',
@@ -58,15 +60,32 @@ const { router: routerConfig, slots: slotsConfig, api: apiConfig } = useGlobalCo
 
 const UserMenu = defineTemplate(() => slotsConfig.userMenu?.());
 
+// to home
 const toHome = () => {
   router.push(routerConfig.homePath);
 };
 
+// change-password
 const toChangePassword = () => {
   router.push(routerConfig.changePasswordPath);
 };
 
+// logout
+const fullscreenLoading = ref(false);
+
 const logout = () => {
-  userStore.logout();
+  if (fullscreenLoading.value) return;
+
+  fullscreenLoading.value = true;
+
+  const loading = ElLoading.service({
+    lock: true,
+    text: t('co.auth.loggingOut'),
+  });
+
+  userStore.logout().finally(() => {
+    fullscreenLoading.value = false;
+    loading.close();
+  });
 };
 </script>

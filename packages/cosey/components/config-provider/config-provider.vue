@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, provide, watch } from 'vue';
+import { computed, onMounted, onUnmounted, provide, unref, watch } from 'vue';
 import useMergeTheme from './useMergeTheme';
 import {
   useConfig,
@@ -39,11 +39,16 @@ const mergedTheme = useMergeTheme(
   computed(() => parentContext.theme?.value),
 );
 
+const mergedTable = computed(() => {
+  return props.table || unref(parentContext.table);
+});
+
 // config provider
 const configProvider: ConfigProviderInnerProps = {
   getPrefixCls,
   theme: mergedTheme,
   prefixCls: mergedPrefixCls,
+  table: mergedTable,
 };
 
 useConfigProvide(configProvider);

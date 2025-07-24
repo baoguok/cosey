@@ -52,9 +52,9 @@ import {
   exportExcel,
   bookFormats,
   type ExportBookType,
-  type ExportExcelColumn,
   type ExportExcelScheme,
   walkTree,
+  isObject,
 } from '../../../utils';
 import List from './list.vue';
 import { type TableColumnProps } from '../table-column/table-column';
@@ -89,8 +89,12 @@ const mergedProps = computed(() => {
 
 defineEmits<TableExportEmits>();
 
+const filename = computed(() => {
+  return isObject(props.config) ? props.config.filename : '';
+});
+
 const getDefaultFilename = () => {
-  return `${t('co.table.export')}-` + formatAsBasicDateTime(new Date());
+  return filename.value || `${t('co.table.export')}-` + formatAsBasicDateTime(new Date());
 };
 
 const bookTypeOptions = computed(() =>
@@ -199,8 +203,9 @@ const onOpen = () => {
 function transformColumns(nodeList: CheckableNode<TableColumnProps>[] = []) {
   return nodeList
     .filter((node) => node.checkedStatus !== 'unchecked')
-    .map(({ data: column, children }): ExportExcelColumn => {
+    .map(({ data: column, children }): TableColumnProps => {
       return {
+        ...column,
         label: column.label || '',
         prop: column.prop || '',
         columns: column.columns ? transformColumns(children) : undefined,
@@ -218,9 +223,7 @@ const getScheme = (): ExportExcelScheme => {
       columns: transformColumns(tree.value),
       noGroup: !formModel.params.includes('grouping'),
       noHead: !formModel.params.includes('head'),
-      transform(value, column) {
-        return exportRenderer(value, column.renderer);
-      },
+      transform: exportRenderer,
     },
   };
 };

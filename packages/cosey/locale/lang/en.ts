@@ -105,6 +105,7 @@ export default {
       enterPassword: 'Please enter your password',
       password: 'Password',
       logout: 'Logout',
+      loggingOut: 'Logging out...',
     },
     tabbar: {
       closeLeftTabs: 'Close tabs to the left',

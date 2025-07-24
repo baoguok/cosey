@@ -10,8 +10,16 @@ export default getSimpleStyleHook('LayoutUserMenu', (token) => {
       borderRadius: token.borderRadius,
       cursor: 'pointer',
 
-      '&:focus-visible': {
-        outline: 'none',
+      '&:hover': {
+        img: {
+          opacity: 0.6,
+        },
+      },
+
+      '&:active': {
+        img: {
+          opacity: 1,
+        },
       },
 
       [`${componentCls}-name`]: {

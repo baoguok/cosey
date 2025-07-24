@@ -1,5 +1,5 @@
-import { type ExtractPropTypes, type PropType } from 'vue';
-import {} from 'element-plus';
+import { type VNode, type ExtractPropTypes, type PropType } from 'vue';
+import { type TableColumnCtx } from 'element-plus';
 import elTableColumnProps from 'element-plus/es/components/table/src/table-column/defaults.mjs';
 import { type RendererType } from './renderer';
 
@@ -24,6 +24,8 @@ export type TableColumnProps<T = any> = Partial<
   internalSlot?: {
     [prop: string]: any;
   };
+  tooltip?: string;
+  format?: (cellValue: any, row: any, column: TableColumnCtx<any>, index: number) => VNode;
 };
 
 export const tableColumnProps = {
@@ -47,6 +49,12 @@ export const tableColumnProps = {
   },
   internalSlot: {
     type: Object as PropType<TableColumnProps['internalSlot']>,
+  },
+  tooltip: {
+    type: String,
+  },
+  format: {
+    type: Function,
   },
 };
 

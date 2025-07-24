@@ -13,7 +13,7 @@ export interface ConfigProviderProps {
 export interface ConfigProviderInnerProps {
   getPrefixCls: (suffixCls?: string, customizePrefixCls?: string) => string;
   theme?: ComputedRef<ThemeConfig | undefined>;
-  table?: TableConfig;
+  table: ComputedRef<TableConfig | undefined>;
   prefixCls: ComputedRef<string>;
 }
 
@@ -27,6 +27,7 @@ export const defaultConfigProvider: ConfigProviderInnerProps = {
     return suffixCls ? `${defaultPrefixCls}-${suffixCls}` : defaultPrefixCls;
   },
   prefixCls: computed(() => defaultPrefixCls),
+  table: computed(() => void 0),
 };
 
 export const useConfigProvide = (props: ConfigProviderInnerProps) => {

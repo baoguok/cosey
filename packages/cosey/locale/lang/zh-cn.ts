@@ -105,6 +105,7 @@ export default {
       enterPassword: '请输入密码',
       password: '密码',
       logout: '退出',
+      loggingOut: '正在退出',
     },
     tabbar: {
       closeLeftTabs: '关闭左侧标签页',

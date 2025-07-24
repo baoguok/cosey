@@ -1,7 +1,7 @@
 import { formatAsDate, formatAsDateTime, toArray, Scope, isEmpty, isString } from '../../../utils';
 import { ElMessage, ElSwitch, ElTag, SwitchProps, type TableColumnCtx } from 'element-plus';
 import { get } from 'lodash-es';
-import { TableColumnProps } from './table-column';
+import { type TableColumnProps } from './table-column';
 import { type LongTextProps, LongText } from '../../long-text';
 import { type MediaCardProps, MediaCard } from '../../media-card';
 import { type MediaCardGroupProps, MediaCardGroup } from '../../media-card-group';
@@ -152,12 +152,24 @@ export function renderer<T extends RendererType>(
  * 导出表格数据时使用的渲染器，只需要获取文本数据
  */
 export function exportRenderer<T extends RendererType>(
+  row: any,
+  column: TableColumnProps,
   cellValue: any,
-  type: RendererType = 'text',
+  index: number,
 ) {
+  if (column.formatter) {
+    return column.formatter(row, column as TableColumnCtx<any>, cellValue, index);
+  }
+
+  if (column.format) {
+    return column.format(cellValue, row, column as TableColumnCtx<any>, index);
+  }
+
   if (isEmpty(cellValue)) {
     return '';
   }
+
+  const type = column.renderer || 'text';
 
   const obj = (isString(type) ? { type } : type) as GetObjectRendererType<T>;
 

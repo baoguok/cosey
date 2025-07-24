@@ -1,5 +1,5 @@
 import { getExtByBookType, getMimeByBookType, bookFormats } from './bookFormats';
-import type { ExportBookType, ExportExcelColumn, ExportExcelScheme } from './type';
+import type { ExportBookType, ExportExcelScheme } from './type';
 import { aoa2sheet } from './utils';
 import { Cell, WorkBook } from './workBook';
 import { wb2html } from './html';
@@ -7,6 +7,7 @@ import { wb2xlsx } from './xlsx';
 import { wb2xml } from './xml';
 import { wb2csv } from './csv';
 import { wb2txt } from './txt';
+import { type TableColumnProps } from '../../components/table/table-column/table-column';
 
 /**
  * 根据提供的 url 下载文件
@@ -83,20 +84,20 @@ async function writeFile(wb: WorkBook, bookType: ExportBookType) {
 /**
  * 只取最底层的列组成表头
  */
-function flatColumns(columns: ExportExcelColumn[]) {
-  return columns.reduce((result, column): ExportExcelColumn[] => {
+function flatColumns(columns: TableColumnProps[]) {
+  return columns.reduce((result, column): TableColumnProps[] => {
     return result.concat(Array.isArray(column.columns) ? flatColumns(column.columns) : column);
-  }, [] as ExportExcelColumn[]);
+  }, [] as TableColumnProps[]);
 }
 
 /**
  * 将 columns 转换为二维数组
  */
-function columns2aoa(columns: ExportExcelColumn[]) {
+function columns2aoa(columns: TableColumnProps[]) {
   let aoa: Cell[][] = [];
 
   let colIndex = 0;
-  function recurColumns(columns: ExportExcelColumn[], rowIndex = 0) {
+  function recurColumns(columns: TableColumnProps[], rowIndex = 0) {
     const row = (aoa[rowIndex] ??= []);
 
     let mergedColSpan = 0;
@@ -160,7 +161,7 @@ function columns2aoa(columns: ExportExcelColumn[]) {
 /**
  * 将 columns 最后一级转换为二维数组
  */
-function columns2lastLevelAoa(columns: ExportExcelColumn[]) {
+function columns2lastLevelAoa(columns: TableColumnProps[]) {
   return [
     columns.map((column) => {
       const cell = new Cell(column.label);
@@ -195,10 +196,10 @@ async function exportExcel(
 
     const ooa = Array.isArray(data) ? data : data[name];
 
-    let aoa = ooa.map((obj) =>
+    let aoa = ooa.map((obj, index) =>
       fColumns.map((column) => {
-        const value = obj[column.prop];
-        return transform ? transform(value, column) : value;
+        const value = obj[column.prop as string];
+        return transform ? transform(obj, column, value, index) : value;
       }),
     );
 
@@ -220,4 +221,4 @@ async function exportExcel(
 
 export { bookFormats, exportExcel };
 
-export type { ExportBookType, ExportExcelColumn, ExportExcelScheme };
+export type { ExportBookType, ExportExcelScheme };

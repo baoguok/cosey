@@ -16,7 +16,7 @@
 
     <div :class="`${prefixCls}-body`">
       <div
-        v-if="$slots['toolbar-left'] || $slots['toolbar-right'] || toolbarConfig"
+        v-if="$slots['toolbar-left'] || $slots['toolbar-right'] || mergedToolbarConfig"
         :class="`${prefixCls}-toolbar`"
       >
         <div :class="`${prefixCls}-toolbar-left`">
@@ -24,8 +24,8 @@
         </div>
         <div :class="`${prefixCls}-toolbar-right`">
           <slot name="toolbar-right"></slot>
-          <div v-if="toolbarConfig" :class="`${prefixCls}-toolbar-preset`">
-            <div v-if="toolbarConfig.reload">
+          <div v-if="mergedToolbarConfig" :class="`${prefixCls}-toolbar-preset`">
+            <div v-if="mergedToolbarConfig.reload">
               <el-tooltip
                 :content="t('co.common.reload')"
                 placement="top"
@@ -48,7 +48,7 @@
               </el-tooltip>
             </div>
 
-            <div v-if="toolbarConfig.export">
+            <div v-if="mergedToolbarConfig.export">
               <el-tooltip
                 :content="t('co.table.export')"
                 placement="top"
@@ -63,12 +63,13 @@
               <TableExport
                 v-model="exportVisible"
                 :title="t('co.table.exportData')"
-                :columns="renderedColumns"
+                :config="mergedToolbarConfig.export"
+                :columns="exportColumns"
                 :data="tableData"
               />
             </div>
 
-            <div v-if="toolbarConfig.fullScreen">
+            <div v-if="mergedToolbarConfig.fullScreen">
               <el-tooltip
                 :content="isFullPage ? t('co.table.exitFullScreen') : t('co.table.fullScreen')"
                 placement="top"
@@ -81,7 +82,7 @@
               </el-tooltip>
             </div>
 
-            <div v-if="toolbarConfig.setting">
+            <div v-if="mergedToolbarConfig.setting">
               <el-tooltip
                 :content="t('co.table.columnSettings')"
                 placement="top"
@@ -105,7 +106,7 @@
 
       <div :class="`${prefixCls}-table`">
         <el-table
-          ref="table"
+          ref="elTableRef"
           v-bind="elTableProps"
           :data="tableData"
           :expand-row-keys="innerExpandRowKeys"
@@ -141,34 +142,39 @@
 
 <script setup lang="ts">
 import { cloneDeep, get, merge } from 'lodash-es';
-import { computed, mergeProps, ref, useTemplateRef, watch } from 'vue';
+import { computed, mergeProps, onMounted, ref, unref, useTemplateRef, watch } from 'vue';
+import { reactiveComputed, reactiveOmit } from '@vueuse/core';
+import { type TableInstance, type PaginationProps, ElButton, useZIndex } from 'element-plus';
 import {
   type TableSlots,
   type TableEmits,
   type TableExpose,
-  defaultPaginationProps,
+  type ToolbarConfig,
   tableProps,
   tableExposeKeys,
   elSlotsName,
   omittedTableProps,
   defaultTableConfig,
 } from './table';
-import { type TableInstance, type PaginationProps, ElButton } from 'element-plus';
 import { type TableColumnProps } from './table-column/table-column';
 import TableColumn from './table-column/table-column.vue';
 import TableColumnEditor from './table-column-editor/table-column-editor.vue';
 import TableQuery from './table-query/table-query.vue';
 import TableExport from './table-export/table-export.vue';
 import Icon from '../icon/icon.vue';
-import { reactiveOmit } from '@vueuse/core';
 import { useFetch, useFullPage } from '../../hooks';
 import { filterEmptyFormValue } from './utils';
-import { addPxUnit, createMergedExpose, isFunction, walkTree } from '../../utils';
-import { useConfig } from '../config-provider';
-import { useZIndex } from 'element-plus';
+import {
+  addPxUnit,
+  createMergedExpose,
+  isFunction,
+  isNullish,
+  isObject,
+  walkTree,
+} from '../../utils';
+import { useConfig, useComponentConfig } from '../config-provider';
 
 import useStyle from './style';
-import { useComponentConfig } from '../config-provider';
 import { useLocale } from '../../hooks';
 
 defineOptions({
@@ -185,10 +191,10 @@ const { prefixCls } = useComponentConfig('table');
 
 const { hashId } = useStyle(prefixCls);
 
-const config = useConfig();
+const { table: tableConfig } = useConfig();
 
-const tableKeys = computed(() => {
-  return merge({}, defaultTableConfig.keys, config.table?.keys, props.keys);
+const tableKeys = reactiveComputed(() => {
+  return merge({}, defaultTableConfig.keys, unref(tableConfig)?.keys, props.keys);
 });
 
 const passedElSlotsName = computed(() => {
@@ -197,13 +203,13 @@ const passedElSlotsName = computed(() => {
 
 defineEmits<TableEmits>();
 
-const elTableRef = useTemplateRef<TableInstance>('table');
+const elTableRef = ref<TableInstance>();
 const tableQueryRef = useTemplateRef('tableQuery');
 
 // order
 const mapOrderType = {
-  ascending: tableKeys.value.asc,
-  descending: tableKeys.value.desc,
+  ascending: tableKeys.asc,
+  descending: tableKeys.desc,
 };
 
 let orderParams: {
@@ -219,8 +225,8 @@ const onSortChange = ({
 }) => {
   orderParams = order
     ? {
-        [tableKeys.value.orderBy]: prop,
-        [tableKeys.value.orderType]: mapOrderType[order],
+        [tableKeys.orderBy]: prop,
+        [tableKeys.orderType]: mapOrderType[order],
       }
     : null;
 
@@ -242,13 +248,22 @@ const containerStyle = computed(() => {
 });
 
 // columns
-const renderedColumns = ref<TableColumnProps[]>();
+const renderedColumns = ref<TableColumnProps[]>([]);
 
 const setRenderedColumns = () => {
   renderedColumns.value = cloneDeep(
     [...props.columns, props.actionColumn].filter(Boolean) as TableColumnProps[],
   );
 };
+
+const exportColumns = computed(() => {
+  return renderedColumns.value?.filter((column) => {
+    return (
+      (!isNullish(column.prop) && column.prop !== '') ||
+      (column.columns && column.columns.length > 0)
+    );
+  });
+});
 
 watch(
   [() => props.columns, () => props.actionColumn],
@@ -267,47 +282,64 @@ const onColumnReset = () => {
 // data
 const tableData = ref(props.data || []);
 
-const { isFetching, execute } = useFetch(
-  () => {
-    let params = {
-      [tableKeys.value.page]: page.value,
-      [tableKeys.value.pageSize]: pageSize.value,
-      ...orderParams,
-      ...filterEmptyFormValue(tableQueryRef.value?.getFieldsValue() || {}),
-    };
+const getFetchParams = () => {
+  const params = {
+    ...orderParams,
+    ...filterEmptyFormValue(tableQueryRef.value?.getFieldsValue() || {}),
+  };
 
-    params = props.beforeFetch?.(params) || params;
+  return filterEmptyFormValue(props.beforeFetch?.(params) || params);
+};
 
-    return props.api?.(params);
+const getFullFetchParams = () => {
+  return {
+    [tableKeys.page]: page.value,
+    [tableKeys.pageSize]: pageSize.value,
+    ...getFetchParams(),
+  };
+};
+
+const { isFetching, execute } = useFetch(() => props.api?.(getFullFetchParams()), {
+  immediate: false,
+  onSuccess(res) {
+    res = props.afterFetch?.(res) || res;
+
+    tableData.value = (tableKeys.list ? get(res, tableKeys.list) : res) || [];
+    total.value = +get(res, tableKeys.total) || 0;
+
+    elTableRef.value?.setScrollTop(0);
   },
-  {
-    immediate: props.immediate,
-    onSuccess(res) {
-      res = props.afterFetch?.(res) || res;
-
-      tableData.value = (tableKeys.value.list ? get(res, tableKeys.value.list) : res) || [];
-      total.value = get(res, tableKeys.value.total) || 0;
-
-      elTableRef.value?.setScrollTop(0);
-    },
-    onFinally() {
-      reloading.value = false;
-    },
+  onFinally() {
+    reloading.value = false;
   },
-);
+});
+
+onMounted(() => {
+  if (props.immediate) {
+    execute();
+  }
+});
 
 // pagination
+const pagination = reactiveComputed(() => {
+  return merge(
+    {},
+    defaultTableConfig.pagination,
+    unref(tableConfig)?.pagination,
+    isObject(props.pagination) ? props.pagination : null,
+  );
+});
+
 const total = ref(0);
-const page = ref<number>(1);
-const pageSize = ref<number>(10);
+const page = ref<number>(pagination.currentPage);
+const pageSize = ref<number>(pagination.pageSize);
 
 const paginationProps = computed<Partial<PaginationProps> | false>(() => {
   if (props.pagination === false) {
     return false;
   }
   return {
-    ...defaultPaginationProps,
-    ...(typeof props.pagination === 'object' ? props.pagination : null),
+    ...pagination,
     total: total.value,
   };
 });
@@ -319,6 +351,27 @@ const onPageSizeChange = () => {
 const onPageChange = () => {
   execute();
 };
+
+// toolbar config
+const defaultToolbarConfig = {
+  reload: true,
+  export: true,
+  fullScreen: true,
+  setting: true,
+};
+
+const mergedToolbarConfig = computed<false | ToolbarConfig>(() => {
+  if (!props.toolbarConfig) {
+    return false;
+  }
+  if (props.toolbarConfig === true) {
+    return defaultToolbarConfig;
+  }
+  return {
+    ...defaultToolbarConfig,
+    ...props.toolbarConfig,
+  };
+});
 
 // reload
 const reloading = ref(false);
@@ -405,6 +458,8 @@ const expose = createMergedExpose(
     reload,
     expandAll,
     collapseAll,
+    getFetchParams,
+    getFullFetchParams,
   },
   () => tableQueryRef.value,
 );

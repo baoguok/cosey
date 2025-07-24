@@ -3,12 +3,14 @@ import { computed, defineComponent } from 'vue';
 import { type TableColumnProps, type TableColumnSlots, tableColumnProps } from './table-column';
 import { isFunction, isPlainObject, isString } from '../../../utils';
 import { mapRendererColumnProps, renderer } from './renderer';
-import { ElTableColumn } from 'element-plus';
+import { ElTableColumn, ElTooltip } from 'element-plus';
 import classNames from 'classnames';
 
 import useStyle from './style';
 import { useComponentConfig } from '../../config-provider';
 import { useLocale } from '../../../hooks';
+import Icon from '../../icon/icon.vue';
+import { useToken } from '../../theme';
 
 const TableColumn = defineComponent({
   // 使用和ep一样的组件名
@@ -25,6 +27,8 @@ const TableColumn = defineComponent({
 
     const { hashId } = useStyle(prefixCls);
 
+    const { token } = useToken();
+
     const mergedProps = computed<TableColumnProps>(() => {
       const obj: TableColumnProps = {};
       const cls = [props.className, hashId.value, prefixCls.value];
@@ -36,18 +40,24 @@ const TableColumn = defineComponent({
       }
 
       if (!obj.formatter) {
-        obj.formatter = (row, column, cellValue, index) => {
-          return renderer({ cellValue, row, column, index }, obj.renderer, t);
-        };
+        if (obj.format) {
+          obj.formatter = (row, column, cellValue, index) => {
+            return obj.format!(cellValue, row, column, index);
+          };
+        } else {
+          obj.formatter = (row, column, cellValue, index) => {
+            return renderer({ cellValue, row, column, index }, obj.renderer, t);
+          };
 
-        const renderType = typeof obj.renderer === 'object' ? obj.renderer.type : obj.renderer!;
+          const renderType = typeof obj.renderer === 'object' ? obj.renderer.type : obj.renderer!;
 
-        const renderProps = mapRendererColumnProps[renderType];
+          const renderProps = mapRendererColumnProps[renderType];
 
-        if (renderProps) {
-          cls.push(renderProps.className);
-          if (renderProps.minWidth && !obj.minWidth) {
-            obj.minWidth = renderProps.minWidth;
+          if (renderProps) {
+            cls.push(renderProps.className);
+            if (renderProps.minWidth && !obj.minWidth) {
+              obj.minWidth = renderProps.minWidth;
+            }
           }
         }
       }
@@ -80,6 +90,21 @@ const TableColumn = defineComponent({
           {...mergedProps.value}
           v-slots={{
             ...slots.value,
+            header:
+              slots.value.header ||
+              (mergedProps.value.tooltip
+                ? () => (
+                    <>
+                      <span class={`${prefixCls.value}-label`}>{mergedProps.value.label}</span>
+                      <ElTooltip content={mergedProps.value.tooltip} placement="top">
+                        <Icon
+                          name="carbon:help"
+                          style={{ marginInlineStart: token.value.marginXXS + 'px' }}
+                        />
+                      </ElTooltip>
+                    </>
+                  )
+                : undefined),
             default: (slotProps: any) =>
               mergedProps.value.columns
                 ? mergedProps.value.columns.map((column) => <TableColumn {...column}></TableColumn>)

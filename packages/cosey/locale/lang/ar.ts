@@ -105,6 +105,7 @@ export default {
       enterPassword: 'الرجاء إدخال كلمة المرور',
       password: 'كلمة المرور',
       logout: 'تسجيل الخروج',
+      loggingOut: 'جاري تسجيل الخروج...',
     },
     tabbar: {
       closeLeftTabs: 'إغلاق علامات التبويب اليسرى',

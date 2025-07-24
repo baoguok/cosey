@@ -11,6 +11,14 @@ const tableExportExtraProps = {
     type: Array as PropType<any[]>,
     default: () => [],
   },
+  config: {
+    type: [Boolean, Object] as PropType<
+      | boolean
+      | {
+          filename: string;
+        }
+    >,
+  },
 };
 
 export const tableExportProps = {

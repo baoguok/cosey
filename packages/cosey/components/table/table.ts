@@ -11,7 +11,11 @@ import {
 
 export interface ToolbarConfig {
   reload?: boolean;
-  export?: boolean;
+  export?:
+    | boolean
+    | {
+        filename: string;
+      };
   fullScreen?: boolean;
   setting?: boolean;
 }
@@ -48,13 +52,8 @@ const tableExtraProps = {
     type: Function as PropType<(res: any) => any>,
   },
   toolbarConfig: {
-    type: [Object, Boolean] as PropType<ToolbarConfig | false>,
-    default: () => ({
-      reload: true,
-      export: true,
-      fullScreen: true,
-      setting: true,
-    }),
+    type: [Object, Boolean] as PropType<ToolbarConfig | boolean>,
+    default: true,
   },
   keys: {
     type: Object as PropType<TableConfig['keys']>,
@@ -102,14 +101,12 @@ type TableEmitEvents =
 
 export type TableEmits = (event: TableEmitEvents, ...args: any[]) => void;
 
-export const defaultPaginationProps = {
-  layout: 'prev, pager, next, sizes, jumper, total',
-};
-
 export interface TableCustomExpose {
   reload: () => void;
   expandAll: () => void;
   collapseAll: () => void;
+  getFetchParams: () => Record<string, any>;
+  getFullFetchParams: () => Record<string, any>;
 }
 
 export type TableExpose = TableCustomExpose &
@@ -160,6 +157,8 @@ export const tableExposeKeys = [
   'reload',
   'expandAll',
   'collapseAll',
+  'getFetchParams',
+  'getFullFetchParams',
 ];
 
 export const defaultTableConfig = {
@@ -204,6 +203,11 @@ export const defaultTableConfig = {
      */
     desc: 'desc',
   },
+  pagination: {
+    layout: 'prev, pager, next, sizes, jumper, total',
+    currentPage: 1,
+    pageSize: 10,
+  },
 };
 
 export interface TableConfig {
@@ -217,4 +221,5 @@ export interface TableConfig {
     asc?: string;
     desc?: string;
   };
+  pagination?: Partial<PaginationProps>;
 }

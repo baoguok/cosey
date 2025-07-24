@@ -45,17 +45,20 @@ const rtlLangs = ['ar'];
 
 export function setupI18n(app: App) {
   const i18n = createI18n({
+    legacy: false,
     locale: locale.value,
     fallbackLocale: locale.value,
     messages: langs,
     silentTranslationWarn: true,
     silentFallbackWarn: true,
+    missingWarn: false,
+    fallbackWarn: false,
   });
 
   watch(
     locale,
     (locale) => {
-      i18n.global.locale = locale;
+      i18n.global.locale.value = locale;
       coseyLocale.value = coseyLangs[locale];
       dayjs.locale(dayjsLangs[locale]);
       localStorage.setItem(langKey, locale);

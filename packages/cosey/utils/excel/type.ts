@@ -1,3 +1,5 @@
+import { type TableColumnProps } from '../../components/table/table-column/table-column';
+
 export type ExportBookType = 'csv' | 'txt' | 'xml' | 'html' | 'xlsx';
 
 export interface ExportBookFormat {
@@ -8,20 +10,12 @@ export interface ExportBookFormat {
   mime: string;
 }
 
-export interface ExportExcelColumn {
-  label: string;
-  prop: string;
-  width?: number;
-  columns?: ExportExcelColumn[];
-  [k: string]: any;
-}
-
 export interface ExportExcelWorkSheet {
   name: string;
-  columns: ExportExcelColumn[];
+  columns: TableColumnProps[];
   noGroup?: boolean;
   noHead?: boolean;
-  transform?: (value: any, column: ExportExcelColumn) => any;
+  transform?: (row: any, column: TableColumnProps, cellValue: any, index: number) => any;
 }
 
 export interface ExportExcelScheme {

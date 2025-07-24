@@ -15,6 +15,9 @@ const getTableColumnStyle: GenerateStyle<TableColumnToken, CSSObject> = (token) 
           textOverflow: 'initial',
         },
       },
+      [`${componentCls}-label`]: {
+        verticalAlign: 'middle',
+      },
     },
   };
 };
