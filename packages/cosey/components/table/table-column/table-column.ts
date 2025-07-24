@@ -31,7 +31,7 @@ export type TableColumnProps<T = any> = Partial<
 export const tableColumnProps = {
   ...elTableColumnProps,
   slots: {
-    type: [String, Object] as PropType<TableColumnProps['slots']>,
+    type: [String, Object, Function] as PropType<TableColumnProps['slots']>,
   },
   renderer: {
     type: [String, Object] as PropType<TableColumnProps['renderer']>,
