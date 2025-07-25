@@ -25,7 +25,12 @@ export type TableColumnProps<T = any> = Partial<
     [prop: string]: any;
   };
   tooltip?: string;
-  format?: (cellValue: any, row: any, column: TableColumnCtx<any>, index: number) => VNode;
+  format?: (
+    cellValue: any,
+    row: any,
+    column: TableColumnCtx<any>,
+    index: number,
+  ) => VNode | string | number;
 };
 
 export const tableColumnProps = {
