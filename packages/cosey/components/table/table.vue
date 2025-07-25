@@ -32,7 +32,7 @@
                 :show-after="200"
                 :hide-after="0"
               >
-                <el-button circle>
+                <el-button circle @click="reload">
                   <Icon
                     name="co:rotate-360"
                     size="md"
@@ -42,7 +42,6 @@
                         'is-spinning': reloading,
                       },
                     ]"
-                    @click="reload"
                   />
                 </el-button>
               </el-tooltip>
