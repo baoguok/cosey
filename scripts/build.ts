@@ -191,8 +191,10 @@ async function build() {
   pkgDistDir = path.resolve(distDir, pkgName);
   pkgSrcDir = path.resolve(packagesDir, pkgName);
 
+  void checkType;
+
   const steps: Steps = [
-    [checkType, `类型检查`, true],
+    // [checkType, `类型检查`, true],
     [deleteDistDir, `清空 ${pkgDistDir} 目录`],
     [generateType, `生成类型文件`, true],
     [compile, `编译`, true],

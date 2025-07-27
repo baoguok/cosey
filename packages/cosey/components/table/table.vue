@@ -305,7 +305,12 @@ const onColumnReset = () => {
 const tableData = ref(props.data || []);
 
 const tableDataWithSummary = computed(() => {
-  const columns = flatColumns(props.columns);
+  const columns = flatColumns(props.columns).map((column) => {
+    return {
+      ...column,
+      property: column.prop,
+    };
+  }) as TableColumnProps[];
   const data = [...tableData.value];
 
   if (props.summaryMethod) {
