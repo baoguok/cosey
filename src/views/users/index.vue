@@ -110,13 +110,6 @@ const [tableProps, { reload, getSelectionRows }] = useTable(
       { prop: 'createdAt', label: t('common.creationTime'), renderer: 'datetime' },
       { prop: 'updatedAt', label: t('common.updateTime'), renderer: 'datetime' },
     ],
-    actionColumn: {
-      label: t('common.actions'),
-      slots: 'action',
-      fixed: 'right',
-      minWidth: 150,
-    },
-    height: '100%',
     formProps: {
       schemes: [
         { prop: 'nickname', label: t('user.nickname') },
@@ -142,6 +135,13 @@ const [tableProps, { reload, getSelectionRows }] = useTable(
         },
       ],
     },
+    actionColumn: {
+      label: t('common.actions'),
+      slots: 'action',
+      fixed: 'right',
+      minWidth: 150,
+    },
+    height: '100%',
   })),
 );
 

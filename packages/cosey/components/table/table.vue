@@ -64,7 +64,7 @@
                 :title="t('co.table.exportData')"
                 :config="mergedToolbarConfig.export"
                 :columns="exportColumns"
-                :data="tableData"
+                :data="tableDataWithSummary"
               />
             </div>
 
@@ -143,7 +143,13 @@
 import { cloneDeep, get, merge } from 'lodash-es';
 import { computed, mergeProps, onMounted, ref, unref, useTemplateRef, watch } from 'vue';
 import { reactiveComputed, reactiveOmit } from '@vueuse/core';
-import { type TableInstance, type PaginationProps, ElButton, useZIndex } from 'element-plus';
+import {
+  type TableInstance,
+  type PaginationProps,
+  type TableColumnCtx,
+  ElButton,
+  useZIndex,
+} from 'element-plus';
 import {
   type TableSlots,
   type TableExpose,
@@ -167,6 +173,8 @@ import { filterEmptyFormValue } from './utils';
 import {
   addPxUnit,
   createMergedExpose,
+  flatColumns,
+  getVNodeText,
   isFunction,
   isNullish,
   isObject,
@@ -295,6 +303,46 @@ const onColumnReset = () => {
 
 // data
 const tableData = ref(props.data || []);
+
+const tableDataWithSummary = computed(() => {
+  const columns = flatColumns(props.columns);
+  const data = [...tableData.value];
+
+  if (props.summaryMethod) {
+    const sum = props.summaryMethod({
+      columns: columns as TableColumnCtx<any>[],
+      data: tableData.value,
+    });
+    data.push(
+      columns.reduce(
+        (row, column, index) => {
+          row[column.prop!] = getVNodeText(sum[index]);
+          return row;
+        },
+        {} as Record<string, any>,
+      ),
+    );
+  } else if (props.showSummary) {
+    const sum = columns.map((column) => {
+      const data = tableData.value.map((row) => +row[column.prop!]);
+      if (data.some((num) => isNaN(num))) {
+        return '';
+      }
+      return String(data.reduce((sum, num) => sum + num, 0));
+    });
+    sum[0] = props.sumText || t('co.table.total');
+    data.push(
+      columns.reduce(
+        (row, column, index) => {
+          row[column.prop!] = sum[index];
+          return row;
+        },
+        {} as Record<string, any>,
+      ),
+    );
+  }
+  return data;
+});
 
 const getFetchParams = () => {
   const params = {

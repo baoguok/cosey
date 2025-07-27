@@ -84,7 +84,7 @@ async function writeFile(wb: WorkBook, bookType: ExportBookType) {
 /**
  * 只取最底层的列组成表头
  */
-function flatColumns(columns: TableColumnProps[]) {
+export function flatColumns(columns: TableColumnProps[]) {
   return columns.reduce((result, column): TableColumnProps[] => {
     return result.concat(Array.isArray(column.columns) ? flatColumns(column.columns) : column);
   }, [] as TableColumnProps[]);

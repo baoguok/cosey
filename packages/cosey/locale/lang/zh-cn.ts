@@ -67,6 +67,7 @@ export default {
       paramConfig: '参数配置',
       header: '表头',
       groupHeader: '分组表头',
+      total: '合计',
     },
     toggle: {
       unfold: '展开',

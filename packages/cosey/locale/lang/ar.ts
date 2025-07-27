@@ -67,6 +67,7 @@ export default {
       paramConfig: 'ضبط المعايير',
       header: 'رأس الجدول',
       groupHeader: 'رأس المجموعة',
+      total: 'المجموع',
     },
     toggle: {
       unfold: 'إظهار',

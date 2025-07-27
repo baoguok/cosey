@@ -67,6 +67,7 @@ export default {
       paramConfig: 'Parameter configuration',
       header: 'Header',
       groupHeader: 'Group Header',
+      total: 'Total',
     },
     toggle: {
       unfold: 'Unfold',

@@ -1,4 +1,5 @@
 import { createVNode, defineComponent, SlotsType, type VNodeChild } from 'vue';
+import { isObject } from './is';
 
 /**
  * 使在 script setup 中也能使用 jsx
@@ -82,4 +83,23 @@ export function addNullablePlaceholder<T = unknown>(
     return '-';
   }
   return (converter ? converter(value) : value) as string;
+}
+
+/**
+ * 获取 VNode 中的文本
+ */
+export function getVNodeText(vnode: unknown): string {
+  if (typeof vnode === 'string' || typeof vnode === 'number') {
+    return String(vnode);
+  }
+
+  if (Array.isArray(vnode)) {
+    return vnode.map(getVNodeText).join('');
+  }
+
+  if (isObject(vnode) && vnode.children) {
+    return getVNodeText(vnode.children);
+  }
+
+  return '';
 }
