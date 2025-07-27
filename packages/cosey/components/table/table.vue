@@ -107,18 +107,52 @@
         <el-table
           ref="elTableRef"
           v-bind="elTableProps"
+          :class="tableId"
           :data="tableData"
           :expand-row-keys="innerExpandRowKeys"
+          :show-summary="false"
+          :summary-method="undefined"
           style="width: 100%"
           height="100%"
           max-height="none"
         >
-          <template v-for="column of renderedColumns" :key="column.prop">
+          <template v-for="column of renderedColumns" :key="column.prop || column.property">
             <TableColumn v-bind="column" :internal-slot="$slots" />
           </template>
           <template v-for="name of passedElSlotsName" :key="name" #[name]="slotProps">
             <slot :name="name" v-bind="slotProps"></slot>
           </template>
+          <teleport :to="`.${tableId} .el-table__inner-wrapper`" defer>
+            <div
+              v-if="showSummary && tableLayout === 'fixed'"
+              v-show="!isEmpty"
+              ref="footerWrapper2"
+              v-mousewheel="handleHeaderFooterMousewheel"
+              :class="ns.e('footer-wrapper')"
+            >
+              <table
+                :class="ns.e('footer')"
+                cellspacing="0"
+                cellpadding="0"
+                border="0"
+                :style="tableBodyStyles"
+              >
+                <hColgroup
+                  v-if="store"
+                  :columns="store.states.columns"
+                  :table-layout="tableLayout"
+                />
+                <table-footer
+                  v-if="store"
+                  :border="border"
+                  :default-sort="defaultSort"
+                  :store="store"
+                  :sum-text="computedSumText"
+                  :summary-method="summaryMethod"
+                />
+              </table>
+            </div>
+          </teleport>
         </el-table>
       </div>
 
@@ -141,7 +175,17 @@
 
 <script setup lang="ts">
 import { cloneDeep, get, merge } from 'lodash-es';
-import { computed, mergeProps, onMounted, ref, unref, useTemplateRef, watch } from 'vue';
+import {
+  computed,
+  CSSProperties,
+  mergeProps,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  unref,
+  useTemplateRef,
+  watch,
+} from 'vue';
 import { reactiveComputed, reactiveOmit } from '@vueuse/core';
 import {
   type TableInstance,
@@ -149,6 +193,8 @@ import {
   type TableColumnCtx,
   ElButton,
   useZIndex,
+  useNamespace,
+  Mousewheel as vMousewheel,
 } from 'element-plus';
 import {
   type TableSlots,
@@ -168,7 +214,7 @@ import TableColumnEditor from './table-column-editor/table-column-editor.vue';
 import TableQuery from './table-query/table-query.vue';
 import TableExport from './table-export/table-export.vue';
 import Icon from '../icon/icon.vue';
-import { useFetch, useFullPage } from '../../hooks';
+import { useFetch, useFullPage, useResizeObserver } from '../../hooks';
 import { filterEmptyFormValue } from './utils';
 import {
   addPxUnit,
@@ -178,12 +224,16 @@ import {
   isFunction,
   isNullish,
   isObject,
+  uniqid,
   walkTree,
 } from '../../utils';
 import { useConfig, useComponentConfig } from '../config-provider';
 
 import useStyle from './style';
 import { useLocale } from '../../hooks';
+import { hColgroup } from 'element-plus/es/components/table/src/h-helper.mjs';
+import TableFooter from './table-footer';
+import { defaultSummaryMethod } from './table-footer/utils';
 
 defineOptions({
   name: 'Table',
@@ -206,6 +256,8 @@ const eventObject = tableEmitOnEvents.reduce(
 );
 
 const { t } = useLocale();
+
+const tableId = uniqid();
 
 const { prefixCls } = useComponentConfig('table');
 
@@ -281,7 +333,7 @@ const setRenderedColumns = () => {
 const exportColumns = computed(() => {
   return renderedColumns.value?.filter((column) => {
     return (
-      (!isNullish(column.prop) && column.prop !== '') ||
+      (!isNullish(column.prop || column.property) && (column.prop || column.property) !== '') ||
       (column.columns && column.columns.length > 0)
     );
   });
@@ -302,48 +354,42 @@ const onColumnReset = () => {
 };
 
 // data
+const flattedColumns = computed(() => flatColumns(props.columns));
+
 const tableData = ref(props.data || []);
 
 const tableDataWithSummary = computed(() => {
-  const columns = flatColumns(props.columns).map((column) => {
+  const columns = flattedColumns.value.map((column) => {
     return {
       ...column,
-      property: column.prop,
+      property: column.property || column.prop,
     };
-  }) as TableColumnProps[];
+  }) as TableColumnCtx[];
+
   const data = [...tableData.value];
 
-  if (props.summaryMethod) {
-    const sum = props.summaryMethod({
-      columns: columns as TableColumnCtx<any>[],
-      data: tableData.value,
-    });
+  if (props.showSummary) {
+    let sums = props.summaryMethod
+      ? props.summaryMethod({
+          columns: columns,
+          data: tableData.value,
+        })
+      : defaultSummaryMethod(columns, data, props.sumText || t('co.table.total'));
+
+    if (!Array.isArray(sums[0])) {
+      sums = [sums];
+    }
+
     data.push(
-      columns.reduce(
-        (row, column, index) => {
-          row[column.prop!] = getVNodeText(sum[index]);
-          return row;
-        },
-        {} as Record<string, any>,
-      ),
-    );
-  } else if (props.showSummary) {
-    const sum = columns.map((column) => {
-      const data = tableData.value.map((row) => +row[column.prop!]);
-      if (data.some((num) => isNaN(num))) {
-        return '';
-      }
-      return String(data.reduce((sum, num) => sum + num, 0));
-    });
-    sum[0] = props.sumText || t('co.table.total');
-    data.push(
-      columns.reduce(
-        (row, column, index) => {
-          row[column.prop!] = sum[index];
-          return row;
-        },
-        {} as Record<string, any>,
-      ),
+      ...sums.map((sum) => {
+        return columns.reduce(
+          (row, column, index) => {
+            row[(column.prop || column.property)!] = getVNodeText(sum[index]);
+            return row;
+          },
+          {} as Record<string, any>,
+        );
+      }),
     );
   }
   return data;
@@ -386,6 +432,58 @@ onMounted(() => {
     execute();
   }
 });
+
+// footer
+const ns = useNamespace('table');
+
+const isEmpty = computed(() => (tableData.value || []).length === 0);
+
+const handleHeaderFooterMousewheel = (_: any, data: any) => {
+  const { pixelX, pixelY } = data;
+  if (Math.abs(pixelX) >= Math.abs(pixelY)) {
+    (elTableRef.value!.$refs.bodyWrapper as HTMLElement).scrollLeft += data.pixelX / 5;
+  }
+};
+
+const tableBodyStyles = ref<CSSProperties>({});
+const store = ref<any>(null);
+const computedSumText = ref('');
+
+const tableBodyRef = ref<HTMLElement | null>(null);
+
+useResizeObserver(tableBodyRef, ({ inlineSize }) => {
+  tableBodyStyles.value.width = inlineSize + 'px';
+});
+
+onMounted(() => {
+  store.value = elTableRef.value!.store;
+  computedSumText.value = elTableRef.value!.computedSumText;
+  bindScrollEvent();
+
+  tableBodyRef.value = document.querySelector(`.${tableId} .el-table__body`);
+});
+
+onBeforeUnmount(() => {
+  unbindScrollEvent();
+});
+
+const footerWrapper2 = ref<HTMLElement | null>(null);
+
+const scrollHander = (event: Event) => {
+  footerWrapper2.value!.scrollLeft = (event.target as HTMLElement).scrollLeft;
+};
+
+const bindScrollEvent = () => {
+  document
+    .querySelector(`.${tableId} .el-scrollbar__wrap`)
+    ?.addEventListener('scroll', scrollHander);
+};
+
+const unbindScrollEvent = () => {
+  document
+    .querySelector(`.${tableId} .el-scrollbar__wrap`)
+    ?.removeEventListener('scroll', scrollHander);
+};
 
 // pagination
 const pagination = reactiveComputed(() => {
