@@ -72,7 +72,7 @@ export const getFixedColumnsClass = <T extends DefaultRow>(
 ) => {
   const classes: string[] = [];
   const { direction, start, after } = isFixedColumn(index, fixed, store, realColumns);
-  if (direction) {
+  if (direction && start && after) {
     const isLeft = direction === 'left';
     classes.push(`${namespace}-fixed-column--${direction}`);
     if (isLeft && after + offset === unref(store.states.fixedLeafColumnsLength) - 1) {

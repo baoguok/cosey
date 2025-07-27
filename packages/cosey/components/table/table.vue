@@ -470,7 +470,9 @@ onBeforeUnmount(() => {
 const footerWrapper2 = ref<HTMLElement | null>(null);
 
 const scrollHander = (event: Event) => {
-  footerWrapper2.value!.scrollLeft = (event.target as HTMLElement).scrollLeft;
+  if (footerWrapper2.value) {
+    footerWrapper2.value.scrollLeft = (event.target as HTMLElement).scrollLeft;
+  }
 };
 
 const bindScrollEvent = () => {
