@@ -1,5 +1,6 @@
 import { AudioCard } from './audio-card';
 import { AudioViewer } from './audio-viewer';
+import { Card } from './card';
 import { Close } from './close';
 import { Col } from './col';
 import { ConfigProvider } from './config-provider';
@@ -47,6 +48,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     CoAudioCard: typeof AudioCard;
     CoAudioViewer: typeof AudioViewer;
+    CoCard: typeof Card;
     CoClose: typeof Close;
     CoCol: typeof Col;
     CoConfigProvider: typeof ConfigProvider;
@@ -100,6 +102,7 @@ declare module 'vue' {
 export {
   AudioCard,
   AudioViewer,
+  Card,
   Close,
   Col,
   ConfigProvider,

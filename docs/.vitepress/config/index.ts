@@ -149,6 +149,7 @@ export default defineConfig({
         {
           text: 'Data 数据展示',
           items: [
+            { text: 'Card 卡片', link: '/components/card' },
             { text: 'Highlight 代码高亮', link: '/components/highlight' },
             { text: 'MediaCard 媒体卡片', link: '/components/media-card' },
             {
