@@ -229,7 +229,9 @@ const getScheme = (): ExportExcelScheme => {
 };
 
 const onSubmit = async () => {
-  await exportExcel(getScheme(), props.data);
+  await exportExcel(getScheme(), props.data, {
+    footerCount: props.footerCount,
+  });
 
   ElMessage.success(t('co.common.exportSuccess'));
 };

@@ -65,6 +65,7 @@
                 :config="mergedToolbarConfig.export"
                 :columns="exportColumns"
                 :data="tableDataWithSummary"
+                :footer-count="footerCount"
               />
             </div>
 
@@ -394,6 +395,8 @@ const tableDataWithSummary = computed(() => {
   }
   return data;
 });
+
+const footerCount = computed(() => tableDataWithSummary.value.length - tableData.value.length);
 
 const getFetchParams = () => {
   const params = {

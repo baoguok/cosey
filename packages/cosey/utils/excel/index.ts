@@ -171,6 +171,10 @@ function columns2lastLevelAoa(columns: TableColumnProps[]) {
   ];
 }
 
+export interface ExportExcelOptions {
+  footerCount?: number;
+}
+
 /**
  * 根据数据和配置，导出 excel 文件
  */
@@ -181,7 +185,9 @@ async function exportExcel(
     | {
         [sheetName: string]: Record<string, any>[];
       },
+  options?: ExportExcelOptions,
 ) {
+  const { footerCount = 0 } = options || {};
   const worksheets = scheme.worksheet ? [scheme.worksheet] : scheme.worksheets || [];
 
   const bookType = scheme.bookType || 'csv';
@@ -199,7 +205,9 @@ async function exportExcel(
     let aoa = ooa.map((obj, index) =>
       fColumns.map((column) => {
         const value = obj[column.prop as string];
-        return transform ? transform(obj, column, value, index) : value;
+        return transform && index < ooa.length - footerCount
+          ? transform(obj, column, value, index)
+          : value;
       }),
     );
 

@@ -19,6 +19,10 @@ const tableExportExtraProps = {
         }
     >,
   },
+  footerCount: {
+    type: Number,
+    default: 0,
+  },
 };
 
 export const tableExportProps = {
