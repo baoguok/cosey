@@ -23,6 +23,7 @@ export * from './horizontal-tree';
 export * from './icon';
 export * from './iconify-icon';
 export * from './image-card';
+export * from './input-number-range';
 export * from './long-text';
 export * from './mask';
 export * from './media-card';

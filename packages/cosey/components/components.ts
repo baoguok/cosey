@@ -22,6 +22,7 @@ import { HorizontalTree } from './horizontal-tree';
 import { Icon } from './icon';
 import { IconifyIcon } from './iconify-icon';
 import { ImageCard } from './image-card';
+import { InputNumberRange } from './input-number-range';
 import { LongText } from './long-text';
 import { Mask } from './mask';
 import { MediaCard } from './media-card';
@@ -74,6 +75,7 @@ declare module 'vue' {
     CoIcon: typeof Icon;
     CoIconifyIcon: typeof IconifyIcon;
     CoImageCard: typeof ImageCard;
+    CoInputNumberRange: typeof InputNumberRange;
     CoLongText: typeof LongText;
     CoMask: typeof Mask;
     CoMediaCard: typeof MediaCard;
@@ -117,10 +119,10 @@ export {
   Field,
   FileCard,
   Form,
-  FormItem,
   FormDialog,
   FormDrawer,
   FormGroup,
+  FormItem,
   FormList,
   FormQuery,
   Highlight,
@@ -128,6 +130,7 @@ export {
   Icon,
   IconifyIcon,
   ImageCard,
+  InputNumberRange,
   LongText,
   Mask,
   MediaCard,

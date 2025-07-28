@@ -15,6 +15,7 @@ import { type FieldMonthProps } from './components/month/month';
 import { type FieldMonthRangeProps } from './components/month-range/month-range';
 import { type FieldMonthsProps } from './components/months/months';
 import { type FieldNumberProps } from './components/number/number';
+import { type FieldNumberRangeProps } from './components/number-range/number-range';
 import { type FieldPasswordProps } from './components/password/password';
 import { type FieldRadioGroupProps } from './components/radio-group/radio-group';
 import { type FieldRateProps } from './components/rate/rate';
@@ -52,6 +53,7 @@ import Month from './components/month/month.vue';
 import MonthRange from './components/month-range/month-range.vue';
 import Months from './components/months/months.vue';
 import Number from './components/number/number.vue';
+import NumberRange from './components/number-range/number-range.vue';
 import Password from './components/password/password.vue';
 import dioGroup from './components/radio-group/radio-group.vue';
 import te from './components/rate/rate.vue';
@@ -90,6 +92,7 @@ export interface MapFieldTypeComponentProps {
   monthrange: FieldMonthRangeProps;
   months: FieldMonthsProps;
   number: FieldNumberProps;
+  numberrange: FieldNumberRangeProps;
   password: FieldPasswordProps;
   radiogroup: FieldRadioGroupProps;
   rate: FieldRateProps;
@@ -130,6 +133,7 @@ export const mapFieldTypeComponent = {
   monthrange: MonthRange,
   months: Months,
   number: Number,
+  numberrange: NumberRange,
   password: Password,
   radiogroup: dioGroup,
   rate: te,
