@@ -1,5 +1,13 @@
 import { formatAsDate, formatAsDateTime, toArray, Scope, isEmpty, isString } from '../../../utils';
-import { ElMessage, ElSwitch, ElTag, SwitchProps, type TableColumnCtx } from 'element-plus';
+import {
+  ElMessage,
+  ElSwitch,
+  ElTag,
+  ElLink,
+  type LinkProps,
+  SwitchProps,
+  type TableColumnCtx,
+} from 'element-plus';
 import { get } from 'lodash-es';
 import { type TableColumnProps } from './table-column';
 import { type LongTextProps, LongText } from '../../long-text';
@@ -45,6 +53,16 @@ export type RendererType =
       type: 'switch';
       props?: Partial<SwitchProps>;
       api?: (value: any, row: any) => Promise<any>;
+    }
+  | {
+      type: 'click';
+      props?: Partial<LinkProps>;
+      onClick?: (params: {
+        row: any;
+        value: any;
+        index: number;
+        column: TableColumnCtx<any>;
+      }) => void;
     };
 
 type GetObjectRendererType<T extends RendererType> = T extends object
@@ -75,7 +93,7 @@ export const mapRendererColumnProps: Record<string, TableColumnProps> = {
  * 可组合其他组件进行渲染
  */
 export function renderer<T extends RendererType>(
-  { cellValue, row }: RendererOptions,
+  { cellValue, row, index, column }: RendererOptions,
   type: RendererType = 'text',
   t: Translator,
 ) {
@@ -145,6 +163,18 @@ export function renderer<T extends RendererType>(
         </Scope>
       );
     }
+    case 'click':
+      return (
+        <ElLink
+          type="primary"
+          underline="never"
+          style="font-weight: normal; word-break: break-all;"
+          {...obj.props}
+          onClick={() => obj.onClick?.({ row, value: cellValue, index, column })}
+        >
+          {cellValue}
+        </ElLink>
+      );
   }
 }
 
@@ -178,6 +208,7 @@ export function exportRenderer<T extends RendererType>(
     case 'media':
     case 'longtext':
     case 'switch':
+    case 'click':
       return cellValue;
     case 'mediagroup':
       return JSON.stringify(cellValue);
