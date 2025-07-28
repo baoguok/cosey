@@ -1,21 +1,9 @@
 <template>
-  <FormQuery
-    ref="formQuery"
-    v-bind="formQueryProps"
-    :model="formModel"
-    @keyup.enter.prevent="onEnter"
-  >
-    <FormItem
-      v-for="(item, i) in schemes"
-      :key="i"
-      v-bind="item"
-      v-model="formModel[item.prop as string]"
-    />
-  </FormQuery>
+  <component :is="template"></component>
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount, reactive, useTemplateRef } from 'vue';
+import { onBeforeMount, reactive, ref } from 'vue';
 import {
   type TableQueryEmits,
   type TableQuerySlots,
@@ -26,10 +14,10 @@ import {
   tableQueryProps,
 } from './table-query';
 import { reactiveOmit } from '@vueuse/core';
-import { createMergedExpose } from '../../../utils';
+import { createMergedExpose, defineTemplate } from '../../../utils';
 import { cloneDeep } from 'lodash-es';
 import { FormItem } from '../../form';
-import { FormQuery } from '../../form-query';
+import { FormQuery, type FormQueryExpose } from '../../form-query';
 
 defineOptions({
   name: 'TableQuery',
@@ -43,7 +31,7 @@ defineSlots<TableQuerySlots>();
 
 defineEmits<TableQueryEmits>();
 
-const formQueryRef = useTemplateRef('formQuery');
+const formQueryRef = ref<FormQueryExpose>();
 
 const formModel = reactive<Record<string, any>>({});
 
@@ -73,4 +61,40 @@ const customExpose: TableQueryCustomExpose = {
 defineExpose<TableQueryExpose>(
   createMergedExpose(tableQueryExposeKeys, () => formQueryRef.value, customExpose),
 );
+
+const template = defineTemplate((h) => {
+  return h(
+    FormQuery,
+    {
+      ...formQueryProps,
+      ref: formQueryRef,
+      model: formModel,
+      onKeyupEnterPrevent: onEnter,
+    },
+    () => {
+      return props.schemes.map((item) => {
+        const { slots, render, ...rest } = item;
+
+        if (render) {
+          return h(FormItem, rest, {
+            ...slots,
+            default: () => {
+              return render({ model: formModel });
+            },
+          });
+        }
+
+        return h(
+          FormItem,
+          {
+            ...rest,
+            modelValue: formModel[rest.prop as string],
+            'onUpdate:modelValue': (value: any) => (formModel[rest.prop as string] = value),
+          },
+          slots,
+        );
+      });
+    },
+  );
+});
 </script>

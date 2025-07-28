@@ -6,11 +6,16 @@ import {
   type FormQueryExpose,
   formQueryProps,
 } from '../../form-query';
-import { type PropType, type ExtractPropTypes } from 'vue';
+import { type PropType, type ExtractPropTypes, VNodeChild } from 'vue';
+
+export type TableQueryScheme = FormItemProps<FieldType> & {
+  render?: (params: { model: Record<string, any> }) => VNodeChild;
+  slots?: Record<string, unknown>;
+};
 
 const tableQueryExtraProps = {
   schemes: {
-    type: Array as PropType<FormItemProps<FieldType>[]>,
+    type: Array as PropType<TableQueryScheme[]>,
     default: () => [],
   },
 };
