@@ -77,7 +77,7 @@ const [tableProps, { reload, getSelectionRows }] = useTable(
     api: getUsers,
     columns: [
       { type: 'selection' },
-      { prop: 'id', label: 'ID', format: (value) => value + '---' },
+      { prop: 'id', label: 'ID' },
       { prop: 'nickname', label: t('user.nickname') },
       {
         label: t('user.contact'),
@@ -112,7 +112,7 @@ const [tableProps, { reload, getSelectionRows }] = useTable(
     ],
     formProps: {
       schemes: [
-        { prop: 'nickname', label: t('user.nickname'), fieldType: 'numberrange' },
+        { prop: 'nickname', label: t('user.nickname') },
         { prop: 'mobile', label: t('user.phone') },
         { prop: 'name', label: t('user.name') },
         {
