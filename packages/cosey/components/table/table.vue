@@ -335,7 +335,8 @@ const exportColumns = computed(() => {
   return renderedColumns.value?.filter((column) => {
     return (
       (!isNullish(column.prop || column.property) && (column.prop || column.property) !== '') ||
-      (column.columns && column.columns.length > 0)
+      (column.columns && column.columns.length > 0) ||
+      column.type === 'index'
     );
   });
 });

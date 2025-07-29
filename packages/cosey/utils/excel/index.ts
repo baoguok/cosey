@@ -204,6 +204,9 @@ async function exportExcel(
 
     let aoa = ooa.map((obj, index) =>
       fColumns.map((column) => {
+        if (column.type === 'index') {
+          return index + 1;
+        }
         const value = obj[column.prop as string];
         return transform && index < ooa.length - footerCount
           ? transform(obj, column, value, index)
