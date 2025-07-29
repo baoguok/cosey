@@ -383,15 +383,13 @@ const tableDataWithSummary = computed(() => {
     }
 
     data.push(
-      ...sums.map((sum) => {
-        return columns.reduce(
-          (row, column, index) => {
-            row[(column.prop || column.property)!] = getVNodeText(sum[index]);
-            return row;
-          },
-          {} as Record<string, any>,
-        );
-      }),
+      ...sums.map((sum) =>
+        sum
+          .filter((_: any, index: number) => {
+            return columns[index].type === 'selection' ? false : true;
+          })
+          .map((item: any) => getVNodeText(item)),
+      ),
     );
   }
   return data;

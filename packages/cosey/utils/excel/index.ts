@@ -203,14 +203,17 @@ async function exportExcel(
     const ooa = Array.isArray(data) ? data : data[name];
 
     let aoa = ooa.map((obj, index) =>
-      fColumns.map((column) => {
-        if (column.type === 'index') {
-          return index + 1;
+      fColumns.map((column, colIndex) => {
+        if (index < ooa.length - footerCount) {
+          if (column.type === 'index') {
+            return index + 1;
+          } else {
+            const value = obj[column.prop as string];
+            return transform ? transform(obj, column, value, index) : value;
+          }
+        } else {
+          return obj[colIndex];
         }
-        const value = obj[column.prop as string];
-        return transform && index < ooa.length - footerCount
-          ? transform(obj, column, value, index)
-          : value;
       }),
     );
 
