@@ -416,20 +416,26 @@ const getFullFetchParams = () => {
   };
 };
 
-const { isFetching, execute } = useFetch(() => props.api?.(getFullFetchParams()), {
-  immediate: false,
-  onSuccess(res) {
-    res = props.transformResponse?.(res) || res;
-
-    tableData.value = (tableKeys.list ? get(res, tableKeys.list) : res) || [];
-    total.value = +get(res, tableKeys.total) || 0;
-
-    elTableRef.value?.setScrollTop(0);
+const { isFetching, execute } = useFetch(
+  () => {
+    const params = getFullFetchParams();
+    return Promise.all([props.api?.({ ...params }), props.parallelFetch?.({ ...params })]);
   },
-  onFinally() {
-    reloading.value = false;
+  {
+    immediate: false,
+    onSuccess([res]) {
+      res = props.transformResponse?.(res) || res;
+
+      tableData.value = (tableKeys.list ? get(res, tableKeys.list) : res) || [];
+      total.value = +get(res, tableKeys.total) || 0;
+
+      elTableRef.value?.setScrollTop(0);
+    },
+    onFinally() {
+      reloading.value = false;
+    },
   },
-});
+);
 
 onMounted(() => {
   if (props.immediate) {

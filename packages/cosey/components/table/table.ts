@@ -58,7 +58,7 @@ export const tableEmitOnProps = tableEmitOnEvents.reduce(
 
 const tableExtraProps = {
   api: {
-    type: Function as PropType<(...args: any[]) => Promise<any>>,
+    type: Function as PropType<(...args: any[]) => Promise<any> | any>,
   },
   immediate: {
     type: Boolean,
@@ -86,6 +86,9 @@ const tableExtraProps = {
   },
   transformResponse: {
     type: Function as PropType<(res: any) => any>,
+  },
+  parallelFetch: {
+    type: Function as PropType<(...args: any[]) => Promise<any> | any>,
   },
   toolbarConfig: {
     type: [Object, Boolean] as PropType<ToolbarConfig | boolean>,
