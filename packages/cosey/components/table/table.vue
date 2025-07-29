@@ -403,7 +403,7 @@ const getFetchParams = () => {
     ...filterEmptyFormValue(tableQueryRef.value?.getFieldsValue() || {}),
   };
 
-  return filterEmptyFormValue(props.beforeFetch?.(params) || params);
+  return filterEmptyFormValue(props.transformParams?.(params) || params);
 };
 
 const getFullFetchParams = () => {
@@ -417,7 +417,7 @@ const getFullFetchParams = () => {
 const { isFetching, execute } = useFetch(() => props.api?.(getFullFetchParams()), {
   immediate: false,
   onSuccess(res) {
-    res = props.afterFetch?.(res) || res;
+    res = props.transformResponse?.(res) || res;
 
     tableData.value = (tableKeys.list ? get(res, tableKeys.list) : res) || [];
     total.value = +get(res, tableKeys.total) || 0;

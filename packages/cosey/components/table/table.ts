@@ -81,7 +81,7 @@ const tableExtraProps = {
   formProps: {
     type: Object as PropType<TableQueryProps>,
   },
-  beforeFetch: {
+  transformParams: {
     type: Function as PropType<(params: Record<string, any>) => any>,
   },
   afterFetch: {

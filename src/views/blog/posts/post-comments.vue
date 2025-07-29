@@ -76,7 +76,7 @@ const [tableProps, { reload }] = useTable(
 
     immediate: false,
 
-    beforeFetch(params) {
+    transformParams(params) {
       return {
         ...params,
         postId: postId.value,
