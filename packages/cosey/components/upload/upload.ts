@@ -1,3 +1,4 @@
+import { type AxiosRequestConfig } from 'axios';
 import { type MediaCardBaseProps } from '../media-card';
 import { type UploadContext } from '../upload-context';
 
@@ -28,6 +29,7 @@ export interface UploadProps {
   selectOnly?: boolean;
   size?: MediaCardBaseProps['size'];
   request?: UploadContext['request'];
+  requestConfig?: AxiosRequestConfig;
 }
 
 export const defaultUploadProps = {

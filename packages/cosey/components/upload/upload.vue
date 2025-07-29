@@ -199,11 +199,13 @@ const doUpload = async (options: {
   onError: () => void;
 }) => {
   return (props.request || request)?.(options.data, {
+    ...props.requestConfig,
     signal: options.signal,
     onUploadProgress(event) {
       if (event.total) {
         options.onProgress((event.loaded / event.total) * 100);
       }
+      props.requestConfig?.onUploadProgress?.(event);
     },
   })
     .then((url) => {
