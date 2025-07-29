@@ -362,6 +362,13 @@ const flattedColumns = computed(() => flatColumns(props.columns));
 
 const tableData = ref(props.data || []);
 
+watch(
+  () => props.data,
+  () => {
+    tableData.value = props.data || [];
+  },
+);
+
 const tableDataWithSummary = computed(() => {
   const columns = flattedColumns.value.map((column) => {
     return {
