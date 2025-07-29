@@ -26,7 +26,7 @@ const getTableStyle: GenerateStyle<TableToken, CSSObject> = (token) => {
 
       [`${componentCls}-header`]: {
         flex: 'none',
-        paddingInline: token.sizeSM,
+        paddingInline: token.paddingSM,
         paddingBlockStart: token.size,
       },
 
@@ -42,8 +42,8 @@ const getTableStyle: GenerateStyle<TableToken, CSSObject> = (token) => {
         flex: 'none',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: token.sizeSM,
-        paddingBlockEnd: 0,
+        paddingBlockStart: token.paddingSM,
+        paddingInline: token.paddingSM,
       },
 
       [`${componentCls}-toolbar-left`]: {},
@@ -66,6 +66,11 @@ const getTableStyle: GenerateStyle<TableToken, CSSObject> = (token) => {
         },
       },
 
+      [`${componentCls}-before-table`]: {
+        paddingBlockStart: token.paddingSM,
+        paddingInline: token.paddingSM,
+      },
+
       [`${componentCls}-table`]: {
         minHeight: 0,
         flex: 1,
@@ -80,8 +85,8 @@ const getTableStyle: GenerateStyle<TableToken, CSSObject> = (token) => {
         flex: 'none',
         flexWrap: 'wrap',
         justifyContent: 'flex-end',
-        padding: token.paddingSM,
-        paddingBlockStart: 0,
+        paddingBlockEnd: token.paddingSM,
+        paddingInline: token.paddingSM,
       },
     },
   };

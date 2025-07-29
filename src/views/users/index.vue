@@ -76,7 +76,6 @@ const [tableProps, { reload, getSelectionRows }] = useTable(
   computed(() => ({
     api: getUsers,
     columns: [
-      { type: 'index' },
       { type: 'selection' },
       { prop: 'id', label: 'ID' },
       { prop: 'nickname', label: t('user.nickname') },

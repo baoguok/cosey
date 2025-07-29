@@ -84,7 +84,7 @@ const tableExtraProps = {
   transformParams: {
     type: Function as PropType<(params: Record<string, any>) => any>,
   },
-  afterFetch: {
+  transformResponse: {
     type: Function as PropType<(res: any) => any>,
   },
   toolbarConfig: {
@@ -111,6 +111,7 @@ export interface TableSlots {
   empty?: (props: Record<string, never>) => any;
   'toolbar-left'?: (props: Record<string, never>) => any;
   'toolbar-right'?: (props: Record<string, never>) => any;
+  'before-table'?: (props: Record<string, never>) => any;
 }
 
 export const elSlotsName = ['default', 'append', 'empty'] as const;

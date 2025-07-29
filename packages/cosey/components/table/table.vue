@@ -103,7 +103,9 @@
           </div>
         </div>
       </div>
-
+      <div v-if="$slots['before-table']" :class="`${prefixCls}-before-table`">
+        <slot name="before-table"></slot>
+      </div>
       <div :class="`${prefixCls}-table`">
         <el-table
           ref="elTableRef"
