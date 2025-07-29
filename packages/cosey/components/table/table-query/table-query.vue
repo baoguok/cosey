@@ -18,6 +18,7 @@ import { createMergedExpose, defineTemplate } from '../../../utils';
 import { cloneDeep } from 'lodash-es';
 import { FormItem } from '../../form';
 import { FormQuery, type FormQueryExpose } from '../../form-query';
+import { withModifiers } from 'vue';
 
 defineOptions({
   name: 'TableQuery',
@@ -69,7 +70,14 @@ const template = defineTemplate((h) => {
       ...formQueryProps,
       ref: formQueryRef,
       model: formModel,
-      onKeyupEnterPrevent: onEnter,
+      onKeyup: withModifiers(
+        (event) => {
+          if ((event as KeyboardEvent).key === 'Enter') {
+            onEnter();
+          }
+        },
+        ['prevent'],
+      ),
     },
     () => {
       return props.schemes.map((item) => {
