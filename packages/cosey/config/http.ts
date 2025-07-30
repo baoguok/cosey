@@ -70,6 +70,11 @@ export const defaultHttpConfig = {
    * 错误提示显示时长
    */
   errorDuration: 3000,
+
+  /**
+   * 是否直接返回 AxiosResponse 对象
+   */
+  originalResponse: false,
 };
 
 export type HttpConfig = DeepPartial<typeof defaultHttpConfig>;

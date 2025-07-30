@@ -71,6 +71,10 @@ export function useRequest(config: CreateAxiosDefaults = {}, useHttpConfig?: Htt
 
     axiosIns.interceptors.response.use(
       (response) => {
+        if (mergedHttpConfig.originalResponse) {
+          return response;
+        }
+
         const { data: resData } = response;
         return handleError(resData, mergedHttpConfig);
       },
