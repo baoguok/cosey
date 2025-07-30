@@ -1,4 +1,6 @@
+import { type AxiosResponse } from 'axios';
 import { isString } from './is';
+import mime from 'mime-types';
 
 let input: HTMLInputElement;
 
@@ -87,4 +89,40 @@ export function readAsArrayBuffer(file: File) {
     };
     reader.readAsArrayBuffer(file);
   });
+}
+
+/**
+ * 下载附件
+ */
+export function downloadAttachment(
+  response: AxiosResponse,
+  options?: {
+    filename?: string;
+  },
+) {
+  let { filename } = options || {};
+
+  const type = response.headers['content-type'];
+
+  if (!filename) {
+    const contentDisposition = response.headers['content-disposition'];
+
+    if (contentDisposition) {
+      filename = contentDisposition.split('filename=')[1].trim().replace(/"/g, '');
+    }
+  }
+
+  if (!filename) {
+    filename = `download.${mime.extension(type)}`;
+  }
+
+  const blob = new Blob([response.data], { type });
+  const link = document.createElement('a');
+  link.href = window.URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+
+  setTimeout(() => {
+    window.URL.revokeObjectURL(link.href);
+  }, 100);
 }
