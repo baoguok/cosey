@@ -76,6 +76,7 @@ export interface FormSlots {
 export interface FormEmits extends /* @vue-ignore */ EmitFn<ElFormEmits> {}
 
 export interface FormExpose {
+  reset: () => void;
   submit: () => Promise<any>;
   validate: (callback?: FormValidateCallback) => FormValidationResult;
   validateField: (
