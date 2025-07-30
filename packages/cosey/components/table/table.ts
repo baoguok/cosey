@@ -126,6 +126,7 @@ export interface TableCustomExpose {
   collapseAll: () => void;
   getFetchParams: () => Record<string, any>;
   getFullFetchParams: () => Record<string, any>;
+  setData: (data: any[]) => void;
 }
 
 export type TableExpose = TableCustomExpose &
@@ -178,6 +179,7 @@ export const tableExposeKeys = [
   'collapseAll',
   'getFetchParams',
   'getFullFetchParams',
+  'setData',
 ];
 
 export const defaultTableConfig = {

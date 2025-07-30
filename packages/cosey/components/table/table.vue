@@ -370,6 +370,10 @@ watch(
   },
 );
 
+const setData = (data: any[]) => {
+  tableData.value = data;
+};
+
 const tableDataWithSummary = computed(() => {
   const columns = flattedColumns.value.map((column) => {
     return {
@@ -645,6 +649,7 @@ const expose = createMergedExpose(
     collapseAll,
     getFetchParams,
     getFullFetchParams,
+    setData,
   },
   () => tableQueryRef.value,
 );
