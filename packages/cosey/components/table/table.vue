@@ -106,6 +106,7 @@
       <div v-if="$slots['before-table']" :class="`${prefixCls}-before-table`">
         <slot name="before-table"></slot>
       </div>
+      <slot name="stats-table"></slot>
       <div :class="`${prefixCls}-table`">
         <el-table
           ref="elTableRef"
