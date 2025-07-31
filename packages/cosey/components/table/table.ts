@@ -1,6 +1,6 @@
 import { TableColumnCtx, type PaginationProps } from 'element-plus';
 import elTableProps from 'element-plus/es/components/table/src/table/defaults.mjs';
-import { type PropType, type ExtractPropTypes } from 'vue';
+import { type PropType, type ExtractPropTypes, MaybeRef } from 'vue';
 import { type TableColumnProps } from './table-column/table-column';
 import { camelCase, omit, upperFirst } from 'lodash-es';
 import {
@@ -8,6 +8,7 @@ import {
   tableQueryExposeKeys,
   type TableQueryProps,
 } from './table-query/table-query';
+import { TableStatisticsColumn } from './table-stats/table-stats';
 
 export interface ToolbarConfig {
   reload?: boolean;
@@ -96,6 +97,12 @@ const tableExtraProps = {
   },
   keys: {
     type: Object as PropType<TableConfig['keys']>,
+  },
+  statsColumns: {
+    type: Object as PropType<MaybeRef<TableStatisticsColumn[]>>,
+  },
+  statsData: {
+    type: Object as MaybeRef<any>,
   },
 };
 

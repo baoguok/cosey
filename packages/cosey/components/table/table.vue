@@ -16,11 +16,16 @@
 
     <div :class="`${prefixCls}-body`">
       <div
-        v-if="$slots['toolbar-left'] || $slots['toolbar-right'] || mergedToolbarConfig"
+        v-if="
+          $slots['toolbar-left'] || $slots['toolbar-right'] || mergedToolbarConfig || isStatsVisible
+        "
         :class="`${prefixCls}-toolbar`"
       >
         <div :class="`${prefixCls}-toolbar-left`">
           <slot name="toolbar-left"></slot>
+          <div v-if="isStatsVisible" :class="`${prefixCls}-stats-wrapper`">
+            <TableStats :columns="statsColumns" :data="statsData" />
+          </div>
         </div>
         <div :class="`${prefixCls}-toolbar-right`">
           <slot name="toolbar-right"></slot>
@@ -233,11 +238,12 @@ import {
 } from '../../utils';
 import { useConfig, useComponentConfig } from '../config-provider';
 
-import useStyle from './style';
+import useStyle from './table.style';
 import { useLocale } from '../../hooks';
 import { hColgroup } from 'element-plus/es/components/table/src/h-helper.mjs';
 import TableFooter from './table-footer';
 import { defaultSummaryMethod } from './table-footer/utils';
+import TableStats from './table-stats/table-stats.vue';
 
 defineOptions({
   name: 'Table',
@@ -638,6 +644,11 @@ const onReset = async () => {
     await execute();
   }
 };
+
+// stats
+const statsColumns = computed(() => unref(props.statsColumns));
+const statsData = computed(() => unref(props.statsData));
+const isStatsVisible = computed(() => statsColumns.value && statsColumns.value.length > 0);
 
 // expose
 const expose = createMergedExpose(

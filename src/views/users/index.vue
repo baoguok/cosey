@@ -60,7 +60,7 @@ import * as mock from '@gunny/mock';
 import { useAbility } from '@casl/vue';
 import { warningConfirm } from 'cosey/utils';
 import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const { t } = useI18n();
 
@@ -71,6 +71,12 @@ defineOptions({
 const { can, cannot } = useAbility();
 
 const { getUsers, deleteUser, updateUser, updateBulkSilent } = useUsersApi();
+
+const statsData = ref({
+  totalGoldIn: 123,
+  totalGoldOut: 456,
+  ratio: 789,
+});
 
 const [tableProps, { reload, getSelectionRows }] = useTable(
   computed(() => ({
@@ -141,6 +147,16 @@ const [tableProps, { reload, getSelectionRows }] = useTable(
       fixed: 'right',
       minWidth: 150,
     },
+    statsColumns: [
+      { prop: 'totalGoldIn', label: '投入' },
+      { prop: 'totalGoldOut', label: '产出' },
+      {
+        prop: 'ratio',
+        label: '产出投入比',
+        format: (value: number) => `${Math.floor(value * 10000) / 100}%`,
+      },
+    ],
+    statsData: statsData,
     showSummary: true,
     height: '100%',
   })),

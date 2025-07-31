@@ -1,6 +1,6 @@
 import { type AxiosResponse } from 'axios';
 import { isString } from './is';
-import mime from 'mime-types';
+import mime from 'mime';
 
 let input: HTMLInputElement;
 
@@ -113,7 +113,8 @@ export function downloadAttachment(
   }
 
   if (!filename) {
-    filename = `download.${mime.extension(type)}`;
+    const ext = mime.getExtension(type);
+    filename = `download${ext ? `.${ext}` : ''}`;
   }
 
   const blob = new Blob([response.data], { type });

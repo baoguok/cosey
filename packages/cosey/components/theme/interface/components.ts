@@ -20,7 +20,7 @@ import type { ComponentToken as LongTextComponentToken } from '../../long-text/s
 import type { ComponentToken as MaskComponentToken } from '../../mask/style';
 import type { ComponentToken as PanelComponentToken } from '../../panel/style';
 import type { ComponentToken as ScrollViewComponentToken } from '../../scroll-view/style';
-import type { ComponentToken as TableComponentToken } from '../../table/style';
+import type { ComponentToken as TableComponentToken } from '../../table/table.style';
 import type { ComponentToken as TableColumnComponentToken } from '../../table/table-column/style';
 import type { ComponentToken as TableColumnEditorComponentToken } from '../../table/table-column-editor/style';
 import type { ComponentToken as TableExportComponentToken } from '../../table/table-export/style';

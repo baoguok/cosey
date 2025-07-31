@@ -1,6 +1,6 @@
-import { type CSSObject } from '../../cssinjs';
-import { type FullToken, type GenerateStyle, getStyleHook } from '../../theme';
-import { contrarotation } from '../../style';
+import { type CSSObject } from '../cssinjs';
+import { type FullToken, type GenerateStyle, getStyleHook } from '../theme';
+import { contrarotation } from '../style';
 
 export interface ComponentToken {}
 
@@ -40,7 +40,7 @@ const getTableStyle: GenerateStyle<TableToken, CSSObject> = (token) => {
       [`${componentCls}-toolbar`]: {
         display: 'flex',
         flex: 'none',
-        alignItems: 'center',
+        alignItems: 'flex-end',
         justifyContent: 'center',
         paddingBlockStart: token.paddingSM,
         paddingInline: token.paddingSM,
@@ -64,6 +64,10 @@ const getTableStyle: GenerateStyle<TableToken, CSSObject> = (token) => {
           animationTimingFunction: 'linear',
           animationIterationCount: 'infinite',
         },
+      },
+
+      [`${componentCls}-stats-wrapper`]: {
+        paddingBlockStart: token.paddingSM,
       },
 
       [`${componentCls}-before-table`]: {
