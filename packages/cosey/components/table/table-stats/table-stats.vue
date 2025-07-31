@@ -16,7 +16,6 @@ const { prefixCls } = useComponentConfig('table-stats');
 const { hashId } = useStyle(prefixCls);
 
 const template = defineTemplate((h) => {
-  console.log(props.data);
   return h(
     'div',
     {

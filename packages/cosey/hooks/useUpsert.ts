@@ -4,14 +4,16 @@ import { cloneDeep, pick } from 'lodash-es';
 import {
   type ShallowRef,
   type Ref,
+  type ComputedRef,
+  type MaybeRef,
   computed,
   onMounted,
   reactive,
   ref,
   shallowRef,
   useTemplateRef,
-  MaybeRef,
   unref,
+  readonly,
 } from 'vue';
 
 import { useLocale } from '../hooks';
@@ -69,7 +71,9 @@ export interface UseUpsertReturn<
   data: Ref<Data | undefined>;
   expose: UseUpsertExpose<Row, Data>;
   row: ShallowRef<Row | undefined>;
-  type: Ref<UpsertType>;
+  type: Readonly<Ref<UpsertType>>;
+  isEdit: ComputedRef<boolean>;
+  isAdd: ComputedRef<boolean>;
 }
 
 export function useUpsert<
@@ -95,6 +99,8 @@ export function useUpsert<
   const { t, lang } = useLocale();
 
   const type = ref<UpsertType>('add');
+  const isEdit = computed(() => type.value === 'edit');
+  const isAdd = computed(() => type.value === 'add');
 
   // dialog
   const visible = ref(false);
@@ -195,7 +201,9 @@ export function useUpsert<
     data,
     expose,
     row,
-    type,
+    type: readonly(type),
+    isEdit,
+    isAdd,
   };
 
   return result;
