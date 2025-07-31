@@ -80,7 +80,7 @@ export function useUpsert<
   Model extends Record<string, any>,
   Row extends Record<string, any> = Model,
   Data = any,
->(options: MaybeRef<UseUpsertOptions<Model, Row>>): UseUpsertReturn<Model, Row> {
+>(options: MaybeRef<UseUpsertOptions<Model, Row, Data>>): UseUpsertReturn<Model, Row, Data> {
   const {
     model,
     stuffTitle,
