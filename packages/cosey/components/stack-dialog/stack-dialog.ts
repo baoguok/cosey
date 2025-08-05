@@ -1,5 +1,13 @@
 import { dialogProps, type DialogEmits, type DialogInstance } from 'element-plus';
-import { EmitFn, ExtractPropTypes, inject, InjectionKey, provide, reactive } from 'vue';
+import {
+  EmitFn,
+  ExtractPropTypes,
+  inject,
+  InjectionKey,
+  onBeforeUnmount,
+  provide,
+  reactive,
+} from 'vue';
 import { type ElDialogSlots } from '../form-dialog';
 
 export const stackDialogProps = {
@@ -39,7 +47,7 @@ export function useStackDialogProvide() {
     const total = 10;
 
     infoList.forEach((info, index) => {
-      const x = index / count;
+      const x = Math.min(index / count, 1);
       const t = 1 - Math.pow(1 - x, 4);
       const scale = 1 - (index / infoList.length) * 0.05;
       info.transform = `translateY(${t * total}vh) scale(${scale})`;
@@ -76,6 +84,10 @@ export function useStackDialog() {
   const onHide = () => {
     context?.removeInfo(info);
   };
+
+  onBeforeUnmount(() => {
+    context?.removeInfo(info);
+  });
 
   return {
     onShow,

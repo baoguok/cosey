@@ -1,5 +1,5 @@
 <template>
-  <co-stack-dialog v-model="visible" :title="t('enum.enumItem')">
+  <co-stack-dialog v-model="visible" :title="t('enum.enumItem')" :key="enumId">
     <co-table v-bind="tableProps">
       <template #toolbar-left>
         <el-button v-if="can('create', 'system_enum_item')" type="primary" @click="upsert.add()">

@@ -56,9 +56,17 @@ const template = defineTemplate(() => {
         onShow();
         emit('open');
       }}
+      onOpened={() => {
+        onShow();
+        emit('opened');
+      }}
       onClose={() => {
         onHide();
         emit('close');
+      }}
+      onClosed={() => {
+        onHide();
+        emit('closed');
       }}
       v-slots={slots}
     ></ElDialog>

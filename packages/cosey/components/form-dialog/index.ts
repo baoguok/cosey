@@ -1,9 +1,8 @@
-import { Component } from 'vue';
+import { type Plugin, Component } from 'vue';
 import { withInstall } from '../utils';
 import FormDialog from './form-dialog.vue';
 import { useFormDialogWidth } from './useFormDialogWidth';
 import { FormDialogProps } from './form-dialog';
-import { type Plugin } from 'vue';
 
 export * from './form-dialog';
 
