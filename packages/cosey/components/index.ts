@@ -36,6 +36,7 @@ export * from './panel';
 export * from './row';
 export * from './scroll-view';
 export * from './snug-menu';
+export * from './stack-dialog';
 export * from './style';
 export * from './svg-icon';
 export * from './table';

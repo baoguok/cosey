@@ -35,6 +35,7 @@ import { Panel } from './panel';
 import { Row } from './row';
 import { ScrollView } from './scroll-view';
 import { SnugMenu, SnugMenuItem } from './snug-menu';
+import { StackDialog } from './stack-dialog';
 import { SvgIcon } from './svg-icon';
 import { Table } from './table';
 import { TableAction } from './table-action';
@@ -89,6 +90,7 @@ declare module 'vue' {
     CoScrollView: typeof ScrollView;
     CoSnugMenu: typeof SnugMenu;
     CoSnugMenuItem: typeof SnugMenuItem;
+    CoStackDialog: typeof StackDialog;
     CoSvgIcon: typeof SvgIcon;
     CoTable: typeof Table;
     CoTableAction: typeof TableAction;
@@ -144,6 +146,7 @@ export {
   ScrollView,
   SnugMenu,
   SnugMenuItem,
+  StackDialog,
   SvgIcon,
   Table,
   TableAction,

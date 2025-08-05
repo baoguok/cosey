@@ -1,185 +1,190 @@
 <template>
-  <div
-    v-loading="isFetching"
-    :class="[
-      hashId,
-      prefixCls,
-      {
-        'is-fullpage': isFullPage,
-      },
-    ]"
-    :style="{ ...containerStyle, zIndex }"
-  >
-    <div v-if="formProps" :class="`${prefixCls}-header`">
-      <TableQuery ref="tableQuery" v-bind="formProps" :reset="onReset" :submit="onSubmit" />
-    </div>
-
-    <div :class="`${prefixCls}-body`">
-      <div
-        v-if="
-          $slots['toolbar-left'] || $slots['toolbar-right'] || mergedToolbarConfig || isStatsVisible
-        "
-        :class="`${prefixCls}-toolbar`"
-      >
-        <div :class="`${prefixCls}-toolbar-left`">
-          <slot name="toolbar-left"></slot>
-          <div v-if="isStatsVisible" :class="`${prefixCls}-stats-wrapper`">
-            <TableStats :columns="statsColumns" :data="statsData" />
-          </div>
-        </div>
-        <div :class="`${prefixCls}-toolbar-right`">
-          <slot name="toolbar-right"></slot>
-          <div v-if="mergedToolbarConfig" :class="`${prefixCls}-toolbar-preset`">
-            <div v-if="mergedToolbarConfig.reload">
-              <el-tooltip
-                :content="t('co.common.reload')"
-                placement="top"
-                :show-after="200"
-                :hide-after="0"
-              >
-                <el-button circle @click="reload">
-                  <Icon
-                    name="co:rotate-360"
-                    size="md"
-                    :class="[
-                      `${prefixCls}-refresh-icon`,
-                      {
-                        'is-spinning': reloading,
-                      },
-                    ]"
-                  />
-                </el-button>
-              </el-tooltip>
-            </div>
-
-            <div v-if="mergedToolbarConfig.export">
-              <el-tooltip
-                :content="t('co.table.export')"
-                placement="top"
-                :show-after="200"
-                :hide-after="0"
-              >
-                <el-button circle @click="exportVisible = true">
-                  <Icon name="co:download" size="md" />
-                </el-button>
-              </el-tooltip>
-
-              <TableExport
-                v-model="exportVisible"
-                :title="t('co.table.exportData')"
-                :config="mergedToolbarConfig.export"
-                :columns="exportColumns"
-                :data="tableDataWithSummary"
-                :footer-count="footerCount"
-              />
-            </div>
-
-            <div v-if="mergedToolbarConfig.fullScreen">
-              <el-tooltip
-                :content="isFullPage ? t('co.table.exitFullScreen') : t('co.table.fullScreen')"
-                placement="top"
-                :show-after="200"
-                :hide-after="0"
-              >
-                <el-button circle @click="onFullScreen">
-                  <Icon :name="isFullPage ? 'co:fullscreen-exit' : 'co:fullscreen'" size="md" />
-                </el-button>
-              </el-tooltip>
-            </div>
-
-            <div v-if="mergedToolbarConfig.setting">
-              <el-tooltip
-                :content="t('co.table.columnSettings')"
-                placement="top"
-                :show-after="200"
-                :hide-after="0"
-              >
-                <el-button ref="setting-ref" circle>
-                  <Icon name="co:settings-adjust" size="md" />
-                </el-button>
-              </el-tooltip>
-
-              <TableColumnEditor
-                v-model="renderedColumns"
-                :virtual-ref="settingRef"
-                @reset="onColumnReset"
-              />
-            </div>
-          </div>
-        </div>
+  <teleport to="body" :disabled="!isFullPage">
+    <div
+      v-loading="isFetching"
+      :class="[
+        hashId,
+        prefixCls,
+        {
+          'is-fullpage': isFullPage,
+        },
+      ]"
+      :style="{ ...containerStyle, zIndex }"
+    >
+      <div v-if="formProps" :class="`${prefixCls}-header`">
+        <TableQuery ref="tableQuery" v-bind="formProps" :reset="onReset" :submit="onSubmit" />
       </div>
-      <div v-if="$slots['before-table']" :class="`${prefixCls}-before-table`">
-        <slot name="before-table"></slot>
-      </div>
-      <slot name="stats-table"></slot>
-      <div :class="`${prefixCls}-table`">
-        <el-table
-          ref="elTableRef"
-          v-bind="elTableProps"
-          :class="tableId"
-          :data="tableData"
-          :expand-row-keys="innerExpandRowKeys"
-          :show-summary="false"
-          :summary-method="undefined"
-          style="width: 100%"
-          height="100%"
-          max-height="none"
+
+      <div :class="`${prefixCls}-body`">
+        <div
+          v-if="
+            $slots['toolbar-left'] ||
+            $slots['toolbar-right'] ||
+            mergedToolbarConfig ||
+            isStatsVisible
+          "
+          :class="`${prefixCls}-toolbar`"
         >
-          <template v-for="column of renderedColumns" :key="column.prop || column.property">
-            <TableColumn v-bind="column" :internal-slot="$slots" />
-          </template>
-          <template v-for="name of passedElSlotsName" :key="name" #[name]="slotProps">
-            <slot :name="name" v-bind="slotProps"></slot>
-          </template>
-          <teleport :to="`.${tableId} .el-table__inner-wrapper`" defer>
-            <div
-              v-if="showSummary && tableLayout === 'fixed'"
-              v-show="!isEmpty"
-              ref="footerWrapper2"
-              v-mousewheel="handleHeaderFooterMousewheel"
-              :class="ns.e('footer-wrapper')"
-            >
-              <table
-                :class="ns.e('footer')"
-                cellspacing="0"
-                cellpadding="0"
-                border="0"
-                :style="tableBodyStyles"
-              >
-                <hColgroup
-                  v-if="store"
-                  :columns="store.states.columns"
-                  :table-layout="tableLayout"
-                />
-                <table-footer
-                  v-if="store"
-                  :border="border"
-                  :default-sort="defaultSort"
-                  :store="store"
-                  :sum-text="computedSumText"
-                  :summary-method="summaryMethod"
-                />
-              </table>
+          <div :class="`${prefixCls}-toolbar-left`">
+            <slot name="toolbar-left"></slot>
+            <div v-if="isStatsVisible" :class="`${prefixCls}-stats-wrapper`">
+              <TableStats :columns="statsColumns" :data="statsData" />
             </div>
-          </teleport>
-        </el-table>
-      </div>
+          </div>
+          <div :class="`${prefixCls}-toolbar-right`">
+            <slot name="toolbar-right"></slot>
+            <div v-if="mergedToolbarConfig" :class="`${prefixCls}-toolbar-preset`">
+              <div v-if="mergedToolbarConfig.reload">
+                <el-tooltip
+                  :content="t('co.common.reload')"
+                  placement="top"
+                  :show-after="200"
+                  :hide-after="0"
+                >
+                  <el-button circle @click="reload">
+                    <Icon
+                      name="co:rotate-360"
+                      size="md"
+                      :class="[
+                        `${prefixCls}-refresh-icon`,
+                        {
+                          'is-spinning': reloading,
+                        },
+                      ]"
+                    />
+                  </el-button>
+                </el-tooltip>
+              </div>
 
-      <el-pagination
-        v-if="paginationProps"
-        v-bind="paginationProps"
-        v-model:current-page="page"
-        v-model:page-size="pageSize"
-        :class="`${prefixCls}-pagination`"
-        style="
-          --el-pagination-bg-color: transparent;
-          --el-pagination-button-disabled-bg-color: transparent;
-        "
-        @size-change="onPageSizeChange"
-        @change="onPageChange"
-      />
+              <div v-if="mergedToolbarConfig.export">
+                <el-tooltip
+                  :content="t('co.table.export')"
+                  placement="top"
+                  :show-after="200"
+                  :hide-after="0"
+                >
+                  <el-button circle @click="exportVisible = true">
+                    <Icon name="co:download" size="md" />
+                  </el-button>
+                </el-tooltip>
+
+                <TableExport
+                  v-model="exportVisible"
+                  :title="t('co.table.exportData')"
+                  :config="mergedToolbarConfig.export"
+                  :columns="exportColumns"
+                  :data="tableDataWithSummary"
+                  :footer-count="footerCount"
+                />
+              </div>
+
+              <div v-if="mergedToolbarConfig.fullScreen">
+                <el-tooltip
+                  :content="isFullPage ? t('co.table.exitFullScreen') : t('co.table.fullScreen')"
+                  placement="top"
+                  :show-after="200"
+                  :hide-after="0"
+                >
+                  <el-button circle @click="onFullScreen">
+                    <Icon :name="isFullPage ? 'co:fullscreen-exit' : 'co:fullscreen'" size="md" />
+                  </el-button>
+                </el-tooltip>
+              </div>
+
+              <div v-if="mergedToolbarConfig.setting">
+                <el-tooltip
+                  :content="t('co.table.columnSettings')"
+                  placement="top"
+                  :show-after="200"
+                  :hide-after="0"
+                >
+                  <el-button ref="setting-ref" circle>
+                    <Icon name="co:settings-adjust" size="md" />
+                  </el-button>
+                </el-tooltip>
+
+                <TableColumnEditor
+                  v-model="renderedColumns"
+                  :virtual-ref="settingRef"
+                  @reset="onColumnReset"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if="$slots['before-table']" :class="`${prefixCls}-before-table`">
+          <slot name="before-table"></slot>
+        </div>
+        <slot name="stats-table"></slot>
+        <div :class="`${prefixCls}-table`">
+          <el-table
+            ref="elTableRef"
+            v-bind="elTableProps"
+            :class="tableId"
+            :data="tableData"
+            :expand-row-keys="innerExpandRowKeys"
+            :show-summary="false"
+            :summary-method="undefined"
+            style="width: 100%"
+            height="100%"
+            max-height="none"
+          >
+            <template v-for="column of renderedColumns" :key="column.prop || column.property">
+              <TableColumn v-bind="column" :internal-slot="$slots" />
+            </template>
+            <template v-for="name of passedElSlotsName" :key="name" #[name]="slotProps">
+              <slot :name="name" v-bind="slotProps"></slot>
+            </template>
+            <teleport :to="`.${tableId} .el-table__inner-wrapper`" defer>
+              <div
+                v-if="showSummary && tableLayout === 'fixed'"
+                v-show="!isEmpty"
+                ref="footerWrapper2"
+                v-mousewheel="handleHeaderFooterMousewheel"
+                :class="ns.e('footer-wrapper')"
+              >
+                <table
+                  :class="ns.e('footer')"
+                  cellspacing="0"
+                  cellpadding="0"
+                  border="0"
+                  :style="tableBodyStyles"
+                >
+                  <hColgroup
+                    v-if="store"
+                    :columns="store.states.columns"
+                    :table-layout="tableLayout"
+                  />
+                  <table-footer
+                    v-if="store"
+                    :border="border"
+                    :default-sort="defaultSort"
+                    :store="store"
+                    :sum-text="computedSumText"
+                    :summary-method="summaryMethod"
+                  />
+                </table>
+              </div>
+            </teleport>
+          </el-table>
+        </div>
+
+        <el-pagination
+          v-if="paginationProps"
+          v-bind="paginationProps"
+          v-model:current-page="page"
+          v-model:page-size="pageSize"
+          :class="`${prefixCls}-pagination`"
+          style="
+            --el-pagination-bg-color: transparent;
+            --el-pagination-button-disabled-bg-color: transparent;
+          "
+          @size-change="onPageSizeChange"
+          @change="onPageChange"
+        />
+      </div>
     </div>
-  </div>
+  </teleport>
 </template>
 
 <script setup lang="ts">

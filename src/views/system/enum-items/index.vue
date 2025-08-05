@@ -1,10 +1,5 @@
 <template>
-  <el-dialog
-    v-model="visible"
-    :title="t('enum.enumItem')"
-    :style="{ maxWidth: 'calc(100vw - 32px)' }"
-    :width="1200"
-  >
+  <co-stack-dialog v-model="visible" :title="t('enum.enumItem')">
     <co-table v-bind="tableProps">
       <template #toolbar-left>
         <el-button v-if="can('create', 'system_enum_item')" type="primary" @click="upsert.add()">
@@ -36,7 +31,7 @@
         />
       </template>
     </co-table>
-  </el-dialog>
+  </co-stack-dialog>
 
   <Upsert :ref="upsert.ref" />
 </template>

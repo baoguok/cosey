@@ -10,7 +10,12 @@
 import { computed, provide, reactive } from 'vue';
 import { useColorSchemeProvide } from '../hooks';
 import { getAlgorithm, RootConfigProviderProps } from './root-config-provider';
-import { ConfigProvider, containerContextKey, useUploadProvide } from '../components';
+import {
+  ConfigProvider,
+  containerContextKey,
+  useStackDialogProvide,
+  useUploadProvide,
+} from '../components';
 import { useLayoutStore } from '../store';
 import { useGlobalConfig } from './index';
 import useNprogressStyle from './nprogress.style';
@@ -62,4 +67,7 @@ provide(
     height: computed(() => `calc(100vh - ${layoutStore.headerHeight}px)`),
   }),
 );
+
+// stack dialog
+useStackDialogProvide();
 </script>
