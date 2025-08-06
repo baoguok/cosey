@@ -1,12 +1,13 @@
 <template>
   <co-form-dialog v-bind="dialogProps" width="fit-content">
     <co-form v-bind="formProps" label-width="auto" width="md">
-      <co-form-item v-model="model.name" prop="name" :label="t('post.categoryName')" />
+      <co-form-item v-model="model.name" prop="name" :label="t('post.categoryName')" required />
       <co-form-item
         v-model="model.description"
         prop="description"
         :label="t('post.description')"
         field-type="textarea"
+        required
       />
     </co-form>
   </co-form-dialog>

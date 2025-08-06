@@ -1,5 +1,4 @@
-import { omit } from 'lodash-es';
-import { isPlainObject } from './is';
+import { cloneDeep, omit } from 'lodash-es';
 
 type OmitUndefined<T> = {
   [key in keyof T]: T[key] extends undefined ? never : T[key];
@@ -43,7 +42,7 @@ export function omitObject<T extends object, U extends object>(
 }
 
 /**
- * Object.assign 的深度操作，仅合并 plain 对象，可以被 undefined 覆盖。
+ * Object.assign 的深度操作，可以被 undefined 覆盖。
  */
 export function deepAssign<TObject extends object, TSource extends object>(
   object: TObject,
@@ -74,11 +73,8 @@ export function deepAssign<TObject extends object, TSourceList extends object[]>
 ) {
   sourceList.forEach((source) => {
     Object.keys(source).forEach((key) => {
-      const tValue = object[key as keyof TObject];
       const sValue = source[key as keyof typeof source];
-      const value =
-        isPlainObject(tValue) && isPlainObject(sValue) ? deepAssign(tValue, sValue) : sValue;
-      object[key as keyof TObject] = value as any;
+      object[key as keyof TObject] = cloneDeep(sValue);
     });
   });
 
