@@ -452,7 +452,9 @@ const { isFetching, execute } = useFetch(
       tableData.value = (tableKeys.list ? get(res, tableKeys.list) : res) || [];
       total.value = +get(res, tableKeys.total) || 0;
 
-      elTableRef.value?.setScrollTop(0);
+      if (!reloading.value) {
+        elTableRef.value?.setScrollTop(0);
+      }
     },
     onFinally() {
       reloading.value = false;
