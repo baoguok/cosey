@@ -19,14 +19,14 @@ export function getDayjs(date?: Parameters<typeof dayjs>[0]) {
 /**
  * 格式化为“年月日 时分秒”
  */
-export function formatAsDateTime(date?: Parameters<typeof dayjs>[0]): string {
+export function formatToDateTime(date?: Parameters<typeof dayjs>[0]): string {
   return getDayjs(date).format(DATE_TIME_FORMAT);
 }
 
 /**
  * 格式化为“年月日”
  */
-export function formatAsDate(date?: Parameters<typeof dayjs>[0]): string {
+export function formatToDate(date?: Parameters<typeof dayjs>[0]): string {
   return getDayjs(date).format(DATE_FORMAT);
 }
 

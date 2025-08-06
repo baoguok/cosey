@@ -1,4 +1,4 @@
-import { formatAsDate, formatAsDateTime, toArray, Scope, isEmpty, isString } from '../../../utils';
+import { formatToDate, formatToDateTime, toArray, Scope, isEmpty, isString } from '../../../utils';
 import {
   ElMessage,
   ElSwitch,
@@ -107,9 +107,9 @@ export function renderer<T extends RendererType>(
     case 'text':
       return cellValue;
     case 'datetime':
-      return formatAsDateTime(cellValue);
+      return formatToDateTime(cellValue);
     case 'date':
-      return formatAsDate(cellValue);
+      return formatToDate(cellValue);
     case 'media':
       return cellValue ? <MediaCard src={cellValue} {...obj.props} /> : '';
     case 'mediagroup':
@@ -213,9 +213,9 @@ export function exportRenderer<T extends RendererType>(
     case 'mediagroup':
       return JSON.stringify(cellValue);
     case 'datetime':
-      return formatAsDateTime(cellValue);
+      return formatToDateTime(cellValue);
     case 'date':
-      return formatAsDate(cellValue);
+      return formatToDate(cellValue);
     case 'tag': {
       const value = isEmpty(cellValue) ? [] : toArray(cellValue);
 

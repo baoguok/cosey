@@ -16,6 +16,13 @@ export function warningConfirm(
     type: 'warning',
     message,
     showCancelButton: true,
+    customStyle: {
+      position: 'absolute',
+      left: '50%',
+      top: '30vh',
+      transform: 'translateX(-50%)',
+      ...options?.customStyle,
+    },
     async beforeClose(action, instance, done) {
       if (action === 'confirm') {
         instance.confirmButtonLoading = true;
