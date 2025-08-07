@@ -6,6 +6,7 @@ export interface MediaCardBaseProps {
   name?: string;
   type?: 'image' | 'video' | 'audio' | (string & {});
   title?: string;
+  srcList?: string[];
 }
 
 export const defaultMediaCardBaseProps = {
@@ -28,6 +29,9 @@ export const mediaCardBaseProps = {
   },
   title: {
     type: String,
+  },
+  srcList: {
+    type: Array as PropType<string[]>,
   },
 };
 

@@ -1,6 +1,12 @@
 <template>
   <div :class="[hashId, prefixCls]">
-    <MediaCard v-for="(item, i) in mergedSrcset" :key="i" v-bind="item" :size="size" />
+    <MediaCard
+      v-for="(item, i) in mergedSrcset"
+      :key="i"
+      v-bind="item"
+      :size="size"
+      :src-list="srcList"
+    />
   </div>
 </template>
 
@@ -52,6 +58,8 @@ const mergedSrcset = computed(() => {
   }
   return [];
 });
+
+const srcList = computed(() => mergedSrcset.value.map((item) => item.src!).filter(Boolean));
 
 defineExpose<MediaCardGroupExpose>();
 </script>

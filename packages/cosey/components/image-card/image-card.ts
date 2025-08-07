@@ -7,7 +7,7 @@ export const imageProps = {
   ...elImageProps,
   fit: {
     ...elImageProps.fit,
-    default: 'contain',
+    default: 'cover',
   },
   ...mediaCardBaseProps,
 };

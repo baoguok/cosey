@@ -55,8 +55,8 @@ export default {
       video: '视频',
     },
     table: {
-      export: '导出',
-      exportData: '导出数据',
+      export: '导出当前页',
+      exportData: '导出当前页数据',
       exitFullScreen: '退出全屏',
       fullScreen: '全屏',
       columnSettings: '列设置',

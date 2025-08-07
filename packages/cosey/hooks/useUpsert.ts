@@ -29,8 +29,8 @@ export interface UseUpsertExposeOptions {
 }
 
 export interface UseUpsertExpose<Row extends Record<string, any>, Data = any> {
-  edit: (row: Row) => any;
-  add: () => any;
+  edit: (row: Row, ...args: any[]) => any;
+  add: (...args: any[]) => any;
   setData: (data: Data) => UseUpsertExpose<Row, Data>;
   setOptions: (options: UseUpsertExposeOptions) => any;
 }
@@ -218,8 +218,8 @@ export interface UseExternalUpsertOptions {
 }
 
 export interface UseExternalUpsertReturn<Row extends Record<string, any>, Data> {
-  add: () => void;
-  edit: (row: Row) => void;
+  add: (...args: any[]) => void;
+  edit: (...args: any[]) => void;
   setData: (data: Data) => void;
   expose: Readonly<ShallowRef<UseUpsertExpose<Row, Data> | null>>;
   ref: string;
@@ -232,12 +232,12 @@ export function useOuterUpsert<Row extends Record<string, any>, Data>(
 
   const expose = useTemplateRef<UseUpsertExpose<Row, Data>>(refKey);
 
-  const add = () => {
-    expose.value?.add();
+  const add = (...args: any) => {
+    expose.value?.add(...args);
   };
 
-  const edit = (row: Row) => {
-    expose.value?.edit(row);
+  const edit = (row: Row, ...args: any) => {
+    expose.value?.edit(row, ...args);
   };
 
   const setData = (data: Data) => {

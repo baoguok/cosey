@@ -32,7 +32,13 @@ const { hashId } = useStyle(prefixCls);
 const imageRef = ref();
 
 const mergedPreviewSrcList = computed(() => {
-  return props.previewSrcList?.length ? props.previewSrcList : props.src ? [props.src] : [];
+  return props.srcList?.length
+    ? props.srcList
+    : props.previewSrcList?.length
+      ? props.previewSrcList
+      : props.src
+        ? [props.src]
+        : [];
 });
 
 defineExpose<ImageCardExpose>({
@@ -63,6 +69,7 @@ const mergedProps = computed(() => {
     onShow,
     onClose,
     ref: imageRef,
+    initialIndex: Math.max(mergedPreviewSrcList.value.indexOf(props.src!), 0),
   });
 });
 
