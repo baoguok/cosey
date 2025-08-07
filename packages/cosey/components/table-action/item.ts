@@ -29,6 +29,10 @@ export const tableActionItemProps = {
     type: Boolean,
     default: false,
   },
+  visible: {
+    type: Boolean,
+    default: true,
+  },
   icon: {
     type: String,
   },

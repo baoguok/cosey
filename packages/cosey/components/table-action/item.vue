@@ -1,5 +1,5 @@
 <template>
-  <template v-if="!hidden">
+  <template v-if="mergedVisible">
     <el-popconfirm v-if="popconfirm" v-bind="popconfirm">
       <template #reference>
         <el-button v-bind="omit(buttonProps, 'popconfirm')" style="margin: 0">
@@ -53,6 +53,10 @@ const buttonProps = computed(() => {
 });
 
 const loading = ref(false);
+
+const mergedVisible = computed(() => {
+  return props.hidden ? false : props.visible;
+});
 
 const onConfirm = async (e: MouseEvent, confirm: (e: MouseEvent) => void) => {
   loading.value = true;
