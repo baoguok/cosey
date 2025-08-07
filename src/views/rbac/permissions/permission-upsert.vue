@@ -49,12 +49,9 @@ const { t } = useI18n();
 const { addPermission, updatePermission, getPermissionParentTree, getPermissionTree } =
   usePermissionsApi();
 
-const { data: permissionTree, execute } = useFetch<any[], { type: 'add' | 'edit'; row?: Row }>(
-  ({ type, row }) => {
-    if (type === 'edit') {
-      return getPermissionParentTree(row!.id);
-    }
-    return getPermissionTree();
+const { data: permissionTree, execute } = useFetch<any[], () => any>(
+  (api) => {
+    return api();
   },
   {
     immediate: false,
@@ -89,20 +86,21 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('rbac.permission'),
     model,
-    show(type, row) {
-      execute({ type, row });
-    },
-    beforeFill(row) {
+    onAdd: () => execute(() => getPermissionTree()),
+    onEdit(row) {
       editId.value = row.id;
+      execute(() => getPermissionParentTree(row!.id));
     },
-    beforeSubmit() {
-      return {
+    addFetch: () =>
+      addPermission({
         ...model,
         pid: model.pid || null,
-      };
-    },
-    add: (data) => addPermission(data),
-    edit: (data) => updatePermission(editId.value!, data),
+      }),
+    editFetch: () =>
+      updatePermission(editId.value!, {
+        ...model,
+        pid: model.pid || null,
+      }),
   })),
 );
 

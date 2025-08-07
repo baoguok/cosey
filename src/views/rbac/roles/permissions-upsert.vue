@@ -47,11 +47,11 @@ const { dialogProps, formProps, expose } = useUpsert<Model, { id: number }>(
   computed(() => ({
     stuffTitle: t('rbac.permission'),
     model,
-    details(row) {
+    detailsFetch(row) {
       editId.value = row!.id;
       execute();
     },
-    edit: () =>
+    editFetch: () =>
       updateRolePermissions(editId.value!, {
         permissionIds: treeRef.value?.getCheckedKeys(),
       }),

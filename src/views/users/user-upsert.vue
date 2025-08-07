@@ -129,11 +129,11 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('user.user'),
     model,
-    beforeFill(row) {
+    onEdit(row) {
       editId.value = row.id;
     },
-    add: () => addUser(model),
-    edit: () => updateUser(editId.value!, model),
+    addFetch: () => addUser(model),
+    editFetch: () => updateUser(editId.value!, model),
   })),
 );
 

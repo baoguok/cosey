@@ -40,11 +40,11 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('post.comment'),
     model,
-    beforeFill(row) {
+    onEdit(row) {
       editId.value = row.id;
     },
-    add: () => addPostComment(model),
-    edit: () => updatePostComment(editId.value!, model),
+    addFetch: () => addPostComment(model),
+    editFetch: () => updatePostComment(editId.value!, model),
   })),
 );
 

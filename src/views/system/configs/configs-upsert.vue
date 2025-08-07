@@ -159,13 +159,13 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('config.config'),
     model,
-    beforeFill(row) {
+    onEdit(row) {
       editId.value = row.id;
 
       model.typeModel[row.type!] = row.value as any;
     },
-    add: () => addConfig(convertModel()),
-    edit: () => updateConfig(editId.value!, convertModel()),
+    addFetch: () => addConfig(convertModel()),
+    editFetch: () => updateConfig(editId.value!, convertModel()),
   })),
 );
 

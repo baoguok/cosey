@@ -75,17 +75,17 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('post.article'),
     model,
-    async show() {
+    async onShow() {
       postTypes.value = (await getPosttypes()).list;
     },
-    details(row) {
+    detailsFetch(row) {
       return getPost(row.id);
     },
-    beforeFill(row) {
+    onEdit(row) {
       editId.value = row.id;
     },
-    add: () => addPost(model),
-    edit: () => updatePost(editId.value!, model),
+    addFetch: () => addPost(model),
+    editFetch: () => updatePost(editId.value!, model),
   })),
 );
 

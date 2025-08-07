@@ -37,16 +37,17 @@ export interface UseUpsertExpose<Row extends Record<string, any>, Data = any> {
 
 export type UpsertType = 'edit' | 'add';
 
-export interface UseUpsertOptions<Model, Row = Model, Data = Model> {
+export interface UseUpsertOptions<Model, Row = Model> {
   title?: string;
   stuffTitle?: string;
   model: Model;
-  show?: (type: UpsertType, row?: Row) => void;
-  details?: (row: Row) => any;
+  onAdd?: (...args: any[]) => void;
+  onEdit?: (row: Row, ...args: any[]) => void;
+  onShow?: () => void;
+  detailsFetch?: (row: Row) => any;
   beforeFill?: (row: Row) => any;
-  beforeSubmit?: (model: Model) => Data | Promise<Data>;
-  add?: (data: Data) => any;
-  edit?: (data: Data) => any;
+  addFetch?: () => any;
+  editFetch?: () => any;
   success?: (res: any) => any;
   addSuccessText?: string;
   editSuccessText?: string;
@@ -80,19 +81,20 @@ export function useUpsert<
   Model extends Record<string, any>,
   Row extends Record<string, any> = Model,
   Data = any,
->(options: MaybeRef<UseUpsertOptions<Model, Row, Data>>): UseUpsertReturn<Model, Row, Data> {
+>(options: MaybeRef<UseUpsertOptions<Model, Row>>): UseUpsertReturn<Model, Row, Data> {
   const {
     model,
     stuffTitle,
     title,
     addSuccessText,
     editSuccessText,
-    show,
-    details,
+    onAdd,
+    onEdit,
+    onShow,
+    detailsFetch,
     beforeFill,
-    beforeSubmit,
-    add,
-    edit,
+    addFetch,
+    editFetch,
     success,
   } = toRefs(computed(() => unref(options)));
 
@@ -130,15 +132,13 @@ export function useUpsert<
   const formRef = useTemplateRef(formRefKey);
 
   const onSubmit = async () => {
-    const data = (await unref(beforeSubmit)?.(unref(model))) || unref(model);
-
     let res: any;
 
     if (type.value === 'add') {
-      res = await unref(add)?.(data);
+      res = await unref(addFetch)?.();
       ElMessage.success(unref(addSuccessText) || t('co.common.addSuccess'));
     } else {
-      res = await unref(edit)?.(data);
+      res = await unref(editFetch)?.();
       ElMessage.success(unref(editSuccessText) || t('co.common.editSuccess'));
     }
 
@@ -160,29 +160,33 @@ export function useUpsert<
   let exposeOptions: UseUpsertExposeOptions;
 
   const expose: UseUpsertExpose<Row, Data> = {
-    edit: async (_row: Row) => {
+    edit: async (...args) => {
       type.value = 'edit';
-      row.value = _row;
+      row.value = args[0];
       deepAssign(unref(model), initialModel);
 
-      visible.value = true;
-      unref(show)?.(type.value, row.value);
+      unref(onEdit)?.(...args);
 
-      let filledRow = _row;
-      if (unref(details)) {
-        filledRow = await unref(details)!(_row);
+      visible.value = true;
+      unref(onShow)?.();
+
+      let filledRow = row.value;
+      if (unref(detailsFetch)) {
+        filledRow = await unref(detailsFetch)!(row.value);
       }
       filledRow = { ...filledRow };
       filledRow = unref(beforeFill)?.(filledRow) || filledRow;
       Object.assign(unref(model), pick(filledRow, modelKeys));
     },
-    add: () => {
+    add: (...args) => {
       type.value = 'add';
       row.value = undefined;
       deepAssign(unref(model), initialModel);
 
+      unref(onAdd)?.(...args);
+
       visible.value = true;
-      unref(show)?.(type.value);
+      unref(onShow)?.();
     },
     setData: (_data: Data) => {
       data.value = _data;

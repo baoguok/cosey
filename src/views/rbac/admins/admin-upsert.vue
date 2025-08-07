@@ -89,8 +89,8 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
         roles: row.roles.map((item) => item.id),
       };
     },
-    add: () => addAdmin(model),
-    edit: () => updateAdmin(editId.value!, model),
+    addFetch: () => addAdmin(model),
+    editFetch: () => updateAdmin(editId.value!, model),
   })),
 );
 

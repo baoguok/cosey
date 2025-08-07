@@ -34,11 +34,11 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('config.config'),
     model,
-    beforeFill(row) {
+    onEdit(row) {
       editId.value = row.id;
     },
-    add: () => addConfigGroup(model),
-    edit: () => updateConfigGroup(editId.value!, model),
+    addFetch: () => addConfigGroup(model),
+    editFetch: () => updateConfigGroup(editId.value!, model),
   })),
 );
 

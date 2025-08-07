@@ -37,11 +37,11 @@ const { dialogProps, formProps, expose, data } = useUpsert<Model, Row, number>(
   computed(() => ({
     stuffTitle: t('enum.enumItem'),
     model,
-    beforeFill(row) {
+    onEdit(row) {
       editId.value = row.id;
     },
-    add: () => addEnumItem(data.value!, model),
-    edit: () => updateEnumItem(data.value!, editId.value!, model),
+    addFetch: () => addEnumItem(data.value!, model),
+    editFetch: () => updateEnumItem(data.value!, editId.value!, model),
   })),
 );
 

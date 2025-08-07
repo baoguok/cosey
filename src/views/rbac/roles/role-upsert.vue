@@ -34,11 +34,11 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('rbac.role'),
     model,
-    beforeFill(row) {
+    onEdit(row) {
       editId.value = row.id;
     },
-    add: () => addRole(model),
-    edit: () => updateRole(editId.value!, model),
+    addFetch: () => addRole(model),
+    editFetch: () => updateRole(editId.value!, model),
   })),
 );
 

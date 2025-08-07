@@ -43,11 +43,11 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('post.articleCategory'),
     model,
-    beforeFill(row) {
+    onEdit(row) {
       editId.value = row.id;
     },
-    add: () => addPosttype(model),
-    edit: () => updatePosttype(editId.value!, model),
+    addFetch: () => addPosttype(model),
+    editFetch: () => updatePosttype(editId.value!, model),
   })),
 );
 
