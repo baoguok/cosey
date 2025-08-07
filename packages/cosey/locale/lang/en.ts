@@ -12,6 +12,7 @@ export default {
       noData: 'No Data',
       addSuccess: 'Add successfully',
       editSuccess: 'Edit successfully',
+      operateSuccess: 'Operation successfully',
       exportSuccess: 'Export successfully',
       add: 'Add',
       edit: 'Edit',

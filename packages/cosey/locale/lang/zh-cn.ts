@@ -13,6 +13,7 @@ export default {
       reload: '刷新',
       addSuccess: '新增成功',
       editSuccess: '编辑成功',
+      operateSuccess: '操作成功',
       exportSuccess: '导出成功',
       add: '新增',
       edit: '编辑',

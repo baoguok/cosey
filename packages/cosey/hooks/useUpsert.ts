@@ -136,10 +136,10 @@ export function useUpsert<
 
     if (type.value === 'add') {
       res = await unref(addFetch)?.();
-      ElMessage.success(unref(addSuccessText) || t('co.common.addSuccess'));
+      ElMessage.success(unref(addSuccessText) || t('co.common.operateSuccess'));
     } else {
       res = await unref(editFetch)?.();
-      ElMessage.success(unref(editSuccessText) || t('co.common.editSuccess'));
+      ElMessage.success(unref(editSuccessText) || t('co.common.operateSuccess'));
     }
 
     unref(success)?.(res);

@@ -13,6 +13,7 @@ export default {
       reload: 'تحديث',
       addSuccess: 'تمت الإضافة بنجاح',
       editSuccess: 'تم التعديل بنجاح',
+      operateSuccess: 'تمت العملية بنجاح',
       exportSuccess: 'تم التصدير بنجاح',
       add: 'إضافة',
       edit: 'تعديل',
