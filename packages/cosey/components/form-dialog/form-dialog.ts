@@ -44,6 +44,10 @@ export const formDialogProps = {
     type: [String, Number] as PropType<FormDialogWidth>,
     default: 'fit-content',
   },
+  closeOnClickModal: {
+    type: Boolean,
+    default: false,
+  },
 };
 
 export type FormDialogProps = ExtractPropTypes<typeof formDialogProps>;
