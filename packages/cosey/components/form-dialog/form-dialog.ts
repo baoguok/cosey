@@ -48,6 +48,10 @@ export const formDialogProps = {
     type: Boolean,
     default: false,
   },
+  closeOnPressEscape: {
+    type: Boolean,
+    default: false,
+  },
 };
 
 export type FormDialogProps = ExtractPropTypes<typeof formDialogProps>;
