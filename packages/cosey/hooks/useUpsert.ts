@@ -7,7 +7,6 @@ import {
   type ComputedRef,
   type MaybeRef,
   computed,
-  onMounted,
   reactive,
   ref,
   shallowRef,
@@ -222,15 +221,21 @@ export interface UseExternalUpsertReturn<Row extends Record<string, any>, Data> 
   edit: (...args: any[]) => void;
   setData: (data: Data) => void;
   expose: Readonly<ShallowRef<UseUpsertExpose<Row, Data> | null>>;
-  ref: string;
+  ref: (_expose: any) => void;
 }
 
 export function useOuterUpsert<Row extends Record<string, any>, Data>(
   options: UseExternalUpsertOptions,
 ): UseExternalUpsertReturn<Row, Data> {
-  const refKey = uuid();
+  const expose = ref<UseUpsertExpose<Row, Data> | null>(null);
 
-  const expose = useTemplateRef<UseUpsertExpose<Row, Data>>(refKey);
+  const vnodeRef = (_expose: UseUpsertExpose<Row, Data> | null) => {
+    expose.value = _expose;
+
+    if (_expose) {
+      _expose.setOptions(options);
+    }
+  };
 
   const add = (...args: any) => {
     expose.value?.add(...args);
@@ -244,16 +249,12 @@ export function useOuterUpsert<Row extends Record<string, any>, Data>(
     expose.value?.setData(data);
   };
 
-  onMounted(() => {
-    expose.value?.setOptions(options);
-  });
-
   const result = {
     add,
     edit,
     setData,
     expose,
-    ref: refKey,
+    ref: vnodeRef,
   };
 
   return result;

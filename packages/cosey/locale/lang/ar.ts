@@ -56,8 +56,9 @@ export default {
       video: 'فيديو',
     },
     table: {
-      export: 'صدِّر الصفحة الحالية',
-      exportData: 'صدِّر البيانات من صفحة',
+      export: 'تصدير',
+      exportThisPage: 'تصدير الصفحة الحالية',
+      exportData: 'تصدير البيانات',
       exitFullScreen: 'الخروج من وضع ملء الشاشة',
       fullScreen: 'ملء الشاشة',
       columnSettings: 'إعدادات الأعمدة',

@@ -58,7 +58,7 @@
 
               <div v-if="mergedToolbarConfig.export">
                 <el-tooltip
-                  :content="t('co.table.export')"
+                  :content="t('co.table.exportThisPage')"
                   placement="top"
                   :show-after="200"
                   :hide-after="0"
