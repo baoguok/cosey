@@ -1,11 +1,19 @@
-import { formatToDate, formatToDateTime, toArray, Scope, isEmpty, isString } from '../../../utils';
+import {
+  formatToDate,
+  formatToDateTime,
+  toArray,
+  Scope,
+  isEmpty,
+  isString,
+  getVNodeText,
+} from '../../../utils';
 import {
   ElMessage,
   ElSwitch,
   ElTag,
   ElLink,
   type LinkProps,
-  SwitchProps,
+  type SwitchProps,
   type TableColumnCtx,
 } from 'element-plus';
 import { get } from 'lodash-es';
@@ -188,11 +196,11 @@ export function exportRenderer<T extends RendererType>(
   index: number,
 ) {
   if (column.formatter) {
-    return column.formatter(row, column as TableColumnCtx<any>, cellValue, index);
+    return getVNodeText(column.formatter(row, column as TableColumnCtx<any>, cellValue, index));
   }
 
   if (column.format) {
-    return column.format(cellValue, row, column as TableColumnCtx<any>, index);
+    return getVNodeText(column.format(cellValue, row, column as TableColumnCtx<any>, index));
   }
 
   if (isEmpty(cellValue)) {

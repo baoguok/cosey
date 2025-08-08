@@ -10,6 +10,10 @@ export const DATE_TIME_FORMAT = DATE_FORMAT + ' ' + TIME_FORMAT;
  * 根据传递参数获取dayjs对象，参数可以为 Unix 时间戳
  */
 export function getDayjs(date?: Parameters<typeof dayjs>[0]) {
+  if (typeof date === 'string' && Number.isFinite(+date)) {
+    date = +date;
+  }
+
   if (typeof date === 'number' && String(date).length === 10) {
     date = date * 1000;
   }

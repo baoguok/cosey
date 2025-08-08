@@ -1,5 +1,5 @@
 import { createVNode, defineComponent, SlotsType, type VNodeChild } from 'vue';
-import { isObject } from './is';
+import { isFunction, isObject, isPlainObject } from './is';
 
 /**
  * 使在 script setup 中也能使用 jsx
@@ -97,8 +97,17 @@ export function getVNodeText(vnode: unknown): string {
     return vnode.map(getVNodeText).join('');
   }
 
-  if (isObject(vnode) && vnode.children) {
+  if (isObject(vnode)) {
+    if (isPlainObject(vnode.children)) {
+      return Object.values(vnode.children)
+        .map((slot) => getVNodeText(slot))
+        .join('');
+    }
     return getVNodeText(vnode.children);
+  }
+
+  if (isFunction(vnode)) {
+    return getVNodeText(vnode());
   }
 
   return '';
