@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive } from 'vue';
 import { useUpsert } from 'cosey/hooks';
 import { useRolesApi } from '@/api/rbac/roles';
 import { useI18n } from 'vue-i18n';
@@ -28,17 +28,12 @@ const model = reactive<Model>({
   name: undefined,
 });
 
-const editId = ref<number>();
-
 const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('rbac.role'),
     model,
-    onEdit(row) {
-      editId.value = row.id;
-    },
     addFetch: () => addRole(model),
-    editFetch: () => updateRole(editId.value!, model),
+    editFetch: (row) => updateRole(row.id, model),
   })),
 );
 

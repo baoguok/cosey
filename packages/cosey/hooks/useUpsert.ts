@@ -46,7 +46,7 @@ export interface UseUpsertOptions<Model, Row = Model> {
   detailsFetch?: (row: Row) => any;
   beforeFill?: (row: Row) => any;
   addFetch?: () => any;
-  editFetch?: () => any;
+  editFetch?: (row: Row) => any;
   success?: (res: any) => any;
   addSuccessText?: string;
   editSuccessText?: string;
@@ -137,7 +137,7 @@ export function useUpsert<
       res = await unref(addFetch)?.();
       ElMessage.success(unref(addSuccessText) || t('co.common.operateSuccess'));
     } else {
-      res = await unref(editFetch)?.();
+      res = await unref(editFetch)?.(row.value!);
       ElMessage.success(unref(editSuccessText) || t('co.common.operateSuccess'));
     }
 

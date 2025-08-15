@@ -5,10 +5,15 @@
       <FormItem :class="`${prefixCls}-form-item-buttons`">
         <div :class="`${prefixCls}-buttons`">
           <slot name="button" :reset="reset" :submit="submit" :submitting="submitting">
-            <el-button @click="() => submit()" type="primary" :loading="submitting">
+            <el-button
+              v-if="!hideSubmit"
+              @click="() => submit()"
+              type="primary"
+              :loading="submitting"
+            >
               {{ t('co.form.search') }}
             </el-button>
-            <el-button @click="reset">{{ t('co.form.reset') }}</el-button>
+            <el-button v-if="!hideReset" @click="reset">{{ t('co.form.reset') }}</el-button>
           </slot>
           <Toggle v-if="showToggle" v-model="innerCollapsed" />
         </div>

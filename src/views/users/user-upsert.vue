@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive } from 'vue';
 import { useUsersApi } from '@/api/users';
 import { useUpsert } from 'cosey/hooks';
 import * as mock from '@gunny/mock';
@@ -123,17 +123,12 @@ const model = reactive<Model>({
   avatar: undefined,
 });
 
-const editId = ref<number>();
-
 const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('user.user'),
     model,
-    onEdit(row) {
-      editId.value = row.id;
-    },
     addFetch: () => addUser(model),
-    editFetch: () => updateUser(editId.value!, model),
+    editFetch: (row) => updateUser(row.id, model),
   })),
 );
 

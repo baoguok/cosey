@@ -148,8 +148,6 @@ const model = reactive<Model>({
   typeModel,
 });
 
-const editId = ref<number>();
-
 const convertModel = () => {
   model.value = model.typeModel[model.type!] as any;
   return omit(model, ['typeModel']);
@@ -160,12 +158,10 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
     stuffTitle: t('config.config'),
     model,
     onEdit(row) {
-      editId.value = row.id;
-
       model.typeModel[row.type!] = row.value as any;
     },
     addFetch: () => addConfig(convertModel()),
-    editFetch: () => updateConfig(editId.value!, convertModel()),
+    editFetch: (row) => updateConfig(row.id, convertModel()),
   })),
 );
 

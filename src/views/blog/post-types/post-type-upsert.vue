@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive } from 'vue';
 import { useUpsert } from 'cosey/hooks';
 import { usePosttypesApi } from '@/api/blog';
 import { useI18n } from 'vue-i18n';
@@ -37,17 +37,12 @@ const model = reactive<Model>({
   description: undefined,
 });
 
-const editId = ref<number>();
-
 const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('post.articleCategory'),
     model,
-    onEdit(row) {
-      editId.value = row.id;
-    },
     addFetch: () => addPosttype(model),
-    editFetch: () => updatePosttype(editId.value!, model),
+    editFetch: (row) => updatePosttype(row.id, model),
   })),
 );
 

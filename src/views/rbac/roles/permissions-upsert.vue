@@ -41,18 +41,15 @@ const model = reactive<Model>({
   permissionIds: [],
 });
 
-const editId = ref<number>();
-
 const { dialogProps, formProps, expose } = useUpsert<Model, { id: number }>(
   computed(() => ({
     stuffTitle: t('rbac.permission'),
     model,
     detailsFetch(row) {
-      editId.value = row!.id;
-      execute();
+      execute(row.id);
     },
-    editFetch: () =>
-      updateRolePermissions(editId.value!, {
+    editFetch: (row) =>
+      updateRolePermissions(row.id, {
         permissionIds: treeRef.value?.getCheckedKeys(),
       }),
   })),
@@ -63,10 +60,10 @@ defineExpose(expose);
 const permissionTree = ref();
 
 const { isFetching, execute } = useFetch<Record<PropertyKey, any>[][]>(
-  async () => {
+  async (id) => {
     const [permTree, rolePermissions] = await Promise.all([
       getPermissionTree(),
-      getRolePermissions(editId.value!),
+      getRolePermissions(id),
     ]);
 
     permissionTree.value = permTree;

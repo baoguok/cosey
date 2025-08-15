@@ -67,8 +67,6 @@ const model = reactive<Model>({
   content: undefined,
 });
 
-const editId = ref<number>();
-
 const { getPosttypes } = usePosttypesApi();
 
 const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
@@ -81,11 +79,8 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
     detailsFetch(row) {
       return getPost(row.id);
     },
-    onEdit(row) {
-      editId.value = row.id;
-    },
     addFetch: () => addPost(model),
-    editFetch: () => updatePost(editId.value!, model),
+    editFetch: (row) => updatePost(row.id, model),
   })),
 );
 

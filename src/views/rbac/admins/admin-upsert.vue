@@ -67,8 +67,6 @@ const model = reactive<Model>({
   roles: [],
 });
 
-const editId = ref<number>();
-
 const roleOptions = ref<Role[]>([]);
 
 onMounted(() => {
@@ -82,15 +80,13 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
     stuffTitle: t('rbac.admin'),
     model,
     beforeFill(row) {
-      editId.value = row.id;
-
       return {
         ...row,
         roles: row.roles.map((item) => item.id),
       };
     },
     addFetch: () => addAdmin(model),
-    editFetch: () => updateAdmin(editId.value!, model),
+    editFetch: (row) => updateAdmin(row.id, model),
   })),
 );
 

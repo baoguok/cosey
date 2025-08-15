@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive } from 'vue';
 import { useFetch, useUpsert } from 'cosey/hooks';
 import { usePermissionsApi } from '@/api/rbac/permissions';
 import { useI18n } from 'vue-i18n';
@@ -80,24 +80,19 @@ const model = reactive<Model>({
   order: undefined,
 });
 
-const editId = ref<number>();
-
 const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('rbac.permission'),
     model,
     onAdd: () => execute(() => getPermissionTree()),
-    onEdit(row) {
-      editId.value = row.id;
-      execute(() => getPermissionParentTree(row!.id));
-    },
+    onEdit: (row) => execute(() => getPermissionParentTree(row.id)),
     addFetch: () =>
       addPermission({
         ...model,
         pid: model.pid || null,
       }),
-    editFetch: () =>
-      updatePermission(editId.value!, {
+    editFetch: (row) =>
+      updatePermission(row.id, {
         ...model,
         pid: model.pid || null,
       }),
