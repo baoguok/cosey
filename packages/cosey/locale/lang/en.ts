@@ -30,6 +30,8 @@ export default {
       submit: 'Submit',
       reset: 'Reset',
       search: 'Search',
+      required: 'required',
+      isRequired: '{label} is required',
     },
     colorPicker: {
       preset: 'Preset',

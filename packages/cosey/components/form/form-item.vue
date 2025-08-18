@@ -66,11 +66,19 @@ import { OptionalWrapper } from '../optional-wrapper';
 import { Col } from '../col';
 import Icon from '../icon/icon.vue';
 import { useFormItemWidth } from './useFormItemWidth';
-import { omitUndefined, defineTemplate, createMergedExpose } from '../../utils';
+import {
+  omitUndefined,
+  defineTemplate,
+  createMergedExpose,
+  isString,
+  isNumber,
+  toArray,
+} from '../../utils';
 import { ElFormItem, type FormItemInstance } from 'element-plus';
 import { reactiveOmit } from '@vueuse/core';
 import { useComponentConfig } from '../config-provider';
 import { useToken } from '../theme';
+import { useLocale } from '../../hooks';
 
 defineOptions({
   name: 'FormItem',
@@ -82,6 +90,8 @@ const props = withDefaults(defineProps<FormItemProps<T>>(), defaultFormItemProps
 const { prefixCls } = useComponentConfig('form', props);
 
 const { hashId } = useToken();
+
+const { t } = useLocale();
 
 const formItemProps = reactiveOmit(
   props,
@@ -132,10 +142,46 @@ const mergedColProps = computed(() => {
 
 const fixedWidthStyle = useFormItemWidth(props, formContext);
 
+const mergedRules = computed(() => {
+  const { required } = props;
+  const rules = toArray(props.rules || []);
+
+  if (required !== undefined) {
+    const requiredRules = rules
+      .map((rule, i) => [rule, i] as const)
+      .filter(([rule]) => Object.keys(rule).includes('required'));
+
+    if (requiredRules.length > 0) {
+      for (const [rule, i] of requiredRules) {
+        if (rule.required === required) continue;
+        rules[i] = { ...rule, required };
+      }
+    } else {
+      rules.push({ required });
+    }
+  }
+
+  const requiredMsg =
+    isString(props.label) || isNumber(props.label)
+      ? t('co.form.isRequired', {
+          label: props.label,
+        })
+      : t('co.form.required');
+
+  rules.forEach((rule) => {
+    if (rule.required && !rule.message) {
+      rule.message = requiredMsg;
+    }
+  });
+
+  return rules;
+});
+
 const mergedFormItemProps = computed(() => {
   return {
     ...(formContext?.grid ? null : attrs),
     ...formItemProps,
+    rules: mergedRules.value,
   };
 });
 

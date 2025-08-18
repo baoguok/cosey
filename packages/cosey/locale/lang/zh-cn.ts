@@ -30,6 +30,8 @@ export default {
       submit: '提交',
       reset: '重置',
       search: '查询',
+      required: '必填',
+      isRequired: '{label}是必填项',
     },
     colorPicker: {
       preset: '预设',

@@ -2,7 +2,12 @@
   <co-form-dialog v-bind="dialogProps" width="lg" ref="dialog">
     <co-form v-bind="formProps" label-width="auto" width="md">
       <co-form-group>
-        <co-form-item v-model="model.nickname" prop="nickname" :label="t('user.nickname')" />
+        <co-form-item
+          v-model="model.nickname"
+          prop="nickname"
+          :label="t('user.nickname')"
+          required
+        />
         <co-form-item v-model="model.mobile" prop="mobile" :label="t('user.phone')" />
         <co-form-item v-model="model.name" prop="name" :label="t('user.name')" />
         <co-form-item

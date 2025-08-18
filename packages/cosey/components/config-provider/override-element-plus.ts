@@ -127,6 +127,9 @@ export default getOverrideStyleHook('OverrideElementPlus', (token) => {
     '.el-radio': {
       '--el-radio-font-weight': 'normal',
     },
+    '.el-radio-button__inner': {
+      fontWeight: 'normal',
+    },
     '.el-radio__input.is-checked+.el-radio__label': {
       color: token.colorText,
     },

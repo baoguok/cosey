@@ -30,6 +30,8 @@ export default {
       submit: 'إرسال',
       reset: 'إعادة تعيين',
       search: 'بحث',
+      required: 'مطلوب',
+      isRequired: 'مطلوب',
     },
     colorPicker: {
       preset: 'إعدادات مسبقة',
