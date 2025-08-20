@@ -198,16 +198,20 @@ const doUpload = async (options: {
   onSuccess: (url: string) => void;
   onError: () => void;
 }) => {
-  return (props.request || request)?.(options.data, {
-    ...props.requestConfig,
-    signal: options.signal,
-    onUploadProgress(event) {
-      if (event.total) {
-        options.onProgress((event.loaded / event.total) * 100);
-      }
-      props.requestConfig?.onUploadProgress?.(event);
+  return (props.request || request)?.(
+    options.data,
+    {
+      ...props.requestConfig,
+      signal: options.signal,
+      onUploadProgress(event) {
+        if (event.total) {
+          options.onProgress((event.loaded / event.total) * 100);
+        }
+        props.requestConfig?.onUploadProgress?.(event);
+      },
     },
-  })
+    props.requestExtra,
+  )
     .then((url) => {
       options.onSuccess(url);
     })

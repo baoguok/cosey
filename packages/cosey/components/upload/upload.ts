@@ -30,6 +30,7 @@ export interface UploadProps {
   size?: MediaCardBaseProps['size'];
   request?: UploadContext['request'];
   requestConfig?: AxiosRequestConfig;
+  requestExtra?: Record<PropertyKey, any>;
 }
 
 export const defaultUploadProps = {
