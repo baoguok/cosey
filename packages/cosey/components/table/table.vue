@@ -463,7 +463,7 @@ const { isFetching, execute } = useFetch(
 );
 
 onMounted(() => {
-  if (props.immediate) {
+  if (props.immediate && props.api) {
     execute();
   }
 });
