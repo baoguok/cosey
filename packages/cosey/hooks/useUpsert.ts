@@ -13,6 +13,7 @@ import {
   useTemplateRef,
   unref,
   readonly,
+  nextTick,
 } from 'vue';
 
 import { useLocale } from '../hooks';
@@ -43,6 +44,9 @@ export interface UseUpsertOptions<Model, Row = Model> {
   onAdd?: (...args: any[]) => void;
   onEdit?: (row: Row, ...args: any[]) => void;
   onShow?: () => void;
+  onShown?: () => void;
+  onShownAdd?: (...args: any[]) => void;
+  onShownEdit?: (...args: any[]) => void;
   detailsFetch?: (row: Row) => any;
   beforeFill?: (row: Row) => any;
   addFetch?: () => any;
@@ -90,6 +94,9 @@ export function useUpsert<
     onAdd,
     onEdit,
     onShow,
+    onShown,
+    onShownAdd,
+    onShownEdit,
     detailsFetch,
     beforeFill,
     addFetch,
@@ -169,6 +176,11 @@ export function useUpsert<
       visible.value = true;
       unref(onShow)?.();
 
+      nextTick(() => {
+        unref(onShown)?.();
+        unref(onShownEdit)?.(...args);
+      });
+
       let filledRow = row.value;
       if (unref(detailsFetch)) {
         filledRow = await unref(detailsFetch)!(row.value);
@@ -186,6 +198,11 @@ export function useUpsert<
 
       visible.value = true;
       unref(onShow)?.();
+
+      nextTick(() => {
+        unref(onShown)?.();
+        unref(onShownAdd)?.(...args);
+      });
     },
     setData: (_data: Data) => {
       data.value = _data;
