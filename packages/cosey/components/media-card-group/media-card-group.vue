@@ -1,8 +1,8 @@
 <template>
   <div :class="[hashId, prefixCls]">
     <MediaCard
-      v-for="(item, i) in mergedSrcset"
-      :key="i"
+      v-for="item in mergedSrcset"
+      :key="item.src"
       v-bind="item"
       :size="size"
       :src-list="srcList"

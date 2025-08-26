@@ -10,7 +10,7 @@ import {
   flatGroup,
   fieldSelectOmitKeys,
 } from './select';
-import { getLabelByValue, addNullablePlaceholder } from '../../../../utils';
+import { getLabelByValue, addNullablePlaceholder, isFunction } from '../../../../utils';
 import { omit } from 'lodash-es';
 import { useLocale } from '../../../../hooks';
 
@@ -49,14 +49,16 @@ export default defineComponent(
       return convertRecur(unref(componentProps.value.options) ?? []);
     });
 
-    function renderOption(option: FieldSelectObjectOption) {
+    function renderOption(option: FieldSelectObjectOption, index: number) {
+      const optionProps = componentProps.value.optionProps;
       return h(
         ElOption,
         {
           ...(option as any),
           key: option.value as string | number,
+          ...(isFunction(optionProps) ? optionProps(option, index) : optionProps),
         },
-        slots.option ? () => slots.option!(option) : undefined,
+        slots.option ? () => slots.option!(option, index) : undefined,
       );
     }
 
@@ -84,7 +86,7 @@ export default defineComponent(
         {
           ...slots,
           default: () =>
-            convertedOptions.value.map((item) =>
+            convertedOptions.value.map((item, index: number) =>
               'children' in item
                 ? h(
                     ElOptionGroup,
@@ -92,9 +94,10 @@ export default defineComponent(
                       label: item.label as string,
                       disabled: item.disabled,
                     },
-                    () => item.children.map((item: any) => renderOption(item)),
+                    () =>
+                      item.children.map((item: any, index: number) => renderOption(item, index)),
                   )
-                : renderOption(item),
+                : renderOption(item, index),
             ),
         },
       );
