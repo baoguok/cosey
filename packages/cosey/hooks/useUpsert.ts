@@ -49,8 +49,8 @@ export interface UseUpsertOptions<Model, Row = Model> {
   onShownEdit?: (...args: any[]) => void;
   detailsFetch?: (row: Row) => any;
   beforeFill?: (row: Row) => any;
-  addFetch?: () => any;
-  editFetch?: (row: Row) => any;
+  addFetch?: (...args: any[]) => any;
+  editFetch?: (row: Row, ...args: any[]) => any;
   success?: (res: any) => any;
   addSuccessText?: string;
   editSuccessText?: string;
@@ -132,6 +132,12 @@ export function useUpsert<
     title: mergedTitle,
   }) as unknown as UseUpsertReturn<Model, Row, Data>['dialogProps'];
 
+  // data
+  const data = shallowRef<Data>();
+  const row = shallowRef<Row>();
+  let addParams: any[] = [];
+  let editParams: any[] = [];
+
   // form
   const formRefKey = uuid();
 
@@ -141,10 +147,10 @@ export function useUpsert<
     let res: any;
 
     if (type.value === 'add') {
-      res = await unref(addFetch)?.();
+      res = await unref(addFetch)?.(...addParams);
       ElMessage.success(unref(addSuccessText) || t('co.common.operateSuccess'));
     } else {
-      res = await unref(editFetch)?.(row.value!);
+      res = await unref(editFetch)?.(row.value!, ...editParams);
       ElMessage.success(unref(editSuccessText) || t('co.common.operateSuccess'));
     }
 
@@ -158,27 +164,24 @@ export function useUpsert<
     submit: onSubmit,
   }) as unknown as UseUpsertReturn<Model, Row, Data>['formProps'];
 
-  // data
-  const data = shallowRef<Data>();
-  const row = shallowRef<Row>();
-
   // expose
   let exposeOptions: UseUpsertExposeOptions;
 
   const expose: UseUpsertExpose<Row, Data> = {
-    edit: async (...args) => {
+    edit: async (_row, ...args) => {
+      editParams = args;
       type.value = 'edit';
-      row.value = args[0];
+      row.value = _row;
       deepAssign(unref(model), initialModel);
 
-      unref(onEdit)?.(...args);
+      unref(onEdit)?.(_row, ...editParams);
 
       visible.value = true;
       unref(onShow)?.();
 
       nextTick(() => {
         unref(onShown)?.();
-        unref(onShownEdit)?.(...args);
+        unref(onShownEdit)?.(...editParams);
       });
 
       let filledRow = row.value;
@@ -190,18 +193,19 @@ export function useUpsert<
       Object.assign(unref(model), pick(filledRow, modelKeys));
     },
     add: (...args) => {
+      addParams = args;
       type.value = 'add';
       row.value = undefined;
       deepAssign(unref(model), initialModel);
 
-      unref(onAdd)?.(...args);
+      unref(onAdd)?.(...addParams);
 
       visible.value = true;
       unref(onShow)?.();
 
       nextTick(() => {
         unref(onShown)?.();
-        unref(onShownAdd)?.(...args);
+        unref(onShownAdd)?.(...addParams);
       });
     },
     setData: (_data: Data) => {
