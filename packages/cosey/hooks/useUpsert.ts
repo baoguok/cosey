@@ -171,10 +171,10 @@ export function useUpsert<
     edit: async (_row, ...args) => {
       editParams = args;
       type.value = 'edit';
-      row.value = _row;
+      row.value = cloneDeep(_row);
       deepAssign(unref(model), initialModel);
 
-      unref(onEdit)?.(_row, ...editParams);
+      unref(onEdit)?.(row.value, ...editParams);
 
       visible.value = true;
       unref(onShow)?.();
