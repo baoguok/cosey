@@ -1,7 +1,6 @@
 import { type SelectProps } from 'element-plus/es/components/select/src/select.mjs';
 import { type FieldComponentCommonProps } from '../common';
 import { type ExtractPropTypes } from 'vue';
-import { type OptionProps } from 'element-plus/es/components/select/src/type.mjs';
 
 export interface FieldSelectObjectOption {
   label?: string | number;
@@ -43,7 +42,9 @@ export interface FieldSelectProps extends FieldComponentCommonProps {
     options?: FieldSelectOption[];
     labelKey?: string;
     valueKey?: string;
-    optionProps?: OptionProps | ((props: FieldSelectObjectOption, index: number) => OptionProps);
+    optionProps?:
+      | Record<PropertyKey, any>
+      | ((props: FieldSelectObjectOption, index: number) => Record<PropertyKey, any>);
   };
   componentSlots?: Partial<FieldSelectSlots>;
 }

@@ -14,8 +14,6 @@ defineOptions({
 
 const props = defineProps<FeildProps<T>>();
 
-const slots = defineSlots<FeildProps<T>>();
-
 const component = computed(() => {
   return mapFieldTypeComponent[props.type || 'input'];
 });
@@ -34,7 +32,7 @@ const template = defineTemplate((h) => {
       readonly: props.readonly,
       componentProps: mergedComponentProps.value,
     },
-    slots,
+    props.componentSlots,
   );
 });
 </script>

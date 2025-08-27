@@ -23,12 +23,9 @@
             :readonly="mergedReadonly"
             :type="fieldType"
             :component-props="mergedFieldProps"
+            :component-slots="fieldSlots"
             :component-ref="fieldRef"
-          >
-            <template v-for="name in fieldSlotNames" #[name]="slotProps">
-              <slot v-bind="slotProps" :name="name"></slot>
-            </template>
-          </Field>
+          />
         </slot>
         <div v-if="extra || $slots.extra" :class="`${prefixCls}-item-extra`">
           <component v-if="extra" :is="extraTemplate"></component>
@@ -58,9 +55,10 @@ import {
   type FormItemProps,
   formItemExposeKeys,
   defaultFormItemProps,
+  exlucdeFieldSlotNames,
 } from './form-item';
 import { type FormContext, formContextSymbol } from './form';
-import { type MapFieldTypeComponentProps, type FieldType, Field } from '../field';
+import { type FieldType, Field } from '../field';
 import { type FormQueryContext, formQueryContextSymbol } from '../form-query/form-query';
 import { OptionalWrapper } from '../optional-wrapper';
 import { Col } from '../col';
@@ -79,6 +77,7 @@ import { reactiveOmit } from '@vueuse/core';
 import { useComponentConfig } from '../config-provider';
 import { useToken } from '../theme';
 import { useLocale } from '../../hooks';
+import { omit } from 'lodash-es';
 
 defineOptions({
   name: 'FormItem',
@@ -207,12 +206,12 @@ const mergedReadonly = computed(() => {
 
 // slot
 const formItemSlotNames = ['error'] as const;
-const exlucdeFieldSlotNames = ['error', 'label', 'default', 'tooltip', 'extra'];
-
-const fieldSlotNames = computed(() => {
-  return Object.keys(slots).filter(
-    (key) => !exlucdeFieldSlotNames.includes(key),
-  ) as (keyof MapFieldTypeComponentProps[T]['componentSlots'])[];
+const fieldSlots = computed(() => {
+  return {
+    ...Object.fromEntries(exlucdeFieldSlotNames.map((name) => [name, slots[`field-${name}`]])),
+    ...omit(slots, exlucdeFieldSlotNames),
+    ...props.fieldSlots,
+  };
 });
 
 // tooltip

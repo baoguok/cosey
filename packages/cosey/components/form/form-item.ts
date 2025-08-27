@@ -22,6 +22,7 @@ export const mapFormItemWidth = {
 export interface FormItemProps<T extends FieldType> extends Partial<ElFormItemProps> {
   fieldType?: T;
   fieldProps?: MapFieldTypeComponentProps[T]['componentProps'];
+  fieldSlots?: MapFieldTypeComponentProps[FieldType]['componentSlots'];
   fieldRef?: (el: any) => void;
   modelValue?: NonNullable<MapFieldTypeComponentProps[T]['componentProps']>['modelValue'] | null;
   width?: FormItemWidth;
@@ -43,13 +44,21 @@ export const defaultFormItemProps = {
   readonly: false,
 };
 
-export interface ElFormItemSlots {
+export const exlucdeFieldSlotNames = ['error', 'label', 'default', 'tooltip', 'extra'] as const;
+
+type ExlucdeFieldSlotNames = (typeof exlucdeFieldSlotNames)[number];
+
+type OptionExlucdeFieldSlotNames = `field-${ExlucdeFieldSlotNames}`;
+
+export type ElFormItemSlots = {
   default?: (props: Record<string, any>) => any;
   label?: (props: { label: string }) => any;
   error?: (props: { error: string }) => any;
   tooltip?: (props: Record<string, any>) => any;
   extra?: (props: Record<string, any>) => any;
-}
+} & {
+  [K in OptionExlucdeFieldSlotNames]?: (...args: any[]) => any;
+};
 
 export type FormItemSlots<T extends FieldType> = NonNullable<
   MapFieldTypeComponentProps[T]['componentSlots']
