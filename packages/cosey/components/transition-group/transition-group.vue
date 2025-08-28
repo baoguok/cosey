@@ -51,5 +51,6 @@ const onBeforeLeave = (el: Element) => {
   node.style.setProperty('position', 'fixed');
   node.style.setProperty('top', rect.top + 'px');
   node.style.setProperty('left', rect.left + 'px');
+  node.style.setProperty('opacity', '0');
 };
 </script>
