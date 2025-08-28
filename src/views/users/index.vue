@@ -93,7 +93,10 @@ const [tableProps, { reload, getSelectionRows }] = useTable(
         label: t('user.mute'),
         renderer: {
           type: 'switch',
-          api: (value, row) => updateUser(row.id, { silent: value }),
+          api: (value, row) =>
+            updateUser(row.id, { silent: value }).then(() => {
+              reload();
+            }),
           props: { activeValue: 1, inactiveValue: 0 },
         },
       },

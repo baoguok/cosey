@@ -2,7 +2,6 @@ import {
   formatToDate,
   formatToDateTime,
   toArray,
-  Scope,
   isEmpty,
   isString,
   getVNodeText,
@@ -21,7 +20,7 @@ import { type TableColumnProps } from './table-column';
 import { type LongTextProps, LongText } from '../../long-text';
 import { type MediaCardProps, MediaCard } from '../../media-card';
 import { type MediaCardGroupProps, MediaCardGroup } from '../../media-card-group';
-import { ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { type Translator } from '../../../hooks';
 
 interface RendererOptions {
@@ -97,6 +96,45 @@ export const mapRendererColumnProps: Record<string, TableColumnProps> = {
   },
 };
 
+const AsyncSwitch = defineComponent({
+  props: {
+    value: [String, Number, Boolean],
+    props: Object,
+    api: Function,
+    row: Object,
+    t: Function,
+  },
+  setup(props) {
+    const loading = ref(false);
+    const value = ref(props.value);
+
+    return () => (
+      <ElSwitch
+        {...props.props}
+        model-value={value.value}
+        loading={loading.value}
+        validateEvent={false}
+        onChange={async (val) => {
+          if (loading.value) {
+            return;
+          }
+          loading.value = true;
+
+          try {
+            await props.api?.(val, props.row);
+            value.value = val;
+            ElMessage.success(props.t?.('co.common.editSuccess'));
+          } catch {
+            void 0;
+          } finally {
+            loading.value = false;
+          }
+        }}
+      />
+    );
+  },
+});
+
 /**
  * 可组合其他组件进行渲染
  */
@@ -144,32 +182,7 @@ export function renderer<T extends RendererType>(
     case 'longtext':
       return <LongText text={cellValue} {...obj.props} />;
     case 'switch': {
-      const loading = ref(false);
-      const value = ref(cellValue);
-
-      return (
-        <Scope>
-          <ElSwitch
-            {...obj.props}
-            model-value={value.value}
-            loading={loading.value}
-            validateEvent={false}
-            onChange={async (val) => {
-              loading.value = true;
-
-              try {
-                await obj.api?.(val, row);
-                value.value = val;
-                ElMessage.success(t('co.common.editSuccess'));
-              } catch {
-                void 0;
-              } finally {
-                loading.value = false;
-              }
-            }}
-          />
-        </Scope>
-      );
+      return <AsyncSwitch value={cellValue} props={obj.props} api={obj.api} row={row} t={t} />;
     }
     case 'click':
       return (
