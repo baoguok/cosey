@@ -134,6 +134,12 @@ export interface TableCustomExpose {
   getFetchParams: () => Record<string, any>;
   getFullFetchParams: () => Record<string, any>;
   setData: (data: any[]) => void;
+  getData: () => any[];
+  getRootEl: () => HTMLElement | null;
+  getPagination: () => {
+    page: number;
+    pageSize: number;
+  };
 }
 
 export type TableExpose = TableCustomExpose &
@@ -187,6 +193,9 @@ export const tableExposeKeys = [
   'getFetchParams',
   'getFullFetchParams',
   'setData',
+  'getData',
+  'getRootEl',
+  'getPagination',
 ];
 
 export const defaultTableConfig = {

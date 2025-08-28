@@ -1,6 +1,7 @@
 <template>
   <teleport to="body" :disabled="!isFullPage">
     <div
+      ref="rootRef"
       v-loading="isFetching"
       :class="[
         hashId,
@@ -381,6 +382,10 @@ watch(
   },
 );
 
+const getData = () => {
+  return tableData.value;
+};
+
 const setData = (data: any[]) => {
   tableData.value = data;
 };
@@ -554,6 +559,13 @@ const onPageChange = () => {
   execute();
 };
 
+const getPagination = () => {
+  return {
+    page: page.value,
+    pageSize: pageSize.value,
+  };
+};
+
 // toolbar config
 const defaultToolbarConfig = {
   reload: true,
@@ -657,6 +669,11 @@ const statsColumns = computed(() => unref(props.statsColumns));
 const statsData = computed(() => unref(props.statsData));
 const isStatsVisible = computed(() => statsColumns.value && statsColumns.value.length > 0);
 
+// ref el
+const rootRef = ref<HTMLElement | null>(null);
+
+const getRootEl = () => rootRef.value;
+
 // expose
 const expose = createMergedExpose(
   tableExposeKeys,
@@ -668,6 +685,9 @@ const expose = createMergedExpose(
     getFetchParams,
     getFullFetchParams,
     setData,
+    getData,
+    getRootEl,
+    getPagination,
   },
   () => tableQueryRef.value,
 );
