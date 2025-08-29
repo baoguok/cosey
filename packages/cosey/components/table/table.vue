@@ -664,6 +664,22 @@ const onReset = async () => {
   }
 };
 
+const submit = async () => {
+  if (props.formProps) {
+    return tableQueryRef.value?.submit();
+  } else {
+    return onSubmit();
+  }
+};
+
+const reset = async () => {
+  if (props.formProps) {
+    return tableQueryRef.value?.reset();
+  } else {
+    return onReset();
+  }
+};
+
 // stats
 const statsColumns = computed(() => unref(props.statsColumns));
 const statsData = computed(() => unref(props.statsData));
@@ -688,6 +704,8 @@ const expose = createMergedExpose(
     getData,
     getRootEl,
     getPagination,
+    submit,
+    reset,
   },
   () => tableQueryRef.value,
 );

@@ -187,6 +187,8 @@ const elTableExposeKeys = [
 export const tableExposeKeys = [
   ...elTableExposeKeys,
   ...tableQueryExposeKeys,
+  'reset',
+  'submit',
   'reload',
   'expandAll',
   'collapseAll',

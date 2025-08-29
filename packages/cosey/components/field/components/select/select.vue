@@ -10,7 +10,7 @@ import {
   flatGroup,
   fieldSelectOmitKeys,
 } from './select';
-import { getLabelByValue, addNullablePlaceholder, isFunction } from '../../../../utils';
+import { getLabelByValue, addNullablePlaceholder, isFunction, isObject } from '../../../../utils';
 import { omit } from 'lodash-es';
 import { useLocale } from '../../../../hooks';
 
@@ -55,7 +55,10 @@ export default defineComponent(
         ElOption,
         {
           ...(option as any),
-          key: option.value as string | number,
+          key:
+            isObject(option.value) && componentProps.value.valueKey
+              ? option.value[componentProps.value.valueKey]
+              : (option.value as string | number),
           ...(isFunction(optionProps) ? optionProps(option, index) : optionProps),
         },
         slots.option ? () => slots.option!(option, index) : undefined,

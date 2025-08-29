@@ -1,6 +1,6 @@
 <script lang="ts">
 import { ElSelectV2 } from 'element-plus';
-import { computed, defineComponent, h, mergeProps, type SlotsType } from 'vue';
+import { computed, defineComponent, h, mergeProps, unref, type SlotsType } from 'vue';
 import { flatGroup, type FieldSelectV2Props, type FieldSelectV2Slots } from './select-v2';
 import { addNullablePlaceholder, getLabelByValue } from '../../../../utils';
 import { useLocale } from '../../../../hooks';
@@ -10,6 +10,28 @@ export default defineComponent(
     const { t } = useLocale();
 
     const componentProps = computed(() => props.componentProps || {});
+
+    const childrenKey = computed(() => componentProps.value.props?.options || 'children');
+
+    const optionProps = computed(
+      () => componentProps.value.optionProps || ((option: any) => option),
+    );
+
+    function convertRecur(options: Record<string, any>[]): Record<string, any>[] {
+      return options.map((option, index) => {
+        if (childrenKey.value in option) {
+          return {
+            ...optionProps.value(option, index),
+            [childrenKey.value]: convertRecur(option[childrenKey.value]),
+          };
+        }
+        return optionProps.value(option, index);
+      });
+    }
+
+    const convertedOptions = computed(() => {
+      return convertRecur(unref(componentProps.value.options) ?? []);
+    });
 
     return () => {
       if (props.readonly) {
@@ -34,6 +56,9 @@ export default defineComponent(
             },
           },
           componentProps.value,
+          {
+            options: convertedOptions.value,
+          },
         ) as any,
         slots,
       );

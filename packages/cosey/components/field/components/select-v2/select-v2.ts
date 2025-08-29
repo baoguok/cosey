@@ -14,6 +14,7 @@ export interface FieldSelectV2Props extends FieldComponentCommonProps {
   } & {
     labelKey?: string;
     valueKey?: string;
+    optionProps?: (props: Record<PropertyKey, any>, index: number) => Record<PropertyKey, any>;
   };
   componentSlots?: Partial<FieldSelectV2Slots>;
 }
