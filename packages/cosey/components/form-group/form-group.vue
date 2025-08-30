@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-divider v-if="title" v-bind="dividerProps">
+    <el-divider v-if="title" v-bind="dividerProps" direction="horizontal">
       <div
         :style="{
           display: 'inline-flex',
@@ -48,7 +48,7 @@ const props = withDefaults(defineProps<FormGroupProps>(), {
 
 const emit = defineEmits<FormGroupEmits>();
 
-const dividerPropsKeys = ['direction', 'borderStyle', 'contentPosition'] as (keyof DividerProps)[];
+const dividerPropsKeys = ['borderStyle', 'contentPosition'] as (keyof DividerProps)[];
 
 const dividerProps = computed(() => {
   return {
