@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount, reactive, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref, unref } from 'vue';
 import {
   type TableQueryEmits,
   type TableQuerySlots,
@@ -34,11 +34,15 @@ defineEmits<TableQueryEmits>();
 
 const formQueryRef = ref<FormQueryExpose>();
 
-const formModel = reactive<Record<string, any>>({});
+const defaultModel = reactive<Record<string, any>>({});
+
+const formModel = computed(() => {
+  return props.model || defaultModel;
+});
 
 onBeforeMount(() => {
   props.schemes.forEach((item) => {
-    formModel[item.prop as string] = item.modelValue;
+    unref(formModel)[item.prop as string] = item.modelValue;
   });
 });
 
@@ -49,13 +53,13 @@ const onEnter = () => {
 // expose
 const customExpose: TableQueryCustomExpose = {
   getFieldsValue() {
-    return cloneDeep(formModel);
+    return cloneDeep(unref(formModel));
   },
   setFieldsValue(value) {
-    Object.assign(formModel, value);
+    Object.assign(unref(formModel), value);
   },
   getFormModel() {
-    return formModel;
+    return unref(formModel);
   },
 };
 
@@ -69,7 +73,7 @@ const template = defineTemplate((h) => {
     {
       ...formQueryProps,
       ref: formQueryRef,
-      model: formModel,
+      model: unref(formModel),
       onKeyup: withModifiers(
         (event) => {
           if ((event as KeyboardEvent).key === 'Enter') {
@@ -87,7 +91,7 @@ const template = defineTemplate((h) => {
           return h(FormItem, rest, {
             ...slots,
             default: () => {
-              return render({ model: formModel });
+              return render({ model: unref(formModel) });
             },
           });
         }
@@ -96,8 +100,8 @@ const template = defineTemplate((h) => {
           FormItem,
           {
             ...rest,
-            modelValue: formModel[rest.prop as string],
-            'onUpdate:modelValue': (value: any) => (formModel[rest.prop as string] = value),
+            modelValue: unref(formModel)[rest.prop as string],
+            'onUpdate:modelValue': (value: any) => (unref(formModel)[rest.prop as string] = value),
           },
           slots,
         );
