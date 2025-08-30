@@ -11,9 +11,15 @@ const getTableActionStyle: GenerateStyle<TableActionToken, CSSObject> = (token) 
   return {
     [componentCls]: {
       display: 'inline-flex',
-      flexWrap: 'wrap',
-      columnGap: token.sizeXXS,
+      flexDirection: 'column',
       rowGap: token.sizeSM,
+
+      [`${componentCls}-row`]: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        columnGap: token.sizeXXS,
+        rowGap: token.sizeXXS,
+      },
     },
   };
 };
