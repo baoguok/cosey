@@ -23,6 +23,10 @@ const getFormQueryStyle: GenerateStyle<FormQueryToken, CSSObject> = (token) => {
         display: 'flex',
         width: '100%',
         justifyContent: 'flex-end',
+
+        '&.is-inline': {
+          justifyContent: 'flex-start',
+        },
       },
     },
   };

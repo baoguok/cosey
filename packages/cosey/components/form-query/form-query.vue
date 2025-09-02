@@ -2,28 +2,16 @@
   <el-form ref="form" v-bind="elFormProps" :class="[hashId, prefixCls]">
     <Row v-if="grid" v-bind="mergedRowProps" @size-change="handleSizeChange">
       <component :is="template" />
-      <FormItem :class="`${prefixCls}-form-item-buttons`">
-        <div :class="`${prefixCls}-buttons`">
-          <slot name="button" :reset="reset" :submit="submit" :submitting="submitting">
-            <el-button
-              v-if="!hideSubmit"
-              @click="() => submit()"
-              type="primary"
-              :loading="submitting"
-            >
-              {{ t('co.form.search') }}
-            </el-button>
-            <el-button v-if="!hideReset" @click="reset">{{ t('co.form.reset') }}</el-button>
-          </slot>
-          <Toggle v-if="showToggle" v-model="innerCollapsed" />
-        </div>
-      </FormItem>
+      <component :is="buttonsTemplate" />
     </Row>
-    <slot v-else></slot>
+    <template v-else>
+      <slot></slot>
+      <component :is="buttonsTemplate" />
+    </template>
   </el-form>
 </template>
 
-<script setup lang="ts">
+<script setup lang="tsx">
 import {
   type FormQueryProps,
   type FormQuerySlots,
@@ -33,7 +21,7 @@ import {
   formQueryContextSymbol,
   defaultMapSizeColNumber,
 } from './form-query';
-import { ElForm, ElButton } from 'element-plus';
+import { ElButton, ElForm } from 'element-plus';
 import { useFormTemplate, FormItem } from '../form';
 import { type RowSize, Row } from '../row';
 import { Toggle } from '../toggle';
@@ -131,6 +119,28 @@ const template = defineTemplate(() => {
         })
       : item;
   });
+});
+
+const buttonsTemplate = defineTemplate(() => {
+  return (
+    <FormItem class={`${prefixCls.value}-form-item-buttons`}>
+      <div class={[`${prefixCls.value}-buttons`, { 'is-inline': props.inline }]}>
+        {slots.button ? (
+          slots.button({ reset, submit, submitting: submitting.value })
+        ) : (
+          <>
+            {!props.hideSubmit && (
+              <ElButton onClick={() => submit()} type="primary" loading={submitting.value}>
+                {t('co.form.search')}
+              </ElButton>
+            )}
+            {!props.hideReset && <ElButton onClick={() => reset()}>{t('co.form.reset')}</ElButton>}
+          </>
+        )}
+        {props.grid && showToggle.value && <Toggle v-model={innerCollapsed.value} />}
+      </div>
+    </FormItem>
+  );
 });
 
 defineExpose(expose);
