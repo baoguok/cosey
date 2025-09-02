@@ -1,5 +1,10 @@
 <template>
-  <div :class="[hashId, prefixCls, { 'is-bordered': !!title, 'is-collapsed': innerCollapsed }]">
+  <div
+    :class="[hashId, prefixCls, { 'is-bordered': isBordered, 'is-collapsed': innerCollapsed }]"
+    :style="{
+      borderStyle: isBordered ? props.borderStyle : undefined,
+    }"
+  >
     <div v-if="title" :class="[`${prefixCls}-title`, `is-${position}`]">
       <div
         :style="{
@@ -29,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { type FormGroupEmits, type FormGroupProps, type FormGroupSlots } from './form-group';
 import { reactiveOmit } from '@vueuse/core';
 import Icon from '../icon/icon.vue';
@@ -62,6 +67,8 @@ const spaceProps = reactiveOmit(props, [
 ]);
 
 const innerCollapsed = ref(false);
+
+const isBordered = computed(() => !!props.title);
 
 watch(
   () => props.collapsed,

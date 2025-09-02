@@ -7,10 +7,9 @@ export default getSimpleStyleHook('FromGroup', (token) => {
     [componentCls]: {
       '&.is-bordered': {
         position: 'relative',
-        marginBlockStart: token.marginSM,
+        marginBlock: token.marginLG,
+        padding: token.paddingMD,
         paddingBlockStart: token.paddingLG,
-        paddingBlockEnd: token.paddingMD,
-        paddingInline: token.paddingMD,
         border: `${token.lineWidth} ${token.lineType} ${token.colorBorder}`,
         borderRadius: token.borderRadius,
 
