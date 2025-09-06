@@ -12,12 +12,12 @@ export interface FieldSelectV2Props extends FieldComponentCommonProps {
     onFocus?: (event: FocusEvent) => void;
     [key: PropertyKey]: any;
   } & {
-    labelKey?: string;
-    valueKey?: string;
     optionProps?: (props: Record<PropertyKey, any>, index: number) => Record<PropertyKey, any>;
   };
   componentSlots?: Partial<FieldSelectV2Slots>;
 }
+
+export const fieldSelectOmitKeys = ['optionProps'];
 
 export interface FieldSelectV2Slots {
   default?: (props: Record<string, any>) => any;

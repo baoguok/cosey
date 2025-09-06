@@ -31,6 +31,7 @@ import { defineTemplate } from '../../utils';
 import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
 import { useLocale } from '../../hooks';
+import { Search } from '@element-plus/icons-vue';
 
 defineOptions({
   name: 'FormQuery',
@@ -123,14 +124,22 @@ const template = defineTemplate(() => {
 
 const buttonsTemplate = defineTemplate(() => {
   return (
-    <FormItem class={`${prefixCls.value}-form-item-buttons`}>
+    <FormItem
+      class={`${prefixCls.value}-form-item-buttons`}
+      width={props.inline ? 'auto' : undefined}
+    >
       <div class={[`${prefixCls.value}-buttons`, { 'is-inline': props.inline }]}>
         {slots.button ? (
           slots.button({ reset, submit, submitting: submitting.value })
         ) : (
           <>
             {!props.hideSubmit && (
-              <ElButton onClick={() => submit()} type="primary" loading={submitting.value}>
+              <ElButton
+                onClick={() => submit()}
+                type="primary"
+                loading={submitting.value}
+                icon={Search}
+              >
                 {t('co.form.search')}
               </ElButton>
             )}

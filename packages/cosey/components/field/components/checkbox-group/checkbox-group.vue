@@ -6,28 +6,24 @@ import { type FieldCheckboxGroupProps, type FieldCheckboxGroupSlots } from './ch
 import { getLabelByValue, addNullablePlaceholder, isNumber } from '../../../../utils';
 import Panel from './panel.vue';
 import { omit } from 'lodash-es';
+import { useProps } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldCheckboxGroupProps) => {
     const componentProps = computed(() => props.componentProps || {});
     const checkboxGroupProps = computed(() => {
-      return omit(componentProps.value, [
-        'options',
-        'labelKey',
-        'valueKey',
-        'type',
-        'checkboxWidth',
-        'maxHeight',
-      ]);
+      return omit(componentProps.value, ['options', 'props', 'type', 'checkboxWidth', 'maxHeight']);
     });
+
+    const { getLabel, getValue } = useProps(componentProps);
 
     const convertedOptions = computed(() => {
       return (componentProps.value.options ?? []).map((option) => {
         if (typeof option === 'object') {
           return {
             ...option,
-            label: option[(componentProps.value.labelKey as 'label') || 'label'],
-            value: option[(componentProps.value.valueKey as 'value') || 'value'],
+            label: getLabel(option),
+            value: getValue(option),
           };
         }
         return {

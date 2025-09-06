@@ -33,6 +33,7 @@ export * from './number-format';
 export * from './only-child';
 export * from './optional-wrapper';
 export * from './panel';
+export * from './remote-select';
 export * from './row';
 export * from './scroll-view';
 export * from './snug-menu';

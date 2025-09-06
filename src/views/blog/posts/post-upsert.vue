@@ -9,8 +9,10 @@
         field-type="select"
         :field-props="{
           options: postTypes,
-          labelKey: 'name',
-          valueKey: 'id',
+          props: {
+            label: 'name',
+            value: 'id',
+          },
         }"
       />
       <co-form-item v-model="model.title" prop="title" :label="t('post.title')" required />

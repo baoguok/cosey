@@ -19,6 +19,7 @@ import { type FieldNumberRangeProps } from './components/number-range/number-ran
 import { type FieldPasswordProps } from './components/password/password';
 import { type FieldRadioGroupProps } from './components/radio-group/radio-group';
 import { type FieldRateProps } from './components/rate/rate';
+import { type FieldRemoteSelectProps } from './components/remote-select/remote-select';
 import { type FieldSegmentedProps } from './components/segmented/segmented';
 import { type FieldSelectProps } from './components/select/select';
 import { type FieldSelectV2Props } from './components/select-v2/select-v2';
@@ -55,8 +56,9 @@ import Months from './components/months/months.vue';
 import Number from './components/number/number.vue';
 import NumberRange from './components/number-range/number-range.vue';
 import Password from './components/password/password.vue';
-import dioGroup from './components/radio-group/radio-group.vue';
-import te from './components/rate/rate.vue';
+import RadioGroup from './components/radio-group/radio-group.vue';
+import Rate from './components/rate/rate.vue';
+import RemoteSelect from './components/remote-select/remote-select.vue';
 import Segmented from './components/segmented/segmented.vue';
 import Select from './components/select/select.vue';
 import SelectV2 from './components/select-v2/select-v2.vue';
@@ -96,6 +98,7 @@ export interface MapFieldTypeComponentProps {
   password: FieldPasswordProps;
   radiogroup: FieldRadioGroupProps;
   rate: FieldRateProps;
+  remoteselect: FieldRemoteSelectProps;
   segmented: FieldSegmentedProps;
   select: FieldSelectProps;
   selectv2: FieldSelectV2Props;
@@ -135,8 +138,9 @@ export const mapFieldTypeComponent = {
   number: Number,
   numberrange: NumberRange,
   password: Password,
-  radiogroup: dioGroup,
-  rate: te,
+  radiogroup: RadioGroup,
+  rate: Rate,
+  remoteselect: RemoteSelect,
   segmented: Segmented,
   select: Select,
   selectv2: SelectV2,

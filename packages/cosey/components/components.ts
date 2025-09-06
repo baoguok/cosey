@@ -32,6 +32,7 @@ import { NumberFormat } from './number-format';
 import { OnlyChild } from './only-child';
 import { OptionalWrapper } from './optional-wrapper';
 import { Panel } from './panel';
+import { RemoteSelect } from './remote-select';
 import { Row } from './row';
 import { ScrollView } from './scroll-view';
 import { SnugMenu, SnugMenuItem } from './snug-menu';
@@ -86,6 +87,7 @@ declare module 'vue' {
     CoOnlyChild: typeof OnlyChild;
     CoOptionalWrapper: typeof OptionalWrapper;
     CoPanel: typeof Panel;
+    CoRemoteSelect: typeof RemoteSelect;
     CoRow: typeof Row;
     CoScrollView: typeof ScrollView;
     CoSnugMenu: typeof SnugMenu;
@@ -142,6 +144,7 @@ export {
   OnlyChild,
   OptionalWrapper,
   Panel,
+  RemoteSelect,
   Row,
   ScrollView,
   SnugMenu,

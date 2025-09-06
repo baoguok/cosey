@@ -8,8 +8,10 @@
         field-type="select"
         :field-props="{
           options: configGroups,
-          labelKey: 'name',
-          valueKey: 'id',
+          props: {
+            label: 'name',
+            value: 'id',
+          },
         }"
         required
       />
@@ -23,8 +25,10 @@
         field-type="radiogroup"
         :field-props="{
           options: configTypes,
-          labelKey: 'name',
-          valueKey: 'value',
+          props: {
+            label: 'name',
+            value: 'value',
+          },
         }"
       />
       <co-form-item

@@ -6,6 +6,7 @@ import {
   type CheckboxProps,
 } from 'element-plus';
 import { type FieldComponentCommonProps } from '../common';
+import { Props } from '../../../../hooks';
 
 export type FieldCheckboxGroupOption = Partial<CheckboxProps> | string | number;
 
@@ -16,8 +17,7 @@ export interface FieldCheckboxGroupProps extends FieldComponentCommonProps {
     [key: PropertyKey]: any;
   } & {
     options?: FieldCheckboxGroupOption[];
-    labelKey?: string;
-    valueKey?: string;
+    props?: Props;
     type?: 'button' | 'checkbox';
     checkboxWidth?: string | number;
     indeterminate?: boolean;

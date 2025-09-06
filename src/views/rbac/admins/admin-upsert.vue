@@ -18,8 +18,10 @@
         :field-props="{
           options: roleOptions,
           multiple: true,
-          valueKey: 'id',
-          labelKey: 'name',
+          props: {
+            label: 'name',
+            value: 'id',
+          },
         }"
       />
       <co-form-item prop="avatar" :label="t('rbac.avatar')">

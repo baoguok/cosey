@@ -115,8 +115,10 @@ const [tableProps, { reload }] = useTable(
           fieldType: 'select',
           fieldProps: {
             options: configGroupOptions,
-            labelKey: 'name',
-            valueKey: 'id',
+            props: {
+              label: 'name',
+              value: 'id',
+            },
           },
         },
         { prop: 'name', label: t('config.name') },

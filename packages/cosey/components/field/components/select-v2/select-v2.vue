@@ -1,9 +1,15 @@
 <script lang="ts">
 import { ElSelectV2 } from 'element-plus';
 import { computed, defineComponent, h, mergeProps, unref, type SlotsType } from 'vue';
-import { flatGroup, type FieldSelectV2Props, type FieldSelectV2Slots } from './select-v2';
+import {
+  fieldSelectOmitKeys,
+  flatGroup,
+  type FieldSelectV2Props,
+  type FieldSelectV2Slots,
+} from './select-v2';
 import { addNullablePlaceholder, getLabelByValue } from '../../../../utils';
-import { useLocale } from '../../../../hooks';
+import { useLocale, useProps } from '../../../../hooks';
+import { omit } from 'lodash-es';
 
 export default defineComponent(
   (props: FieldSelectV2Props, { slots }) => {
@@ -11,7 +17,9 @@ export default defineComponent(
 
     const componentProps = computed(() => props.componentProps || {});
 
-    const childrenKey = computed(() => componentProps.value.props?.options || 'children');
+    const omittedProps = computed(() => omit(componentProps.value, fieldSelectOmitKeys));
+
+    const { getOptions, aliasProps } = useProps(componentProps);
 
     const optionProps = computed(
       () => componentProps.value.optionProps || ((option: any) => option),
@@ -19,10 +27,10 @@ export default defineComponent(
 
     function convertRecur(options: Record<string, any>[]): Record<string, any>[] {
       return options.map((option, index) => {
-        if (childrenKey.value in option) {
+        if (aliasProps.value.options in option) {
           return {
             ...optionProps.value(option, index),
-            [childrenKey.value]: convertRecur(option[childrenKey.value]),
+            [aliasProps.value.options]: convertRecur(getOptions(option)),
           };
         }
         return optionProps.value(option, index);
@@ -55,7 +63,7 @@ export default defineComponent(
               verticalAlign: 'top',
             },
           },
-          componentProps.value,
+          omittedProps.value,
           {
             options: convertedOptions.value,
           },

@@ -230,10 +230,10 @@ import TableQuery from './table-query/table-query.vue';
 import TableExport from './table-export/table-export.vue';
 import Icon from '../icon/icon.vue';
 import { useFetch, useFullPage, useResizeObserver } from '../../hooks';
-import { filterEmptyFormValue } from './utils';
 import {
   addPxUnit,
   createMergedExpose,
+  filterEmptyFormValue,
   flatColumns,
   getVNodeText,
   isFunction,

@@ -20,3 +20,4 @@ export * from './useTreeCheck';
 export * from './useOptionalComponent';
 export * from './useMounted';
 export * from './useDir';
+export * from './useProps';
