@@ -21,7 +21,7 @@ import { useLayoutStore } from '../../store';
 import { useTimeoutFn } from '@vueuse/core';
 
 defineOptions({
-  name: 'LayoutReload',
+  name: 'CoLayoutReload',
 });
 
 const { prefixCls } = useComponentConfig('layout-tabbar');

@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import Card from './card.vue';
+import Card from './card';
 
-export * from './card';
+export * from './card.api';
 
 const _Card = withInstall(Card);
 

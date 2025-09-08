@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import TableAction from './table-action.vue';
+import TableAction from './table-action';
 
-export * from './table-action';
+export * from './table-action.api';
 
 const _TableAction = withInstall(TableAction);
 

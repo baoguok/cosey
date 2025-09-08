@@ -21,7 +21,7 @@ import { useLayoutStore } from '../../store';
 import { useI18n } from 'vue-i18n';
 
 defineOptions({
-  name: 'LayoutBreadcrumb',
+  name: 'CoLayoutBreadcrumb',
 });
 
 const { t } = useI18n();

@@ -6,7 +6,7 @@ import { mapRendererColumnProps, renderer } from './renderer';
 import { ElTableColumn, ElTooltip } from 'element-plus';
 import classNames from 'classnames';
 
-import useStyle from './style';
+import useStyle from './table-column.style';
 import { useComponentConfig } from '../../config-provider';
 import { useLocale } from '../../../hooks';
 import Icon from '../../icon/icon.vue';

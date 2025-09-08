@@ -9,7 +9,7 @@ import { computed } from 'vue';
 import { type SvgIconProps } from './svg-icon';
 
 defineOptions({
-  name: 'SvgIcon',
+  name: 'CoSvgIcon',
 });
 
 const props = withDefaults(defineProps<SvgIconProps>(), {});

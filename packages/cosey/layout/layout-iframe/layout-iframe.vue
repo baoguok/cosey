@@ -9,7 +9,7 @@ import { useLayoutStore } from '../../store';
 import Item from './item.vue';
 
 defineOptions({
-  name: 'LayoutIframe',
+  name: 'CoLayoutIframe',
 });
 
 const layoutStore = useLayoutStore();

@@ -54,7 +54,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldCascader',
+    name: 'CoFieldCascader',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldCascaderSlots>,

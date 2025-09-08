@@ -28,7 +28,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldRate',
+    name: 'CoFieldRate',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldRateSlots>,

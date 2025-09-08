@@ -19,13 +19,13 @@ import {
 } from './media-card-group';
 import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
-import { type MediaCardBaseProps } from '../media-card/media-card';
-import MediaCard from '../media-card/media-card.vue';
+import { type MediaCardBaseProps } from '../media-card/media-card.api';
+import MediaCard from '../media-card/media-card';
 import { computed } from 'vue';
 import { isString } from '../../utils';
 
 defineOptions({
-  name: 'MediaCardGroup',
+  name: 'CoMediaCardGroup',
 });
 
 const props = defineProps<MediaCardGroupProps>();

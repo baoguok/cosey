@@ -41,7 +41,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
 
 defineOptions({
-  name: 'ScrollView',
+  name: 'CoScrollView',
 });
 
 defineProps<ScrollViewProps>();

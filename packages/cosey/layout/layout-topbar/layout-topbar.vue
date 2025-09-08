@@ -16,7 +16,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../../components';
 
 defineOptions({
-  name: 'LayoutTopbar',
+  name: 'CoLayoutTopbar',
 });
 
 const { prefixCls } = useComponentConfig('layout-topbar');

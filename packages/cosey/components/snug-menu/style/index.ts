@@ -1,11 +1,8 @@
 import { type CSSObject } from '../../cssinjs';
-import { type FullToken, type GenerateStyle, getStyleHook } from '../../theme';
+import { type GenerateStyle, getSimpleStyleHook } from '../../theme';
+import { type AliasTokenWithCommonCls } from '../../theme/getSimpleStyleHook';
 
-export interface ComponentToken {}
-
-export interface SnugMenuToken extends FullToken<'SnugMenu'> {}
-
-const getSnugMenuItemStyle: GenerateStyle<SnugMenuToken, CSSObject> = (token) => {
+const getSnugMenuItemStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> = (token) => {
   const { componentCls } = token;
 
   return {
@@ -54,7 +51,7 @@ const getSnugMenuItemStyle: GenerateStyle<SnugMenuToken, CSSObject> = (token) =>
   };
 };
 
-const getSnugMenuStyle: GenerateStyle<SnugMenuToken, CSSObject> = (token) => {
+export default getSimpleStyleHook('CoSnugMenu', (token) => {
   const { componentCls } = token;
 
   return {
@@ -68,8 +65,4 @@ const getSnugMenuStyle: GenerateStyle<SnugMenuToken, CSSObject> = (token) => {
       ...getSnugMenuItemStyle(token),
     },
   };
-};
-
-export default getStyleHook('SnugMenu', (token) => {
-  return [getSnugMenuStyle(token)];
 });

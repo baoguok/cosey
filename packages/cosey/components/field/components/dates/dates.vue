@@ -38,7 +38,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldDates',
+    name: 'CoFieldDates',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldDatesSlots>,

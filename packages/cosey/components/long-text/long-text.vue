@@ -35,7 +35,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
 
 defineOptions({
-  name: 'LongText',
+  name: 'CoLongText',
 });
 
 const props = withDefaults(defineProps<LongTextProps>(), defaultLongTextProps);

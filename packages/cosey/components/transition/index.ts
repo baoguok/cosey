@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import Transition from './transition.vue';
+import Transition from './transition';
 
-export * from './transition';
+export * from './transition.api';
 
 const _Transition = withInstall(Transition);
 

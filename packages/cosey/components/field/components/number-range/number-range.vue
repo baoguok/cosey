@@ -28,7 +28,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldNumberRange',
+    name: 'CoFieldNumberRange',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldNumberRangeSlots>,

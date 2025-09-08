@@ -1,6 +1,6 @@
 import { getSimpleStyleHook } from '../../theme';
 
-export default getSimpleStyleHook('HorizontalTree', (token) => {
+export default getSimpleStyleHook('CoHorizontalTree', (token) => {
   const { componentCls } = token;
 
   return {

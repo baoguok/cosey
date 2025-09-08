@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import Col from './col.vue';
+import Col from './col';
 
-export * from './col';
+export * from './col.api';
 
 const _Col = withInstall(Col);
 

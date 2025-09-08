@@ -59,7 +59,7 @@ import { debugWarn } from 'element-plus/es/utils/error.mjs';
 import { isNullish } from '../../utils';
 
 defineOptions({
-  name: 'InputNumberRange',
+  name: 'CoInputNumberRange',
 });
 
 const props = withDefaults(defineProps<InputNumberRangeProps>(), defaultInputNumberRangeProps);

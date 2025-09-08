@@ -43,7 +43,7 @@ import { ref } from 'vue';
 import { ElLoading } from 'element-plus';
 
 defineOptions({
-  name: 'LayoutUserMenu',
+  name: 'CoLayoutUserMenu',
 });
 
 const { t } = useLocale();

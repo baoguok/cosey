@@ -10,7 +10,7 @@ import {
   stackDialogProps,
   useStackDialog,
 } from './stack-dialog';
-import useStyle from './style';
+import useStyle from './stack-dialog.style';
 import { useComponentConfig } from '../config-provider';
 import { createMergedExpose, defineTemplate } from '../../utils';
 import { elFormDialogExposeKeys } from '../form-dialog';
@@ -19,7 +19,7 @@ import { ElDialog } from 'element-plus';
 import classNames from 'classnames';
 
 defineOptions({
-  name: 'StackDialog',
+  name: 'CoStackDialog',
 });
 
 const props = defineProps(stackDialogProps);

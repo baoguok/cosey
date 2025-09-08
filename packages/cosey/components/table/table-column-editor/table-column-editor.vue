@@ -51,7 +51,7 @@ import {
 import { nextTick, ref, shallowReactive, useTemplateRef } from 'vue';
 import List from './list.vue';
 
-import useStyle from './style';
+import useStyle from './table-column-editor.style';
 import { useComponentConfig } from '../../config-provider';
 import { useTreeCheck } from '../../../hooks';
 import { type TableColumnProps } from '../table-column/table-column';
@@ -60,7 +60,7 @@ import { ElButton } from 'element-plus';
 import { useLocale } from '../../../hooks';
 
 defineOptions({
-  name: 'TableColumnEditor',
+  name: 'CoTableColumnEditor',
 });
 
 const props = withDefaults(defineProps<TableColumnEditorProps>(), defaultTableColumnEditorProps);

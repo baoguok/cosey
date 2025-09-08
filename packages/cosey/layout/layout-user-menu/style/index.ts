@@ -1,6 +1,6 @@
 import { getSimpleStyleHook, getTruncateStyle } from '../../../components';
 
-export default getSimpleStyleHook('LayoutUserMenu', (token) => {
+export default getSimpleStyleHook('CoLayoutUserMenu', (token) => {
   const { componentCls } = token;
 
   return {

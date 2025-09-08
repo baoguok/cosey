@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import MediaCard from './media-card.vue';
+import MediaCard from './media-card';
 
-export * from './media-card';
+export * from './media-card.api';
 
 const _MediaCard = withInstall(MediaCard);
 

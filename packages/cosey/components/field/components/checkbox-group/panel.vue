@@ -24,7 +24,7 @@ import { useToken } from '../../../theme';
 import { useLocale } from '../../../../hooks';
 
 defineOptions({
-  name: 'CheckboxGroupPanel',
+  name: 'CoCheckboxGroupPanel',
 });
 
 const props = defineProps<{

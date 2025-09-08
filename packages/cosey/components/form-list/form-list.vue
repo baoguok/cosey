@@ -1,21 +1,20 @@
 <template>
-  <component :is="template" />
+  <component :is="template"></component>
 </template>
 
-<script lang="tsx" setup generic="T extends FormListRow = FormListRow">
+<script lang="tsx" setup generic="T extends FormListRow">
 import { computed, inject, isVNode, onBeforeUnmount, onMounted, ref, useAttrs, watch } from 'vue';
 import { ElButton, ElSpace, type FormItemRule } from 'element-plus';
 import { cloneDeep, omit } from 'lodash-es';
 import { reactiveOmit } from '@vueuse/core';
 import {
+  type FormListExpose,
+  formListExposeKeys,
+  type FormListRow,
   type FormListProps,
   type FormListSlots,
   type FormListEmits,
-  type FormListExpose,
-  type FormListRow,
-  defaultFormListProps,
-  formListExposeKeys,
-} from './form-list';
+} from './form-list.api';
 import { Icon } from '../icon';
 import {
   FormItem,
@@ -29,23 +28,32 @@ import { DndSort, DndSortItem } from '../dnd-sort';
 import { TransitionGroup as InternalTransitionGroup } from '../transition-group';
 import {
   uuid,
-  defineTemplate,
   createMergedExpose,
   isNumber,
   isString,
   arrayMove,
+  defineTemplate,
 } from '../../utils';
-import useStyle from './style';
+import useStyle from './form-list.style';
 import { useComponentConfig } from '../config-provider';
 import { useToken } from '../theme';
 import { useLocale } from '../../hooks';
 
 defineOptions({
-  name: 'FormList',
+  name: 'CoFormList',
   inheritAttrs: false,
 });
 
-const props = withDefaults(defineProps<FormListProps<T>>(), defaultFormListProps);
+const props = withDefaults(defineProps<FormListProps<T>>(), {
+  modelValue: () => [],
+  addText: 'co.common.add',
+});
+
+const slots = defineSlots<FormListSlots<T>>();
+
+const emit = defineEmits<FormListEmits<T>>();
+
+const attrs = useAttrs();
 
 const formItemProps = reactiveOmit(
   props,
@@ -54,12 +62,6 @@ const formItemProps = reactiveOmit(
   'max',
   'draggable',
 ) as FormItemProps<'custom'>;
-
-const slots = defineSlots<FormListSlots<T>>();
-
-const emit = defineEmits<FormListEmits>();
-
-const attrs = useAttrs() as any;
 
 const { t } = useLocale();
 
@@ -203,6 +205,15 @@ const columns = computed(() => {
   );
 });
 
+// expose
+defineExpose<FormListExpose<T>>(
+  createMergedExpose<FormListExpose<T>>(formListExposeKeys, () => formItemRef.value, {
+    add,
+    remove,
+    move,
+  }),
+);
+
 const template = defineTemplate(() => {
   return (
     <FormItem
@@ -276,13 +287,4 @@ const template = defineTemplate(() => {
     </FormItem>
   );
 });
-
-// expose
-defineExpose<FormListExpose<T>>(
-  createMergedExpose<FormListExpose<T>>(formListExposeKeys, () => formItemRef.value, {
-    add,
-    remove,
-    move,
-  }),
-);
 </script>

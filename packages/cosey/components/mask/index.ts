@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import Mask from './mask.vue';
+import Mask from './mask';
 
-export * from './mask';
+export * from './mask.api';
 
 const _Mask = withInstall(Mask);
 

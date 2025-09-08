@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import ConfigProvider from './config-provider.vue';
+import ConfigProvider from './config-provider';
 
-export * from './config-provider';
+export * from './config-provider.api';
 
 const _ConfigProvider = withInstall(ConfigProvider);
 

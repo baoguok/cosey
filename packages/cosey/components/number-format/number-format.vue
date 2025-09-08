@@ -16,7 +16,7 @@ import {
 import { TransitionPresets, useTransition } from '@vueuse/core';
 
 defineOptions({
-  name: 'NumberFormat',
+  name: 'CoNumberFormat',
 });
 
 const props = withDefaults(defineProps<NumberFormatProps>(), defaultNumberFormatProps);

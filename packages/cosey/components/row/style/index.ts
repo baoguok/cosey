@@ -1,11 +1,6 @@
-import { type CSSObject } from '../../cssinjs';
-import { type FullToken, type GenerateStyle, getStyleHook } from '../../theme';
+import { getSimpleStyleHook } from '../../theme';
 
-export interface ComponentToken {}
-
-export interface RowToken extends FullToken<'Row'> {}
-
-const getRowStyle: GenerateStyle<RowToken, CSSObject> = (token) => {
+export default getSimpleStyleHook('CoRow', (token) => {
   const { componentCls } = token;
 
   return {
@@ -16,8 +11,4 @@ const getRowStyle: GenerateStyle<RowToken, CSSObject> = (token) => {
       flexWrap: 'wrap',
     },
   };
-};
-
-export default getStyleHook('Row', (token) => {
-  return [getRowStyle(token)];
 });

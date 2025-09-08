@@ -12,11 +12,11 @@ import {
 } from './image-card';
 import { ElImage, useLockscreen } from 'element-plus';
 import { defineTemplate } from '../../utils';
-import useStyle from './style';
+import useStyle from './image-card.style';
 import { useComponentConfig } from '../config-provider';
 
 defineOptions({
-  name: 'ImageCard',
+  name: 'CoImageCard',
 });
 
 const props = defineProps(imageProps);

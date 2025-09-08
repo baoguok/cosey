@@ -1,6 +1,6 @@
-import { getSimpleStyleHook } from 'cosey/components';
+import { getSimpleStyleHook } from '../theme';
 
-export default getSimpleStyleHook('DocsDemo', (token) => {
+export default getSimpleStyleHook('CoDocsDemo', (token) => {
   const { componentCls } = token;
 
   return {

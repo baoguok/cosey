@@ -30,7 +30,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
 
 defineOptions({
-  name: 'Row',
+  name: 'CoRow',
 });
 
 const props = withDefaults(defineProps<RowProps>(), defaultRowProps);

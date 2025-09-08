@@ -70,7 +70,7 @@ import { CheckableNode, useTreeCheck } from '../../../hooks';
 import { useLocale } from '../../../hooks';
 
 defineOptions({
-  name: 'TableExport',
+  name: 'CoTableExport',
 });
 
 const props = defineProps(tableExportProps);

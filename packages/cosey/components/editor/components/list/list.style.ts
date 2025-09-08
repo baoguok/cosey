@@ -1,6 +1,6 @@
 import { getSimpleStyleHook } from '../../../theme';
 
-export default getSimpleStyleHook('EditorListPicker', (token) => {
+export default getSimpleStyleHook('CoEditorListPicker', (token) => {
   const { componentCls } = token;
 
   return {

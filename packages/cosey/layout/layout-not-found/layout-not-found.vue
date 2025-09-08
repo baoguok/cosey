@@ -16,7 +16,7 @@ import { useLocale } from '../../hooks';
 const { t } = useLocale();
 
 defineOptions({
-  name: 'LayoutNotFound',
+  name: 'CoLayoutNotFound',
 });
 
 const routerConfig = useGlobalConfig().router;

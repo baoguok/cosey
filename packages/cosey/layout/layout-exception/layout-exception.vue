@@ -9,7 +9,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../../components';
 
 defineOptions({
-  name: 'LayoutException',
+  name: 'CoLayoutException',
 });
 
 const { prefixCls } = useComponentConfig('layout-exception');

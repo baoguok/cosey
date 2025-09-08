@@ -1,6 +1,6 @@
-import { getSimpleStyleHook } from 'cosey/components';
+import { getSimpleStyleHook } from '../../theme';
 
-export default getSimpleStyleHook('InputNumberRange', (token) => {
+export default getSimpleStyleHook('CoInputNumberRange', (token) => {
   const { componentCls } = token;
 
   return {

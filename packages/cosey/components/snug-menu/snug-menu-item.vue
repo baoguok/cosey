@@ -29,7 +29,7 @@ import Icon from '../icon/icon.vue';
 import { useComponentConfig } from '../config-provider';
 
 defineOptions({
-  name: 'SnugMenuItem',
+  name: 'CoSnugMenuItem',
 });
 
 const props = defineProps<SnugMenuItemProps>();

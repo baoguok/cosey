@@ -1,4 +1,4 @@
-import { type MediaCardBaseProps } from '../media-card/media-card';
+import { type MediaCardBaseProps } from '../media-card/media-card.api';
 
 export interface MediaCardGroupProps {
   srcset?: string | (MediaCardBaseProps | string)[];

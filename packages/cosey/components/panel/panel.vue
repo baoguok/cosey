@@ -19,7 +19,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
 
 defineOptions({
-  name: 'Panel',
+  name: 'CoPanel',
 });
 
 const props = defineProps<PanelProps>();

@@ -1,6 +1,6 @@
 import { getSimpleStyleHook } from '../../theme';
 
-export default getSimpleStyleHook('TableStats', (token) => {
+export default getSimpleStyleHook('CoTableStats', (token) => {
   const { componentCls } = token;
 
   return {

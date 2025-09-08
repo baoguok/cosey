@@ -26,7 +26,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldNumber',
+    name: 'CoFieldNumber',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldNumberSlots>,

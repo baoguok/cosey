@@ -1,6 +1,6 @@
 import { contrarotation, getSimpleStyleHook } from '../../../components';
 
-export default getSimpleStyleHook('LayoutTabbar', (token) => {
+export default getSimpleStyleHook('CoLayoutTabbar', (token) => {
   const { componentCls } = token;
 
   return {

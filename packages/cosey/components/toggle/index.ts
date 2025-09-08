@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import Toggle from './toggle.vue';
+import Toggle from './toggle';
 
-export * from './toggle';
+export * from './toggle.api';
 
 const _Toggle = withInstall(Toggle);
 

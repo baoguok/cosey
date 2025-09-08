@@ -1,6 +1,6 @@
 import { getSimpleStyleHook } from '../../theme';
 
-export default getSimpleStyleHook('MediaCardGroup', (token) => {
+export default getSimpleStyleHook('CoMediaCardGroup', (token) => {
   const { componentCls } = token;
 
   return {

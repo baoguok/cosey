@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import MediaViewer from './media-viewer.vue';
+import MediaViewer from './media-viewer';
 
-export * from './media-viewer';
+export * from './media-viewer.api';
 
 const _MediaViewer = withInstall(MediaViewer);
 

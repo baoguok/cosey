@@ -40,7 +40,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldDateTimeRange',
+    name: 'CoFieldDateTimeRange',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldDateTimeRangeSlots>,

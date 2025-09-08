@@ -1,12 +1,12 @@
 import { withInstall } from '../utils';
-import Form from './form.vue';
+import Form from './form';
 import FormItem from './form-item.vue';
 import { useBubbleTemplate } from './useBubbleTemplate';
 import { useFormTemplate } from './useFormTemplate';
 import { getFormItemWidth, useFormItemWidth } from './useFormItemWidth';
 
-export * from './form';
-export * from './form-item';
+export * from './form.api';
+export * from './form-item.api';
 
 const _Form = withInstall(Form);
 const _FormItem = withInstall(FormItem);

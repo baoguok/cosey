@@ -1,14 +1,7 @@
-import { type CSSObject } from '../cssinjs';
-import { type FullToken, type GenerateStyle, getStyleHook } from '../theme';
+import { getSimpleStyleHook } from '../theme';
 import { contrarotation } from '../style';
 
-export interface ComponentToken {}
-
-export interface TableToken extends FullToken<'Table'> {
-  tableHeaderBg: string;
-}
-
-const getTableStyle: GenerateStyle<TableToken, CSSObject> = (token) => {
+export default getSimpleStyleHook('CoTable', (token) => {
   const { componentCls } = token;
 
   return {
@@ -81,7 +74,7 @@ const getTableStyle: GenerateStyle<TableToken, CSSObject> = (token) => {
         padding: token.paddingSM,
 
         'th.el-table__cell': {
-          backgroundColor: `${token.tableHeaderBg} !important`,
+          backgroundColor: `${token.colorFillQuaternary} !important`,
         },
       },
 
@@ -94,13 +87,4 @@ const getTableStyle: GenerateStyle<TableToken, CSSObject> = (token) => {
       },
     },
   };
-};
-
-export default getStyleHook('Table', (token) => {
-  const tableToken: TableToken = {
-    ...token,
-    tableHeaderBg: token.colorFillQuaternary,
-  };
-
-  return [getTableStyle(tableToken)];
 });

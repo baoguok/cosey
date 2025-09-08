@@ -11,7 +11,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../../components';
 
 defineOptions({
-  name: 'LayoutContent',
+  name: 'CoLayoutContent',
 });
 
 const { prefixCls } = useComponentConfig('layout-content');

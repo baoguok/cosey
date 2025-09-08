@@ -17,7 +17,7 @@ import { ElDrawer } from 'element-plus';
 import { computed, h } from 'vue';
 
 defineOptions({
-  name: 'FormDrawer',
+  name: 'CoFormDrawer',
 });
 
 const props = defineProps(formDrawerProps);

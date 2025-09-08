@@ -18,10 +18,10 @@ import {
 import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
 import { computed } from 'vue';
-import Copy from '../copy/copy.vue';
+import Copy from '../copy/copy';
 
 defineOptions({
-  name: 'Highlight',
+  name: 'CoHighlight',
 });
 
 const props = defineProps<HighlightProps>();

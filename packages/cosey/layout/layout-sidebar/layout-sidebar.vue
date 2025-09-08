@@ -12,7 +12,7 @@ import { useComponentConfig } from '../../components';
 import { useDir } from '../../hooks';
 
 defineOptions({
-  name: 'LayoutSidebar',
+  name: 'CoLayoutSidebar',
 });
 
 const { prefixCls } = useComponentConfig('layout-sidebar');

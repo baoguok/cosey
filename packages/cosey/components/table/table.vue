@@ -252,7 +252,7 @@ import { defaultSummaryMethod } from './table-footer/utils';
 import TableStats from './table-stats/table-stats.vue';
 
 defineOptions({
-  name: 'Table',
+  name: 'CoTable',
 });
 
 const props = defineProps(tableProps);

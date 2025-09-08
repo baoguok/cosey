@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import FormQuery from './form-query.vue';
+import FormQuery from './form-query';
 
-export * from './form-query';
+export * from './form-query.api';
 
 const _FormQuery = withInstall(FormQuery);
 

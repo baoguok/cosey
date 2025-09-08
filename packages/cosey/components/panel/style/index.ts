@@ -1,11 +1,6 @@
-import { type CSSObject } from '../../cssinjs';
-import { type FullToken, type GenerateStyle, getStyleHook } from '../../theme';
+import { getSimpleStyleHook } from '../../theme';
 
-export interface ComponentToken {}
-
-export interface PanelToken extends FullToken<'Panel'> {}
-
-const getPanelStyle: GenerateStyle<PanelToken, CSSObject> = (token) => {
+export default getSimpleStyleHook('CoPanel', (token) => {
   const { componentCls } = token;
 
   return {
@@ -29,8 +24,4 @@ const getPanelStyle: GenerateStyle<PanelToken, CSSObject> = (token) => {
       },
     },
   };
-};
-
-export default getStyleHook('Panel', (token) => {
-  return [getPanelStyle(token)];
 });

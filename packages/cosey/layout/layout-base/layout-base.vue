@@ -89,7 +89,7 @@ import { useGlobalConfig } from '../../config';
 import { defineTemplate } from '../../utils';
 
 defineOptions({
-  name: 'LayoutBase',
+  name: 'CoLayoutBase',
 });
 
 const { prefixCls } = useComponentConfig('layout-base');

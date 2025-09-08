@@ -47,7 +47,7 @@ import Icon from '../../../../icon';
 import { Toolbar } from '../toolbar';
 import { FormDialog } from '../../../../form-dialog';
 import { Form, FormItem } from '../../../../form';
-import { ContextMenu, ContextMenuItem } from '../../../../context-menu';
+import { ContextMenu, type ContextMenuExpose, ContextMenuItem } from '../../../../context-menu';
 import Quill, { Range } from 'quill';
 import { Link } from '../../../formats/link';
 import { useLocale } from '../../../../../hooks';
@@ -92,7 +92,7 @@ watch(
 );
 
 // form
-const contextMenuRef = useTemplateRef('contextMenu');
+const contextMenuRef = useTemplateRef<ContextMenuExpose>('contextMenu');
 
 const visible = ref(false);
 

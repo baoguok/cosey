@@ -1,5 +1,5 @@
 import { nextTick, provide, ref } from 'vue';
-import { type FormBubbleContext, type FormBubbleData, formBubbleContextSymbol } from './form';
+import { type FormBubbleContext, type FormBubbleData, formBubbleContextSymbol } from './form.api';
 import { useTwoWayBinding } from '../../hooks';
 import { defineTemplate, createMergedExpose } from '../../utils';
 import { type FormDialogButtonProps, type FormDialogSlots } from '../form-dialog';

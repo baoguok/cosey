@@ -1,6 +1,6 @@
 import { getSimpleStyleHook } from '../../../../theme';
 
-export default getSimpleStyleHook('EditorTable', (token) => {
+export default getSimpleStyleHook('CoEditorTable', (token) => {
   const { componentCls } = token;
 
   return {

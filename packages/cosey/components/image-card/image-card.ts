@@ -1,5 +1,5 @@
 import { type ImageEmits, type ImageProps, imageProps as elImageProps } from 'element-plus';
-import { mediaCardBaseProps, type MediaCardBaseProps } from '../media-card/media-card';
+import { mediaCardBaseProps, type MediaCardBaseProps } from '../media-card/media-card.api';
 
 export interface ImageCardProps extends Omit<MediaCardBaseProps, 'src'>, ImageProps {}
 

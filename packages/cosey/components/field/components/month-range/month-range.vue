@@ -39,7 +39,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldMonthRange',
+    name: 'CoFieldMonthRange',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldMonthRangeSlots>,

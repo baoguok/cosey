@@ -14,7 +14,7 @@ import useStyle from './style';
 import { useComponentConfig, Transition as InternalTransition } from '../../components';
 
 defineOptions({
-  name: 'LayoutMask',
+  name: 'CoLayoutMask',
 });
 
 const { prefixCls } = useComponentConfig('layout-mask');

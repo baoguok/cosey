@@ -58,7 +58,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldRadio',
+    name: 'CoFieldRadio',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldRadioGroupSlots>,

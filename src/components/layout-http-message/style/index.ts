@@ -1,6 +1,6 @@
 import { getSimpleStyleHook, getTruncateStyle } from 'cosey/components';
 
-export default getSimpleStyleHook('LayoutHttpMessage', (token) => {
+export default getSimpleStyleHook('CoLayoutHttpMessage', (token) => {
   const { componentCls } = token;
 
   return {

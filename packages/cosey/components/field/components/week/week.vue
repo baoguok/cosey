@@ -39,7 +39,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldWeek',
+    name: 'CoFieldWeek',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldWeekSlots>,

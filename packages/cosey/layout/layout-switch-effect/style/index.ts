@@ -1,6 +1,6 @@
 import { getSimpleStyleHook } from '../../../components';
 
-export default getSimpleStyleHook('LayoutSwitchEffect', (token) => {
+export default getSimpleStyleHook('CoLayoutSwitchEffect', (token) => {
   const { componentCls } = token;
 
   return {

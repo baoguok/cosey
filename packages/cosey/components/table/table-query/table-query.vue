@@ -21,7 +21,7 @@ import { FormQuery, type FormQueryExpose } from '../../form-query';
 import { withModifiers } from 'vue';
 
 defineOptions({
-  name: 'TableQuery',
+  name: 'CoTableQuery',
 });
 
 const props = defineProps(tableQueryProps);

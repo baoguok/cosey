@@ -91,7 +91,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldCheckboxGroup',
+    name: 'CoFieldCheckboxGroup',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldCheckboxGroupSlots>,

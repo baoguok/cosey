@@ -64,7 +64,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldPassword',
+    name: 'CoFieldPassword',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldPasswordSlots>,

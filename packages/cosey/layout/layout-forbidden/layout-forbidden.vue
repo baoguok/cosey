@@ -16,7 +16,7 @@ import { useLocale } from '../../hooks';
 const { t } = useLocale();
 
 defineOptions({
-  name: 'LayoutForbidden',
+  name: 'CoLayoutForbidden',
 });
 
 const routerConfig = useGlobalConfig().router;

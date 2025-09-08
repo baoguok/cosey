@@ -21,7 +21,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../../components';
 
 defineOptions({
-  name: 'LayoutBrand',
+  name: 'CoLayoutBrand',
 });
 
 defineProps<{

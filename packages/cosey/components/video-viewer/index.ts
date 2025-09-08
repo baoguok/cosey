@@ -1,5 +1,5 @@
 import { withInstall } from '../utils';
-import VideoViewer from './video-viewer.vue';
+import VideoViewer from './video-viewer';
 
 export * from './video-viewer';
 

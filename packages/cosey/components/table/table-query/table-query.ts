@@ -33,7 +33,7 @@ export type TableQueryProps = Partial<ExtractPropTypes<typeof tableQueryProps>>;
 
 export interface TableQuerySlots extends FormQuerySlots {}
 
-export interface TableQueryEmits extends FormQueryEmits {}
+export interface TableQueryEmits extends /* @vue-ignore */ FormQueryEmits {}
 
 export interface TableQueryCustomExpose {
   getFieldsValue: () => Record<string, any>;

@@ -89,9 +89,9 @@ export interface ${pascalName}Expose {
   // style
   await fse.outputFile(
     path.resolve(compDir, `style/index.ts`),
-    `import { getSimpleStyleHook } from 'cosey/components';
+    `import { getSimpleStyleHook } from '../theme';
 
-export default getSimpleStyleHook('${pascalName}', (token) => {
+export default getSimpleStyleHook('Co${pascalName}', (token) => {
   const { componentCls } = token;
 
   return {

@@ -1,6 +1,6 @@
 import { getSimpleStyleHook } from '../../theme';
 
-export default getSimpleStyleHook('FromGroup', (token) => {
+export default getSimpleStyleHook('CoFromGroup', (token) => {
   const { componentCls } = token;
 
   return {

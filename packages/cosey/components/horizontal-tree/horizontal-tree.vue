@@ -95,7 +95,7 @@ import { type CheckableNode, useTreeCheck } from '../../hooks';
 import { useLocale } from '../../hooks';
 
 defineOptions({
-  name: 'HorizontalTree',
+  name: 'CoHorizontalTree',
 });
 
 const props = defineProps<HorizontalTreeProps>();

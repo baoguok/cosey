@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import Container from './container.vue';
+import Container from './container';
 
-export * from './container';
+export * from './container.api';
 
 const _Container = withInstall(Container);
 

@@ -12,7 +12,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
 
 defineOptions({
-  name: 'Icon',
+  name: 'CoIcon',
 });
 
 const props = withDefaults(defineProps<IconProps>(), {});

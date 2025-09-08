@@ -26,7 +26,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldColor',
+    name: 'CoFieldColor',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldColorSlots>,

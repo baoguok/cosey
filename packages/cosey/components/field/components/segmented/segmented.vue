@@ -41,7 +41,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldSegmented',
+    name: 'CoFieldSegmented',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldSegmentedSlots>,

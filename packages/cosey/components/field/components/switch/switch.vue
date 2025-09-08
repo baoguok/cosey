@@ -38,7 +38,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldSwitch',
+    name: 'CoFieldSwitch',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldSwitchSlots>,

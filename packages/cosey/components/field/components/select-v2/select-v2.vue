@@ -73,7 +73,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldSelectV2',
+    name: 'CoFieldSelectV2',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldSelectV2Slots>,

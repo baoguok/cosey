@@ -1,0 +1,39 @@
+import { tableActionProps } from './table-action.api';
+import Item from './item';
+
+import useStyle from './table-action.style';
+import { useComponentConfig } from '../config-provider';
+import { computed, defineComponent } from 'vue';
+import { TableActionItem } from './item.api';
+
+export default defineComponent({
+  name: 'CoTableAction',
+  props: tableActionProps,
+  setup(props) {
+    const dyadicActions = computed(() => {
+      return (
+        Array.isArray(props.actions[0]) ? props.actions : [props.actions]
+      ) as TableActionItem[][];
+    });
+
+    const { prefixCls } = useComponentConfig('table-action', props);
+
+    const { hashId } = useStyle(prefixCls);
+
+    return () => {
+      return (
+        <div class={[hashId.value, prefixCls.value]}>
+          {dyadicActions.value.map((actions, rowIndex) => {
+            return (
+              <div key={rowIndex} class={`${prefixCls.value}-row`}>
+                {actions.map((action, actionIndex) => {
+                  return <Item key={actionIndex} {...action} />;
+                })}
+              </div>
+            );
+          })}
+        </div>
+      );
+    };
+  },
+});

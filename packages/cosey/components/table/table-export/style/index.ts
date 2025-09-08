@@ -1,11 +1,6 @@
-import { type CSSObject } from '../../../cssinjs';
-import { type FullToken, type GenerateStyle, getStyleHook } from '../../../theme';
+import { getSimpleStyleHook } from '../../../theme';
 
-export interface ComponentToken {}
-
-export interface TableExportToken extends FullToken<'TableExport'> {}
-
-const getTableExportStyle: GenerateStyle<TableExportToken, CSSObject> = (token) => {
+export default getSimpleStyleHook('CoTableExport', (token) => {
   const { componentCls } = token;
 
   return {
@@ -30,8 +25,4 @@ const getTableExportStyle: GenerateStyle<TableExportToken, CSSObject> = (token) 
       },
     },
   };
-};
-
-export default getStyleHook('TableExport', (token) => {
-  return [getTableExportStyle(token)];
 });

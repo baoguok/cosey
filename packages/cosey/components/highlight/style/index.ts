@@ -1,12 +1,7 @@
-import { type CSSObject } from '../../cssinjs';
-import { type FullToken, type GenerateStyle, getStyleHook } from '../../theme';
+import { getSimpleStyleHook } from '../../theme';
 import { getHljs } from './hljs';
 
-export interface ComponentToken {}
-
-export interface MaskToken extends FullToken<'Mask'> {}
-
-const getMaskStyle: GenerateStyle<MaskToken, CSSObject> = (token) => {
+export default getSimpleStyleHook('CoHighlight', (token) => {
   const { componentCls } = token;
 
   return {
@@ -32,8 +27,4 @@ const getMaskStyle: GenerateStyle<MaskToken, CSSObject> = (token) => {
       ...getHljs(),
     },
   };
-};
-
-export default getStyleHook('Highlight', (token) => {
-  return [getMaskStyle(token)];
 });

@@ -18,7 +18,7 @@ import { useLayoutStore } from '../../store';
 import { SnugMenu, SnugMenuItem } from '../../components';
 
 defineOptions({
-  name: 'LayoutSnugMenu',
+  name: 'CoLayoutSnugMenu',
 });
 
 const layoutStore = useLayoutStore();

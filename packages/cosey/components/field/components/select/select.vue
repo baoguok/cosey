@@ -107,7 +107,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldSelect',
+    name: 'CoFieldSelect',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldSelectSlots>,

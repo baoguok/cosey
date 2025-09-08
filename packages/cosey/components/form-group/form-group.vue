@@ -42,7 +42,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
 
 defineOptions({
-  name: 'FormGroup',
+  name: 'CoFormGroup',
 });
 
 const props = withDefaults(defineProps<FormGroupProps>(), {
