@@ -43,8 +43,7 @@ export const formListProps = {
   },
 };
 
-export interface FormListProps<T = FormListRow>
-  extends /* @vue-ignore */ Omit<FormItemProps<'input'>, 'modelValue'> {
+export interface FormListProps<T = FormListRow> extends Omit<FormItemProps<'input'>, 'modelValue'> {
   defaultValue?: T;
   modelValue?: T[];
   min?: number;
