@@ -1,7 +1,7 @@
 <template>
   <co-container>
     <co-card class="h-full">
-      <co-form-item
+      <!-- <co-form-item
         v-model="value"
         field-type="remoteselect"
         style="width: 200px"
@@ -16,6 +16,9 @@
             };
           },
           valueKey: 'id',
+          onChange(value) {
+            console.log(value);
+          },
         }"
       >
         <template #option="{ option }">
@@ -30,7 +33,7 @@
             <div class="ml-2">{{ value.name }}</div>
           </div>
         </template>
-      </co-form-item>
+      </co-form-item> -->
 
       <co-remote-select
         v-model="value"
@@ -49,6 +52,7 @@
         style="width: 200px"
         clearable
         @visible-change="console.log($event)"
+        @change="(value) => console.log(value)"
       >
         <template #option="{ option }">
           <div class="flex items-center">

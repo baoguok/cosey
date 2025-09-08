@@ -54,7 +54,7 @@ export default defineComponent({
       leave();
     };
 
-    return (
+    return () => (
       <>
         {props.divided && <Divider />}
         <Content

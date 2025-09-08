@@ -99,6 +99,7 @@ export default defineComponent({
     };
 
     const onContextMenu = (event: MouseEvent) => {
+      console.log('onContextMenu');
       if (props.disabled) {
         return;
       }
@@ -132,11 +133,11 @@ export default defineComponent({
       return (
         <>
           {slots.reference && (
-            <OnlyChild onContextmenu={onContextMenu}>{slots.reference({})}</OnlyChild>
+            <OnlyChild {...{ onContextmenu: onContextMenu }}>{slots.reference({})}</OnlyChild>
           )}
 
           <Transition name="co-fade-out">
-            {visible.value && (
+            {visible.value ? (
               <Teleport to="body">
                 <div>
                   <div
@@ -161,7 +162,7 @@ export default defineComponent({
                   </div>
                 </div>
               </Teleport>
-            )}
+            ) : null}
           </Transition>
         </>
       );

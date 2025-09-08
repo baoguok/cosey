@@ -6,13 +6,21 @@ import { remoteSelectEmits, remoteSelectProps, remoteSelectSlots } from './remot
 import useStyle from './remote-select.style';
 import { useComponentConfig, useConfig } from '../config-provider';
 import { defaultTableConfig } from '../table/table';
-import { createLoading, filterEmptyFormValue, isFunction, isObject, uniqid } from '../../utils';
+import {
+  bulkBindEvents,
+  createLoading,
+  filterEmptyFormValue,
+  isFunction,
+  isObject,
+  uniqid,
+} from '../../utils';
 import { useFetch, useProps } from '../../hooks';
 import TableQuery from '../table/table-query/table-query.vue';
 import { type TableQueryExpose } from '..';
 
 export default defineComponent({
   name: 'CoRemoteSelect',
+  inheritAttrs: false,
   props: remoteSelectProps,
   slots: remoteSelectSlots,
   emits: remoteSelectEmits,
@@ -141,11 +149,14 @@ export default defineComponent({
     // loading
     const popperId = uniqid();
 
+    const events = bulkBindEvents(remoteSelectEmits, emit);
+
     return () => {
       return (
         <ElSelect
           {...attrs}
           {...props}
+          {...events}
           class={`${hashId.value} ${prefixCls.value}`}
           popper-class={`${hashId.value} ${prefixCls.value}-popper ${popperId}`}
           onVisible-change={onVisibleChange}

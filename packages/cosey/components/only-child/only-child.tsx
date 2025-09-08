@@ -3,9 +3,6 @@ import { isObject } from '../../utils';
 
 export default defineComponent({
   name: 'CoOnlyChild',
-  emits: {
-    contextmenu: (event: MouseEvent) => event || true,
-  },
   setup(_, { slots, attrs }) {
     return () => {
       const defaultSlot = slots.default?.(attrs);
