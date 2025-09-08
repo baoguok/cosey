@@ -259,13 +259,13 @@ export default defineComponent({
                 />
               );
             })}
-
-            {showSelect.value && (
-              <div class={[`${prefixCls.value}-select`, `is-${props.size}`]} onClick={onSelect}>
-                <Icon name="co:add-large" size="24" />
-              </div>
-            )}
           </TransitionGroup>
+
+          {showSelect.value && (
+            <div class={[`${prefixCls.value}-select`, `is-${props.size}`]} onClick={onSelect}>
+              <Icon name="co:add-large" size="24" />
+            </div>
+          )}
         </div>
       );
     };

@@ -5,9 +5,6 @@
       ref="formItemRef"
       :class="[hashId, `${prefixCls}-item`]"
     >
-      <template #error>
-        <slot name="error"></slot>
-      </template>
       <template v-if="label || slots.label" #label>
         <template v-if="label">{{ label }}</template>
         <slot v-else name="label"></slot>
@@ -37,6 +34,9 @@
             <slot v-else name="extra"></slot>
           </div>
         </div>
+      </template>
+      <template #error>
+        <slot name="error"></slot>
       </template>
     </ElFormItem>
   </OptionalWrapper>
@@ -81,6 +81,10 @@ defineOptions({
 
 const props = withDefaults(defineProps<FormItemProps<T>>(), {
   fieldRef: () => {},
+  labelPosition: '',
+  labelWidth: '',
+  showMessage: true,
+  inlineMessage: false,
 });
 
 const fieldType = computed(() => props.fieldType || 'input');
