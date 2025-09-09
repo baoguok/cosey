@@ -20,6 +20,7 @@ export const transitionProps = {
   },
   appear: {
     type: Boolean,
+    default: false,
   },
   enterFromClass: {
     type: String,

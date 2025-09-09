@@ -62,7 +62,21 @@ export const formProps = {
 
 export type FormProps = ExtractPropTypes<typeof formProps>;
 
-export const formPropsOmit = ['grid', 'rowProps', 'colProps', 'width'] as const;
+export const formPropsOmit = [
+  'grid',
+  'rowProps',
+  'colProps',
+  'width',
+  'readonly',
+  'submit',
+  'reset',
+  'submitText',
+  'resetText',
+  'submitProps',
+  'resetProps',
+  'hideSubmit',
+  'hideReset',
+] as const;
 
 export interface FormSlots {
   default: {};

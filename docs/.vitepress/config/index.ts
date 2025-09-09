@@ -30,9 +30,9 @@ export default defineConfig({
       }),
       groupIconVitePlugin(),
     ] as any,
-    // optimizeDeps: {
-    //   exclude: ['cosey'],
-    // },
+    optimizeDeps: {
+      exclude: ['cosey'],
+    },
     ssr: {
       noExternal: true,
     },
