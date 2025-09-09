@@ -23,10 +23,8 @@ export default getSimpleStyleHook('CoUpload', (token) => {
       },
 
       [`${componentCls}-item`]: {
-        position: 'relative',
-        display: 'flex',
-        overflow: 'hidden',
-        borderRadius: token.borderRadiusLG,
+        ...getMediaCardStyle(token),
+        border: null,
       },
 
       [`${componentCls}-status`]: {

@@ -38,7 +38,7 @@ export default defineComponent({
 
     return () => {
       return (
-        <div class={`${prefixCls.value}-item`}>
+        <div class={`${prefixCls.value}-item is-${props.size}`}>
           <MediaCard
             ref="media"
             src={props.file.previewUrl}
