@@ -24,7 +24,7 @@ export default getSimpleStyleHook('CoUpload', (token) => {
 
       [`${componentCls}-item`]: {
         ...getMediaCardStyle(token),
-        border: null,
+        border: undefined,
       },
 
       [`${componentCls}-status`]: {

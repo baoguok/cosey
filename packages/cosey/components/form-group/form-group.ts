@@ -1,7 +1,7 @@
 import { type SpaceProps } from 'element-plus';
 
 export interface FormGroupProps extends Partial<Omit<SpaceProps, 'class' | 'style'>> {
-  title?: string;
+  title?: string | number;
   borderStyle?: 'none' | 'solid' | 'dashed' | 'dotted';
   position?: 'left' | 'right' | 'center';
   collapsible?: boolean;

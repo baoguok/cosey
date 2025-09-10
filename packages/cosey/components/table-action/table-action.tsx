@@ -11,9 +11,8 @@ export default defineComponent({
   props: tableActionProps,
   setup(props) {
     const dyadicActions = computed(() => {
-      return (
-        Array.isArray(props.actions[0]) ? props.actions : [props.actions]
-      ) as TableActionItem[][];
+      const actions = props.actions.filter(Boolean);
+      return (Array.isArray(actions[0]) ? props.actions : [props.actions]) as TableActionItem[][];
     });
 
     const { prefixCls } = useComponentConfig('table-action', props);
@@ -26,7 +25,7 @@ export default defineComponent({
           {dyadicActions.value.map((actions, rowIndex) => {
             return (
               <div key={rowIndex} class={`${prefixCls.value}-row`}>
-                {actions.map((action, actionIndex) => {
+                {actions.filter(Boolean).map((action, actionIndex) => {
                   return <Item key={actionIndex} {...action} />;
                 })}
               </div>
