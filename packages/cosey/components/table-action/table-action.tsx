@@ -12,7 +12,7 @@ export default defineComponent({
   setup(props) {
     const dyadicActions = computed(() => {
       const actions = props.actions.filter(Boolean);
-      return (Array.isArray(actions[0]) ? props.actions : [props.actions]) as TableActionItem[][];
+      return (Array.isArray(actions[0]) ? actions : [actions]) as TableActionItem[][];
     });
 
     const { prefixCls } = useComponentConfig('table-action', props);
