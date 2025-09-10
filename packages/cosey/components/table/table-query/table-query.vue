@@ -18,7 +18,6 @@ import { createMergedExpose, defineTemplate } from '../../../utils';
 import { cloneDeep } from 'lodash-es';
 import { FormItem } from '../../form';
 import { FormQuery, type FormQueryExpose } from '../../form-query';
-import { withModifiers } from 'vue';
 
 defineOptions({
   name: 'CoTableQuery',
@@ -74,14 +73,17 @@ const template = defineTemplate((h) => {
       ...formQueryProps,
       ref: formQueryRef,
       model: unref(formModel),
-      onKeyup: withModifiers(
-        (event) => {
-          if ((event as KeyboardEvent).key === 'Enter') {
-            onEnter();
-          }
-        },
-        ['prevent'],
-      ),
+      onKeyup: (event: KeyboardEvent) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          onEnter();
+        }
+      },
+      onKeydown: (event: KeyboardEvent) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+        }
+      },
     },
     () => {
       return props.schemes.map((item) => {

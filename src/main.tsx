@@ -22,7 +22,7 @@ import { icons as carbonIcons } from '@iconify-json/carbon';
 import { addIconifyIcon } from 'cosey/components';
 
 import { createMock } from '@cosey/mock';
-import { createWebHistory } from 'vue-router';
+import { createWebHashHistory } from 'vue-router';
 
 addIconifyIcon('carbon', carbonIcons);
 
@@ -37,7 +37,7 @@ async function bootstrap() {
 
   // cosey
   const cosey = createCosey({
-    router: { dynamic: dynamicRoutes, static: staticRoutes, history: createWebHistory() },
+    router: { dynamic: dynamicRoutes, static: staticRoutes, history: createWebHashHistory() },
     http: {
       baseURL: import.meta.env.VITE_BASE_URL,
     },
