@@ -58,6 +58,9 @@ export const formProps = {
   hideReset: {
     type: Boolean,
   },
+  hideButtons: {
+    type: Boolean,
+  },
 };
 
 export type FormProps = ExtractPropTypes<typeof formProps>;
@@ -76,6 +79,7 @@ export const formPropsOmit = [
   'resetProps',
   'hideSubmit',
   'hideReset',
+  'hideButtons',
 ] as const;
 
 export interface FormSlots {

@@ -51,7 +51,7 @@ export default defineComponent({
         <ElForm ref="form" {...elFormProps} class={[hashId.value, prefixCls.value]}>
           <OptionalWrapper when={props.grid} component={Row} props={props.rowProps}>
             {slots.default?.({})}
-            {!props.readonly && !formBubbleContext && (
+            {!props.readonly && !formBubbleContext && !props.hideButtons && (
               <FormItem class={`${prefixCls}-form-item-buttons`}>
                 {{
                   label: () => {},
