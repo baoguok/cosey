@@ -39,6 +39,11 @@ export function useRequest(config: CreateAxiosDefaults = {}, useHttpConfig?: Htt
 
       return Promise.reject(new Error(message));
     }
+
+    if (mergedHttpConfig.originalData) {
+      return resData;
+    }
+
     return data;
   };
 

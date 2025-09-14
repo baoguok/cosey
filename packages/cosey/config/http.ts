@@ -75,6 +75,11 @@ export const defaultHttpConfig = {
    * 是否直接返回 AxiosResponse 对象
    */
   originalResponse: false,
+
+  /**
+   * 是否直接返回 AxiosResponse.data 属性值
+   */
+  originalData: false,
 };
 
 export type HttpConfig = DeepPartial<typeof defaultHttpConfig>;
