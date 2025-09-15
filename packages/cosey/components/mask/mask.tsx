@@ -6,13 +6,15 @@ import { useComponentConfig } from '../config-provider';
 export default defineComponent({
   name: 'CoMask',
   emits: maskEmits,
-  setup() {
+  setup(_, { emit }) {
     const { prefixCls } = useComponentConfig('mask');
 
     const { hashId } = useStyle(prefixCls);
 
     return () => {
-      return <div class={[hashId.value, prefixCls.value]} />;
+      return (
+        <div class={[hashId.value, prefixCls.value]} onClick={(event) => emit('click', event)} />
+      );
     };
   },
 });

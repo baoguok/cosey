@@ -38,6 +38,8 @@ import { ScrollView } from './scroll-view';
 import { SnugMenu, SnugMenuItem } from './snug-menu';
 import { StackDialog } from './stack-dialog';
 import { SvgIcon } from './svg-icon';
+import { SvgaCard } from './svga-card';
+import { SvgaViewer } from './svga-viewer';
 import { Table } from './table';
 import { TableAction } from './table-action';
 import { Toggle } from './toggle';
@@ -94,6 +96,8 @@ declare module 'vue' {
     CoSnugMenuItem: typeof SnugMenuItem;
     CoStackDialog: typeof StackDialog;
     CoSvgIcon: typeof SvgIcon;
+    CoSvgaCard: typeof SvgaCard;
+    CoSvgaViewer: typeof SvgaViewer;
     CoTable: typeof Table;
     CoTableAction: typeof TableAction;
     CoToggle: typeof Toggle;
@@ -151,6 +155,8 @@ export {
   SnugMenuItem,
   StackDialog,
   SvgIcon,
+  SvgaCard,
+  SvgaViewer,
   Table,
   TableAction,
   Toggle,

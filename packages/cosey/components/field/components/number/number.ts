@@ -2,7 +2,8 @@ import { type InputNumberInstance, type InputNumberProps } from 'element-plus';
 import { type FieldComponentCommonProps } from '../common';
 
 export interface FieldNumberProps extends FieldComponentCommonProps {
-  componentProps?: Partial<InputNumberProps> & {
+  componentProps?: Partial<Omit<InputNumberProps, 'modelValue'>> & {
+    modelValue?: number | null | string;
     'onUpdate:modelValue'?: (value: number | undefined) => void;
     onChange?: (currentValue: number | undefined, oldValue: number | undefined) => void;
     onBlur?: (event: FocusEvent) => void;

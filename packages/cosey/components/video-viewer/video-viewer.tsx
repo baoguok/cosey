@@ -1,13 +1,7 @@
-import { useZIndex } from 'element-plus';
-import ElTeleport from 'element-plus/es/components/teleport/index';
-import ElFocusTrap from 'element-plus/es/components/focus-trap/index';
+import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue';
 import { videoViewerProps, videoViewerSlots, videoViewerEmits } from './video-viewer.api';
-import { defineComponent, onBeforeUnmount, onMounted, ref, Transition, useTemplateRef } from 'vue';
-import { Close } from '../close';
-import { Mask } from '../mask';
-
-import useStyle from './video-viewer.style';
-import { useComponentConfig } from '../config-provider';
+import { MediaViewerDialog } from '../media-viewer/media-viewer-dialog';
+import { omit } from 'lodash-es';
 
 export default defineComponent({
   name: 'CoVideoViewer',
@@ -15,33 +9,7 @@ export default defineComponent({
   slots: videoViewerSlots,
   emits: videoViewerEmits,
   setup(props, { emit }) {
-    const { prefixCls } = useComponentConfig('video-viewer');
-
-    const { hashId } = useStyle(prefixCls);
-
-    const { nextZIndex } = useZIndex();
-
-    const wrapper = ref<HTMLDivElement>();
-
-    const zIndex = ref(props.zIndex ?? nextZIndex());
-
-    function onFocusoutPrevented(event: CustomEvent) {
-      if (event.detail?.focusReason === 'pointer') {
-        event.preventDefault();
-      }
-    }
-
-    function onCloseRequested() {
-      if (props.closeOnPressEscape) {
-        hide();
-      }
-    }
-
-    function hide() {
-      emit('close');
-    }
-
-    const videoRef = useTemplateRef<HTMLVideoElement>('video');
+    const videoRef = ref<HTMLVideoElement>();
 
     onMounted(() => {
       videoRef.value?.play();
@@ -53,36 +21,14 @@ export default defineComponent({
 
     return () => {
       return (
-        <ElTeleport to="body" disabled={!props.teleported}>
-          <Transition name="co-viewer-fade" appear>
-            <div
-              ref="wrapper"
-              tabindex={-1}
-              class={[hashId.value, prefixCls.value]}
-              style={{ zIndex: zIndex.value }}
-            >
-              <ElFocusTrap
-                loop
-                trapped
-                focus-trap-el={wrapper}
-                focus-start-el="container"
-                onFocusout-prevented={onFocusoutPrevented}
-                onRelease-requested={onCloseRequested}
-              >
-                <Mask onClick={() => props.hideOnClickModal && hide()} />
-
-                <Close onClick={() => hide()} />
-
-                <video
-                  ref="video"
-                  controls
-                  src={props.src}
-                  class={`${prefixCls.value}-video`}
-                ></video>
-              </ElFocusTrap>
-            </div>
-          </Transition>
-        </ElTeleport>
+        <MediaViewerDialog {...omit(props, 'src')} onClose={() => emit('close')}>
+          <video
+            ref={videoRef}
+            controls
+            src={props.src}
+            style="width: 100%; height: 100%; background-color: black"
+          ></video>
+        </MediaViewerDialog>
       );
     };
   },

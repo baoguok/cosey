@@ -1,19 +1,8 @@
 import { type ExtractPropTypes } from 'vue';
+import { mediaViewerDialogEmits, mediaViewerDialogProps } from './media-viewer-dialog.api';
 
 export const mediaViewerBaseProps = {
-  teleported: {
-    type: Boolean,
-  },
-  zIndex: {
-    type: Number,
-  },
-  closeOnPressEscape: {
-    type: Boolean,
-    default: true,
-  },
-  hideOnClickModal: {
-    type: Boolean,
-  },
+  ...mediaViewerDialogProps,
   src: {
     type: String,
   },
@@ -30,7 +19,7 @@ export type MediaViewerSlots = {
 };
 
 export const mediaViewerBaseEmits = {
-  close: () => true,
+  ...mediaViewerDialogEmits,
 };
 
 export type MediaViewerBaseEmits = typeof mediaViewerBaseEmits;

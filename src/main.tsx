@@ -100,7 +100,14 @@ async function bootstrap() {
   setupI18n(app);
 
   // 请求拦截
-  const mock = createMock();
+  const mock = createMock({
+    requestInterceptorInit: {
+      network: {
+        uplink: 100 * 1024,
+        downlink: 100 * 1024,
+      },
+    },
+  });
   mock.intercept();
   app.provide('mockContext', mock.httpMessageManager);
 

@@ -36,6 +36,17 @@ export default defineComponent({
 
     const mergedTitle = computed(() => (isString(props.file.url) ? props.file.url : ''));
 
+    const progressSize = computed(() => {
+      return {
+        mini: 48,
+        small: 48,
+        middle: 48,
+        large: 64,
+      }[props.size];
+    });
+
+    const isSmall = computed(() => props.size === 'mini' || props.size === 'small');
+
     return () => {
       return (
         <div class={`${prefixCls.value}-item is-${props.size}`}>
@@ -50,26 +61,41 @@ export default defineComponent({
           <Transition name="co-fade">
             {(props.file.status === 'loading' || props.file.status === 'error') && (
               <div class={`${prefixCls.value}-status`}>
-                <ElProgress
-                  percentage={props.file.percent}
-                  type="circle"
-                  width={64}
-                  status={getProgressStatus(props.file.status)}
-                >
-                  {({ percentage }: any) => {
-                    return props.file.status === 'error' ? (
-                      <Icon name="co:close-filled" size="lg" />
-                    ) : (
-                      <span class={`${prefixCls.value}-progress-text`}>
-                        {progressFormat(percentage)}
-                      </span>
-                    );
-                  }}
-                </ElProgress>
+                {isSmall.value && (
+                  <div class={`${prefixCls.value}-progress-plain`}>
+                    <span class={`${prefixCls.value}-progress-text`}>
+                      {progressFormat(props.file.percent)}
+                    </span>
+                  </div>
+                )}
+                {!isSmall.value && (
+                  <ElProgress
+                    percentage={props.file.percent}
+                    type="circle"
+                    width={progressSize.value}
+                    status={getProgressStatus(props.file.status)}
+                  >
+                    {({ percentage }: any) => {
+                      return props.file.status === 'error' ? (
+                        <Icon name="co:close-filled" size="lg" />
+                      ) : (
+                        <span class={`${prefixCls.value}-progress-text`}>
+                          {progressFormat(percentage)}
+                        </span>
+                      );
+                    }}
+                  </ElProgress>
+                )}
 
                 <div class={`${prefixCls.value}-actions`}>
                   {props.file.status === 'loading' && (
-                    <ElButton link size="small" type="primary" onClick={() => emit('cancel')}>
+                    <ElButton
+                      link
+                      size="small"
+                      type="primary"
+                      style={{ margin: 0, padding: 0 }}
+                      onClick={() => emit('cancel')}
+                    >
                       {t('co.upload.cancelUpload')}
                     </ElButton>
                   )}
@@ -78,7 +104,7 @@ export default defineComponent({
                       link
                       size="small"
                       type="primary"
-                      style={{ marginInlineStart: 0 }}
+                      style={{ margin: 0, padding: 0 }}
                       onClick={() => emit('re-upload')}
                     >
                       {t('co.upload.reUpload')}
@@ -88,7 +114,7 @@ export default defineComponent({
                     link
                     size="small"
                     type="primary"
-                    style={{ marginInlineStart: 0 }}
+                    style={{ margin: 0, padding: 0 }}
                     onClick={() => emit('remove')}
                   >
                     {t('co.common.delete')}

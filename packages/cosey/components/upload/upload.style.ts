@@ -25,6 +25,20 @@ export default getSimpleStyleHook('CoUpload', (token) => {
       [`${componentCls}-item`]: {
         ...getMediaCardStyle(token),
         border: undefined,
+
+        '&.is-small, &.is-mini': {
+          [`${componentCls}-actions`]: {
+            flexDirection: 'column',
+          },
+        },
+
+        '&.is-mini': {
+          [`${componentCls}-actions`]: {
+            button: {
+              fontSize: 10,
+            },
+          },
+        },
       },
 
       [`${componentCls}-status`]: {
@@ -41,8 +55,14 @@ export default getSimpleStyleHook('CoUpload', (token) => {
         backgroundClip: 'content-box',
       },
 
+      [`${componentCls}-progress-plain`]: {
+        display: 'flex',
+        textAlign: 'center',
+      },
+
       [`${componentCls}-progress-text`]: {
         fontSize: token.fontSizeSM,
+        lineHeight: 1,
       },
 
       [`${componentCls}-actions`]: {

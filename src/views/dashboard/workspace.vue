@@ -1,6 +1,12 @@
 <template>
   <co-container>
     <co-card class="h-full">
+      <div class="flex items-center gap-4">
+        <co-upload single size="mini" />
+        <co-upload single size="small" />
+        <co-upload single size="middle" />
+        <co-upload single size="large" />
+      </div>
       <div class="flex">
         <el-avatar :size="80" class="flex-none" :src="userStore.userInfo?.avatar">
           <co-icon name="carbon:user" />

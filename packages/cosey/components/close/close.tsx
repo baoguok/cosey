@@ -7,14 +7,14 @@ import { closeEmits } from './close.api';
 export default defineComponent({
   name: 'CoClose',
   emits: closeEmits,
-  setup(props) {
+  setup(props, { emit }) {
     const { prefixCls } = useComponentConfig('close', props);
 
     const { hashId } = useStyle(prefixCls);
 
     return () => {
       return (
-        <span class={[hashId.value, prefixCls.value]}>
+        <span class={[hashId.value, prefixCls.value]} onClick={(event) => emit('click', event)}>
           <Icon name="co:close-large" />
         </span>
       );

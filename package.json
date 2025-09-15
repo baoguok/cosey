@@ -31,7 +31,7 @@
   "dependencies": {
     "@casl/ability": "^6.7.3",
     "@casl/vue": "^2.2.2",
-    "@cosey/mock": "^0.1.5",
+    "@cosey/mock": "workspace:^",
     "@gunny/mock": "^1.2.0",
     "@iconify-json/carbon": "^1.2.8",
     "@tailwindcss/vite": "^4.0.9",

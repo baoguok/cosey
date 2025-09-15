@@ -11,7 +11,7 @@
   "author": "wuzhitao",
   "license": "MIT",
   "devDependencies": {
-    "@cosey/request-interceptor": "^0.1.3",
+    "@cosey/request-interceptor": "workspace:^",
     "@gunny/mock": "^1.2.0",
     "ajv": "^8.17.1",
     "crypto-js": "^4.2.0",

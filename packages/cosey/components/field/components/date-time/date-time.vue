@@ -8,9 +8,9 @@ import { useLocale } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldDateTimeProps, { slots }) => {
-    return () => {
-      const { t } = useLocale();
+    const { t } = useLocale();
 
+    return () => {
       if (props.readonly) {
         const value = props.componentProps?.modelValue;
         return addNullablePlaceholder(value, (val) => dayjs(val).format(DATE_TIME_FORMAT));

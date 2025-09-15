@@ -1,12 +1,7 @@
-import { defineComponent, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue';
-import { useZIndex } from 'element-plus';
-import ElTeleport from 'element-plus/es/components/teleport/index';
-import ElFocusTrap from 'element-plus/es/components/focus-trap/index';
+import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue';
 import { audioViewerEmits, audioViewerProps, audioViewerSlots } from './audio-viewer.api';
-import { Mask } from '../mask';
-import { Close } from '../close';
-import useStyle from './audio-viewer.style';
-import { useComponentConfig } from '../config-provider';
+import { MediaViewerDialog } from '../media-viewer/media-viewer-dialog';
+import { omit } from 'lodash-es';
 
 export default defineComponent({
   name: 'CoAudioViewer',
@@ -14,33 +9,7 @@ export default defineComponent({
   slots: audioViewerSlots,
   emits: audioViewerEmits,
   setup(props, { emit }) {
-    const { prefixCls } = useComponentConfig('audio-viewer', props);
-
-    const { hashId } = useStyle(prefixCls);
-
-    const { nextZIndex } = useZIndex();
-
-    const wrapper = ref<HTMLDivElement>();
-
-    const zIndex = ref(props.zIndex ?? nextZIndex());
-
-    function onFocusoutPrevented(event: CustomEvent) {
-      if (event.detail?.focusReason === 'pointer') {
-        event.preventDefault();
-      }
-    }
-
-    function onCloseRequested() {
-      if (props.closeOnPressEscape) {
-        hide();
-      }
-    }
-
-    function hide() {
-      emit('close');
-    }
-
-    const audioRef = useTemplateRef<HTMLAudioElement>('audio');
+    const audioRef = ref<HTMLAudioElement>();
 
     onMounted(() => {
       audioRef.value?.play();
@@ -52,31 +21,9 @@ export default defineComponent({
 
     return () => {
       return (
-        <ElTeleport to="body" disabled={!props.teleported}>
-          <transition name="co-viewer-fade" appear>
-            <div
-              ref="wrapper"
-              tabindex={-1}
-              class={[hashId.value, prefixCls.value]}
-              style={{ zIndex: zIndex.value }}
-            >
-              <ElFocusTrap
-                loop
-                trapped
-                focus-trap-el={wrapper}
-                focus-start-el="container"
-                onFocusout-prevented={onFocusoutPrevented}
-                onRelease-requested={onCloseRequested}
-              >
-                <Mask onClick={() => props.hideOnClickModal && hide()} />
-
-                <Close onClick={() => hide()} />
-
-                <audio ref="audio" controls src={props.src}></audio>
-              </ElFocusTrap>
-            </div>
-          </transition>
-        </ElTeleport>
+        <MediaViewerDialog {...omit(props, 'src')} onClose={() => emit('close')}>
+          <audio ref={audioRef} controls src={props.src}></audio>
+        </MediaViewerDialog>
       );
     };
   },

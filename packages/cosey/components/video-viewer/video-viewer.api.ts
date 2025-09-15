@@ -1,5 +1,5 @@
 import { type SlotsType, type ExtractPropTypes } from 'vue';
-import { mediaViewerBaseProps } from '../media-viewer/media-viewer.api';
+import { mediaViewerBaseEmits, mediaViewerBaseProps } from '../media-viewer/media-viewer.api';
 
 export const videoViewerProps = {
   ...mediaViewerBaseProps,
@@ -14,7 +14,7 @@ export interface VideoViewerSlots {
 export const videoViewerSlots = Object as SlotsType<VideoViewerSlots>;
 
 export const videoViewerEmits = {
-  close: () => true,
+  ...mediaViewerBaseEmits,
 };
 
 export type VideoViewerEmits = typeof videoViewerEmits;

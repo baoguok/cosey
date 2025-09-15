@@ -1,18 +1,17 @@
 import { defineComponent, ref } from 'vue';
-import { type VideoCardExpose, videoCardProps, videoCardEmits } from './video-card.api';
 import { useLockscreen } from 'element-plus';
-import VideoViewer from '../video-viewer/video-viewer';
-import Icon from '../icon/icon.vue';
-import useStyle from './video-card.style';
+import { svgaCardProps, svgaCardEmits } from './svga-card.api';
+import SvgaViewer from '../svga-viewer/svga-viewer';
+import useStyle from './svga-card.style';
 import { useComponentConfig } from '../config-provider';
 
 export default defineComponent({
-  name: 'CoVideoCard',
+  name: 'CoSvgaCard',
   inheritAttrs: false,
-  props: videoCardProps,
-  emits: videoCardEmits,
-  setup(props, { emit, attrs, expose }) {
-    const { prefixCls } = useComponentConfig('video-card', props);
+  props: svgaCardProps,
+  emits: svgaCardEmits,
+  setup(props, { attrs, emit, expose }) {
+    const { prefixCls } = useComponentConfig('svga-card', props);
 
     const { hashId } = useStyle(prefixCls);
 
@@ -30,7 +29,7 @@ export default defineComponent({
       emit('close');
     }
 
-    expose<VideoCardExpose>({
+    expose({
       view() {
         openViewer();
       },
@@ -43,15 +42,13 @@ export default defineComponent({
             {...attrs}
             class={[hashId.value, prefixCls.value, `is-${props.size}`]}
             title={props.title || props.src}
-            onClick={openViewer}
+            onClick={() => openViewer()}
           >
-            <video src={props.src} class={`${prefixCls.value}-video`} />
-            <div class={`${prefixCls.value}-play-mask`}>
-              <Icon name="co:play-circle-outline" class={`${prefixCls.value}-play-icon`} />
-            </div>
+            <div class={`${prefixCls.value}-type`}>svga</div>
+            <div class={`${prefixCls.value}-filename`}>{props.name}</div>
           </div>
 
-          {viewerVisible.value && <VideoViewer src={props.src} onClose={closeViewer} />}
+          {viewerVisible.value && <SvgaViewer src={props.src} onClose={() => closeViewer()} />}
         </>
       );
     };

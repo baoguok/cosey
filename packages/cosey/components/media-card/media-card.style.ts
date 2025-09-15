@@ -80,3 +80,17 @@ export const getMediaCardFileNameStyle: GenerateStyle<TokenWithCommonCls<AliasTo
     },
   };
 };
+
+export const getMediaCardFileTypeStyle: GenerateStyle<TokenWithCommonCls<AliasToken>, CSSObject> = (
+  token,
+) => {
+  const { componentCls } = token;
+  return {
+    [`${componentCls}-type`]: {
+      fontSize: '0.8em',
+      lineHeight: 1.12,
+      textAlign: 'center',
+      color: token.colorPrimary,
+    },
+  };
+};

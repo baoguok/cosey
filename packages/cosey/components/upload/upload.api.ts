@@ -91,6 +91,7 @@ export const uploadItemProps = {
   },
   size: {
     type: String as PropType<MediaCardBaseProps['size']>,
+    default: 'large' as const,
   },
 };
 
