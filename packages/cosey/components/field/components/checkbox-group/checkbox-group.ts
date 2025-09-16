@@ -22,12 +22,25 @@ export interface FieldCheckboxGroupProps extends FieldComponentCommonProps {
     checkboxWidth?: string | number;
     indeterminate?: boolean;
     maxHeight?: string | number;
+    checkboxProps?:
+      | Record<PropertyKey, any>
+      | ((props: Record<PropertyKey, any>, index: number) => Record<PropertyKey, any>);
   };
   componentSlots?: Partial<FieldCheckboxGroupSlots>;
 }
 
+export const fieldCheckboxGroupOmitKeys = [
+  'options',
+  'props',
+  'type',
+  'checkboxWidth',
+  'maxHeight',
+  'checkboxProps',
+] as const;
+
 export interface FieldCheckboxGroupSlots {
   default?: (props: Record<string, any>) => any;
+  checkbox?: (props: { option: Record<PropertyKey, any>; index: number }) => any;
 }
 
 export interface FieldCheckboxGroupEmits {
