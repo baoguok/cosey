@@ -54,7 +54,11 @@ export default defineComponent(
       const checkboxGroupVnode = h(
         ElCheckboxGroup,
         mergeProps(checkboxGroupProps.value, {
-          class: 'flex flex-wrap gap-x-8',
+          style: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            columnGap: '32px',
+          },
         }),
         () =>
           convertedOptions.value.map((item) =>
@@ -68,8 +72,8 @@ export default defineComponent(
                 {
                   style: {
                     width: checkboxWidth.value,
+                    margin: 0,
                   },
-                  class: '!me-0',
                 },
               ),
             ),

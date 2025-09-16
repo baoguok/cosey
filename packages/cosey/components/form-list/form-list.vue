@@ -207,14 +207,6 @@ const columns = computed(() => {
       .filter(Boolean)
   );
 });
-console.log(columns.value);
-console.log(
-  slots.default?.({
-    row: {} as T,
-    index: 0,
-    getProp,
-  }),
-);
 
 // expose
 defineExpose<FormListExpose<T>>(
