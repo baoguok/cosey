@@ -188,8 +188,8 @@ export function useUpsert<
       if (unref(detailsFetch)) {
         filledRow = await unref(detailsFetch)!(row.value);
       }
-      filledRow = { ...filledRow };
-      filledRow = unref(beforeFill)?.(filledRow) || filledRow;
+      filledRow = cloneDeep(filledRow);
+      filledRow = (await unref(beforeFill)?.(filledRow)) || filledRow;
       Object.assign(unref(model), pick(filledRow, modelKeys));
     },
     add: (...args) => {
@@ -246,7 +246,7 @@ export interface UseExternalUpsertReturn<Row extends Record<string, any>, Data> 
 }
 
 export function useOuterUpsert<Row extends Record<string, any>, Data>(
-  options: UseExternalUpsertOptions,
+  options: UseExternalUpsertOptions = {},
 ): UseExternalUpsertReturn<Row, Data> {
   const expose = ref<UseUpsertExpose<Row, Data> | null>(null);
 

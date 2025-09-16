@@ -58,6 +58,7 @@ import {
   type FormItemProps,
   formItemExposeKeys,
   exlucdeFieldSlotNames,
+  defaultFormItemProps,
 } from './form-item.api';
 import { type FormContext, formContextSymbol } from './form.api';
 import { type FieldType, Field } from '../field';
@@ -79,13 +80,7 @@ defineOptions({
   inheritAttrs: false,
 });
 
-const props = withDefaults(defineProps<FormItemProps<T>>(), {
-  fieldRef: () => {},
-  labelPosition: '',
-  labelWidth: '',
-  showMessage: true,
-  inlineMessage: false,
-});
+const props = withDefaults(defineProps<FormItemProps<T>>(), defaultFormItemProps);
 
 const fieldType = computed(() => props.fieldType || 'input');
 

@@ -4,6 +4,7 @@ import {
   type FormItemExpose,
   type FormItemProps,
   type FormItemWidth,
+  defaultFormItemProps,
   formItemExposeKeys,
   formItemProps,
 } from '../form';
@@ -41,6 +42,12 @@ export const formListProps = {
   draggable: {
     type: Boolean,
   },
+};
+
+export const defaultFormListProps = {
+  ...defaultFormItemProps,
+  modelValue: () => [],
+  addText: 'co.common.add',
 };
 
 export interface FormListProps<T = FormListRow> extends Omit<FormItemProps<'input'>, 'modelValue'> {

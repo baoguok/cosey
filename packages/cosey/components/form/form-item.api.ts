@@ -83,6 +83,12 @@ export interface FormItemProps<T extends FieldType> extends Partial<ElFormItemPr
   extra?: VNodeChild;
 }
 
+export const defaultFormItemProps = {
+  fieldRef: () => {},
+  showMessage: true,
+  inlineMessage: false,
+};
+
 export const exlucdeFieldSlotNames = ['error', 'label', 'default', 'tooltip', 'extra'] as const;
 
 type ExlucdeFieldSlotNames = (typeof exlucdeFieldSlotNames)[number];

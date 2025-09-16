@@ -14,6 +14,7 @@ import {
   type FormListProps,
   type FormListSlots,
   type FormListEmits,
+  defaultFormListProps,
 } from './form-list.api';
 import { Icon } from '../icon';
 import {
@@ -44,10 +45,7 @@ defineOptions({
   inheritAttrs: false,
 });
 
-const props = withDefaults(defineProps<FormListProps<T>>(), {
-  modelValue: () => [],
-  addText: 'co.common.add',
-});
+const props = withDefaults(defineProps<FormListProps<T>>(), defaultFormListProps);
 
 const slots = defineSlots<FormListSlots<T>>();
 
@@ -189,13 +187,18 @@ const columns = computed(() => {
       }) ?? []
     )
       .map((item: unknown) => {
-        if (isVNode(item) && (item.type as any).name === 'FormItem') {
+        if (
+          isVNode(item) &&
+          ((item.type as any).name === 'ElFormItem' || (item.type as any).name === 'CoFormItem')
+        ) {
+          const props = item.props || {};
           return {
-            ...item.props,
+            ...props,
             required:
-              item.props?.required ||
-              item.props?.rules?.some((rule: FormItemRule) =>
-                Object.keys(rule).includes('required'),
+              props.required ||
+              props.required === '' ||
+              (Array.isArray(props.rules) ? props.rules : props.rules ? [props.rules] : []).some(
+                (rule: FormItemRule) => !!rule.required,
               ),
           };
         }
@@ -204,6 +207,14 @@ const columns = computed(() => {
       .filter(Boolean)
   );
 });
+console.log(columns.value);
+console.log(
+  slots.default?.({
+    row: {} as T,
+    index: 0,
+    getProp,
+  }),
+);
 
 // expose
 defineExpose<FormListExpose<T>>(
