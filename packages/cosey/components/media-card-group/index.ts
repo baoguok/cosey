@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import MediaCardGroup from './media-card-group.vue';
+import MediaCardGroup from './media-card-group';
 
-export * from './media-card-group';
+export * from './media-card-group.api';
 
 const _MediaCardGroup = withInstall(MediaCardGroup);
 

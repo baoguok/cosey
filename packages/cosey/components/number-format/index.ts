@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import NumberFormat from './number-format.vue';
+import NumberFormat from './number-format';
 
-export * from './number-format';
+export * from './number-format.api';
 
 const _NumberFormat = withInstall(NumberFormat);
 

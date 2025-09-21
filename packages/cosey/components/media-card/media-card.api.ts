@@ -1,4 +1,4 @@
-import { type SlotsType, type PropType, ExtractPropTypes } from 'vue';
+import type { SlotsType, PropType, ExtractPropTypes, ExtractPublicPropTypes } from 'vue';
 
 export const mediaCardBaseProps = {
   src: {
@@ -23,6 +23,8 @@ export const mediaCardBaseProps = {
 };
 
 export type MediaCardBaseProps = ExtractPropTypes<typeof mediaCardBaseProps>;
+
+export type MediaCardBasePublicProps = ExtractPublicPropTypes<typeof mediaCardBaseProps>;
 
 export const mediaCardProps = {
   ...mediaCardBaseProps,

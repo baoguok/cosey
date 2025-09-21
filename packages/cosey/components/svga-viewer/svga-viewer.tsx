@@ -41,7 +41,12 @@ export default defineComponent({
     return () => {
       return (
         <MediaViewerDialog {...omit(props, 'src')} onClose={() => emit('close')}>
-          <ElIcon v-show={loading.value} class="is-loading" color={token.value.colorPrimary}>
+          <ElIcon
+            v-show={loading.value}
+            class="is-loading"
+            color={token.value.colorWhite}
+            size={token.value.sizeXL}
+          >
             <Loading />
           </ElIcon>
           <canvas v-show={!loading.value} ref={canvasRef}></canvas>

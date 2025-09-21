@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import Panel from './panel.vue';
+import Panel from './panel';
 
-export * from './panel';
+export * from './panel.api';
 
 const _Panel = withInstall(Panel);
 

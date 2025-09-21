@@ -10,6 +10,8 @@ import { Props } from '../../../../hooks';
 
 export type FieldCheckboxGroupOption = Partial<CheckboxProps> | string | number;
 
+type CheckboxPropsObjectOption = Partial<CheckboxProps> & { [k: string]: any };
+
 export interface FieldCheckboxGroupProps extends FieldComponentCommonProps {
   componentProps?: Partial<CheckboxGroupProps> & {
     'onUpdate:modelValue'?: (val: CheckboxGroupValueType) => void;
@@ -23,8 +25,8 @@ export interface FieldCheckboxGroupProps extends FieldComponentCommonProps {
     indeterminate?: boolean;
     maxHeight?: string | number;
     checkboxProps?:
-      | Record<PropertyKey, any>
-      | ((props: Record<PropertyKey, any>, index: number) => Record<PropertyKey, any>);
+      | CheckboxPropsObjectOption
+      | ((props: CheckboxPropsObjectOption, index: number) => CheckboxPropsObjectOption);
   };
   componentSlots?: Partial<FieldCheckboxGroupSlots>;
 }

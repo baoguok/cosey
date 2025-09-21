@@ -333,7 +333,7 @@ const elTableProps = computed(() => {
 
 const containerStyle = computed(() => {
   return {
-    height: addPxUnit(props.height),
+    height: addPxUnit(props.height ?? unref(tableConfig)?.height ?? defaultTableConfig.height),
   };
 });
 

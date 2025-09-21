@@ -247,6 +247,7 @@ export const defaultTableConfig = {
     currentPage: 1,
     pageSize: 10,
   },
+  height: undefined,
 };
 
 export interface TableConfig {
@@ -261,4 +262,5 @@ export interface TableConfig {
     desc?: string;
   };
   pagination?: Partial<PaginationProps>;
+  height?: number | string;
 }

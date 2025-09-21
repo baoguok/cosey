@@ -3,6 +3,7 @@ import { type ExtractPropTypes } from 'vue';
 export const mediaViewerDialogProps = {
   teleported: {
     type: Boolean,
+    default: true,
   },
   closeOnPressEscape: {
     type: Boolean,
