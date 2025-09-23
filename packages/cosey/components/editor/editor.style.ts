@@ -1,5 +1,5 @@
 import type { CSSInterpolation, CSSObject } from '../cssinjs';
-import { getHljs } from '../highlight/style/hljs';
+import { getHljs } from '../highlight/hljs.style';
 import { getTruncateStyle } from '../style';
 import { type GenerateStyle, getGlobalStyleHook, getSimpleStyleHook } from '../theme';
 import { AliasTokenWithCommonCls } from '../theme/getSimpleStyleHook';

@@ -7,6 +7,7 @@ import xml from 'highlight.js/lib/languages/xml';
 import css from 'highlight.js/lib/languages/css';
 import scss from 'highlight.js/lib/languages/scss';
 import less from 'highlight.js/lib/languages/less';
+import { ExtractPropTypes, PropType, SlotsType } from 'vue';
 
 hljs.registerLanguage('typescript', typescript);
 hljs.registerLanguage('javascript', javascript);
@@ -36,14 +37,24 @@ type js = 'javascript' | 'js' | 'jsx' | 'mjs' | 'cjs';
 type ts = 'typescript' | 'ts' | 'tsx' | 'mts' | 'cts';
 type plaintext = 'plaintext' | 'text' | 'txt';
 
-export interface HighlightProps {
-  code?: string;
-  lang?: xml | json | js | ts | plaintext | 'css' | 'scss' | 'less' | (string & {});
-}
+export const highlightProps = {
+  code: {
+    type: String,
+  },
+  lang: {
+    type: String as PropType<
+      xml | json | js | ts | plaintext | 'css' | 'scss' | 'less' | (string & {})
+    >,
+  },
+};
+
+export type HighlightProps = ExtractPropTypes<typeof highlightProps>;
 
 export interface HighlightSlots {
-  default?: (props: Record<string, never>) => any;
+  default: {};
 }
+
+export const highlightSlots = Object as SlotsType<HighlightSlots>;
 
 export interface HighlightEmits {}
 

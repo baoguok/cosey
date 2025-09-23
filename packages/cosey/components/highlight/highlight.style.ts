@@ -1,4 +1,5 @@
-import { type CSSObject } from '../../cssinjs';
+import { CSSObject } from '../cssinjs';
+import { getSimpleStyleHook } from '../theme';
 
 export function getHljs(): CSSObject {
   return {
@@ -54,3 +55,35 @@ export function getHljs(): CSSObject {
     },
   };
 }
+
+export default getSimpleStyleHook('CoHighlight', (token) => {
+  const { componentCls } = token;
+
+  return {
+    [componentCls]: {
+      position: 'relative',
+
+      pre: {
+        padding: token.paddingSM,
+        overflow: 'auto',
+        color: '#abb2bf',
+        background: '#282c34',
+        borderRadius: token.borderRadius,
+      },
+
+      [`${componentCls}-copy`]: {
+        position: 'absolute',
+        insetBlockStart: token.sizeXXS,
+        insetInlineEnd: token.sizeXXS,
+        zIndex: 10,
+        color: token.colorWhite,
+
+        '&:hover,&:active': {
+          color: `${token.colorWhite} !important`,
+        },
+      },
+
+      ...getHljs(),
+    },
+  };
+});
