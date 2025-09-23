@@ -24,7 +24,10 @@ export default defineComponent({
           style={{ color: props.color }}
           onClick={() => copy(props.text || '')}
         >
-          <Icon name={copied ? 'co:checkmark' : 'co:copy'} class={`${prefixCls.value}-icon`} />
+          <Icon
+            name={copied.value ? 'co:checkmark' : 'co:copy'}
+            class={`${prefixCls.value}-icon`}
+          />
         </ElButton>
       );
     };
