@@ -1,4 +1,5 @@
 import { computed, defineComponent } from 'vue';
+import { ElScrollbar } from 'element-plus';
 import { hljs, highlightProps, highlightSlots } from './highlight.api';
 import useStyle from './highlight.style';
 import { useComponentConfig } from '../config-provider';
@@ -23,9 +24,14 @@ export default defineComponent({
     return () => {
       return (
         <div class={[hashId.value, prefixCls.value]}>
-          <pre>
-            <code class="hljs" innerHTML={highlightedCode.value}></code>
-          </pre>
+          <ElScrollbar
+            tag="pre"
+            class={`${prefixCls.value}-scroll`}
+            view-class="hljs"
+            maxHeight={props.maxHeight}
+          >
+            <code innerHTML={highlightedCode.value}></code>
+          </ElScrollbar>
           <div class={`${prefixCls.value}-copy`}>
             <Copy text={props.code} class={`${prefixCls.value}-copy`} />
           </div>

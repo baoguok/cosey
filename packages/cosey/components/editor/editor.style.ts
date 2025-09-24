@@ -1,5 +1,5 @@
 import type { CSSInterpolation, CSSObject } from '../cssinjs';
-import { getHljs } from '../highlight/hljs.style';
+import { getHljsDark } from '../highlight/highlight.style';
 import { getTruncateStyle } from '../style';
 import { type GenerateStyle, getGlobalStyleHook, getSimpleStyleHook } from '../theme';
 import { AliasTokenWithCommonCls } from '../theme/getSimpleStyleHook';
@@ -429,7 +429,7 @@ const getEditorButtonStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> = 
 };
 
 export const useHljsStyle = getGlobalStyleHook('CoGlobalHighlight', () => {
-  return getHljs();
+  return getHljsDark();
 });
 
 export default getSimpleStyleHook('CoEditor', (token) => {

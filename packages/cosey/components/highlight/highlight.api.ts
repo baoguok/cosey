@@ -46,6 +46,9 @@ export const highlightProps = {
       xml | json | js | ts | plaintext | 'css' | 'scss' | 'less' | (string & {})
     >,
   },
+  maxHeight: {
+    type: String,
+  },
 };
 
 export type HighlightProps = ExtractPropTypes<typeof highlightProps>;

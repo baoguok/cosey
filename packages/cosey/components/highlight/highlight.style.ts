@@ -1,7 +1,7 @@
 import { CSSObject } from '../cssinjs';
 import { getSimpleStyleHook } from '../theme';
 
-export function getHljs(): CSSObject {
+export function getHljsDark(): CSSObject {
   return {
     '.hljs': {
       color: '#abb2bf',
@@ -56,6 +56,61 @@ export function getHljs(): CSSObject {
   };
 }
 
+export function getHljsLight(): CSSObject {
+  return {
+    '.hljs': {
+      color: '#383a42',
+      background: '#fafafa',
+    },
+
+    '.hljs-comment,.hljs-quote': {
+      color: '#a0a1a7',
+      fontStyle: 'italic',
+    },
+
+    '.hljs-doctag,.hljs-keyword,.hljs-formula': {
+      color: '#a626a4',
+    },
+
+    '.hljs-section,.hljs-name,.hljs-selector-tag,.hljs-deletion,.hljs-subst': {
+      color: '#e45649',
+    },
+
+    '.hljs-literal': {
+      color: '#0184bb',
+    },
+
+    '.hljs-string,.hljs-regexp,.hljs-addition,.hljs-attribute,.hljs-meta .hljs-string': {
+      color: '#50a14f',
+    },
+
+    '.hljs-attr,.hljs-variable,.hljs-template-variable,.hljs-type,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-number':
+      {
+        color: '#986801',
+      },
+
+    '.hljs-symbol,.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-title': {
+      color: '#4078f2',
+    },
+
+    '.hljs-built_in,.hljs-title.class_,.hljs-class .hljs-title': {
+      color: '#c18401',
+    },
+
+    '.hljs-emphasis': {
+      fontStyle: 'italic',
+    },
+
+    '.hljs-strong': {
+      fontWeight: 'bold',
+    },
+
+    '.hljs-link': {
+      textDecoration: 'underline',
+    },
+  };
+}
+
 export default getSimpleStyleHook('CoHighlight', (token) => {
   const { componentCls } = token;
 
@@ -63,12 +118,12 @@ export default getSimpleStyleHook('CoHighlight', (token) => {
     [componentCls]: {
       position: 'relative',
 
+      [`${componentCls}-scroll`]: {
+        borderRadius: token.borderRadius,
+      },
+
       pre: {
         padding: token.paddingSM,
-        overflow: 'auto',
-        color: '#abb2bf',
-        background: '#282c34',
-        borderRadius: token.borderRadius,
       },
 
       [`${componentCls}-copy`]: {
@@ -76,14 +131,13 @@ export default getSimpleStyleHook('CoHighlight', (token) => {
         insetBlockStart: token.sizeXXS,
         insetInlineEnd: token.sizeXXS,
         zIndex: 10,
-        color: token.colorWhite,
-
-        '&:hover,&:active': {
-          color: `${token.colorWhite} !important`,
-        },
       },
 
-      ...getHljs(),
+      ...getHljsLight(),
+
+      ':root.dark &': {
+        ...getHljsDark(),
+      },
     },
   };
 });
