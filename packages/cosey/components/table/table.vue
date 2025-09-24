@@ -436,13 +436,18 @@ const getFetchParams = () => {
   return filterEmptyFormValue(props.transformParams?.(params) || params);
 };
 
-const getFullFetchParams = () => {
-  return {
-    [tableKeys.page]: page.value,
-    [tableKeys.pageSize]: pageSize.value,
-    ...getFetchParams(),
-  };
-};
+const getPaginationParams = () =>
+  props.pagination === false
+    ? null
+    : {
+        [tableKeys.page]: page.value,
+        [tableKeys.pageSize]: pageSize.value,
+      };
+
+const getFullFetchParams = () => ({
+  ...getPaginationParams(),
+  ...getFetchParams(),
+});
 
 const { isFetching, execute } = useFetch(
   () => {

@@ -123,6 +123,8 @@ export default getSimpleStyleHook('CoHighlight', (token) => {
       },
 
       pre: {
+        display: 'inline-block',
+        minWidth: '100%',
         padding: token.paddingSM,
       },
 
