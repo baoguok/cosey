@@ -63,10 +63,12 @@ export default defineComponent({
           with-icon={withIcon.value}
           title={props.title}
           disabled={props.disabled}
-          onClick={onClick}
-          onContextmenu={onContextMenu}
-          onPointerenter={onEnter}
-          onPointerleave={onLeave}
+          {...{
+            onClick,
+            onContextmenu: onContextMenu,
+            onPointerenter: onEnter,
+            onPointerleave: onLeave,
+          }}
         />
       </>
     );

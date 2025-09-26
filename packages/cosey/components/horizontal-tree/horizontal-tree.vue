@@ -86,8 +86,8 @@ import {
   type HorizontalTreeSlots,
   type HorizontalTreeEmits,
   type HorizontalTreeExpose,
-} from './horizontal-tree';
-import useStyle from './style';
+} from './horizontal-tree.api';
+import useStyle from './horizontal-tree.style';
 import { useComponentConfig } from '../config-provider';
 import { extraTreeToTable, isString, mapTree, walkTree } from '../../utils';
 import { computed, watch } from 'vue';

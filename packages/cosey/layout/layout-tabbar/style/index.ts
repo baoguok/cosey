@@ -45,6 +45,7 @@ export default getSimpleStyleHook('CoLayoutTabbar', (token) => {
       '.el-tabs--card > .el-tabs__header .el-tabs__item.is-active': {
         backgroundColor: token.colorBgLayout,
         borderBottomColor: token.colorBgLayout,
+        marginBlockStart: 0,
       },
 
       [`${componentCls}-tabs-wrapper`]: {

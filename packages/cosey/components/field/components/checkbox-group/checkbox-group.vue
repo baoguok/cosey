@@ -85,7 +85,6 @@ export default defineComponent(
             display: 'flex',
             flexWrap: 'wrap',
             columnGap: '30px',
-            rowGap: '12px',
           },
         }),
         () => convertedOptions.value.map((item, index) => renderCheckbox(item, index)),

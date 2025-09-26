@@ -18,7 +18,7 @@
     "@vitejs/plugin-vue-jsx": "^4.1.1",
     "axios": "^1.7.9",
     "consola": "^3.3.3",
-    "element-plus": "^2.10.4",
+    "element-plus": "^2.11.4",
     "glob": "^11.0.2",
     "markdown-it-container": "^4.0.0",
     "tailwindcss": "^4.0.9",

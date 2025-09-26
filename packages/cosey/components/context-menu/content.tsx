@@ -5,12 +5,6 @@ import { contextMenuContentProps } from './content.api';
 
 export default defineComponent({
   props: contextMenuContentProps,
-  emits: {
-    click: (event: MouseEvent) => event instanceof MouseEvent,
-    contextmenu: (event: MouseEvent) => event instanceof MouseEvent,
-    pointerenter: (event: PointerEvent) => event instanceof PointerEvent,
-    pointerleave: (event: PointerEvent) => event instanceof PointerEvent,
-  },
   setup(props, { attrs }) {
     const { prefixCls } = useComponentConfig('context-menu-content', props);
 

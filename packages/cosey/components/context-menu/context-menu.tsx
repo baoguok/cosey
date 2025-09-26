@@ -20,7 +20,7 @@ export default defineComponent({
   props: contextMenuProps,
   slots: contextMenuSlots,
   emits: contextMenuEmits,
-  setup(props, { slots, emit, expose }) {
+  setup(props, { slots, attrs, emit, expose }) {
     const { prefixCls } = useComponentConfig('context-menu', props);
 
     const { hashId } = useStyle(prefixCls);
@@ -99,7 +99,6 @@ export default defineComponent({
     };
 
     const onContextMenu = (event: MouseEvent) => {
-      console.log('onContextMenu');
       if (props.disabled) {
         return;
       }
@@ -153,7 +152,7 @@ export default defineComponent({
                   ></div>
                   <div
                     ref="menu"
-                    v-bind="$attrs"
+                    {...attrs}
                     class={[hashId.value, prefixCls.value]}
                     style={menuStyle.value}
                     onContextmenu={onMenuContextMenu}
