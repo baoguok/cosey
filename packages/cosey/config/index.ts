@@ -53,6 +53,10 @@ export interface LayoutSlots {
   userMenu?: () => VNodeChild;
 }
 
+type FilterRouteHandler = (
+  route: RouteRecordRaw,
+) => RouteRecordRaw | void | boolean | undefined | null;
+
 export type CoseyOptions = {
   router?: CoseyRouterOptions & RouterConfig;
   persist?: PersistConfig;
@@ -60,7 +64,7 @@ export type CoseyOptions = {
   layout?: LayoutConfig;
   site?: SiteConfig;
   api?: ApiConfig;
-  filterRoute?: (route: RouteRecordRaw) => RouteRecordRaw | void | boolean | undefined;
+  filterRoute?: { hook: () => FilterRouteHandler } | FilterRouteHandler;
   defineAuthority?: (userInfo: Record<any, any>) => void | Promise<void>;
   components?: LayoutComponents;
   slots?: LayoutSlots;

@@ -10,7 +10,7 @@ import { TOKEN_NAME } from '../constant';
  */
 import type {} from '@vue/shared';
 import { useGlobalConfig } from '../config';
-import { warningOnce } from '../utils';
+import { isFunction, warningOnce } from '../utils';
 import { NOT_FOUND_ROUTE_NAME, NotFoundRoute } from '../router/not-found';
 
 interface UserInfo {
@@ -31,6 +31,8 @@ export const useUserStore = defineStore('cosey-user', () => {
     filterRoute,
     defineAuthority,
   } = useGlobalConfig() || {};
+
+  const filterRouteHandler = isFunction(filterRoute) ? filterRoute : filterRoute.hook();
 
   if (!apiConfig?.login) {
     warningOnce(!!apiConfig?.login, 'The "login" api is required.');
@@ -100,7 +102,7 @@ export const useUserStore = defineStore('cosey-user', () => {
   const mapRoute = (routes: RouteRecordRaw[]): RouteRecordRaw[] => {
     return routes
       .map((route) => {
-        const result = filterRoute?.(route);
+        const result = filterRouteHandler(route);
         const node = result === true ? route : result;
 
         if (node && node.children && node.children.length) {
