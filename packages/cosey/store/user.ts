@@ -48,7 +48,7 @@ export const useUserStore = defineStore('cosey-user', () => {
   const logoutApi = apiConfig?.logout?.();
 
   // 当前动态添加的路由
-  const dynamicRoutes = ref<any[]>([]);
+  const dynamicRoutes = ref<RouteRecordRaw[]>([]);
   // 当前登录用户的信息
   const userInfo = ref<UserInfo>();
   // 是否已获取用户信息
@@ -138,16 +138,20 @@ export const useUserStore = defineStore('cosey-user', () => {
   /**
    * 退出登录时清空用户信息
    */
-  const flush = (lastPath?: string) => {
+  const flush = async (lastPath?: string) => {
     persist.remove(TOKEN_NAME);
     userInfo.value = undefined;
     requestedUserInfo.value = false;
-    router.push({
+    await router.push({
       path: routerConfig!.loginPath,
       query: {
         redirect: lastPath,
       },
     });
+    dynamicRoutes.value.forEach((route) => {
+      router.removeRoute(route.name!);
+    });
+    dynamicRoutes.value = [];
   };
 
   /**
@@ -155,7 +159,7 @@ export const useUserStore = defineStore('cosey-user', () => {
    */
   const logout = async (lastPath?: string) => {
     await logoutApi?.();
-    flush(lastPath);
+    await flush(lastPath);
   };
 
   return {
