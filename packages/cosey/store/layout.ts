@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia';
 import { RouteMeta, useRoute } from 'vue-router';
-import { getBreadcrumbRoutes, getMenusMap, type MenuItem } from '../router';
+import { getAllStaticRoutes, getBreadcrumbRoutes, getMenus, getMenusMap } from '../router';
 import { useGlobalConfig } from '../config';
 import { computed, nextTick, ref, watch } from 'vue';
 import { useWindowResize } from '../hooks';
+import { useUserStore } from './user';
 
 export type LayoutMenuType =
   | 'vertical'
@@ -22,6 +23,7 @@ export const useLayoutStore = defineStore(
   () => {
     const { layout: layoutConfig } = useGlobalConfig();
     const route = useRoute();
+    const userStore = useUserStore();
 
     // 是否显示侧边栏
     const sidebarVisible = ref(layoutConfig.sidebarVisible);
@@ -71,7 +73,9 @@ export const useLayoutStore = defineStore(
     const isHorizontalBiserial = computed(() => menuType.value === 'horizontal-biserial');
 
     // 菜单数据
-    const menus = ref<MenuItem[]>([]);
+    const menus = computed(() => {
+      return getMenus([...getAllStaticRoutes(), ...userStore.dynamicRoutes]);
+    });
 
     // 菜单映射数据，用于快速获取菜单项
     const menusMap = computed(() => getMenusMap(menus.value));

@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, shallowRef } from 'vue';
 import { type RouteRecordRaw, useRoute, useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
 import { getAllDynamicRoutes } from '../router';
@@ -48,7 +48,7 @@ export const useUserStore = defineStore('cosey-user', () => {
   const logoutApi = apiConfig?.logout?.();
 
   // 当前动态添加的路由
-  const dynamicRoutes = ref<RouteRecordRaw[]>([]);
+  const dynamicRoutes = shallowRef<any[]>([]);
   // 当前登录用户的信息
   const userInfo = ref<UserInfo>();
   // 是否已获取用户信息
