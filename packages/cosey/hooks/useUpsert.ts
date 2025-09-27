@@ -181,7 +181,7 @@ export function useUpsert<
 
       nextTick(() => {
         unref(onShown)?.();
-        unref(onShownEdit)?.(...editParams);
+        unref(onShownEdit)?.(_row, ...editParams);
       });
 
       let filledRow = row.value;
