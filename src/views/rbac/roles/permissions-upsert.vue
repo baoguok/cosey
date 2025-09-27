@@ -12,7 +12,11 @@
             children: 'children',
             label: 'name',
           }"
-        />
+        >
+          <template #node="{ node }">
+            {{ node.data.name }}
+          </template>
+        </co-horizontal-tree>
       </co-form-item>
     </co-form>
   </co-form-dialog>

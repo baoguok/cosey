@@ -1,5 +1,5 @@
 import { withInstall } from '../utils';
-import HorizontalTree from './horizontal-tree.vue';
+import HorizontalTree from './horizontal-tree';
 
 export * from './horizontal-tree.api';
 
