@@ -1,7 +1,7 @@
 import { TableColumnCtx, type PaginationProps } from 'element-plus';
 import elTableProps from 'element-plus/es/components/table/src/table/defaults.mjs';
 import { type PropType, type ExtractPropTypes, MaybeRef } from 'vue';
-import { type TableColumnProps } from './table-column/table-column';
+import { type MayBeTableColumnProps } from './table-column/table-column';
 import { camelCase, omit, upperFirst } from 'lodash-es';
 import {
   TableQueryExpose,
@@ -66,11 +66,11 @@ const tableExtraProps = {
     default: true,
   },
   columns: {
-    type: Array as PropType<TableColumnProps[]>,
+    type: Array as PropType<MayBeTableColumnProps[]>,
     default: () => [],
   },
   actionColumn: {
-    type: Object as PropType<TableColumnProps>,
+    type: null as unknown as PropType<MayBeTableColumnProps>,
   },
   pagination: {
     type: [Object, Boolean] as PropType<boolean | PaginationProps>,

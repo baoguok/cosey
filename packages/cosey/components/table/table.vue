@@ -342,7 +342,7 @@ const renderedColumns = ref<TableColumnProps[]>([]);
 
 const setRenderedColumns = () => {
   renderedColumns.value = cloneDeep(
-    [...props.columns, props.actionColumn].filter(Boolean) as TableColumnProps[],
+    [...props.columns, props.actionColumn].filter(isObject) as TableColumnProps[],
   );
 };
 
@@ -603,7 +603,7 @@ const reload = () => {
 };
 
 // expand
-const innerExpandRowKeys = ref<(string | number)[]>();
+const innerExpandRowKeys = ref<string[]>();
 
 watch(
   () => props.expandRowKeys,

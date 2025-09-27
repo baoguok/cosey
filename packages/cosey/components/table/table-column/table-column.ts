@@ -28,6 +28,8 @@ export type TableColumnProps<T = any> = Partial<
   format?: (cellValue: any, row: any, column: TableColumnCtx<any>, index: number) => VNode | string;
 };
 
+export type MayBeTableColumnProps = TableColumnProps | null | undefined | boolean;
+
 export const tableColumnProps = {
   ...elTableColumnProps,
   slots: {

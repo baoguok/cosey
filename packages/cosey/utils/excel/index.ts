@@ -7,7 +7,11 @@ import { wb2xlsx } from './xlsx';
 import { wb2xml } from './xml';
 import { wb2csv } from './csv';
 import { wb2txt } from './txt';
-import { type TableColumnProps } from '../../components/table/table-column/table-column';
+import {
+  type MayBeTableColumnProps,
+  type TableColumnProps,
+} from '../../components/table/table-column/table-column';
+import { isObject } from '../is';
 
 /**
  * 根据提供的 url 下载文件
@@ -84,10 +88,14 @@ async function writeFile(wb: WorkBook, bookType: ExportBookType) {
 /**
  * 只取最底层的列组成表头
  */
-export function flatColumns(columns: TableColumnProps[]) {
-  return columns.reduce((result, column): TableColumnProps[] => {
-    return result.concat(Array.isArray(column.columns) ? flatColumns(column.columns) : column);
-  }, [] as TableColumnProps[]);
+export function flatColumns(columns: MayBeTableColumnProps[]) {
+  return columns
+    .reduce((result, column): MayBeTableColumnProps[] => {
+      return result.concat(
+        isObject(column) && Array.isArray(column.columns) ? flatColumns(column.columns) : column,
+      );
+    }, [] as MayBeTableColumnProps[])
+    .filter(isObject) as TableColumnProps[];
 }
 
 /**
