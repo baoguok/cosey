@@ -1,5 +1,5 @@
 <template>
-  <div :class="[hashId, prefixCls]">
+  <div :class="[hashId, prefixCls]" :style="{ '--node-width': nodeWidth }">
     <div v-if="tableTree.length === 0" :class="`${prefixCls}-empty`">
       {{ t('co.common.noData') }}
     </div>
@@ -98,7 +98,10 @@ defineOptions({
   name: 'CoHorizontalTree',
 });
 
-const props = defineProps<HorizontalTreeProps>();
+const props = withDefaults(defineProps<HorizontalTreeProps>(), {
+  nodeWidth: '120px',
+  mergeLast: true,
+});
 
 defineSlots<HorizontalTreeSlots>();
 

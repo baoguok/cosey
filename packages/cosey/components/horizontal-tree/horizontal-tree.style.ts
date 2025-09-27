@@ -32,7 +32,7 @@ export default getSimpleStyleHook('CoHorizontalTree', (token) => {
 
       [`${componentCls}-node`]: {
         display: 'inline-flex',
-        width: 120,
+        width: 'var(--node-width)',
       },
     },
   };

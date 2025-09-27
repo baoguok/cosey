@@ -7,6 +7,7 @@ export interface HorizontalTreeProps<INode extends Record<PropertyKey, any> = an
     class?: string | ((data: INode[], node: INode) => string);
   };
   nodeKey?: string;
+  nodeWidth?: string;
   mergeLast?: boolean;
   showCheckbox?: boolean;
   checkStrictly?: boolean;

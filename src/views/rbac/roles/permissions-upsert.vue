@@ -6,7 +6,6 @@
           ref="tree"
           v-loading="isFetching"
           show-checkbox
-          merge-last
           node-key="id"
           :data="permissionTree"
           :props="{
