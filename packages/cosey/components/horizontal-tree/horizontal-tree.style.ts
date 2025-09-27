@@ -1,5 +1,7 @@
 import { getSimpleStyleHook } from '../theme';
 
+export const HorizontalTreeNodeWidthVar = '--co-horizontal-tree-node-width';
+
 export default getSimpleStyleHook('CoHorizontalTree', (token) => {
   const { componentCls } = token;
 
@@ -32,7 +34,7 @@ export default getSimpleStyleHook('CoHorizontalTree', (token) => {
 
       [`${componentCls}-node`]: {
         display: 'inline-flex',
-        width: 'var(--node-width)',
+        width: `var(${HorizontalTreeNodeWidthVar})`,
       },
     },
   };

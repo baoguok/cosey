@@ -12,11 +12,7 @@
             children: 'children',
             label: 'name',
           }"
-        >
-          <template #node="{ node }">
-            {{ node.data.name }}
-          </template>
-        </co-horizontal-tree>
+        />
       </co-form-item>
     </co-form>
   </co-form-dialog>
@@ -25,6 +21,7 @@
 <script lang="ts" setup>
 import { usePermissionsApi } from '@/api/rbac/permissions';
 import { useRolesApi } from '@/api/rbac/roles';
+import { type HorizontalTreeExpose } from 'cosey/components';
 import { useFetch, useUpsert } from 'cosey/hooks';
 import { computed, nextTick, reactive, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -34,7 +31,7 @@ const { t } = useI18n();
 const { getPermissionTree } = usePermissionsApi();
 const { getRolePermissions, updateRolePermissions } = useRolesApi();
 
-const treeRef = useTemplateRef('tree');
+const treeRef = useTemplateRef<HorizontalTreeExpose>('tree');
 
 interface Model {
   permissionIds: number[];

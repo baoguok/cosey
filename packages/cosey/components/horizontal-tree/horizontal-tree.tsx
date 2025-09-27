@@ -4,7 +4,7 @@ import {
   horizontalTreeSlots,
   horizontalTreeEmits,
 } from './horizontal-tree.api';
-import useStyle from './horizontal-tree.style';
+import useStyle, { HorizontalTreeNodeWidthVar } from './horizontal-tree.style';
 import { useComponentConfig } from '../config-provider';
 import { ExtraTreeNode, extraTreeToTable, isString, mapTree, walkTree } from '../../utils';
 import { computed, defineComponent, watch } from 'vue';
@@ -219,7 +219,10 @@ export default defineComponent({
 
     return () => {
       return (
-        <div class={[hashId.value, prefixCls.value]} style={{ '--node-width': props.nodeWidth }}>
+        <div
+          class={[hashId.value, prefixCls.value]}
+          style={{ [HorizontalTreeNodeWidthVar]: props.nodeWidth }}
+        >
           {tableTree.value.length === 0 ? (
             <div class={`${prefixCls.value}-empty`}>{t('co.common.noData')}</div>
           ) : (
