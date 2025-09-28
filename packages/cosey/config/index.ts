@@ -49,8 +49,10 @@ export interface LayoutComponents {
 
 export interface LayoutSlots {
   topbarRight?: () => VNodeChild;
+  topbarWidget?: () => VNodeChild;
   authWidget?: () => VNodeChild;
   userMenu?: () => VNodeChild;
+  afterToggle?: () => VNodeChild;
 }
 
 type FilterRouteHandler = (

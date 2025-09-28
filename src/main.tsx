@@ -72,7 +72,7 @@ async function bootstrap() {
       return !authority ? true : authority(ability);
     },
     slots: {
-      topbarRight() {
+      topbarWidget() {
         return (
           <>
             <LayoutSetting />
