@@ -11,43 +11,38 @@ async function replaceFileContent(filePath: string, replacement: (content: strin
   await fs.writeFile(filePath, content);
 }
 
-async function createFiles(compDir: string, pascalName: string, kebabName: string) {
-  // *.vue
+async function createFiles(
+  compDir: string,
+  pascalName: string,
+  kebabName: string,
+  camelName: string,
+) {
+  // *.tsx
   await fse.outputFile(
-    path.resolve(compDir, `${kebabName}.vue`),
-    `<template>
-  <div :class="[hashId, prefixCls]">
-    <slot></slot>
-  </div>
-</template>
-
-
-<script setup lang="ts">
-import {
-  type ${pascalName}Props,
-  type ${pascalName}Slots,
-  type ${pascalName}Emits,
-  type ${pascalName}Expose,
-} from './${kebabName}';
-import useStyle from './style';
+    path.resolve(compDir, `${kebabName}.tsx`),
+    `import { type ${pascalName}Expose, ${camelName}Props, ${camelName}Slots, ${camelName}Emits } from './${camelName}.api';
+import useStyle from './${camelName}.style';
 import { useComponentConfig } from '../config-provider';
+import { defineComponent } from 'vue';
 
-defineOptions({
-  name: '${pascalName}',
+export default defineComponent({
+  name: 'Co${pascalName}',
+  props: ${camelName}Props,
+  slots: ${camelName}Slots,
+  emits: ${camelName}Emits,
+  setup(props, { slots, expose }) {
+    const { prefixCls } = useComponentConfig('${camelName}', props);
+
+    const { hashId } = useStyle(prefixCls);
+
+    expose<${pascalName}Expose>();
+
+    return () => {
+      return <div class={[hashId.value, prefixCls.value]}>{slots.default?.({})}</div>;
+    };
+  },
 });
 
-const props = defineProps<${pascalName}Props>();
-
-defineSlots<${pascalName}Slots>();
-
-defineEmits<${pascalName}Emits>();
-
-const { prefixCls } = useComponentConfig('${kebabName}', props);
-
-const { hashId } = useStyle(prefixCls);
-
-defineExpose<${pascalName}Expose>();
-</script>
 `,
   );
 
@@ -55,7 +50,7 @@ defineExpose<${pascalName}Expose>();
   await fse.outputFile(
     path.resolve(compDir, `index.ts`),
     `import { withInstall } from '../utils';
-import ${pascalName} from './${kebabName}.vue';
+import ${pascalName} from './${kebabName}';
 
 export * from './${kebabName}';
 
@@ -67,28 +62,37 @@ export default _${pascalName};
 `,
   );
 
-  // *.ts
+  // *.api.ts
   await fse.outputFile(
     path.resolve(compDir, `${kebabName}.ts`),
-    `export interface ${pascalName}Props {}
+    `import type { ExtractPropTypes, SlotsType } from 'vue';
+
+export const ${camelName}Props = {};
+
+export type ${pascalName}Props = ExtractPropTypes<typeof ${camelName}Props>;
 
 export interface ${pascalName}Slots {
-  default?: (props: Record<string, never>) => any;
+  default: {};
 }
 
-export interface ${pascalName}Emits {
-  (e: 'click'): void;
-}
+export const ${camelName}Slots = {} as SlotsType<${pascalName}Slots>;
+
+export const ${camelName}Emits = {
+  click: (event: MouseEvent) => event instanceof MouseEvent,
+};
+
+export type ${pascalName}Emits = typeof ${camelName}Emits;
 
 export interface ${pascalName}Expose {
   method: () => void;
 }
+
 `,
   );
 
   // style
   await fse.outputFile(
-    path.resolve(compDir, `style/index.ts`),
+    path.resolve(compDir, `${kebabName}.style.ts`),
     `import { getSimpleStyleHook } from '../theme';
 
 export default getSimpleStyleHook('Co${pascalName}', (token) => {
@@ -305,7 +309,8 @@ export async function newComponent() {
 
   const kebabName = kebabCase(enName);
   const externalKebabName = `${ns}-${kebabName}`;
-  const pascalName = upperFirst(camelCase(kebabName));
+  const camelName = camelCase(kebabName);
+  const pascalName = upperFirst(camelName);
   const externalPascalName = `${capitalize(ns)}${pascalName}`;
   const cnName = compForm.cnName;
 
@@ -327,7 +332,7 @@ export async function newComponent() {
   void declareGlobalComponent;
 
   const steps = [
-    ['创建组件', () => createFiles(compDir, pascalName, kebabName)],
+    ['创建组件', () => createFiles(compDir, pascalName, kebabName, camelName)],
     // ['声明全局组件', () => declareGlobalComponent(pascalName, externalPascalName)],
     ['导出要安装的组件', () => exportInstalledComponent(pascalName, kebabName)],
     ['组件库入口', () => componentLibEntry(kebabName)],
