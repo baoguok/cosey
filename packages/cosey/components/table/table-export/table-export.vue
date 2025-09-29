@@ -57,7 +57,7 @@ import {
   isObject,
 } from '../../../utils';
 import List from './list.vue';
-import { type TableColumnProps } from '../table-column/table-column';
+import { type TableColumnProps } from '../table-column/table-column.api';
 import { exportRenderer } from '../table-column/renderer';
 import { ElMessage } from 'element-plus';
 import { FormDialog } from '../../form-dialog';

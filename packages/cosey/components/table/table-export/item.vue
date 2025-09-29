@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type TableColumnProps } from '../table-column/table-column';
+import { type TableColumnProps } from '../table-column/table-column.api';
 import List from './list.vue';
 import { useComponentConfig } from '../../config-provider';
 import { useTreeCheckInject, type CheckableNode } from '../../../hooks';

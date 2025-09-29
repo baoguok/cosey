@@ -2,7 +2,7 @@ import { withInstall } from '../utils';
 import Table from './table.vue';
 
 export * from './table';
-export * from './table-column/table-column';
+export * from './table-column/table-column.api';
 export * from './table-query/table-query';
 export * from './useTable';
 

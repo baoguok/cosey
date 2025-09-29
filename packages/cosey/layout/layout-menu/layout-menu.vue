@@ -76,7 +76,14 @@ function renderMenu(menuItems: MenuItem[]) {
             }}
           />
         );
-      const titleVNode = () => <span>{t(item.title ?? '')}</span>;
+      const titleVNode = () => {
+        const title = t(item.title ?? '');
+        return (
+          <span class={`${prefixCls.value}-title`} title={title}>
+            {title}
+          </span>
+        );
+      };
 
       if (item.children && item.children.length > 0) {
         const slots = {

@@ -1,6 +1,5 @@
-<script lang="tsx">
 import { computed, defineComponent } from 'vue';
-import { type TableColumnProps, type TableColumnSlots, tableColumnProps } from './table-column';
+import { type TableColumnProps, type TableColumnSlots, tableColumnProps } from './table-column.api';
 import { isFunction, isPlainObject, isString } from '../../../utils';
 import { mapRendererColumnProps, renderer } from './renderer';
 import { ElTableColumn, ElTooltip } from 'element-plus';
@@ -33,7 +32,7 @@ const TableColumn = defineComponent({
       const obj: TableColumnProps = {};
       const cls = [props.className, hashId.value, prefixCls.value];
 
-      for (let [key, value] of Object.entries(props)) {
+      for (const [key, value] of Object.entries(props)) {
         if (value !== undefined) {
           (obj as any)[key] = value;
         }
@@ -73,7 +72,7 @@ const TableColumn = defineComponent({
       if (isString(slots)) {
         result.default = props.internalSlot?.[slots];
       } else if (isPlainObject(slots)) {
-        for (let [key, value] of Object.entries(slots)) {
+        for (const [key, value] of Object.entries(slots)) {
           result[key as keyof TableColumnSlots] = isString(value)
             ? props.internalSlot?.[value]
             : value;
@@ -111,13 +110,12 @@ const TableColumn = defineComponent({
                   (mergedProps.value.tooltip ? () => [renderLabel(), renderTooltip()] : undefined),
             default: (slotProps: any) =>
               mergedProps.value.columns
-                ? mergedProps.value.columns.map((column) => <TableColumn {...column}></TableColumn>)
+                ? mergedProps.value.columns.map((column) => <TableColumn {...column} />)
                 : slots.value.default?.(slotProps),
           }}
-        ></ElTableColumn>
+        />
       );
   },
 });
 
 export default TableColumn;
-</script>

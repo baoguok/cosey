@@ -60,7 +60,7 @@
 import { reactive, toRef } from 'vue';
 import { useDndSortItem } from '../../dnd-sort';
 import { Icon } from '../../icon';
-import { type TableColumnProps } from '../table-column/table-column';
+import { type TableColumnProps } from '../table-column/table-column.api';
 import List from './list.vue';
 import { useComponentConfig } from '../../config-provider';
 import { useTreeCheckInject, type CheckableNode } from '../../../hooks';

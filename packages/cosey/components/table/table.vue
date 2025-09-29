@@ -223,8 +223,8 @@ import {
   tableEmitEvents,
   tableEmitOnEvents,
 } from './table';
-import { type TableColumnProps } from './table-column/table-column';
-import TableColumn from './table-column/table-column.vue';
+import { type TableColumnProps } from './table-column/table-column.api';
+import TableColumn from './table-column/table-column';
 import TableColumnEditor from './table-column-editor/table-column-editor.vue';
 import TableQuery from './table-query/table-query.vue';
 import TableExport from './table-export/table-export.vue';
