@@ -64,6 +64,7 @@ export type RendererType =
   | {
       type: 'click';
       props?: Partial<LinkProps>;
+      format?: TableColumnProps['format'];
       onClick?: (params: {
         row: any;
         value: any;
@@ -193,6 +194,7 @@ export function renderer<T extends RendererType>(
           {...obj.props}
           onClick={() => obj.onClick?.({ row, value: cellValue, index, column })}
         >
+          {obj.format ? obj.format(cellValue, row, column, index) : cellValue}
           {cellValue}
         </ElLink>
       );

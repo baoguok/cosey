@@ -50,7 +50,7 @@ const TableColumn = defineComponent({
 
           const renderType = typeof obj.renderer === 'object' ? obj.renderer.type : obj.renderer!;
 
-          const renderProps = mapRendererColumnProps[renderType];
+          const renderProps = mapRendererColumnProps[renderType as string];
 
           if (renderProps) {
             cls.push(renderProps.className);
