@@ -1,6 +1,6 @@
 <template>
   <co-container>
-    <co-card>
+    <co-card class="relative" style="height: 400px">
       <div class="flex">
         <el-avatar :size="80" class="flex-none" :src="userStore.userInfo?.avatar">
           <co-icon name="carbon:user" />

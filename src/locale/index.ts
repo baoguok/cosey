@@ -63,7 +63,7 @@ export function setupI18n(app: App) {
       dayjs.locale(dayjsLangs[locale]);
       localStorage.setItem(langKey, locale);
 
-      document.documentElement.style.direction = rtlLangs.includes(locale) ? 'rtl' : 'ltr';
+      document.documentElement.setAttribute('dir', rtlLangs.includes(locale) ? 'rtl' : 'ltr');
     },
     {
       immediate: true,

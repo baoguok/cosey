@@ -30,111 +30,139 @@ export default getSimpleStyleHook('CoRibbon', (token) => {
         filter: 'grayscale(70%) brightness(0.7)',
       },
 
-      [`&.is-top-left`]: {
-        insetBlockStart: 'calc(var(--gap) * -1)',
-        insetInlineStart: 'calc(var(--gap) * -1)',
+      [`&.is-top-left, [dir="rtl"] &.is-top-right`]: {
+        top: 'calc(var(--gap) * -1)',
+        left: 'calc(var(--gap) * -1)',
+        right: 'auto',
+        bottom: 'auto',
 
         [`${componentCls}-silk`]: {
-          insetBlockStart: 0,
-          insetInlineEnd: 0,
+          top: 0,
+          right: 0,
+          left: 'auto',
+          bottom: 'auto',
           transformOrigin: 'right bottom',
           transform: 'translateY(-100%) rotate(-45deg)',
         },
 
         '&::before,&::after': {
-          borderTopColor: 'transparent',
-          borderLeftColor: 'transparent',
+          borderColor: 'transparent var(--bg) var(--bg) transparent',
         },
 
         '&::before': {
-          insetBlockStart: 0,
-          insetInlineEnd: 0,
+          top: 0,
+          right: 0,
+          left: 'auto',
+          bottom: 'auto',
         },
 
         '&::after': {
-          insetBlockEnd: 0,
-          insetInlineStart: 0,
+          bottom: 0,
+          left: 0,
+          top: 'auto',
+          right: 'auto',
         },
       },
 
-      [`&.is-top-right`]: {
-        insetBlockStart: 'calc(var(--gap) * -1)',
-        insetInlineEnd: 'calc(var(--gap) * -1)',
+      [`&.is-top-right, [dir="rtl"] &.is-top-left`]: {
+        top: 'calc(var(--gap) * -1)',
+        right: 'calc(var(--gap) * -1)',
+        left: 'auto',
+        bottom: 'auto',
 
         [`${componentCls}-silk`]: {
-          insetBlockStart: 0,
-          insetInlineStart: 0,
+          top: 0,
+          left: 0,
+          bottom: 'auto',
+          right: 'auto',
           transformOrigin: 'left bottom',
           transform: 'translateY(-100%) rotate(45deg)',
         },
 
         '&::before,&::after': {
-          borderTopColor: 'transparent',
-          borderRightColor: 'transparent',
+          borderColor: 'transparent transparent var(--bg) var(--bg)',
         },
 
         '&::before': {
-          insetBlockStart: 0,
-          insetInlineStart: 0,
+          top: 0,
+          left: 0,
+          bottom: 'auto',
+          right: 'auto',
         },
 
         '&::after': {
-          insetBlockEnd: 0,
-          insetInlineEnd: 0,
+          bottom: 0,
+          right: 0,
+          top: 'auto',
+          left: 'auto',
         },
       },
 
-      [`&.is-bottom-left`]: {
-        insetBlockEnd: 'calc(var(--gap) * -1)',
-        insetInlineStart: 'calc(var(--gap) * -1)',
+      [`&.is-bottom-left, [dir="rtl"] &.is-bottom-right`]: {
+        bottom: 'calc(var(--gap) * -1)',
+        left: 'calc(var(--gap) * -1)',
+        top: 'auto',
+        right: 'auto',
 
         [`${componentCls}-silk`]: {
-          insetBlockEnd: 0,
-          insetInlineEnd: 0,
+          bottom: 0,
+          right: 0,
+          top: 'auto',
+          left: 'auto',
           transformOrigin: 'top right',
           transform: 'translateY(100%) rotate(45deg)',
         },
 
         '&::before,&::after': {
-          borderBottomColor: 'transparent',
-          borderLeftColor: 'transparent',
+          borderColor: 'var(--bg) var(--bg) transparent transparent',
         },
 
         '&::before': {
-          insetBlockEnd: 0,
-          insetInlineEnd: 0,
+          bottom: 0,
+          right: 0,
+          top: 'auto',
+          left: 'auto',
         },
 
         '&::after': {
-          insetBlockStart: 0,
-          insetInlineStart: 0,
+          top: 0,
+          left: 0,
+          right: 'auto',
+          bottom: 'auto',
         },
       },
 
-      [`&.is-bottom-right`]: {
-        insetBlockEnd: 'calc(var(--gap) * -1)',
-        insetInlineEnd: 'calc(var(--gap) * -1)',
+      [`&.is-bottom-right, [dir="rtl"] &.is-bottom-left`]: {
+        bottom: 'calc(var(--gap) * -1)',
+        right: 'calc(var(--gap) * -1)',
+        top: 'auto',
+        left: 'auto',
 
         [`${componentCls}-silk`]: {
-          insetBlockEnd: 0,
-          insetInlineStart: 0,
+          bottom: 0,
+          left: 0,
+          top: 'auto',
+          right: 'auto',
           transformOrigin: 'left top',
           transform: 'translateY(100%) rotate(-45deg)',
         },
 
         '&::before,&::after': {
-          borderBottomColor: 'transparent',
-          borderRightColor: 'transparent',
+          borderColor: 'var(--bg) transparent transparent var(--bg)',
         },
 
         '&::before': {
-          insetBlockEnd: 0,
-          insetInlineStart: 0,
+          bottom: 0,
+          left: 0,
+          top: 'auto',
+          right: 'auto',
         },
 
         '&::after': {
-          insetBlockStart: 0,
-          insetInlineEnd: 0,
+          top: 0,
+          right: 0,
+          bottom: 'auto',
+          left: 'auto',
         },
       },
     },
