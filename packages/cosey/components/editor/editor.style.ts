@@ -197,7 +197,7 @@ const getQuillEditorStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> = (
       paddingBlock: token.paddingSM,
       paddingInline: token.padding,
       tabSize: 4,
-      textAlign: 'left',
+      textAlign: 'start',
       whiteSpace: 'pre-wrap',
       wordWrap: 'break-word',
 
@@ -225,7 +225,7 @@ const getQuillEditorStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> = (
           display: 'inline-block',
           marginInlineStart: `${-1 * LIST_STYLE_OUTER_WIDTH}em`,
           marginInlineEnd: `${LIST_STYLE_MARGIN}em`,
-          textAlign: 'right',
+          textAlign: 'end',
           whiteSpace: 'nowrap',
           width: `${LIST_STYLE_WIDTH}em`,
         },

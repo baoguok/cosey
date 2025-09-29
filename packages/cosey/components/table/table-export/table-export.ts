@@ -1,4 +1,4 @@
-import { type TableColumnProps } from '../table-column/table-column';
+import { type TableColumnProps } from '../table-column/table-column.api';
 import { type ExtractPropTypes, type PropType } from 'vue';
 import { type FormDialogEmits, formDialogProps } from '../../form-dialog';
 

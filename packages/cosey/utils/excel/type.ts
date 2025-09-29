@@ -1,4 +1,4 @@
-import { type TableColumnProps } from '../../components/table/table-column/table-column';
+import { type TableColumnProps } from '../../components';
 
 export type ExportBookType = 'csv' | 'txt' | 'xml' | 'html' | 'xlsx';
 

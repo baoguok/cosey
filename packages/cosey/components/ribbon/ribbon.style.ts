@@ -31,12 +31,12 @@ export default getSimpleStyleHook('CoRibbon', (token) => {
       },
 
       [`&.is-top-left`]: {
-        top: 'calc(var(--gap) * -1)',
-        left: 'calc(var(--gap) * -1)',
+        insetBlockStart: 'calc(var(--gap) * -1)',
+        insetInlineStart: 'calc(var(--gap) * -1)',
 
         [`${componentCls}-silk`]: {
-          top: 0,
-          right: 0,
+          insetBlockStart: 0,
+          insetInlineEnd: 0,
           transformOrigin: 'right bottom',
           transform: 'translateY(-100%) rotate(-45deg)',
         },
@@ -47,23 +47,23 @@ export default getSimpleStyleHook('CoRibbon', (token) => {
         },
 
         '&::before': {
-          top: 0,
-          right: 0,
+          insetBlockStart: 0,
+          insetInlineEnd: 0,
         },
 
         '&::after': {
-          bottom: 0,
-          left: 0,
+          insetBlockEnd: 0,
+          insetInlineStart: 0,
         },
       },
 
       [`&.is-top-right`]: {
-        top: 'calc(var(--gap) * -1)',
-        right: 'calc(var(--gap) * -1)',
+        insetBlockStart: 'calc(var(--gap) * -1)',
+        insetInlineEnd: 'calc(var(--gap) * -1)',
 
         [`${componentCls}-silk`]: {
-          top: 0,
-          left: 0,
+          insetBlockStart: 0,
+          insetInlineStart: 0,
           transformOrigin: 'left bottom',
           transform: 'translateY(-100%) rotate(45deg)',
         },
@@ -74,23 +74,23 @@ export default getSimpleStyleHook('CoRibbon', (token) => {
         },
 
         '&::before': {
-          top: 0,
-          left: 0,
+          insetBlockStart: 0,
+          insetInlineStart: 0,
         },
 
         '&::after': {
-          bottom: 0,
-          right: 0,
+          insetBlockEnd: 0,
+          insetInlineEnd: 0,
         },
       },
 
       [`&.is-bottom-left`]: {
-        bottom: 'calc(var(--gap) * -1)',
-        left: 'calc(var(--gap) * -1)',
+        insetBlockEnd: 'calc(var(--gap) * -1)',
+        insetInlineStart: 'calc(var(--gap) * -1)',
 
         [`${componentCls}-silk`]: {
-          bottom: 0,
-          right: 0,
+          insetBlockEnd: 0,
+          insetInlineEnd: 0,
           transformOrigin: 'top right',
           transform: 'translateY(100%) rotate(45deg)',
         },
@@ -101,23 +101,23 @@ export default getSimpleStyleHook('CoRibbon', (token) => {
         },
 
         '&::before': {
-          bottom: 0,
-          right: 0,
+          insetBlockEnd: 0,
+          insetInlineEnd: 0,
         },
 
         '&::after': {
-          top: 0,
-          left: 0,
+          insetBlockStart: 0,
+          insetInlineStart: 0,
         },
       },
 
       [`&.is-bottom-right`]: {
-        bottom: 'calc(var(--gap) * -1)',
-        right: 'calc(var(--gap) * -1)',
+        insetBlockEnd: 'calc(var(--gap) * -1)',
+        insetInlineEnd: 'calc(var(--gap) * -1)',
 
         [`${componentCls}-silk`]: {
-          bottom: 0,
-          left: 0,
+          insetBlockEnd: 0,
+          insetInlineStart: 0,
           transformOrigin: 'left top',
           transform: 'translateY(100%) rotate(-45deg)',
         },
@@ -128,13 +128,13 @@ export default getSimpleStyleHook('CoRibbon', (token) => {
         },
 
         '&::before': {
-          bottom: 0,
-          left: 0,
+          insetBlockEnd: 0,
+          insetInlineStart: 0,
         },
 
         '&::after': {
-          top: 0,
-          right: 0,
+          insetBlockStart: 0,
+          insetInlineEnd: 0,
         },
       },
     },

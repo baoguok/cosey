@@ -7,10 +7,7 @@ import { wb2xlsx } from './xlsx';
 import { wb2xml } from './xml';
 import { wb2csv } from './csv';
 import { wb2txt } from './txt';
-import {
-  type MayBeTableColumnProps,
-  type TableColumnProps,
-} from '../../components/table/table-column/table-column';
+import { type MayBeTableColumnProps, type TableColumnProps } from '../../components';
 import { isObject } from '../is';
 
 /**

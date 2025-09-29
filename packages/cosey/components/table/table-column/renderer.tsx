@@ -16,7 +16,7 @@ import {
   type TableColumnCtx,
 } from 'element-plus';
 import { get } from 'lodash-es';
-import { type TableColumnProps } from './table-column';
+import { type TableColumnProps } from './table-column.api';
 import { type LongTextProps, LongText } from '../../long-text';
 import { type MediaCardProps, MediaCard } from '../../media-card';
 import { type MediaCardGroupProps, MediaCardGroup } from '../../media-card-group';

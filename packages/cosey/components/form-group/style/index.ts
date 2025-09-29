@@ -19,7 +19,7 @@ export default getSimpleStyleHook('CoFromGroup', (token) => {
       },
       [`${componentCls}-title`]: {
         position: 'absolute',
-        top: 0,
+        insetBlockStart: 0,
         paddingInline: token.paddingMD,
         fontSize: token.fontSize,
         fontWeight: token.fontWeightStrong,
@@ -27,7 +27,7 @@ export default getSimpleStyleHook('CoFromGroup', (token) => {
         backgroundColor: token.colorBgContainer,
 
         '&.is-left': {
-          left: token.sizeMD,
+          insetInlineStart: token.sizeMD,
           transform: 'translateY(-50%)',
         },
         '&.is-center': {
@@ -35,7 +35,7 @@ export default getSimpleStyleHook('CoFromGroup', (token) => {
           transform: 'translate(-50%) translateY(-50%)',
         },
         '&.is-right': {
-          right: token.sizeMD,
+          insetInlineEnd: token.sizeMD,
           transform: 'translateY(-50%)',
         },
       },
