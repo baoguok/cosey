@@ -1,7 +1,9 @@
-import { type DividerProps, type SpaceProps } from 'element-plus';
+import { type SpaceProps } from 'element-plus';
 
-export interface FormGroupProps extends Partial<SpaceProps>, Partial<DividerProps> {
-  title?: string;
+export interface FormGroupProps extends Partial<Omit<SpaceProps, 'class' | 'style'>> {
+  title?: string | number;
+  borderStyle?: 'none' | 'solid' | 'dashed' | 'dotted';
+  position?: 'left' | 'right' | 'center';
   collapsible?: boolean;
   collapsed?: boolean;
 }

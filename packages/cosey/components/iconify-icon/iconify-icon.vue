@@ -7,7 +7,7 @@ import { computed } from 'vue';
 import { iconifyIconsSets, type IconifyIconProps } from './iconify-icon';
 
 defineOptions({
-  name: 'IconifyIcon',
+  name: 'CoIconifyIcon',
 });
 
 const props = defineProps<IconifyIconProps>();

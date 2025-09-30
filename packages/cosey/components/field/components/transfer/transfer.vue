@@ -35,7 +35,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldTransfer',
+    name: 'CoFieldTransfer',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldTransferSlots>,

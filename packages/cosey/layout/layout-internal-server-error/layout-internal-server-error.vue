@@ -16,7 +16,7 @@ import { useLocale } from '../../hooks';
 const { t } = useLocale();
 
 defineOptions({
-  name: 'LayoutInternalServerError',
+  name: 'CoLayoutInternalServerError',
 });
 
 const routerConfig = useGlobalConfig().router;

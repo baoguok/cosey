@@ -17,7 +17,7 @@ import { defineTemplate } from '../../utils';
 import { ElDialog } from 'element-plus';
 
 defineOptions({
-  name: 'FormDialog',
+  name: 'CoFormDialog',
 });
 
 const props = defineProps(formDialogProps);

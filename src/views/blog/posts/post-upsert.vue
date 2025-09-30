@@ -9,8 +9,10 @@
         field-type="select"
         :field-props="{
           options: postTypes,
-          labelKey: 'name',
-          valueKey: 'id',
+          props: {
+            label: 'name',
+            value: 'id',
+          },
         }"
       />
       <co-form-item v-model="model.title" prop="title" :label="t('post.title')" required />
@@ -67,25 +69,20 @@ const model = reactive<Model>({
   content: undefined,
 });
 
-const editId = ref<number>();
-
 const { getPosttypes } = usePosttypesApi();
 
 const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('post.article'),
     model,
-    async show() {
+    async onShow() {
       postTypes.value = (await getPosttypes()).list;
     },
-    details(row) {
+    detailsFetch(row) {
       return getPost(row.id);
     },
-    beforeFill(row) {
-      editId.value = row.id;
-    },
-    add: () => addPost(model),
-    edit: () => updatePost(editId.value!, model),
+    addFetch: () => addPost(model),
+    editFetch: (row) => updatePost(row.id, model),
   })),
 );
 

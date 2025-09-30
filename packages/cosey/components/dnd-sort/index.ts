@@ -1,11 +1,11 @@
 import { withInstall } from '../utils';
-import DndSort from './dnd-sort.vue';
-import DndSortItem from './dnd-sort-item.vue';
+import DndSort from './dnd-sort';
+import DndSortItem from './dnd-sort-item';
 import { useDndSortItem } from './useDndSortItem';
 import { useDndSort } from './useDndSort';
 
-export * from './dnd-sort';
-export * from './dnd-sort-item';
+export * from './dnd-sort.api';
+export * from './dnd-sort-item.api';
 
 const _DndSort = withInstall(DndSort);
 const _DndSortItem = withInstall(DndSortItem);

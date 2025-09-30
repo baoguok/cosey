@@ -1,7 +1,6 @@
 import { type Router } from 'vue-router';
-import { getAllStaticRoutes, getMenus } from '../../router';
 import { useGlobalConfig } from '../../config';
-import { useLayoutStore, useUserStore } from '../../store';
+import { useUserStore } from '../../store';
 import { usePersist } from '../../hooks';
 import { ROUTER_TO, TOKEN_NAME } from '../../constant';
 
@@ -17,7 +16,6 @@ export function registerAuthGuard(router: Router) {
 
     const token = persist.get(TOKEN_NAME);
     const userStore = useUserStore();
-    const layoutStore = useLayoutStore();
 
     if (to.path === '/' && routerConfig.homePath !== '/') {
       return routerConfig.homePath;
@@ -30,7 +28,6 @@ export function registerAuthGuard(router: Router) {
           await userStore.getUserInfo();
           await userStore.setAuthorization();
           await userStore.addDynamicRoutes();
-          layoutStore.menus = getMenus([...getAllStaticRoutes(), ...userStore.dynamicRoutes]);
 
           firstTimeAddRoutes = true;
           userStore.requestedUserInfo = true;

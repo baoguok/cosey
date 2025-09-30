@@ -25,6 +25,11 @@ export const defaultHttpConfig = {
   authScheme: 'Bearer',
 
   /**
+   * Token 添加到的请求头字段的键名
+   */
+  authHeaderKey: 'Authorization',
+
+  /**
    * 获取属性的路径
    */
   path: {
@@ -65,6 +70,16 @@ export const defaultHttpConfig = {
    * 错误提示显示时长
    */
   errorDuration: 3000,
+
+  /**
+   * 是否直接返回 AxiosResponse 对象
+   */
+  originalResponse: false,
+
+  /**
+   * 是否直接返回 AxiosResponse.data 属性值
+   */
+  originalData: false,
 };
 
 export type HttpConfig = DeepPartial<typeof defaultHttpConfig>;

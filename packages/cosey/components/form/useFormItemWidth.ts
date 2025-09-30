@@ -1,12 +1,12 @@
 import { computed, type CSSProperties } from 'vue';
 import { type FieldType } from '../field';
-import { type FormContext } from './form';
+import { type FormContext } from './form.api';
 import {
   type FormItemWidth,
   type FormItemPresetWidth,
   type FormItemProps,
   mapFormItemWidth,
-} from './form-item';
+} from './form-item.api';
 import { isNumber, isString } from '../../utils';
 
 export function getFormItemWidth(outWidth?: FormItemWidth) {

@@ -16,23 +16,32 @@ export function warningConfirm(
     type: 'warning',
     message,
     showCancelButton: true,
+    customStyle: {
+      position: 'absolute',
+      left: '50%',
+      top: '30vh',
+      transform: 'translateX(-50%)',
+      ...options?.customStyle,
+    },
     async beforeClose(action, instance, done) {
       if (action === 'confirm') {
         instance.confirmButtonLoading = true;
 
         try {
-          await promise.onfulfilled?.(undefined);
+          const res = await promise._onFulfilled?.(undefined);
+          promise._resolve?.(res);
           done();
         } catch (err) {
-          promise.onrejected?.(err);
+          promise._onRejected?.(err);
+          promise._reject?.(err);
         } finally {
           instance.confirmButtonLoading = false;
         }
       } else {
         done();
-        promise.onrejected?.(undefined);
+        promise._onRejected?.(undefined);
+        promise._reject?.();
       }
-      promise.onfinally?.();
     },
   });
 
@@ -40,9 +49,10 @@ export function warningConfirm(
 }
 
 class CustomPromise<T> extends Promise<T> {
-  onfulfilled: ((value: any) => any | PromiseLike<any>) | undefined | null;
-  onrejected: ((reason?: any) => any | PromiseLike<any>) | undefined | null;
-  onfinally: (() => void) | undefined | null;
+  _onFulfilled: ((value: any) => any | PromiseLike<any>) | undefined | null;
+  _onRejected: ((reason?: any) => any | PromiseLike<any>) | undefined | null;
+  _resolve: null | ((value: any | PromiseLike<any>) => void) = null;
+  _reject: null | ((reason?: any) => void) = null;
 
   constructor(
     executor: (
@@ -54,23 +64,31 @@ class CustomPromise<T> extends Promise<T> {
   }
 
   then<TResult1 = T, TResult2 = never>(
-    onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null,
-    onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null,
+    onFulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null,
+    onRejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null,
   ): Promise<TResult1 | TResult2> {
-    this.onfulfilled = onfulfilled;
-    this.onrejected = onrejected;
-    return super.then(onfulfilled, onrejected);
+    this._onFulfilled = onFulfilled;
+    this._onRejected = onRejected;
+    return new Promise((resolve, reject) => {
+      this._resolve = resolve;
+      this._reject = reject;
+    });
   }
 
   catch<TResult = never>(
-    onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null,
+    onRejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null,
   ): Promise<T | TResult> {
-    this.onrejected = onrejected;
-    return super.catch(onrejected);
+    return this.then(null, onRejected);
   }
 
-  finally(onfinally?: (() => void) | undefined | null): Promise<T> {
-    this.onfinally = onfinally;
-    return super.finally(onfinally);
+  finally(onFinally?: (() => void) | undefined | null): Promise<T> {
+    return this.then(
+      () => {
+        onFinally?.();
+      },
+      () => {
+        onFinally?.();
+      },
+    ) as Promise<T>;
   }
 }

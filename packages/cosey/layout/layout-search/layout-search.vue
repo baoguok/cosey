@@ -95,7 +95,7 @@ import { useLocale } from '../../hooks';
 import { useI18n } from 'vue-i18n';
 
 defineOptions({
-  name: 'LayoutSearch',
+  name: 'CoLayoutSearch',
 });
 
 const { t } = useLocale();

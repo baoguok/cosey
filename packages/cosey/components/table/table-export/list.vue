@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type TableColumnProps } from '../table-column/table-column';
+import { type TableColumnProps } from '../table-column/table-column.api';
 import Item from './item.vue';
 import { useComponentConfig } from '../../config-provider';
 import { type CheckableNode } from '../../../hooks';

@@ -17,7 +17,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
 
 defineOptions({
-  name: 'SnugMenu',
+  name: 'CoSnugMenu',
 });
 
 const props = withDefaults(defineProps<SnugMenuProps>(), {

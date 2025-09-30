@@ -1,6 +1,6 @@
 import { getSimpleStyleHook } from '../../../components';
 
-export default getSimpleStyleHook('LayoutContent', (token) => {
+export default getSimpleStyleHook('CoLayoutContent', (token) => {
   const { componentCls } = token;
 
   return {

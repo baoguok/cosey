@@ -33,7 +33,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldTime',
+    name: 'CoFieldTime',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldTimeSlots>,

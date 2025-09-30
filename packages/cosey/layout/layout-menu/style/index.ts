@@ -1,6 +1,6 @@
-import { getSimpleStyleHook } from '../../../components';
+import { getSimpleStyleHook, getTruncateStyle } from '../../../components';
 
-export default getSimpleStyleHook('LayoutMenu', (token) => {
+export default getSimpleStyleHook('CoLayoutMenu', (token) => {
   const { componentCls } = token;
 
   return {
@@ -21,6 +21,10 @@ export default getSimpleStyleHook('LayoutMenu', (token) => {
       textAlign: 'center',
       verticalAlign: 'middle',
       fontSize: 18,
+    },
+
+    [`${componentCls}-title`]: {
+      ...getTruncateStyle(),
     },
   };
 });

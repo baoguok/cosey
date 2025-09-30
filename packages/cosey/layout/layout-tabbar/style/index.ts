@@ -1,6 +1,6 @@
 import { contrarotation, getSimpleStyleHook } from '../../../components';
 
-export default getSimpleStyleHook('LayoutTabbar', (token) => {
+export default getSimpleStyleHook('CoLayoutTabbar', (token) => {
   const { componentCls } = token;
 
   return {
@@ -45,6 +45,7 @@ export default getSimpleStyleHook('LayoutTabbar', (token) => {
       '.el-tabs--card > .el-tabs__header .el-tabs__item.is-active': {
         backgroundColor: token.colorBgLayout,
         borderBottomColor: token.colorBgLayout,
+        marginBlockStart: 0,
       },
 
       [`${componentCls}-tabs-wrapper`]: {

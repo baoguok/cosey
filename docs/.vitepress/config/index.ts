@@ -30,9 +30,9 @@ export default defineConfig({
       }),
       groupIconVitePlugin(),
     ] as any,
-    // optimizeDeps: {
-    //   exclude: ['cosey'],
-    // },
+    optimizeDeps: {
+      exclude: ['cosey'],
+    },
     ssr: {
       noExternal: true,
     },
@@ -144,11 +144,13 @@ export default defineConfig({
             { text: 'FormList 表单列表', link: '/components/form-list' },
             { text: 'FormQuery 查询表单', link: '/components/form-query' },
             { text: 'Upload 上传', link: '/components/upload' },
+            { text: 'RemoteSelect 远程选择器', link: '/components/remote-select' },
           ],
         },
         {
           text: 'Data 数据展示',
           items: [
+            { text: 'Card 卡片', link: '/components/card' },
             { text: 'Highlight 代码高亮', link: '/components/highlight' },
             { text: 'MediaCard 媒体卡片', link: '/components/media-card' },
             {

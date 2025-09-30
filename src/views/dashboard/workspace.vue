@@ -1,6 +1,6 @@
 <template>
   <co-container>
-    <el-card shadow="never">
+    <co-card class="relative" style="height: 400px">
       <div class="flex">
         <el-avatar :size="80" class="flex-none" :src="userStore.userInfo?.avatar">
           <co-icon name="carbon:user" />
@@ -15,11 +15,7 @@
           </div>
         </div>
       </div>
-    </el-card>
-
-    <el-card shadow="never" class="mt-4">
-      <co-editor-v2></co-editor-v2>
-    </el-card>
+    </co-card>
   </co-container>
 </template>
 

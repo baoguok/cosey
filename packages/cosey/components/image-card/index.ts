@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import ImageCard from './image-card.vue';
+import ImageCard from './image-card';
 
-export * from './image-card';
+export * from './image-card.api';
 
 const _ImageCard = withInstall(ImageCard);
 

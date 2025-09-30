@@ -9,7 +9,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../../components';
 
 defineOptions({
-  name: 'LayoutSwitchEffect',
+  name: 'CoLayoutSwitchEffect',
 });
 
 const { prefixCls } = useComponentConfig('layout-main');

@@ -1,5 +1,6 @@
 import { AudioCard } from './audio-card';
 import { AudioViewer } from './audio-viewer';
+import { Card } from './card';
 import { Close } from './close';
 import { Col } from './col';
 import { ConfigProvider } from './config-provider';
@@ -22,6 +23,7 @@ import { HorizontalTree } from './horizontal-tree';
 import { Icon } from './icon';
 import { IconifyIcon } from './iconify-icon';
 import { ImageCard } from './image-card';
+import { InputNumberRange } from './input-number-range';
 import { LongText } from './long-text';
 import { Mask } from './mask';
 import { MediaCard } from './media-card';
@@ -31,10 +33,15 @@ import { NumberFormat } from './number-format';
 import { OnlyChild } from './only-child';
 import { OptionalWrapper } from './optional-wrapper';
 import { Panel } from './panel';
+import { RemoteSelect } from './remote-select';
+import { Ribbon } from './ribbon';
 import { Row } from './row';
 import { ScrollView } from './scroll-view';
 import { SnugMenu, SnugMenuItem } from './snug-menu';
+import { StackDialog } from './stack-dialog';
 import { SvgIcon } from './svg-icon';
+import { SvgaCard } from './svga-card';
+import { SvgaViewer } from './svga-viewer';
 import { Table } from './table';
 import { TableAction } from './table-action';
 import { Toggle } from './toggle';
@@ -48,6 +55,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     CoAudioCard: typeof AudioCard;
     CoAudioViewer: typeof AudioViewer;
+    CoCard: typeof Card;
     CoClose: typeof Close;
     CoCol: typeof Col;
     CoConfigProvider: typeof ConfigProvider;
@@ -74,6 +82,7 @@ declare module 'vue' {
     CoIcon: typeof Icon;
     CoIconifyIcon: typeof IconifyIcon;
     CoImageCard: typeof ImageCard;
+    CoInputNumberRange: typeof InputNumberRange;
     CoLongText: typeof LongText;
     CoMask: typeof Mask;
     CoMediaCard: typeof MediaCard;
@@ -83,11 +92,16 @@ declare module 'vue' {
     CoOnlyChild: typeof OnlyChild;
     CoOptionalWrapper: typeof OptionalWrapper;
     CoPanel: typeof Panel;
+    CoRemoteSelect: typeof RemoteSelect;
+    CoRibbon: typeof Ribbon;
     CoRow: typeof Row;
     CoScrollView: typeof ScrollView;
     CoSnugMenu: typeof SnugMenu;
     CoSnugMenuItem: typeof SnugMenuItem;
+    CoStackDialog: typeof StackDialog;
     CoSvgIcon: typeof SvgIcon;
+    CoSvgaCard: typeof SvgaCard;
+    CoSvgaViewer: typeof SvgaViewer;
     CoTable: typeof Table;
     CoTableAction: typeof TableAction;
     CoToggle: typeof Toggle;
@@ -102,6 +116,7 @@ declare module 'vue' {
 export {
   AudioCard,
   AudioViewer,
+  Card,
   Close,
   Col,
   ConfigProvider,
@@ -117,10 +132,10 @@ export {
   Field,
   FileCard,
   Form,
-  FormItem,
   FormDialog,
   FormDrawer,
   FormGroup,
+  FormItem,
   FormList,
   FormQuery,
   Highlight,
@@ -128,6 +143,7 @@ export {
   Icon,
   IconifyIcon,
   ImageCard,
+  InputNumberRange,
   LongText,
   Mask,
   MediaCard,
@@ -137,11 +153,16 @@ export {
   OnlyChild,
   OptionalWrapper,
   Panel,
+  RemoteSelect,
+  Ribbon,
   Row,
   ScrollView,
   SnugMenu,
   SnugMenuItem,
+  StackDialog,
   SvgIcon,
+  SvgaCard,
+  SvgaViewer,
   Table,
   TableAction,
   Toggle,

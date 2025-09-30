@@ -18,13 +18,13 @@
     "@vitejs/plugin-vue-jsx": "^4.1.1",
     "axios": "^1.7.9",
     "consola": "^3.3.3",
-    "element-plus": "^2.10.4",
+    "element-plus": "^2.11.4",
     "glob": "^11.0.2",
     "markdown-it-container": "^4.0.0",
     "tailwindcss": "^4.0.9",
-    "vite": "^6.0.3",
+    "vite": "^7.1.7",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vitepress": "^1.6.3",
+    "vitepress": "2.0.0-alpha.12",
     "vitepress-plugin-group-icons": "^1.6.1"
   },
   "peerDependencies": {
@@ -39,6 +39,6 @@
   "dependencies": {
     "@cosey/mock": "^0.1.5",
     "@iconify-json/carbon": "^1.2.8",
-    "cosey": "file:../lib-dist/cosey"
+    "cosey": "workspace:^"
   }
 }

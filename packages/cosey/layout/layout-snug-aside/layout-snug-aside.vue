@@ -32,7 +32,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../../components';
 
 defineOptions({
-  name: 'LayoutSnugAside',
+  name: 'CoLayoutSnugAside',
 });
 
 const { prefixCls } = useComponentConfig('layout-snug-aside');

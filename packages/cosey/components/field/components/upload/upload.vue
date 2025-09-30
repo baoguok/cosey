@@ -16,7 +16,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldUpload',
+    name: 'CoFieldUpload',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldUploadSlots>,

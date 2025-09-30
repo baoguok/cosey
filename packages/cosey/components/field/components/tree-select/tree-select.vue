@@ -51,7 +51,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldTreeSelect',
+    name: 'CoFieldTreeSelect',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldTreeSelectSlots>,

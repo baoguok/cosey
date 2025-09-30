@@ -1,5 +1,5 @@
 import { withInstall } from '../utils';
-import OptionalWrapper from './optional-wrapper.vue';
+import OptionalWrapper from './optional-wrapper';
 
 const _OptionalWrapper = withInstall(OptionalWrapper);
 

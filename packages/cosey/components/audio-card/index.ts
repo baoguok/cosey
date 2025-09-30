@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import AudioCard from './audio-card.vue';
+import AudioCard from './audio-card';
 
-export * from './audio-card';
+export * from './audio-card.api';
 
 const _AudioCard = withInstall(AudioCard);
 

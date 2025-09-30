@@ -10,6 +10,10 @@ export const DATE_TIME_FORMAT = DATE_FORMAT + ' ' + TIME_FORMAT;
  * 根据传递参数获取dayjs对象，参数可以为 Unix 时间戳
  */
 export function getDayjs(date?: Parameters<typeof dayjs>[0]) {
+  if (typeof date === 'string' && Number.isFinite(+date)) {
+    date = +date;
+  }
+
   if (typeof date === 'number' && String(date).length === 10) {
     date = date * 1000;
   }
@@ -19,18 +23,15 @@ export function getDayjs(date?: Parameters<typeof dayjs>[0]) {
 /**
  * 格式化为“年月日 时分秒”
  */
-export function formatAsDateTime(
-  date?: Parameters<typeof dayjs>[0],
-  format = DATE_TIME_FORMAT,
-): string {
-  return getDayjs(date).format(format);
+export function formatToDateTime(date?: Parameters<typeof dayjs>[0]): string {
+  return getDayjs(date).format(DATE_TIME_FORMAT);
 }
 
 /**
  * 格式化为“年月日”
  */
-export function formatAsDate(date?: Parameters<typeof dayjs>[0], format = DATE_FORMAT): string {
-  return getDayjs(date).format(format);
+export function formatToDate(date?: Parameters<typeof dayjs>[0]): string {
+  return getDayjs(date).format(DATE_FORMAT);
 }
 
 /**

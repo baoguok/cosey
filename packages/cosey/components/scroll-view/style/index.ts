@@ -1,11 +1,6 @@
-import { type CSSObject } from '../../cssinjs';
-import { type FullToken, type GenerateStyle, getStyleHook } from '../../theme';
+import { getSimpleStyleHook } from '../../theme';
 
-export interface ComponentToken {}
-
-export interface ScrollViewToken extends FullToken<'ScrollView'> {}
-
-const getScrollViewStyle: GenerateStyle<ScrollViewToken, CSSObject> = (token) => {
+export default getSimpleStyleHook('CoScrollView', (token) => {
   const { componentCls } = token;
 
   return {
@@ -91,8 +86,4 @@ const getScrollViewStyle: GenerateStyle<ScrollViewToken, CSSObject> = (token) =>
       },
     },
   };
-};
-
-export default getStyleHook('ScrollView', (token) => {
-  return [getScrollViewStyle(token)];
 });

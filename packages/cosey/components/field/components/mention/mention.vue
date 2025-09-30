@@ -31,7 +31,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldMention',
+    name: 'CoFieldMention',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldMentionSlots>,

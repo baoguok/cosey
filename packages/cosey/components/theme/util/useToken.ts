@@ -7,7 +7,7 @@ import unitlessKeys from './unitless';
 import type { AliasToken } from '../interface';
 import { normalizeStyle } from './normalizeStyle';
 import { useStyleInection } from '../StyleContext';
-import { useConfig } from '../../config-provider/config-provider';
+import { useConfig } from '../../config-provider/config-provider.api';
 
 function stringifyToken(token: object) {
   return Object.keys(token)

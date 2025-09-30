@@ -6,7 +6,6 @@
           ref="tree"
           v-loading="isFetching"
           show-checkbox
-          merge-last
           node-key="id"
           :data="permissionTree"
           :props="{
@@ -22,6 +21,7 @@
 <script lang="ts" setup>
 import { usePermissionsApi } from '@/api/rbac/permissions';
 import { useRolesApi } from '@/api/rbac/roles';
+import { type HorizontalTreeExpose } from 'cosey/components';
 import { useFetch, useUpsert } from 'cosey/hooks';
 import { computed, nextTick, reactive, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -31,7 +31,7 @@ const { t } = useI18n();
 const { getPermissionTree } = usePermissionsApi();
 const { getRolePermissions, updateRolePermissions } = useRolesApi();
 
-const treeRef = useTemplateRef('tree');
+const treeRef = useTemplateRef<HorizontalTreeExpose>('tree');
 
 interface Model {
   permissionIds: number[];
@@ -41,18 +41,15 @@ const model = reactive<Model>({
   permissionIds: [],
 });
 
-const editId = ref<number>();
-
 const { dialogProps, formProps, expose } = useUpsert<Model, { id: number }>(
   computed(() => ({
     stuffTitle: t('rbac.permission'),
     model,
-    details(row) {
-      editId.value = row!.id;
-      execute();
+    detailsFetch(row) {
+      execute(row.id);
     },
-    edit: () =>
-      updateRolePermissions(editId.value!, {
+    editFetch: (row) =>
+      updateRolePermissions(row.id, {
         permissionIds: treeRef.value?.getCheckedKeys(),
       }),
   })),
@@ -63,10 +60,10 @@ defineExpose(expose);
 const permissionTree = ref();
 
 const { isFetching, execute } = useFetch<Record<PropertyKey, any>[][]>(
-  async () => {
+  async (id) => {
     const [permTree, rolePermissions] = await Promise.all([
       getPermissionTree(),
-      getRolePermissions(editId.value!),
+      getRolePermissions(id),
     ]);
 
     permissionTree.value = permTree;

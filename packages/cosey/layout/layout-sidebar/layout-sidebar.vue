@@ -5,14 +5,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useTemplateRef } from 'vue';
+import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import { useLayoutStore } from '../../store';
 import useStyle from './style';
 import { useComponentConfig } from '../../components';
 import { useDir } from '../../hooks';
 
 defineOptions({
-  name: 'LayoutSidebar',
+  name: 'CoLayoutSidebar',
 });
 
 const { prefixCls } = useComponentConfig('layout-sidebar');
@@ -25,6 +25,14 @@ const sidebarRef = useTemplateRef('sidebar');
 
 const dir = useDir(sidebarRef);
 
+const isMounted = ref(false);
+
+onMounted(() => {
+  nextTick(() => {
+    isMounted.value = true;
+  });
+});
+
 const sidebarStyle = computed(() => {
   const marginBlockStart =
     layoutStore.isMobile || !layoutStore.includeHorizontal ? 0 : layoutStore.topbarHeight;
@@ -35,6 +43,7 @@ const sidebarStyle = computed(() => {
     transform: !layoutStore.sidebarVisible
       ? `translateX(${dir.value === 'ltr' ? '-100%' : '100%'})`
       : undefined,
+    transition: isMounted.value ? undefined : 'none',
   };
 });
 </script>

@@ -1,5 +1,5 @@
 import { computed, inject, onBeforeUnmount, onMounted, reactive, ref, toRef, unref } from 'vue';
-import { type DndSortContext, dndSortContextSymbol, DndSortItemContext } from './dnd-sort';
+import { type DndSortContext, dndSortContextSymbol, DndSortItemContext } from './dnd-sort.api';
 import { useDocumentEvent } from '../../hooks';
 import { useToken } from '../theme';
 

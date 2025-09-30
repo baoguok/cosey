@@ -1,5 +1,5 @@
 import { withInstall } from '../utils';
-import AudioViewer from './audio-viewer.vue';
+import AudioViewer from './audio-viewer';
 
 export * from './audio-viewer';
 

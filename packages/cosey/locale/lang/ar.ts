@@ -13,6 +13,7 @@ export default {
       reload: 'تحديث',
       addSuccess: 'تمت الإضافة بنجاح',
       editSuccess: 'تم التعديل بنجاح',
+      operateSuccess: 'تمت العملية بنجاح',
       exportSuccess: 'تم التصدير بنجاح',
       add: 'إضافة',
       edit: 'تعديل',
@@ -29,6 +30,8 @@ export default {
       submit: 'إرسال',
       reset: 'إعادة تعيين',
       search: 'بحث',
+      required: 'مطلوب',
+      isRequired: 'مطلوب',
     },
     colorPicker: {
       preset: 'إعدادات مسبقة',
@@ -56,6 +59,7 @@ export default {
     },
     table: {
       export: 'تصدير',
+      exportThisPage: 'تصدير الصفحة الحالية',
       exportData: 'تصدير البيانات',
       exitFullScreen: 'الخروج من وضع ملء الشاشة',
       fullScreen: 'ملء الشاشة',
@@ -67,6 +71,7 @@ export default {
       paramConfig: 'ضبط المعايير',
       header: 'رأس الجدول',
       groupHeader: 'رأس المجموعة',
+      total: 'المجموع',
     },
     toggle: {
       unfold: 'إظهار',
@@ -105,6 +110,7 @@ export default {
       enterPassword: 'الرجاء إدخال كلمة المرور',
       password: 'كلمة المرور',
       logout: 'تسجيل الخروج',
+      loggingOut: 'جاري تسجيل الخروج...',
     },
     tabbar: {
       closeLeftTabs: 'إغلاق علامات التبويب اليسرى',

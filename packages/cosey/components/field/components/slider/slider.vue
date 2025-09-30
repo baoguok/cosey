@@ -15,7 +15,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldSlider',
+    name: 'CoFieldSlider',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldSliderSlots>,

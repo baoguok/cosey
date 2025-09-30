@@ -17,7 +17,7 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 defineOptions({
-  name: 'LayoutMenu',
+  name: 'CoLayoutMenu',
 });
 
 const props = withDefaults(
@@ -76,7 +76,14 @@ function renderMenu(menuItems: MenuItem[]) {
             }}
           />
         );
-      const titleVNode = () => <span>{t(item.title ?? '')}</span>;
+      const titleVNode = () => {
+        const title = t(item.title ?? '');
+        return (
+          <span class={`${prefixCls.value}-title`} title={title}>
+            {title}
+          </span>
+        );
+      };
 
       if (item.children && item.children.length > 0) {
         const slots = {

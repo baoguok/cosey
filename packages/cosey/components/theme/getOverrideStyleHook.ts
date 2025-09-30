@@ -3,7 +3,7 @@ import { parseStyle, type CSSInterpolation } from '../cssinjs';
 import type { AliasToken, TokenWithCommonCls } from './interface';
 import { useToken } from './util/useToken';
 import { tokenValueToCssVar } from './util/tokenValueToCssVar';
-import { useConfig } from '../config-provider/config-provider';
+import { useConfig } from '../config-provider/config-provider.api';
 import { ThemeManager } from './theme-context';
 import hash from '@emotion/hash';
 import { normalizeStyle } from './util/normalizeStyle';

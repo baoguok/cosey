@@ -1,35 +1,76 @@
 import { TableColumnCtx, type PaginationProps } from 'element-plus';
 import elTableProps from 'element-plus/es/components/table/src/table/defaults.mjs';
-import { type PropType, type ExtractPropTypes } from 'vue';
-import { type TableColumnProps } from './table-column/table-column';
-import { omit } from 'lodash-es';
+import { type PropType, type ExtractPropTypes, MaybeRef } from 'vue';
+import { type MayBeTableColumnProps } from './table-column/table-column.api';
+import { camelCase, omit, upperFirst } from 'lodash-es';
 import {
   TableQueryExpose,
   tableQueryExposeKeys,
   type TableQueryProps,
 } from './table-query/table-query';
+import { TableStatisticsColumn } from './table-stats/table-stats';
 
 export interface ToolbarConfig {
   reload?: boolean;
-  export?: boolean;
+  export?:
+    | boolean
+    | {
+        filename: string;
+      };
   fullScreen?: boolean;
   setting?: boolean;
 }
 
+export const tableEmitEvents = [
+  'select-all',
+  'expand-change',
+  'current-change',
+  'select',
+  'selection-change',
+  'cell-mouse-enter',
+  'cell-mouse-leave',
+  'cell-contextmenu',
+  'cell-click',
+  'cell-dblclick',
+  'row-click',
+  'row-contextmenu',
+  'row-dblclick',
+  'header-click',
+  'header-contextmenu',
+  'sort-change',
+  'filter-change',
+  'header-dragend',
+];
+
+export const tableEmitOnEvents = tableEmitEvents.map((item) => [
+  item,
+  'on' + upperFirst(camelCase(item)),
+]);
+
+export const tableEmitOnProps = tableEmitOnEvents.reduce(
+  (obj, [, onName]) => {
+    obj[onName] = {
+      type: Function,
+    };
+    return obj;
+  },
+  {} as Record<string, { type: (...args: any[]) => any }>,
+);
+
 const tableExtraProps = {
   api: {
-    type: Function as PropType<(...args: any[]) => Promise<any>>,
+    type: Function as PropType<(...args: any[]) => Promise<any> | any>,
   },
   immediate: {
     type: Boolean,
     default: true,
   },
   columns: {
-    type: Array as PropType<TableColumnProps[]>,
+    type: Array as PropType<MayBeTableColumnProps[]>,
     default: () => [],
   },
   actionColumn: {
-    type: Object as PropType<TableColumnProps>,
+    type: null as unknown as PropType<MayBeTableColumnProps>,
   },
   pagination: {
     type: [Object, Boolean] as PropType<boolean | PaginationProps>,
@@ -41,23 +82,27 @@ const tableExtraProps = {
   formProps: {
     type: Object as PropType<TableQueryProps>,
   },
-  beforeFetch: {
+  transformParams: {
     type: Function as PropType<(params: Record<string, any>) => any>,
   },
-  afterFetch: {
+  transformResponse: {
     type: Function as PropType<(res: any) => any>,
   },
+  parallelFetch: {
+    type: Function as PropType<(...args: any[]) => Promise<any> | any>,
+  },
   toolbarConfig: {
-    type: [Object, Boolean] as PropType<ToolbarConfig | false>,
-    default: () => ({
-      reload: true,
-      export: true,
-      fullScreen: true,
-      setting: true,
-    }),
+    type: [Object, Boolean] as PropType<ToolbarConfig | boolean>,
+    default: true,
   },
   keys: {
     type: Object as PropType<TableConfig['keys']>,
+  },
+  statsColumns: {
+    type: Object as PropType<MaybeRef<TableStatisticsColumn[]>>,
+  },
+  statsData: {
+    type: Object as MaybeRef<any>,
   },
 };
 
@@ -76,40 +121,25 @@ export interface TableSlots {
   empty?: (props: Record<string, never>) => any;
   'toolbar-left'?: (props: Record<string, never>) => any;
   'toolbar-right'?: (props: Record<string, never>) => any;
+  'before-table'?: (props: Record<string, never>) => any;
+  'stats-table'?: (props: Record<string, never>) => any;
 }
 
 export const elSlotsName = ['default', 'append', 'empty'] as const;
-
-type TableEmitEvents =
-  | 'select-all'
-  | 'expand-change'
-  | 'current-change'
-  | 'select'
-  | 'selection-change'
-  | 'cell-mouse-enter'
-  | 'cell-mouse-leave'
-  | 'cell-contextmenu'
-  | 'cell-click'
-  | 'cell-dblclick'
-  | 'row-click'
-  | 'row-contextmenu'
-  | 'row-dblclick'
-  | 'header-click'
-  | 'header-contextmenu'
-  | 'sort-change'
-  | 'filter-change'
-  | 'header-dragend';
-
-export type TableEmits = (event: TableEmitEvents, ...args: any[]) => void;
-
-export const defaultPaginationProps = {
-  layout: 'prev, pager, next, sizes, jumper, total',
-};
 
 export interface TableCustomExpose {
   reload: () => void;
   expandAll: () => void;
   collapseAll: () => void;
+  getFetchParams: () => Record<string, any>;
+  getFullFetchParams: () => Record<string, any>;
+  setData: (data: any[]) => void;
+  getData: () => any[];
+  getRootEl: () => HTMLElement | null;
+  getPagination: () => {
+    page: number;
+    pageSize: number;
+  };
 }
 
 export type TableExpose = TableCustomExpose &
@@ -157,9 +187,17 @@ const elTableExposeKeys = [
 export const tableExposeKeys = [
   ...elTableExposeKeys,
   ...tableQueryExposeKeys,
+  'reset',
+  'submit',
   'reload',
   'expandAll',
   'collapseAll',
+  'getFetchParams',
+  'getFullFetchParams',
+  'setData',
+  'getData',
+  'getRootEl',
+  'getPagination',
 ];
 
 export const defaultTableConfig = {
@@ -204,6 +242,12 @@ export const defaultTableConfig = {
      */
     desc: 'desc',
   },
+  pagination: {
+    layout: 'prev, pager, next, sizes, jumper, total',
+    currentPage: 1,
+    pageSize: 10,
+  },
+  height: undefined,
 };
 
 export interface TableConfig {
@@ -217,4 +261,6 @@ export interface TableConfig {
     asc?: string;
     desc?: string;
   };
+  pagination?: Partial<PaginationProps>;
+  height?: number | string;
 }

@@ -10,9 +10,9 @@ import {
   flatGroup,
   fieldSelectOmitKeys,
 } from './select';
-import { getLabelByValue, addNullablePlaceholder } from '../../../../utils';
+import { getLabelByValue, addNullablePlaceholder, isFunction } from '../../../../utils';
 import { omit } from 'lodash-es';
-import { useLocale } from '../../../../hooks';
+import { useLocale, useProps } from '../../../../hooks';
 
 export default defineComponent(
   (props: FieldSelectProps, { slots }) => {
@@ -22,19 +22,21 @@ export default defineComponent(
 
     const omittedProps = computed(() => omit(componentProps.value, fieldSelectOmitKeys));
 
+    const { getLabel, getValue, getOptions, getKey, aliasProps } = useProps(componentProps);
+
     function convertRecur(options: FieldSelectOption[]) {
       return options.map((option): FieldSelectConvertedOption => {
         if (typeof option === 'object') {
-          if ('children' in option) {
+          if (aliasProps.value.options in option) {
             return {
               ...option,
-              children: convertRecur(option.children) as FieldSelectObjectOption[],
+              options: convertRecur(getOptions(option)) as FieldSelectObjectOption[],
             };
           }
           return {
             ...option,
-            label: option[(componentProps.value.labelKey as 'label') || 'label'],
-            value: option[(componentProps.value.valueKey as 'value') || 'value'],
+            label: getLabel(option),
+            value: getValue(option),
           };
         }
 
@@ -49,14 +51,18 @@ export default defineComponent(
       return convertRecur(unref(componentProps.value.options) ?? []);
     });
 
-    function renderOption(option: FieldSelectObjectOption) {
+    function renderOption(option: FieldSelectObjectOption, index: number) {
+      const optionProps = componentProps.value.optionProps;
+      const value = getValue(option);
+
       return h(
         ElOption,
         {
           ...(option as any),
-          key: option.value as string | number,
+          key: getKey(value),
+          ...(isFunction(optionProps) ? optionProps(option, index) : optionProps),
         },
-        slots.option ? () => slots.option!(option) : undefined,
+        slots.option ? () => slots.option!({ option, index }) : undefined,
       );
     }
 
@@ -84,24 +90,24 @@ export default defineComponent(
         {
           ...slots,
           default: () =>
-            convertedOptions.value.map((item) =>
-              'children' in item
+            convertedOptions.value.map((item, index: number) =>
+              'options' in item
                 ? h(
                     ElOptionGroup,
                     {
                       label: item.label as string,
                       disabled: item.disabled,
                     },
-                    () => item.children.map((item: any) => renderOption(item)),
+                    () => item.options.map((item: any, index: number) => renderOption(item, index)),
                   )
-                : renderOption(item),
+                : renderOption(item, index),
             ),
         },
       );
     };
   },
   {
-    name: 'FieldSelect',
+    name: 'CoFieldSelect',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldSelectSlots>,

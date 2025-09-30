@@ -1,19 +1,20 @@
 <template>
   <co-form-dialog v-bind="dialogProps" width="fit-content">
     <co-form v-bind="formProps" label-width="auto" width="md">
-      <co-form-item v-model="model.name" prop="name" :label="t('post.categoryName')" />
+      <co-form-item v-model="model.name" prop="name" :label="t('post.categoryName')" required />
       <co-form-item
         v-model="model.description"
         prop="description"
         :label="t('post.description')"
         field-type="textarea"
+        required
       />
     </co-form>
   </co-form-dialog>
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive } from 'vue';
 import { useUpsert } from 'cosey/hooks';
 import { usePosttypesApi } from '@/api/blog';
 import { useI18n } from 'vue-i18n';
@@ -36,17 +37,12 @@ const model = reactive<Model>({
   description: undefined,
 });
 
-const editId = ref<number>();
-
 const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('post.articleCategory'),
     model,
-    beforeFill(row) {
-      editId.value = row.id;
-    },
-    add: () => addPosttype(model),
-    edit: () => updatePosttype(editId.value!, model),
+    addFetch: () => addPosttype(model),
+    editFetch: (row) => updatePosttype(row.id, model),
   })),
 );
 

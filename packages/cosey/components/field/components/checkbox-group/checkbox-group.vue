@@ -1,33 +1,33 @@
 <script lang="tsx">
 import { ElCheckbox, ElCheckboxButton, ElCheckboxGroup } from 'element-plus';
 import { defineComponent, computed, h, type SlotsType, mergeProps } from 'vue';
-import { type FieldCheckboxGroupProps, type FieldCheckboxGroupSlots } from './checkbox-group';
+import {
+  fieldCheckboxGroupOmitKeys,
+  type FieldCheckboxGroupProps,
+  type FieldCheckboxGroupSlots,
+} from './checkbox-group';
 
-import { getLabelByValue, addNullablePlaceholder, isNumber } from '../../../../utils';
+import { getLabelByValue, addNullablePlaceholder, isNumber, isFunction } from '../../../../utils';
 import Panel from './panel.vue';
 import { omit } from 'lodash-es';
+import { useProps } from '../../../../hooks';
 
 export default defineComponent(
-  (props: FieldCheckboxGroupProps) => {
+  (props: FieldCheckboxGroupProps, { slots }) => {
     const componentProps = computed(() => props.componentProps || {});
     const checkboxGroupProps = computed(() => {
-      return omit(componentProps.value, [
-        'options',
-        'labelKey',
-        'valueKey',
-        'type',
-        'checkboxWidth',
-        'maxHeight',
-      ]);
+      return omit(componentProps.value, fieldCheckboxGroupOmitKeys);
     });
+
+    const { getLabel, getValue, getKey } = useProps(componentProps);
 
     const convertedOptions = computed(() => {
       return (componentProps.value.options ?? []).map((option) => {
         if (typeof option === 'object') {
           return {
             ...option,
-            label: option[(componentProps.value.labelKey as 'label') || 'label'],
-            value: option[(componentProps.value.valueKey as 'value') || 'value'],
+            label: getLabel(option),
+            value: getValue(option),
           };
         }
         return {
@@ -46,6 +46,29 @@ export default defineComponent(
       return isNumber(width) ? width + 'px' : width;
     });
 
+    function renderCheckbox(option: Record<PropertyKey, any>, index: number) {
+      const checkboxProps = componentProps.value.checkboxProps;
+      const value = getValue(option);
+
+      return h(
+        checkboxType.value,
+        mergeProps(
+          {
+            ...option,
+            key: getKey(value),
+            ...(isFunction(checkboxProps) ? checkboxProps(option, index) : checkboxProps),
+          },
+          {
+            style: {
+              width: checkboxWidth.value,
+              margin: 0,
+            },
+          },
+        ),
+        slots.checkbox ? () => slots.checkbox!({ option, index }) : undefined,
+      );
+    }
+
     return () => {
       if (props.readonly) {
         const value = componentProps.value.modelValue;
@@ -58,26 +81,13 @@ export default defineComponent(
       const checkboxGroupVnode = h(
         ElCheckboxGroup,
         mergeProps(checkboxGroupProps.value, {
-          class: 'flex flex-wrap gap-x-8',
+          style: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            columnGap: '30px',
+          },
         }),
-        () =>
-          convertedOptions.value.map((item) =>
-            h(
-              checkboxType.value,
-              mergeProps(
-                {
-                  ...item,
-                  key: item.value as string | number,
-                },
-                {
-                  style: {
-                    width: checkboxWidth.value,
-                  },
-                  class: '!me-0',
-                },
-              ),
-            ),
-          ),
+        () => convertedOptions.value.map((item, index) => renderCheckbox(item, index)),
       );
 
       return componentProps.value.indeterminate
@@ -95,7 +105,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldCheckboxGroup',
+    name: 'CoFieldCheckboxGroup',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldCheckboxGroupSlots>,

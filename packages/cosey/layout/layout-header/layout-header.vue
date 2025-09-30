@@ -12,7 +12,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../../components';
 
 defineOptions({
-  name: 'LayoutHeader',
+  name: 'CoLayoutHeader',
 });
 
 const { prefixCls } = useComponentConfig('layout-header');

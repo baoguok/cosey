@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import Copy from './copy.vue';
+import Copy from './copy';
 
-export * from './copy';
+export * from './copy.api';
 
 const _Copy = withInstall(Copy);
 

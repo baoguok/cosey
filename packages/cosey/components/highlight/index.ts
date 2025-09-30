@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import Highlight from './highlight.vue';
+import Highlight from './highlight';
 
-export * from './highlight';
+export * from './highlight.api';
 
 const _Highlight = withInstall(Highlight);
 

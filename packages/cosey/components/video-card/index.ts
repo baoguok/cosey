@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import VideoCard from './video-card.vue';
+import VideoCard from './video-card';
 
-export * from './video-card';
+export * from './video-card.api';
 
 const _VideoCard = withInstall(VideoCard);
 

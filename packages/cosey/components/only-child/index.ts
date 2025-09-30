@@ -1,5 +1,5 @@
 import { withInstall } from '../utils';
-import OnlyChild from './only-child.vue';
+import OnlyChild from './only-child';
 
 const _OnlyChild = withInstall(OnlyChild);
 

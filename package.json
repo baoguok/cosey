@@ -31,16 +31,16 @@
   "dependencies": {
     "@casl/ability": "^6.7.3",
     "@casl/vue": "^2.2.2",
-    "@cosey/mock": "^0.1.5",
+    "@cosey/mock": "workspace:^",
     "@gunny/mock": "^1.2.0",
     "@iconify-json/carbon": "^1.2.8",
     "@tailwindcss/vite": "^4.0.9",
     "axios": "^1.7.9",
     "cosey": "workspace:^",
     "dayjs": "^1.11.13",
-    "element-plus": "^2.10.4",
+    "element-plus": "^2.11.4",
     "lodash-es": "^4.17.21",
-    "vue": "^3.5.13",
+    "vue": "^3.5.21",
     "vue-i18n": "^11.1.10",
     "vue-router": "^4.5.0"
   },
@@ -90,8 +90,9 @@
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.32.1",
-    "vite": "^6.0.3",
+    "vite": "^7.1.7",
     "vite-plugin-svg-icons": "^2.0.1",
+    "vite-plugin-vue-devtools": "^8.0.2",
     "vitepress": "^1.6.3",
     "vue-tsc": "^2.2.8"
   }

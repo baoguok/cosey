@@ -76,9 +76,7 @@ const [tableProps, { reload, getSelectionRows }] = useTable(
   computed(() => ({
     api: getUsers,
     columns: [
-      {
-        type: 'selection',
-      },
+      { type: 'selection' },
       { prop: 'id', label: 'ID' },
       { prop: 'nickname', label: t('user.nickname') },
       {
@@ -95,7 +93,10 @@ const [tableProps, { reload, getSelectionRows }] = useTable(
         label: t('user.mute'),
         renderer: {
           type: 'switch',
-          api: (value, row) => updateUser(row.id, { silent: value }),
+          api: (value, row) =>
+            updateUser(row.id, { silent: value }).then(() => {
+              reload();
+            }),
           props: { activeValue: 1, inactiveValue: 0 },
         },
       },
@@ -112,13 +113,6 @@ const [tableProps, { reload, getSelectionRows }] = useTable(
       { prop: 'createdAt', label: t('common.creationTime'), renderer: 'datetime' },
       { prop: 'updatedAt', label: t('common.updateTime'), renderer: 'datetime' },
     ],
-    actionColumn: {
-      label: t('common.actions'),
-      slots: 'action',
-      fixed: 'right',
-      minWidth: 150,
-    },
-    height: '100%',
     formProps: {
       schemes: [
         { prop: 'nickname', label: t('user.nickname') },
@@ -144,6 +138,13 @@ const [tableProps, { reload, getSelectionRows }] = useTable(
         },
       ],
     },
+    actionColumn: {
+      label: t('common.actions'),
+      slots: 'action',
+      fixed: 'right',
+      minWidth: 150,
+    },
+    height: '100%',
   })),
 );
 

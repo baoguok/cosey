@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive } from 'vue';
 import { useFetch, useUpsert } from 'cosey/hooks';
 import { usePermissionsApi } from '@/api/rbac/permissions';
 import { useI18n } from 'vue-i18n';
@@ -49,12 +49,9 @@ const { t } = useI18n();
 const { addPermission, updatePermission, getPermissionParentTree, getPermissionTree } =
   usePermissionsApi();
 
-const { data: permissionTree, execute } = useFetch<any[], { type: 'add' | 'edit'; row?: Row }>(
-  ({ type, row }) => {
-    if (type === 'edit') {
-      return getPermissionParentTree(row!.id);
-    }
-    return getPermissionTree();
+const { data: permissionTree, execute } = useFetch<any[], () => any>(
+  (api) => {
+    return api();
   },
   {
     immediate: false,
@@ -83,26 +80,22 @@ const model = reactive<Model>({
   order: undefined,
 });
 
-const editId = ref<number>();
-
 const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('rbac.permission'),
     model,
-    show(type, row) {
-      execute({ type, row });
-    },
-    beforeFill(row) {
-      editId.value = row.id;
-    },
-    beforeSubmit() {
-      return {
+    onAdd: () => execute(() => getPermissionTree()),
+    onEdit: (row) => execute(() => getPermissionParentTree(row.id)),
+    addFetch: () =>
+      addPermission({
         ...model,
         pid: model.pid || null,
-      };
-    },
-    add: (data) => addPermission(data),
-    edit: (data) => updatePermission(editId.value!, data),
+      }),
+    editFetch: (row) =>
+      updatePermission(row.id, {
+        ...model,
+        pid: model.pid || null,
+      }),
   })),
 );
 

@@ -77,7 +77,7 @@ import { useLocale } from '../../hooks';
 import { useI18n } from 'vue-i18n';
 
 defineOptions({
-  name: 'LayoutTabbar',
+  name: 'CoLayoutTabbar',
 });
 
 const { t } = useLocale();

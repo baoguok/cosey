@@ -1,5 +1,6 @@
 <template>
-  <SvgIcon v-if="prefix === 'svg'" v-bind="mergedProps" />
+  <span v-if="$slots.default" v-bind="mergedProps"><slot></slot></span>
+  <SvgIcon v-else-if="prefix === 'svg'" v-bind="mergedProps" />
   <IconifyIcon v-else v-bind="mergedProps" :prefix="prefix" />
 </template>
 
@@ -12,7 +13,7 @@ import useStyle from './style';
 import { useComponentConfig } from '../config-provider';
 
 defineOptions({
-  name: 'Icon',
+  name: 'CoIcon',
 });
 
 const props = withDefaults(defineProps<IconProps>(), {});
@@ -27,10 +28,12 @@ const name = ref('');
 watch(
   () => props.name,
   () => {
-    const result = /^(?:([^:]+):)?([^:]+)$/.exec(props.name);
-    if (result) {
-      prefix.value = result[1];
-      name.value = result[2];
+    if (props.name) {
+      const result = /^(?:([^:]+):)?([^:]+)$/.exec(props.name);
+      if (result) {
+        prefix.value = result[1];
+        name.value = result[2];
+      }
     }
   },
   {

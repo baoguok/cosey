@@ -1,10 +1,5 @@
 <template>
-  <el-dialog
-    v-model="visible"
-    :title="t('post.comment')"
-    :style="{ maxWidth: 'calc(100vw - 32px)' }"
-    :width="1200"
-  >
+  <co-stack-dialog v-model="visible" :title="t('post.comment')">
     <co-table v-bind="tableProps">
       <template #action="{ row }">
         <co-table-action
@@ -31,7 +26,7 @@
         />
       </template>
     </co-table>
-  </el-dialog>
+  </co-stack-dialog>
 
   <PostCommentsUpsert :ref="upsert.ref" />
 </template>
@@ -76,7 +71,7 @@ const [tableProps, { reload }] = useTable(
 
     immediate: false,
 
-    beforeFetch(params) {
+    transformParams(params) {
       return {
         ...params,
         postId: postId.value,

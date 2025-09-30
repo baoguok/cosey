@@ -1,6 +1,6 @@
 import { getSimpleStyleHook } from 'cosey/components';
 
-export default getSimpleStyleHook('LayoutSetting', (token) => {
+export default getSimpleStyleHook('CoLayoutSetting', (token) => {
   const { componentCls } = token;
 
   return {

@@ -4,14 +4,16 @@ import { cloneDeep, pick } from 'lodash-es';
 import {
   type ShallowRef,
   type Ref,
+  type ComputedRef,
+  type MaybeRef,
   computed,
-  onMounted,
   reactive,
   ref,
   shallowRef,
   useTemplateRef,
-  MaybeRef,
   unref,
+  readonly,
+  nextTick,
 } from 'vue';
 
 import { useLocale } from '../hooks';
@@ -27,24 +29,28 @@ export interface UseUpsertExposeOptions {
 }
 
 export interface UseUpsertExpose<Row extends Record<string, any>, Data = any> {
-  edit: (row: Row) => any;
-  add: () => any;
+  edit: (row: Row, ...args: any[]) => any;
+  add: (...args: any[]) => any;
   setData: (data: Data) => UseUpsertExpose<Row, Data>;
   setOptions: (options: UseUpsertExposeOptions) => any;
 }
 
 export type UpsertType = 'edit' | 'add';
 
-export interface UseUpsertOptions<Model, Row = Model, Data = Model> {
+export interface UseUpsertOptions<Model, Row = Model> {
   title?: string;
   stuffTitle?: string;
   model: Model;
-  show?: (type: UpsertType, row?: Row) => void;
-  details?: (row: Row) => any;
+  onAdd?: (...args: any[]) => void;
+  onEdit?: (row: Row, ...args: any[]) => void;
+  onShow?: () => void;
+  onShown?: () => void;
+  onShownAdd?: (...args: any[]) => void;
+  onShownEdit?: (row: Row, ...args: any[]) => void;
+  detailsFetch?: (row: Row) => any;
   beforeFill?: (row: Row) => any;
-  beforeSubmit?: (model: Model) => Data | Promise<Data>;
-  add?: (data: Data) => any;
-  edit?: (data: Data) => any;
+  addFetch?: (...args: any[]) => any;
+  editFetch?: (row: Row, ...args: any[]) => any;
   success?: (res: any) => any;
   addSuccessText?: string;
   editSuccessText?: string;
@@ -69,32 +75,40 @@ export interface UseUpsertReturn<
   data: Ref<Data | undefined>;
   expose: UseUpsertExpose<Row, Data>;
   row: ShallowRef<Row | undefined>;
-  type: Ref<UpsertType>;
+  type: Readonly<Ref<UpsertType>>;
+  isEdit: ComputedRef<boolean>;
+  isAdd: ComputedRef<boolean>;
 }
 
 export function useUpsert<
   Model extends Record<string, any>,
   Row extends Record<string, any> = Model,
   Data = any,
->(options: MaybeRef<UseUpsertOptions<Model, Row>>): UseUpsertReturn<Model, Row> {
+>(options: MaybeRef<UseUpsertOptions<Model, Row>>): UseUpsertReturn<Model, Row, Data> {
   const {
     model,
     stuffTitle,
     title,
     addSuccessText,
     editSuccessText,
-    show,
-    details,
+    onAdd,
+    onEdit,
+    onShow,
+    onShown,
+    onShownAdd,
+    onShownEdit,
+    detailsFetch,
     beforeFill,
-    beforeSubmit,
-    add,
-    edit,
+    addFetch,
+    editFetch,
     success,
   } = toRefs(computed(() => unref(options)));
 
   const { t, lang } = useLocale();
 
   const type = ref<UpsertType>('add');
+  const isEdit = computed(() => type.value === 'edit');
+  const isAdd = computed(() => type.value === 'add');
 
   // dialog
   const visible = ref(false);
@@ -118,22 +132,26 @@ export function useUpsert<
     title: mergedTitle,
   }) as unknown as UseUpsertReturn<Model, Row, Data>['dialogProps'];
 
+  // data
+  const data = shallowRef<Data>();
+  const row = shallowRef<Row>();
+  let addParams: any[] = [];
+  let editParams: any[] = [];
+
   // form
   const formRefKey = uuid();
 
   const formRef = useTemplateRef(formRefKey);
 
   const onSubmit = async () => {
-    const data = (await unref(beforeSubmit)?.(unref(model))) || unref(model);
-
     let res: any;
 
     if (type.value === 'add') {
-      res = await unref(add)?.(data);
-      ElMessage.success(unref(addSuccessText) || t('co.common.addSuccess'));
+      res = await unref(addFetch)?.(...addParams);
+      ElMessage.success(unref(addSuccessText) || t('co.common.operateSuccess'));
     } else {
-      res = await unref(edit)?.(data);
-      ElMessage.success(unref(editSuccessText) || t('co.common.editSuccess'));
+      res = await unref(editFetch)?.(row.value!, ...editParams);
+      ElMessage.success(unref(editSuccessText) || t('co.common.operateSuccess'));
     }
 
     unref(success)?.(res);
@@ -146,37 +164,49 @@ export function useUpsert<
     submit: onSubmit,
   }) as unknown as UseUpsertReturn<Model, Row, Data>['formProps'];
 
-  // data
-  const data = shallowRef<Data>();
-  const row = shallowRef<Row>();
-
   // expose
   let exposeOptions: UseUpsertExposeOptions;
 
   const expose: UseUpsertExpose<Row, Data> = {
-    edit: async (_row: Row) => {
+    edit: async (_row, ...args) => {
+      editParams = args;
       type.value = 'edit';
-      row.value = _row;
+      row.value = cloneDeep(_row);
       deepAssign(unref(model), initialModel);
 
-      visible.value = true;
-      unref(show)?.(type.value, row.value);
+      unref(onEdit)?.(row.value, ...editParams);
 
-      let filledRow = _row;
-      if (unref(details)) {
-        filledRow = await unref(details)!(_row);
+      visible.value = true;
+      unref(onShow)?.();
+
+      nextTick(() => {
+        unref(onShown)?.();
+        unref(onShownEdit)?.(_row, ...editParams);
+      });
+
+      let filledRow = row.value;
+      if (unref(detailsFetch)) {
+        filledRow = await unref(detailsFetch)!(row.value);
       }
-      filledRow = { ...filledRow };
-      filledRow = unref(beforeFill)?.(filledRow) || filledRow;
+      filledRow = cloneDeep(filledRow);
+      filledRow = (await unref(beforeFill)?.(filledRow)) || filledRow;
       Object.assign(unref(model), pick(filledRow, modelKeys));
     },
-    add: () => {
+    add: (...args) => {
+      addParams = args;
       type.value = 'add';
       row.value = undefined;
       deepAssign(unref(model), initialModel);
 
+      unref(onAdd)?.(...addParams);
+
       visible.value = true;
-      unref(show)?.(type.value);
+      unref(onShow)?.();
+
+      nextTick(() => {
+        unref(onShown)?.();
+        unref(onShownAdd)?.(...addParams);
+      });
     },
     setData: (_data: Data) => {
       data.value = _data;
@@ -195,7 +225,9 @@ export function useUpsert<
     data,
     expose,
     row,
-    type,
+    type: readonly(type),
+    isEdit,
+    isAdd,
   };
 
   return result;
@@ -206,42 +238,44 @@ export interface UseExternalUpsertOptions {
 }
 
 export interface UseExternalUpsertReturn<Row extends Record<string, any>, Data> {
-  add: () => void;
-  edit: (row: Row) => void;
+  add: (...args: any[]) => void;
+  edit: (...args: any[]) => void;
   setData: (data: Data) => void;
   expose: Readonly<ShallowRef<UseUpsertExpose<Row, Data> | null>>;
-  ref: string;
+  ref: (_expose: any) => void;
 }
 
 export function useOuterUpsert<Row extends Record<string, any>, Data>(
-  options: UseExternalUpsertOptions,
+  options: UseExternalUpsertOptions = {},
 ): UseExternalUpsertReturn<Row, Data> {
-  const refKey = uuid();
+  const expose = ref<UseUpsertExpose<Row, Data> | null>(null);
 
-  const expose = useTemplateRef<UseUpsertExpose<Row, Data>>(refKey);
+  const vnodeRef = (_expose: UseUpsertExpose<Row, Data> | null) => {
+    expose.value = _expose;
 
-  const add = () => {
-    expose.value?.add();
+    if (_expose) {
+      _expose.setOptions(options);
+    }
   };
 
-  const edit = (row: Row) => {
-    expose.value?.edit(row);
+  const add = (...args: any) => {
+    expose.value?.add(...args);
+  };
+
+  const edit = (row: Row, ...args: any) => {
+    expose.value?.edit(row, ...args);
   };
 
   const setData = (data: Data) => {
     expose.value?.setData(data);
   };
 
-  onMounted(() => {
-    expose.value?.setOptions(options);
-  });
-
   const result = {
     add,
     edit,
     setData,
     expose,
-    ref: refKey,
+    ref: vnodeRef,
   };
 
   return result;

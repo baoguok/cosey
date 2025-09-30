@@ -80,7 +80,7 @@ const [tableProps, { reload }] = useTable(
         prop: 'value',
         label: t('config.value'),
         minWidth: 300,
-        formatter(row, _, cellValue) {
+        format(cellValue, row) {
           switch (row.type) {
             case 'textarea':
               return <LongText text={cellValue} />;
@@ -115,8 +115,10 @@ const [tableProps, { reload }] = useTable(
           fieldType: 'select',
           fieldProps: {
             options: configGroupOptions,
-            labelKey: 'name',
-            valueKey: 'id',
+            props: {
+              label: 'name',
+              value: 'id',
+            },
           },
         },
         { prop: 'name', label: t('config.name') },

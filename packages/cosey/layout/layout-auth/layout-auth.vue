@@ -25,7 +25,7 @@ import { defineTemplate } from '../../utils';
 import { useGlobalConfig } from '../../config';
 
 defineOptions({
-  name: 'LayoutAuth',
+  name: 'CoLayoutAuth',
 });
 
 const { prefixCls } = useComponentConfig('layout-auth');

@@ -25,7 +25,7 @@ export const useGlobalStyle = getGlobalStyleHook('LayoutColorSchemeGlobal', () =
   };
 });
 
-export default getSimpleStyleHook('LayoutColorScheme', (token) => {
+export default getSimpleStyleHook('CoLayoutColorScheme', (token) => {
   const { componentCls } = token;
   return {
     [componentCls]: {

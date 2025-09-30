@@ -12,6 +12,7 @@ export default {
       noData: 'No Data',
       addSuccess: 'Add successfully',
       editSuccess: 'Edit successfully',
+      operateSuccess: 'Operation successfully',
       exportSuccess: 'Export successfully',
       add: 'Add',
       edit: 'Edit',
@@ -29,6 +30,8 @@ export default {
       submit: 'Submit',
       reset: 'Reset',
       search: 'Search',
+      required: 'required',
+      isRequired: '{label} is required',
     },
     colorPicker: {
       preset: 'Preset',
@@ -56,6 +59,7 @@ export default {
     },
     table: {
       export: 'Export',
+      exportThisPage: 'Export current page',
       exportData: 'Export data',
       exitFullScreen: 'Exit full screen',
       fullScreen: 'Full screen',
@@ -67,6 +71,7 @@ export default {
       paramConfig: 'Parameter configuration',
       header: 'Header',
       groupHeader: 'Group Header',
+      total: 'Total',
     },
     toggle: {
       unfold: 'Unfold',
@@ -105,6 +110,7 @@ export default {
       enterPassword: 'Please enter your password',
       password: 'Password',
       logout: 'Logout',
+      loggingOut: 'Logging out...',
     },
     tabbar: {
       closeLeftTabs: 'Close tabs to the left',

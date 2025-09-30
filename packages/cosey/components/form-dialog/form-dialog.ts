@@ -44,14 +44,25 @@ export const formDialogProps = {
     type: [String, Number] as PropType<FormDialogWidth>,
     default: 'fit-content',
   },
+  closeOnClickModal: {
+    type: Boolean,
+    default: false,
+  },
+  closeOnPressEscape: {
+    type: Boolean,
+    default: false,
+  },
 };
 
 export type FormDialogProps = ExtractPropTypes<typeof formDialogProps>;
 
-export interface FormDialogSlots {
+export interface ElDialogSlots {
   default?: (props: Record<string, never>) => any;
   header?: (props: { close?: () => void; titleId?: string; titleClass?: string }) => any;
   footer?: (props: Record<string, never>) => any;
+}
+
+export interface FormDialogSlots extends ElDialogSlots {
   button?: (props: {
     submitting: boolean;
     confirm: () => any | Promise<any>;

@@ -43,7 +43,7 @@ import { ScrollView, Icon, useComponentConfig } from '../../components';
 import useStyle from './style';
 
 defineOptions({
-  name: 'LayoutAside',
+  name: 'CoLayoutAside',
 });
 
 const { prefixCls } = useComponentConfig('layout-aside');

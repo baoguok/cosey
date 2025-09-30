@@ -33,6 +33,7 @@
             <MergedLayoutToggle
               v-if="layoutStore.isMobile || layoutStore.isVertical || layoutStore.isBiserial"
             />
+            <component :is="AfterToggle" />
             <MergedLayoutBreadcrumb
               v-if="!layoutStore.isMobile && (layoutStore.isVertical || layoutStore.isBiserial)"
             />
@@ -50,9 +51,10 @@
           </template>
           <template #right>
             <MergedLayoutSearch />
-            <component :is="TopbarRight" />
+            <component :is="TopbarWidget" />
             <MergedLayoutColorScheme />
             <MergedLayoutUserMenu />
+            <component :is="TopbarRight" />
           </template>
         </MergedLayoutTopbar>
         <MergedLayoutTabbar />
@@ -89,7 +91,7 @@ import { useGlobalConfig } from '../../config';
 import { defineTemplate } from '../../utils';
 
 defineOptions({
-  name: 'LayoutBase',
+  name: 'CoLayoutBase',
 });
 
 const { prefixCls } = useComponentConfig('layout-base');
@@ -99,4 +101,6 @@ const layoutStore = useLayoutStore();
 const slotsConfig = useGlobalConfig().slots;
 
 const TopbarRight = defineTemplate(() => slotsConfig.topbarRight?.());
+const TopbarWidget = defineTemplate(() => slotsConfig.topbarWidget?.());
+const AfterToggle = defineTemplate(() => slotsConfig.afterToggle?.());
 </script>

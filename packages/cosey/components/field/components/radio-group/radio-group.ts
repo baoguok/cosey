@@ -1,5 +1,6 @@
 import { type RadioProps, type RadioGroupInstance, type RadioGroupProps } from 'element-plus';
 import { type FieldComponentCommonProps } from '../common';
+import { Props } from '../../../../hooks';
 
 export type FieldRadioGroupOption = Partial<RadioProps> | string | number;
 
@@ -10,8 +11,7 @@ export interface FieldRadioGroupProps extends FieldComponentCommonProps {
     [key: PropertyKey]: any;
   } & {
     options?: FieldRadioGroupOption[];
-    labelKey?: string;
-    valueKey?: string;
+    props?: Props;
     type?: 'button' | 'radio';
   };
   componentSlots?: Partial<FieldRadioGroupSlots>;

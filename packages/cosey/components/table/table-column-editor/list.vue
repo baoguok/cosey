@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { useDndSort } from '../../dnd-sort';
 import { TransitionGroup as InternalTransitionGroup } from '../../transition-group';
-import { type TableColumnProps } from '../table-column/table-column';
+import { type TableColumnProps } from '../table-column/table-column.api';
 import Item from './item.vue';
 import { watch } from 'vue';
 import { uuid, arrayMove } from '../../../utils';

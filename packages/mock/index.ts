@@ -1,4 +1,8 @@
-import { createRequestInterceptor, interceptImage } from '@cosey/request-interceptor';
+import {
+  createRequestInterceptor,
+  interceptImage,
+  type RequestInterceptorInit,
+} from '@cosey/request-interceptor';
 
 import { db, initSeed, resetDB } from './db';
 import { type ContentType, HttpMessage, HttpMessageManager } from './httpMessageManager';
@@ -11,7 +15,9 @@ export { resetDB, HttpMessageManager };
 
 export type { ContentType, HttpMessage };
 
-export function createMock(options: { skipAuth?: boolean } = {}) {
+export function createMock(
+  options: { skipAuth?: boolean; requestInterceptorInit?: RequestInterceptorInit } = {},
+) {
   initSeed();
 
   const httpMessageManager = new HttpMessageManager();
@@ -19,6 +25,7 @@ export function createMock(options: { skipAuth?: boolean } = {}) {
   const intercept = () => {
     const interceptor = createRequestInterceptor({
       prefix: '/mock/api',
+      ...options.requestInterceptorInit,
     });
 
     // 注册路由

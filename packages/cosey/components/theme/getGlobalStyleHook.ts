@@ -5,7 +5,7 @@ import type { AliasToken } from './interface';
 import { useStyleRegister } from './useStyleRegister';
 import { useToken } from './util/useToken';
 import { tokenValueToCssVar } from './util/tokenValueToCssVar';
-import { useConfig } from '../config-provider/config-provider';
+import { useConfig } from '../config-provider/config-provider.api';
 import { isClient } from '../../utils';
 import { ThemeManager } from './theme-context';
 

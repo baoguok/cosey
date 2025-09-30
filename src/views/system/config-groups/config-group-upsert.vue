@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive } from 'vue';
 import { useConfigGroupsApi } from '@/api/system/configs';
 import { useUpsert } from 'cosey/hooks';
 import { useI18n } from 'vue-i18n';
@@ -28,17 +28,12 @@ const model = reactive<Model>({
   name: undefined,
 });
 
-const editId = ref<number>();
-
 const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('config.config'),
     model,
-    beforeFill(row) {
-      editId.value = row.id;
-    },
-    add: () => addConfigGroup(model),
-    edit: () => updateConfigGroup(editId.value!, model),
+    addFetch: () => addConfigGroup(model),
+    editFetch: (row) => updateConfigGroup(row.id, model),
   })),
 );
 

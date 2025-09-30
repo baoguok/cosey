@@ -4,7 +4,7 @@ import type { AliasToken, TokenWithCommonCls } from './interface';
 import { useStyleRegister } from './useStyleRegister';
 import { useToken } from './util/useToken';
 import { tokenValueToCssVar } from './util/tokenValueToCssVar';
-import { useConfig } from '../config-provider/config-provider';
+import { useConfig } from '../config-provider/config-provider.api';
 import { ThemeManager } from './theme-context';
 
 export type AliasTokenWithCommonCls = TokenWithCommonCls<AliasToken>;

@@ -1,4 +1,6 @@
 import { createVNode, defineComponent, SlotsType, type VNodeChild } from 'vue';
+import { isFunction, isObject, isPlainObject } from './is';
+import { upperFirst } from 'lodash-es';
 
 /**
  * 使在 script setup 中也能使用 jsx
@@ -82,4 +84,45 @@ export function addNullablePlaceholder<T = unknown>(
     return '-';
   }
   return (converter ? converter(value) : value) as string;
+}
+
+/**
+ * 获取 VNode 中的文本
+ */
+export function getVNodeText(vnode: unknown): string {
+  if (typeof vnode === 'string' || typeof vnode === 'number') {
+    return String(vnode);
+  }
+
+  if (Array.isArray(vnode)) {
+    return vnode.map(getVNodeText).join('');
+  }
+
+  if (isObject(vnode)) {
+    if (isPlainObject(vnode.children)) {
+      return Object.values(vnode.children)
+        .map((slot) => getVNodeText(slot))
+        .join('');
+    }
+    return getVNodeText(vnode.children);
+  }
+
+  if (isFunction(vnode)) {
+    return getVNodeText(vnode());
+  }
+
+  return '';
+}
+
+/**
+ * 批量绑定事件
+ *
+ * 用于高级组件中，因声明了事件使 attrs 不包含事件而未能绑定事件的场景。
+ */
+export function bulkBindEvents(emits: Record<string, any>, emit: (...args: any[]) => any) {
+  return Object.fromEntries(
+    Object.keys(emits).map((name) => {
+      return [`on${upperFirst(name)}`, (...args: any[]) => emit(name, ...args)];
+    }),
+  );
 }

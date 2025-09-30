@@ -22,7 +22,7 @@ import { icons as carbonIcons } from '@iconify-json/carbon';
 import { addIconifyIcon } from 'cosey/components';
 
 import { createMock } from '@cosey/mock';
-import { createWebHistory } from 'vue-router';
+import { createWebHashHistory } from 'vue-router';
 
 addIconifyIcon('carbon', carbonIcons);
 
@@ -37,7 +37,7 @@ async function bootstrap() {
 
   // cosey
   const cosey = createCosey({
-    router: { dynamic: dynamicRoutes, static: staticRoutes, history: createWebHistory() },
+    router: { dynamic: dynamicRoutes, static: staticRoutes, history: createWebHashHistory() },
     http: {
       baseURL: import.meta.env.VITE_BASE_URL,
     },
@@ -72,7 +72,7 @@ async function bootstrap() {
       return !authority ? true : authority(ability);
     },
     slots: {
-      topbarRight() {
+      topbarWidget() {
         return (
           <>
             <LayoutSetting />
@@ -100,7 +100,14 @@ async function bootstrap() {
   setupI18n(app);
 
   // 请求拦截
-  const mock = createMock();
+  const mock = createMock({
+    requestInterceptorInit: {
+      network: {
+        uplink: 100 * 1024,
+        downlink: 100 * 1024,
+      },
+    },
+  });
   mock.intercept();
   app.provide('mockContext', mock.httpMessageManager);
 

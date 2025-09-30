@@ -27,7 +27,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldTextarea',
+    name: 'CoFieldTextarea',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldTextareaSlots>,

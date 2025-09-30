@@ -1,3 +1,5 @@
+import { omit } from 'lodash-es';
+
 /**
  * 移动数组元素，并返回此数组，会改变原数组
  */
@@ -23,4 +25,13 @@ export function toArray(target: unknown) {
  */
 export function isShallowEqual(arr1: unknown[], arr2: unknown[]) {
   return arr1.length === arr2.length && arr1.every((item, i) => item === arr2[i]);
+}
+
+/**
+ * 移除数组对象中的唯一键
+ */
+export function omitUniqueKey<T extends object>(arr: T[], key = '_uniqid') {
+  return arr.map((item) => {
+    return omit(item, key);
+  });
 }

@@ -18,8 +18,10 @@
         :field-props="{
           options: roleOptions,
           multiple: true,
-          valueKey: 'id',
-          labelKey: 'name',
+          props: {
+            label: 'name',
+            value: 'id',
+          },
         }"
       />
       <co-form-item prop="avatar" :label="t('rbac.avatar')">
@@ -67,8 +69,6 @@ const model = reactive<Model>({
   roles: [],
 });
 
-const editId = ref<number>();
-
 const roleOptions = ref<Role[]>([]);
 
 onMounted(() => {
@@ -82,15 +82,13 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
     stuffTitle: t('rbac.admin'),
     model,
     beforeFill(row) {
-      editId.value = row.id;
-
       return {
         ...row,
         roles: row.roles.map((item) => item.id),
       };
     },
-    add: () => addAdmin(model),
-    edit: () => updateAdmin(editId.value!, model),
+    addFetch: () => addAdmin(model),
+    editFetch: (row) => updateAdmin(row.id, model),
   })),
 );
 

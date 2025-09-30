@@ -6,7 +6,7 @@ import {
   formExposeKeys,
   formContextSymbol,
   formPropsOmit,
-} from './form';
+} from './form.api';
 import { provide, reactive, ref, toRef, useTemplateRef } from 'vue';
 import { type FormInstance } from 'element-plus';
 import { createMergedExpose } from '../../utils';

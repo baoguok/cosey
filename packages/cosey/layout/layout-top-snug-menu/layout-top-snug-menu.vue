@@ -22,7 +22,7 @@ import { SnugMenu, SnugMenuItem } from '../../components';
 import { ElScrollbar } from 'element-plus';
 
 defineOptions({
-  name: 'LayoutTopSnugMenu',
+  name: 'CoLayoutTopSnugMenu',
 });
 
 const layoutStore = useLayoutStore();

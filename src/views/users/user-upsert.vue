@@ -2,7 +2,12 @@
   <co-form-dialog v-bind="dialogProps" width="lg" ref="dialog">
     <co-form v-bind="formProps" label-width="auto" width="md">
       <co-form-group>
-        <co-form-item v-model="model.nickname" prop="nickname" :label="t('user.nickname')" />
+        <co-form-item
+          v-model="model.nickname"
+          prop="nickname"
+          :label="t('user.nickname')"
+          required
+        />
         <co-form-item v-model="model.mobile" prop="mobile" :label="t('user.phone')" />
         <co-form-item v-model="model.name" prop="name" :label="t('user.name')" />
         <co-form-item
@@ -73,7 +78,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive } from 'vue';
 import { useUsersApi } from '@/api/users';
 import { useUpsert } from 'cosey/hooks';
 import * as mock from '@gunny/mock';
@@ -123,17 +128,12 @@ const model = reactive<Model>({
   avatar: undefined,
 });
 
-const editId = ref<number>();
-
 const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('user.user'),
     model,
-    beforeFill(row) {
-      editId.value = row.id;
-    },
-    add: () => addUser(model),
-    edit: () => updateUser(editId.value!, model),
+    addFetch: () => addUser(model),
+    editFetch: (row) => updateUser(row.id, model),
   })),
 );
 

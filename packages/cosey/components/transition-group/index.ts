@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import TransitionGroup from './transition-group.vue';
+import TransitionGroup from './transition-group';
 
-export * from './transition-group';
+export * from './transition-group.api';
 
 const _TransitionGroup = withInstall(TransitionGroup);
 

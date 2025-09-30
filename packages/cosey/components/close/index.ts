@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import Close from './close.vue';
+import Close from './close';
 
-export * from './close';
+export * from './close.api';
 
 const _Close = withInstall(Close);
 

@@ -1,4 +1,4 @@
-import { type TableColumnProps } from '../table-column/table-column';
+import { type TableColumnProps } from '../table-column/table-column.api';
 
 export interface TableColumnEditorProps {
   modelValue?: TableColumnProps[];

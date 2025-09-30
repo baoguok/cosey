@@ -1,6 +1,6 @@
 import { getSimpleStyleHook } from '../../../theme';
 
-export default getSimpleStyleHook('EditorResize', (token) => {
+export default getSimpleStyleHook('CoEditorResize', (token) => {
   const { componentCls } = token;
 
   return {

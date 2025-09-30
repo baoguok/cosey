@@ -98,6 +98,13 @@ getPosts.abort();
 
 HTTP 认证方案。
 
+### authHeaderKey
+
+- 类型：`string`
+- 默认值：`'Authorization'`
+
+Token 添加到的请求头字段的键名
+
 ### path
 
 #### path.code

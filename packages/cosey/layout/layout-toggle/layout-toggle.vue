@@ -13,7 +13,7 @@ import { useLayoutStore } from '../../store';
 import { Icon } from '../../components';
 
 defineOptions({
-  name: 'LayoutToggle',
+  name: 'CoLayoutToggle',
 });
 
 const layoutStore = useLayoutStore();

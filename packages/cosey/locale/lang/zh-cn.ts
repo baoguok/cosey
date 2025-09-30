@@ -13,6 +13,7 @@ export default {
       reload: '刷新',
       addSuccess: '新增成功',
       editSuccess: '编辑成功',
+      operateSuccess: '操作成功',
       exportSuccess: '导出成功',
       add: '新增',
       edit: '编辑',
@@ -29,6 +30,8 @@ export default {
       submit: '提交',
       reset: '重置',
       search: '查询',
+      required: '必填',
+      isRequired: '{label}是必填项',
     },
     colorPicker: {
       preset: '预设',
@@ -56,6 +59,7 @@ export default {
     },
     table: {
       export: '导出',
+      exportThisPage: '导出当前页',
       exportData: '导出数据',
       exitFullScreen: '退出全屏',
       fullScreen: '全屏',
@@ -67,6 +71,7 @@ export default {
       paramConfig: '参数配置',
       header: '表头',
       groupHeader: '分组表头',
+      total: '合计',
     },
     toggle: {
       unfold: '展开',
@@ -105,6 +110,7 @@ export default {
       enterPassword: '请输入密码',
       password: '密码',
       logout: '退出',
+      loggingOut: '正在退出',
     },
     tabbar: {
       closeLeftTabs: '关闭左侧标签页',

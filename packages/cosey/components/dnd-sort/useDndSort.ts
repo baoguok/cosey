@@ -1,5 +1,5 @@
 import { computed, provide, reactive, Ref, ref, unref } from 'vue';
-import { DndSortContext, dndSortContextSymbol, DndSortItemContext } from './dnd-sort';
+import { DndSortContext, dndSortContextSymbol, DndSortItemContext } from './dnd-sort.api';
 
 export interface UseDndSortOptions {
   onMove?: (fromIndex: number, toIndex: number) => void;

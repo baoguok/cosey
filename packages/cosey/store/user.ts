@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, shallowRef } from 'vue';
 import { type RouteRecordRaw, useRoute, useRouter } from 'vue-router';
 import { defineStore } from 'pinia';
 import { getAllDynamicRoutes } from '../router';
@@ -10,7 +10,7 @@ import { TOKEN_NAME } from '../constant';
  */
 import type {} from '@vue/shared';
 import { useGlobalConfig } from '../config';
-import { warningOnce } from '../utils';
+import { isFunction, warningOnce } from '../utils';
 import { NOT_FOUND_ROUTE_NAME, NotFoundRoute } from '../router/not-found';
 
 interface UserInfo {
@@ -32,6 +32,8 @@ export const useUserStore = defineStore('cosey-user', () => {
     defineAuthority,
   } = useGlobalConfig() || {};
 
+  const filterRouteHandler = isFunction(filterRoute) ? filterRoute : filterRoute.hook();
+
   if (!apiConfig?.login) {
     warningOnce(!!apiConfig?.login, 'The "login" api is required.');
   }
@@ -46,7 +48,7 @@ export const useUserStore = defineStore('cosey-user', () => {
   const logoutApi = apiConfig?.logout?.();
 
   // 当前动态添加的路由
-  const dynamicRoutes = ref<any[]>([]);
+  const dynamicRoutes = shallowRef<any[]>([]);
   // 当前登录用户的信息
   const userInfo = ref<UserInfo>();
   // 是否已获取用户信息
@@ -100,7 +102,7 @@ export const useUserStore = defineStore('cosey-user', () => {
   const mapRoute = (routes: RouteRecordRaw[]): RouteRecordRaw[] => {
     return routes
       .map((route) => {
-        const result = filterRoute?.(route);
+        const result = filterRouteHandler(route);
         const node = result === true ? route : result;
 
         if (node && node.children && node.children.length) {
@@ -136,16 +138,20 @@ export const useUserStore = defineStore('cosey-user', () => {
   /**
    * 退出登录时清空用户信息
    */
-  const flush = (lastPath?: string) => {
+  const flush = async (lastPath?: string) => {
     persist.remove(TOKEN_NAME);
     userInfo.value = undefined;
     requestedUserInfo.value = false;
-    router.push({
+    await router.push({
       path: routerConfig!.loginPath,
       query: {
         redirect: lastPath,
       },
     });
+    dynamicRoutes.value.forEach((route) => {
+      router.removeRoute(route.name!);
+    });
+    dynamicRoutes.value = [];
   };
 
   /**
@@ -153,7 +159,7 @@ export const useUserStore = defineStore('cosey-user', () => {
    */
   const logout = async (lastPath?: string) => {
     await logoutApi?.();
-    flush(lastPath);
+    await flush(lastPath);
   };
 
   return {

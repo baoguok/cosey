@@ -1,12 +1,7 @@
-import { type CSSObject } from '../../cssinjs';
-import { type FullToken, type GenerateStyle, getStyleHook } from '../../theme';
+import { getSimpleStyleHook } from '../../theme';
 import { getLineClampStyle } from '../../style/mixins';
 
-export interface ComponentToken {}
-
-export interface LongTextToken extends FullToken<'LongText'> {}
-
-const getLongTextStyle: GenerateStyle<LongTextToken, CSSObject> = (token) => {
+export default getSimpleStyleHook('CoLongText', (token) => {
   const { componentCls } = token;
 
   return {
@@ -28,8 +23,4 @@ const getLongTextStyle: GenerateStyle<LongTextToken, CSSObject> = (token) => {
       },
     },
   };
-};
-
-export default getStyleHook('LongText', (token) => {
-  return [getLongTextStyle(token)];
 });

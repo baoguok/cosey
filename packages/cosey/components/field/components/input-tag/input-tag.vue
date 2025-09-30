@@ -27,7 +27,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldInputTag',
+    name: 'CoFieldInputTag',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldInputTagSlots>,

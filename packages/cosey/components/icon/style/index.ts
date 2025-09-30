@@ -1,11 +1,6 @@
-import { type CSSObject } from '../../cssinjs';
-import { type FullToken, type GenerateStyle, getStyleHook } from '../../theme';
+import { getSimpleStyleHook } from '../../theme';
 
-export interface ComponentToken {}
-
-export interface IconToken extends FullToken<'Icon'> {}
-
-const getIconStyle: GenerateStyle<IconToken, CSSObject> = (token) => {
+export default getSimpleStyleHook('CoIcon', (token) => {
   const { componentCls } = token;
 
   return {
@@ -32,8 +27,4 @@ const getIconStyle: GenerateStyle<IconToken, CSSObject> = (token) => {
       },
     },
   };
-};
-
-export default getStyleHook('Icon', (token) => {
-  return [getIconStyle(token)];
 });

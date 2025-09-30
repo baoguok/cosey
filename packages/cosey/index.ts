@@ -11,8 +11,8 @@ export * from './layout';
 export * from './router';
 export { useUserStore, useAppearanceStore, useLayoutStore } from './store';
 export * from './config';
-export * from './config/root-config-provider';
-export { default as RootConfigProvider } from './config/root-config-provider.vue';
+export * from './config/root-config-provider.api';
+export { default as RootConfigProvider } from './config/root-config-provider';
 
 export interface CoseyApp<HostElement> extends App<HostElement> {}
 

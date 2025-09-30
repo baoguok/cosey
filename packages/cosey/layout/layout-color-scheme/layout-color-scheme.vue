@@ -23,7 +23,7 @@ import useStyle, { useGlobalStyle } from './style';
 import { type ButtonInstance, ElButton } from 'element-plus';
 
 defineOptions({
-  name: 'LayoutColorScheme',
+  name: 'CoLayoutColorScheme',
 });
 
 useGlobalStyle();

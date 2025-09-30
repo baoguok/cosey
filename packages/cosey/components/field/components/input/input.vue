@@ -31,7 +31,7 @@ export default defineComponent(
     };
   },
   {
-    name: 'FieldInput',
+    name: 'CoFieldInput',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
     slots: {} as SlotsType<FieldInputSlots>,

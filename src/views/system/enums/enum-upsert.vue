@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive } from 'vue';
 import { useEnumsApi } from '@/api/system/enums';
 import { useUpsert } from 'cosey/hooks';
 import { useI18n } from 'vue-i18n';
@@ -31,17 +31,12 @@ const model = reactive<Model>({
   remark: undefined,
 });
 
-const editId = ref<number>();
-
 const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('enum.enum'),
     model,
-    beforeFill(row) {
-      editId.value = row.id;
-    },
-    add: () => addEnum(model),
-    edit: () => updateEnum(editId.value!, model),
+    addFetch: () => addEnum(model),
+    editFetch: (row) => updateEnum(row.id, model),
   })),
 );
 

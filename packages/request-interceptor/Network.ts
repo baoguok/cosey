@@ -26,16 +26,26 @@ export class Network {
       return new Uint8Array(0);
     }
 
-    let chunks: number[] = [];
+    const chunks: Uint8Array[] = [];
     const reader = stream.getReader();
+    let totalLength = 0;
 
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      chunks = chunks.concat(...value);
+      chunks.push(value);
+      totalLength += value.length;
     }
 
-    return new Uint8Array(chunks);
+    const result = new Uint8Array(totalLength);
+    let offset = 0;
+
+    for (const chunk of chunks) {
+      result.set(chunk, offset);
+      offset += chunk.length;
+    }
+
+    return result;
   }
 
   timer: ReturnType<typeof setTimeout> | null = null;

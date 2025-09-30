@@ -8,8 +8,10 @@
         field-type="select"
         :field-props="{
           options: configGroups,
-          labelKey: 'name',
-          valueKey: 'id',
+          props: {
+            label: 'name',
+            value: 'id',
+          },
         }"
         required
       />
@@ -23,8 +25,10 @@
         field-type="radiogroup"
         :field-props="{
           options: configTypes,
-          labelKey: 'name',
-          valueKey: 'value',
+          props: {
+            label: 'name',
+            value: 'value',
+          },
         }"
       />
       <co-form-item
@@ -148,8 +152,6 @@ const model = reactive<Model>({
   typeModel,
 });
 
-const editId = ref<number>();
-
 const convertModel = () => {
   model.value = model.typeModel[model.type!] as any;
   return omit(model, ['typeModel']);
@@ -159,13 +161,11 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({
     stuffTitle: t('config.config'),
     model,
-    beforeFill(row) {
-      editId.value = row.id;
-
+    onEdit(row) {
       model.typeModel[row.type!] = row.value as any;
     },
-    add: () => addConfig(convertModel()),
-    edit: () => updateConfig(editId.value!, convertModel()),
+    addFetch: () => addConfig(convertModel()),
+    editFetch: (row) => updateConfig(row.id, convertModel()),
   })),
 );
 

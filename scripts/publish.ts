@@ -7,13 +7,19 @@ import { flow, selectPackage, type Steps } from './utils/flow';
 let pkgName = '';
 let pkgDistDir = '';
 
+const npmRegistry = 'https://registry.npmjs.org/';
+
 async function doPublish() {
   return new Promise(() => {
-    child_process.spawn(`npm`, ['publish', '--access', 'public'], {
-      stdio: 'inherit',
-      cwd: pkgDistDir,
-      shell: true,
-    });
+    child_process.spawn(
+      `npm`,
+      ['publish', '--access', 'public', '--registry', npmRegistry, '-ws=false'],
+      {
+        stdio: 'inherit',
+        cwd: pkgDistDir,
+        shell: true,
+      },
+    );
   });
 }
 

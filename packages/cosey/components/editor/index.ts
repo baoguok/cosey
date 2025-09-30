@@ -3,12 +3,12 @@ import { withInstall } from '../utils';
 import { useMounted } from '../../hooks';
 import { isClient } from '../../utils';
 
-export * from './editor';
+export * from './editor.api';
 
 const Editor = defineComponent({
   name: 'Editor',
   setup(props, { slots }) {
-    const AsyncComponent = defineAsyncComponent(() => import('./editor.vue'));
+    const AsyncComponent = defineAsyncComponent(() => import('./editor'));
 
     const isMounted = useMounted();
 
@@ -20,10 +20,10 @@ const Editor = defineComponent({
       return h(AsyncComponent, props, slots);
     };
   },
-}) as unknown as (typeof import('./editor.vue'))['default'];
+}) as unknown as (typeof import('./editor'))['default'];
 
 if (isClient()) {
-  import('./editor.vue');
+  import('./editor');
 }
 
 const _Editor = withInstall(Editor);
