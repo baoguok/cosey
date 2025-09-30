@@ -1,11 +1,6 @@
-<template>
-  <Select v-model="current" :list="list" button-width="100px" @change="onChange" />
-</template>
-
-<script setup lang="ts">
-import { computed } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { useEditor } from 'slate-vue3';
-import Select from './select.vue';
+import Select from './select';
 import { useMarkValue } from './hooks/useMarkValue';
 
 const fonts = [
@@ -34,30 +29,44 @@ const fonts = [
   ['Verdana', 'verdana, geneva, sans-serif'],
 ];
 
-const list = computed(() => {
-  const sizeList = fonts.map(([label, value]) => {
-    return {
-      label,
-      value,
-      style: {
-        fontFamily: value,
-      },
+export default defineComponent({
+  setup() {
+    const list = computed(() => {
+      const sizeList = fonts.map(([label, value]) => {
+        return {
+          label,
+          value,
+          style: {
+            fontFamily: value,
+          },
+        };
+      });
+      return [
+        {
+          label: '默认字体',
+          value: '',
+        },
+        ...sizeList,
+      ];
+    });
+
+    const editor = useEditor();
+
+    const current = useMarkValue('font');
+
+    const onChange = (value: string) => {
+      editor.formatFont(value);
     };
-  });
-  return [
-    {
-      label: '默认字体',
-      value: '',
-    },
-    ...sizeList,
-  ];
+
+    return () => {
+      return (
+        <Select
+          v-model={current.value}
+          list={list.value}
+          button-width="100px"
+          onChange={onChange}
+        />
+      );
+    };
+  },
 });
-
-const editor = useEditor();
-
-const current = useMarkValue('font');
-
-const onChange = (value: string) => {
-  editor.formatFont(value);
-};
-</script>

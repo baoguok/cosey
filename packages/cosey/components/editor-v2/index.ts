@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import EditorV2 from './editor-v2.vue';
+import EditorV2 from './editor-v2';
 
-export * from './editor-v2';
+export * from './editor-v2.api';
 
 const _EditorV2 = withInstall(EditorV2);
 

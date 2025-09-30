@@ -1,6 +1,5 @@
 import { useEditor } from 'slate-vue3';
-import { Element } from 'slate-vue3/core';
-import { Editor } from 'slate-vue3/core';
+import { Element, Editor } from 'slate-vue3/core';
 import { computed } from 'vue';
 
 export function useBlockValueActive(key: string, value: string) {

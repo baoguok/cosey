@@ -1,10 +1,9 @@
-import type { CSSInterpolation, CSSObject } from '../../cssinjs';
-import { getTruncateStyle } from '../../style';
-import { type FullToken, type GenerateStyle, getSimpleStyleHook } from '../../theme';
+import type { CSSInterpolation, CSSObject } from '../cssinjs';
+import { getTruncateStyle } from '../style';
+import { type GenerateStyle, getSimpleStyleHook } from '../theme';
+import { AliasTokenWithCommonCls } from '../theme/getSimpleStyleHook';
 
-export interface EditorToken extends FullToken<'Editor'> {}
-
-export const getButtonStyle: GenerateStyle<EditorToken, CSSObject> = (token) => {
+export const getButtonStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> = (token) => {
   const { componentCls } = token;
 
   const buttonCls = `${componentCls}-button`;
@@ -87,7 +86,7 @@ export const getButtonStyle: GenerateStyle<EditorToken, CSSObject> = (token) => 
   };
 };
 
-export const getArticleStyle: GenerateStyle<EditorToken, CSSObject> = (token) => {
+export const getArticleStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> = (token) => {
   return {
     'p, ol, ul, pre, blockquote, h1, h2, h3, h4, h5, h6': {
       margin: 0,
@@ -205,7 +204,7 @@ export const getArticleStyle: GenerateStyle<EditorToken, CSSObject> = (token) =>
   };
 };
 
-const getEditorStyle: GenerateStyle<EditorToken, CSSInterpolation> = (token) => {
+const getEditorStyle: GenerateStyle<AliasTokenWithCommonCls, CSSInterpolation> = (token) => {
   const { componentCls } = token;
 
   const toolbarCls = `${componentCls}-toolbar`;
@@ -267,6 +266,6 @@ const getEditorStyle: GenerateStyle<EditorToken, CSSInterpolation> = (token) => 
   };
 };
 
-export default getSimpleStyleHook('EditorV2', (token) => {
+export default getSimpleStyleHook('CoEditorV2', (token) => {
   return [getEditorStyle(token), getButtonStyle(token)];
 });

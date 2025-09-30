@@ -1,7 +1,6 @@
-import { useEditor } from 'slate-vue3';
-import { Element } from 'slate-vue3/core';
-import { Editor } from 'slate-vue3/core';
 import { ref, watch } from 'vue';
+import { useEditor } from 'slate-vue3';
+import { Element, Editor } from 'slate-vue3/core';
 
 export function useBlockList(types: string[], initial?: string) {
   const editor = useEditor();
