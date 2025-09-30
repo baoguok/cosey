@@ -195,7 +195,6 @@ export function renderer<T extends RendererType>(
           onClick={() => obj.onClick?.({ row, value: cellValue, index, column })}
         >
           {obj.format ? obj.format(cellValue, row, column, index) : cellValue}
-          {cellValue}
         </ElLink>
       );
   }
