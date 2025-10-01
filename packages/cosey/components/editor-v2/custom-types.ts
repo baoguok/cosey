@@ -22,6 +22,8 @@ export const INDENT_ELEMENT_TYPES = [...HEADING_WITH_PARA_TYPES, 'block-quote'] 
 export type IndentElementType = (typeof INDENT_ELEMENT_TYPES)[number];
 
 export const mapElementTypeTagName: Record<string, string> = {
+  block: 'div',
+  paragraph: 'p',
   'block-quote': 'blockquote',
   'bulleted-list': 'ul',
   'numbered-list': 'ol',
@@ -33,6 +35,13 @@ export const mapElementTypeTagName: Record<string, string> = {
   'heading-five': 'h5',
   'heading-six': 'h6',
 };
+
+export const mapTagNameElementType = Object.fromEntries(
+  Object.entries(mapElementTypeTagName).map(([elementType, tagName]) => [
+    tagName.toUpperCase(),
+    elementType,
+  ]),
+);
 
 export type ParagraphElement = {
   type: 'paragraph';
@@ -199,7 +208,7 @@ export type CustomText = {
 
 export type EmptyText = {
   text: string;
-};
+} & CustomText;
 
 export type CustomEditor = BaseEditor & DOMEditor;
 

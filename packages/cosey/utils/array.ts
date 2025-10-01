@@ -16,7 +16,7 @@ export function arrayMove<T extends any[]>(arr: T, fromIndex: number, toIndex: n
 /**
  * 将传入的值转换为数组
  */
-export function toArray(target: unknown) {
+export function toArray<T>(target: T | T[]): T[] {
   return Array.isArray(target) ? target : [target];
 }
 

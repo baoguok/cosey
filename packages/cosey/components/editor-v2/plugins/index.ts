@@ -12,6 +12,8 @@ import { withMark } from './mark';
 import { withBlock } from './block';
 import { withAlign } from './align';
 import { withClear } from './clear';
+import { withSerialize } from './serialize';
+import { withRender } from './render';
 
 const plugins = [
   withNormalizeNode,
@@ -27,6 +29,8 @@ const plugins = [
   withBlock,
   withAlign,
   withClear,
+  withSerialize,
+  withRender,
 ];
 
 export function withDefaultPlugins(editor: Editor) {

@@ -7,7 +7,6 @@ declare module 'slate-vue3/core' {
   }
 }
 
-// todo: clear formats
 export function withClear(editor: Editor) {
   editor.clearForamts = () => {
     DOMEditor.focus(editor);
@@ -20,14 +19,16 @@ export function withClear(editor: Editor) {
       }),
     );
 
-    textNodes.forEach(([node, path]) => {
-      const newProps: Record<string, any> = {};
-      Object.keys(node).forEach((key) => {
-        if (key !== 'text') newProps[key] = undefined; // 清除所有文本样式
+    Editor.withoutNormalizing(editor, () => {
+      textNodes.forEach(([node, path]) => {
+        const newProps: Record<string, any> = {};
+        Object.keys(node).forEach((key) => {
+          if (key !== 'text') newProps[key] = undefined; // 清除所有文本样式
+        });
+        if (Object.keys(newProps).length > 0) {
+          Transforms.setNodes(editor, newProps, { at: path });
+        }
       });
-      if (Object.keys(newProps).length > 0) {
-        Transforms.setNodes(editor, newProps, { at: path });
-      }
     });
 
     // 2. 清除块级元素的非必要属性（如align/color，但保留type）

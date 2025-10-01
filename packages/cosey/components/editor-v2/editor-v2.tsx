@@ -1,5 +1,5 @@
-import { type CSSProperties, defineComponent, h } from 'vue';
-import { Slate, Editable, type RenderLeafProps, type RenderElementProps } from 'slate-vue3';
+import { defineComponent } from 'vue';
+import { Slate, Editable } from 'slate-vue3';
 import { createEditor } from 'slate-vue3/core';
 import { withDOM } from 'slate-vue3/dom';
 import { withHistory } from 'slate-vue3/history';
@@ -17,14 +17,14 @@ import FormatIndent from './format-indent';
 import FormatAlign from './format-align';
 import ListType from './format-list';
 import FormatClear from './format-clear';
+import FormatSource from './format-source';
 
 import { editorV2Props, editorV2Slots, editorV2Emits } from './editor-v2.api';
 import useStyle from './editor-v2.style';
 import { useComponentConfig } from '../config-provider';
-import { mapElementTypeTagName, type CustomElement } from './custom-types';
+import { type CustomElement } from './custom-types';
 import { useFocus } from './hooks/useFocus';
 import { withDefaultPlugins } from './plugins';
-import { isListItem } from './plugins/list';
 
 const list = {
   type: 'bulleted-list',
@@ -135,62 +135,6 @@ export default defineComponent({
     const { hashId } = useStyle(prefixCls);
 
     // main
-    const renderElement = ({ attributes: attrs, children, element }: RenderElementProps) => {
-      const attributes = {
-        ...attrs,
-        style: {
-          textAlign: element.align,
-          paddingLeft: element.indent ? element.indent * 40 + 'px' : '',
-        } as CSSProperties,
-      };
-
-      if (isListItem(element)) {
-        attributes.style.listStyle = element.onlyListAsChildren ? 'none' : undefined;
-      }
-
-      const tagName = mapElementTypeTagName[element.type] || 'p';
-      return h(tagName, attributes, children);
-    };
-
-    const renderLeaf = ({ leaf, attributes, children }: RenderLeafProps) => {
-      const style: CSSProperties = {};
-      if ('bold' in leaf) {
-        style.fontWeight = 'bold';
-      }
-      if ('italic' in leaf) {
-        style.fontStyle = 'italic';
-      }
-      if ('underline' in leaf) {
-        style.borderBottom = '1px solid black';
-      }
-      if ('strikethrough' in leaf) {
-        style.textDecoration = 'line-through';
-      }
-      if ('font' in leaf) {
-        style.fontFamily = leaf.font;
-      }
-      if ('size' in leaf) {
-        style.fontSize = leaf.size;
-      }
-      if ('color' in leaf) {
-        style.color = leaf.color;
-      }
-      if ('background' in leaf) {
-        style.background = leaf.background;
-      }
-
-      return h(
-        'code' in leaf
-          ? 'code'
-          : 'superscript' in leaf
-            ? 'sup'
-            : 'subscript' in leaf
-              ? 'sub'
-              : 'span',
-        { ...attributes, style },
-        children,
-      );
-    };
 
     const editor = withDefaultPlugins(withHistory(withDOM(createEditor())));
     editor.children = initialValue;
@@ -200,7 +144,11 @@ export default defineComponent({
     return () => {
       return (
         <div class={[hashId.value, prefixCls.value]}>
-          <Slate editor={editor} render-element={renderElement} render-leaf={renderLeaf}>
+          <Slate
+            editor={editor}
+            renderElement={editor.renderElement}
+            renderLeaf={editor.renderLeaf}
+          >
             <Toolbar>
               <ButtonGroup>
                 <FormatHeading />
@@ -241,6 +189,9 @@ export default defineComponent({
               </ButtonGroup>
               <ButtonGroup>
                 <FormatClear />
+              </ButtonGroup>
+              <ButtonGroup>
+                <FormatSource />
               </ButtonGroup>
             </Toolbar>
             <div

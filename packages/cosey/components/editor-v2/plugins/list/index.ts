@@ -15,7 +15,7 @@ declare module 'slate-vue3/core' {
 }
 
 export function withList(editor: Editor) {
-  // 缩颈
+  // 缩进
   editor.indentList = (value: number) => {
     indentList(editor, value);
   };

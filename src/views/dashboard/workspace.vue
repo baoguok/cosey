@@ -1,5 +1,13 @@
 <template>
   <co-container>
+    <el-card shadow="never" class="mb-4">
+      <Editor></Editor>
+    </el-card>
+
+    <el-card shadow="never" class="mb-4">
+      <EditorV2></EditorV2>
+    </el-card>
+
     <co-card class="relative" style="height: 400px">
       <div class="flex">
         <el-avatar :size="80" class="flex-none" :src="userStore.userInfo?.avatar">
@@ -21,6 +29,7 @@
 
 <script lang="ts" setup>
 import { useUserStore } from 'cosey';
+import { Editor, EditorV2 } from 'cosey/components';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();

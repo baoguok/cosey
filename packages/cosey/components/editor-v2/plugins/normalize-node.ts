@@ -25,10 +25,15 @@ const normalizeNode: WithEditorFirstArg<Editor['normalizeNode']> = (editor, entr
   }
 
   // list 只能包含 list-item
-  if (isList(node) && node.children.some((sub) => !isListItem(sub))) {
-    Transforms.unwrapNodes(editor, {
-      at: path,
-    });
+  if (isList(node)) {
+    for (let i = 0; i < node.children.length; i++) {
+      if (!isListItem(node.children[i])) {
+        Transforms.removeNodes(editor, {
+          at: [...path, i],
+        });
+        i--;
+      }
+    }
     return;
   }
 
