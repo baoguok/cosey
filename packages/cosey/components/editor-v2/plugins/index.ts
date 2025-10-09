@@ -14,6 +14,7 @@ import { withAlign } from './align';
 import { withClear } from './clear';
 import { withSerialize } from './serialize';
 import { withRender } from './render';
+import { withLink } from './link';
 
 const plugins = [
   withNormalizeNode,
@@ -31,6 +32,7 @@ const plugins = [
   withClear,
   withSerialize,
   withRender,
+  withLink,
 ];
 
 export function withDefaultPlugins(editor: Editor) {
