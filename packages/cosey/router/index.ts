@@ -26,6 +26,7 @@ export interface CoseyRouterOptions extends Omit<RouterOptions, 'routes' | 'hist
   history?: RouterHistory;
   dynamic?: RouteRecordRaw[];
   static?: RouteRecordRaw[];
+  listening?: boolean;
 }
 
 let customDynamicRoutes: RouteRecordRaw[] = [];
@@ -40,7 +41,7 @@ export const getAllStaticRoutes = () => {
 };
 
 export function createCoseyRouter(options: CoseyRouterOptions = {}) {
-  const { static: static$ = [], dynamic = [], ...restOptions } = options;
+  const { static: static$ = [], dynamic = [], listening = true, ...restOptions } = options;
 
   customStaticRoutes = static$;
 
@@ -59,6 +60,8 @@ export function createCoseyRouter(options: CoseyRouterOptions = {}) {
   );
 
   const router = createRouter(mergedOptions);
+
+  router.listening = listening;
 
   return router;
 }

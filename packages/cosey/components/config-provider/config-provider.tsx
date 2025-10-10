@@ -1,4 +1,4 @@
-import { computed, defineComponent, onMounted, onUnmounted, provide, unref, watch } from 'vue';
+import { computed, defineComponent, onUnmounted, provide, unref, watch } from 'vue';
 import useMergeTheme from './useMergeTheme';
 import {
   configProviderProps,
@@ -6,7 +6,7 @@ import {
   useConfigProvide,
   type ConfigProviderInnerProps,
 } from './config-provider.api';
-import { useThemeProvide } from '../theme';
+import { useThemeProvide, useToken } from '../theme';
 import useOverrideElementPlus from './override-element-plus';
 import { ThemeManager } from '../theme/theme-context';
 import { localeContextKey, outsideLocale } from '../../hooks';
@@ -67,13 +67,25 @@ export default defineComponent({
     useThemeProvide(themeManager);
 
     // override ElementPlus
-    const { hashId } = useOverrideElementPlus(themeManager);
+    useOverrideElementPlus(themeManager);
 
-    onMounted(() => {
-      if (!parentContext.theme) {
-        document.documentElement.classList.add(hashId.value);
-      }
-    });
+    // root hash
+    const { hashId } = useToken(themeManager);
+
+    watch(
+      hashId,
+      (newHashId, oldHashId) => {
+        if (!parentContext.theme) {
+          if (oldHashId) {
+            document.documentElement.classList.remove(oldHashId);
+          }
+          document.documentElement.classList.add(newHashId);
+        }
+      },
+      {
+        immediate: true,
+      },
+    );
 
     return () => {
       return <div class={hashId.value}>{slots.default?.()}</div>;

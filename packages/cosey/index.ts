@@ -28,7 +28,9 @@ export const createCosey = (options: CoseyOptions = {}) => {
       app.use(router);
 
       // 路由守卫
-      registerRouterGuard(router);
+      if (router.listening) {
+        registerRouterGuard(router);
+      }
 
       // 全局状态管理
       app.use(pinia);
