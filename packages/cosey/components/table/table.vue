@@ -117,7 +117,7 @@
           <slot name="before-table"></slot>
         </div>
         <slot name="stats-table"></slot>
-        <div :class="`${prefixCls}-table`">
+        <div :class="`${prefixCls}-table`" dir="ltr">
           <el-table
             ref="elTableRef"
             v-bind="elTableProps"
