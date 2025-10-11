@@ -10,7 +10,7 @@ import {
   walkTree,
   isObject,
 } from '../../../utils';
-import List from './list.vue';
+import List from './list';
 import { type TableColumnProps } from '../table-column/table-column.api';
 import { exportRenderer } from '../table-column/renderer';
 import { ElCheckbox, ElMessage } from 'element-plus';
@@ -18,7 +18,7 @@ import FormDialog from '../../form-dialog/form-dialog';
 import { Form, FormItem } from '../../form';
 import { Panel } from '../../panel';
 
-import useStyle from './style';
+import useStyle from './table-export.style';
 import { useComponentConfig } from '../../config-provider';
 import { CheckableNode, useTreeCheck } from '../../../hooks';
 import { useLocale } from '../../../hooks';
@@ -27,7 +27,7 @@ export default defineComponent({
   name: 'CoTableExport',
   props: tableExportProps,
   emits: tableExportEmits,
-  setup(props, { attrs }) {
+  setup(props, { attrs, emit }) {
     const { prefixCls } = useComponentConfig('table-export');
 
     const { hashId } = useStyle(prefixCls);
@@ -187,7 +187,13 @@ export default defineComponent({
 
     return () => {
       return (
-        <FormDialog {...mergedProps.value} width="fit-content" onOpen={onOpen} onClosed={onClosed}>
+        <FormDialog
+          {...mergedProps.value}
+          width="fit-content"
+          onOpen={onOpen}
+          onClosed={onClosed}
+          onUpdate:modelValue={(value) => emit('update:modelValue', value)}
+        >
           <Form
             model={formModel}
             label-width="auto"

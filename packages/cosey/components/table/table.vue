@@ -225,7 +225,7 @@ import {
 } from './table';
 import { type TableColumnProps } from './table-column/table-column.api';
 import TableColumn from './table-column/table-column';
-import TableColumnEditor from './table-column-editor/table-column-editor.vue';
+import TableColumnEditor from './table-column-editor/table-column-editor';
 import TableQuery from './table-query/table-query';
 import TableExport from './table-export/table-export';
 import Icon from '../icon/icon.vue';

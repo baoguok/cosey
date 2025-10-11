@@ -1,5 +1,5 @@
-import { getSimpleStyleHook } from '../../theme';
-import { getLineClampStyle } from '../../style/mixins';
+import { getSimpleStyleHook } from '../theme';
+import { getLineClampStyle } from '../style/mixins';
 
 export default getSimpleStyleHook('CoLongText', (token) => {
   const { componentCls } = token;
