@@ -65,6 +65,8 @@ upload/select-only
 | select-only    | 仅选择文件，将其和其他表单项一并交由表单通过 `FormData` 上传 | boolean                                                       | false     |
 | size           | 列表项的尺寸                                                 | 'mini' \| 'small' \| 'default' \| 'large'                     | 'default' |
 | request        | 上传接口                                                     | (data: Blob, config?: AxiosRequestConfig) => Promise\<string> | -         |
+| request-config | 允许自定义当前上传接口的配置，例如可以添加查询参数           | AxiosRequestConfig                                            | -         |
+| request-extra  | 自定义额外数据，可通过请求接口的第三个参数获取               | Record<PropertyKey, any>                                      | -         |
 
 ### UploadSlots
 

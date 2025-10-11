@@ -5,13 +5,13 @@
       prop="activity"
       label="活动名称"
       width="md"
-      :rules="[{ required: true }]"
+      required
     />
     <co-form-list
       v-model="formModel.awards"
       prop="awards"
       label="活动奖品"
-      :rules="[{ type: 'array', required: true }]"
+      required
       draggable
       v-slot="{ row, getProp }"
     >
@@ -22,15 +22,9 @@
         field-type="select"
         :field-props="{ options: awards }"
         width="sm"
-        :rules="[{ required: true }]"
+        required
       />
-      <co-form-item
-        v-model="row.num"
-        :prop="getProp('num')"
-        label="数量"
-        width="sm"
-        :rules="[{ required: true }]"
-      />
+      <co-form-item v-model="row.num" :prop="getProp('num')" label="数量" width="sm" required />
     </co-form-list>
   </co-form>
 </template>

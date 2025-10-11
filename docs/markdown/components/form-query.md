@@ -58,7 +58,7 @@ form-query/vertical
 
 ### FormQueryProps
 
-继承 `FormProps` ，并有以下额外属性或默认值。
+继承 [FormProps](./form#formprops)，并有以下额外属性或默认值。
 
 | 属性       | 描述                                                                                                                        | 类型     | 默认值                                   |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------- | -------- | ---------------------------------------- |
@@ -69,11 +69,11 @@ form-query/vertical
 
 ### FormQuerySlots
 
-同 `FormSlots`。
+继承 [FormSlots](./form#formslots)。
 
 ### FormQueryEmits
 
-继承 `FormEmits` ，并有以下额外事件。
+继承 [FormEmits](./form#formemits)，并有以下额外事件。
 
 | 事件             | 描述               | 类型                         |
 | ---------------- | ------------------ | ---------------------------- |
@@ -81,4 +81,4 @@ form-query/vertical
 
 ### FormQueryExpose
 
-同 `FormExpose`。
+继承 [FormExpose](./form#formexpose)。

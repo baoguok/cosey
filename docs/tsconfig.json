@@ -19,7 +19,8 @@
       "@/*": ["./*"]
     },
     "jsx": "preserve",
-    "jsxImportSource": "vue"
+    "jsxImportSource": "vue",
+    "types": ["element-plus/global"]
   },
   "include": ["**/*", ".vitepress/**/*"],
   "exclude": ["node_modules", "dist"]

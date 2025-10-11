@@ -79,6 +79,7 @@ const useStyle = getOverrideStyleHook('OverrideVitepress', (token) => {
         },
 
         '> div :not(pre) > code': {
+          color: token.colorText,
           border: `1px solid ${token.colorBorderSecondary}`,
         },
 

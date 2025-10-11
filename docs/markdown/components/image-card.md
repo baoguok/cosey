@@ -20,7 +20,7 @@ image-card/basic
 
 ### ImageCardProps
 
-在 <el-link type="primary" href="https://element-plus.org/zh-CN/component/image.html#image-attributes" target="_blank">Image Attributes</el-link> 基础上，添加了以下属性。
+继承 [Image Attributes](https://element-plus.org/zh-CN/component/image.html#image-attributes)，并添加以下属性：
 
 | 属性 | 描述         | 类型                                      | 默认值    |
 | ---- | ------------ | ----------------------------------------- | --------- |
@@ -28,8 +28,8 @@ image-card/basic
 
 ### ImageCardSlots
 
-同 <el-link type="primary" href="https://element-plus.org/zh-CN/component/image.html#image-slots" target="_blank">Image Slots</el-link> 。
+继承 [Image Slots](https://element-plus.org/zh-CN/component/image.html#image-slots)。
 
 ### ImageCardEmits
 
-同 <el-link type="primary" href="https://element-plus.org/zh-CN/component/image.html#image-events" target="_blank">Image Events</el-link> 。
+继承 [Image Events](https://element-plus.org/zh-CN/component/image.html#image-events)。

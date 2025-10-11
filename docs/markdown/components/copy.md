@@ -16,10 +16,21 @@ copy/basic
 
 :::
 
+### 类型
+
+使用 `type` 属性设置按钮类型。
+
+::: demo
+
+copy/type
+
+:::
+
 ## API
 
 ### CopyProps
 
-| 属性 | 描述         | 类型   | 默认值 |
-| ---- | ------------ | ------ | ------ |
-| text | 要复制的文本 | string | -      |
+| 属性 | 描述         | 类型                                                                                     | 默认值 |
+| ---- | ------------ | ---------------------------------------------------------------------------------------- | ------ |
+| text | 要复制的文本 | string                                                                                   | -      |
+| type | 按钮类型     | [ButtonProps](https://element-plus.org/zh-CN/component/button#button-attributes)['type'] | ''     |

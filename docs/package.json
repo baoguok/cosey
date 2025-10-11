@@ -37,8 +37,10 @@
     "vitepress": "^1.6.3"
   },
   "dependencies": {
-    "@cosey/mock": "^0.1.5",
+    "@cosey/mock": "^0.1.6",
     "@iconify-json/carbon": "^1.2.8",
-    "cosey": "workspace:^"
+    "cosey": "workspace:^",
+    "pinia": "^3.0.2",
+    "vue-i18n": "^11.1.10"
   }
 }

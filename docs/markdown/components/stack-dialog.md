@@ -2,13 +2,11 @@
 
 ## 简介
 
-简介
+是 `ElDialog` 的高阶组件，显示多个层叠对话框时，会显示堆叠效果。层叠对话框的高度随屏幕高度变化而变化，适合用来放置撑满屏幕高度的表格组件。
 
 ## 代码演示
 
 ### 基础使用
-
-基础使用
 
 ::: demo
 
@@ -20,30 +18,16 @@ stack-dialog/basic
 
 ### StackDialogProps
 
-| 属性  | 描述  | 类型   | 默认值 |
-| ----- | ----- | ------ | ------ |
-| prop1 | 属性1 | string | -      |
+继承 `element-plus` 的 [Dialog Attributes](https://element-plus.org/zh-CN/component/dialog#attributes)。
 
 ### StackDialogSlots
 
-| 插槽    | 描述           | 属性 |
-| ------- | -------------- | ---- |
-| default | 自定义默认内容 | -    |
+继承 `element-plus` 的 [Dialog Slots](https://element-plus.org/zh-CN/component/dialog#slots)。
 
 ### StackDialogEmits
 
-| 事件  | 描述       | 类型                        |
-| ----- | ---------- | --------------------------- |
-| click | 点击时触发 | (event: MouseEvent) => void |
+继承 `element-plus` 的 [Dialog 事件](https://element-plus.org/zh-CN/component/dialog#%E4%BA%8B%E4%BB%B6)。
 
 ### StackDialogExpose
 
-| 属性   | 描述 | 类型       |
-| ------ | ---- | ---------- |
-| method | 描述 | () => void |
-
-### StackDialogOptions
-
-| 属性 | 描述 | 类型   | 默认值 |
-| ---- | ---- | ------ | ------ |
-| prop | 描述 | string | -      |
+继承 `element-plus` 的 [Dialog Exposes](https://element-plus.org/zh-CN/component/dialog#exposes)。

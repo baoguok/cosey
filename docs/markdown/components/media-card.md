@@ -35,7 +35,7 @@ media-card/size
 | src   | 媒体链接                                             | string                                    | -         |
 | size  | 媒体尺寸                                             | 'mini' \| 'small' \| 'default' \| 'large' | 'default' |
 | name  | 媒体文件名，在 audio 卡片中会替代从url中提取的文件名 | string                                    | -         |
-| type  | 媒体类型，如果url中没有后缀则可手动指定              | 'image' \| 'video' \| 'audio'             | -         |
+| type  | 媒体类型，如果url中没有后缀则可手动指定              | 'image' \| 'video' \| 'audio' \| 'svga'   | -         |
 | title | 鼠标移上去显示的标题                                 | string                                    | -         |
 
 ### MediaCardExpose

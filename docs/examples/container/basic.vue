@@ -1,5 +1,5 @@
 <template>
   <co-container>
-    <el-card></el-card>
+    <el-card>内容</el-card>
   </co-container>
 </template>
