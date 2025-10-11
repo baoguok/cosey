@@ -12,7 +12,7 @@ export const mediaCardBaseProps = {
     type: String,
   },
   type: {
-    type: String as PropType<'image' | 'video' | 'audio' | (string & {})>,
+    type: String as PropType<'image' | 'video' | 'audio' | 'svga' | (string & {})>,
   },
   title: {
     type: String,

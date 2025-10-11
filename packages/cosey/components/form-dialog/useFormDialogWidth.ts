@@ -3,7 +3,7 @@ import {
   type FormDialogWidth,
   type FormDialogPresetWidth,
   mapFormDialogWidth,
-} from './form-dialog';
+} from './form-dialog.api';
 
 export function getFormDialogWidth(outWidth?: FormDialogWidth) {
   return mapFormDialogWidth[outWidth as FormDialogPresetWidth] || outWidth;

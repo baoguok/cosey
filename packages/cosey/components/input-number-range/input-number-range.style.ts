@@ -1,4 +1,4 @@
-import { getSimpleStyleHook } from '../../theme';
+import { getSimpleStyleHook } from '../theme';
 
 export default getSimpleStyleHook('CoInputNumberRange', (token) => {
   const { componentCls } = token;

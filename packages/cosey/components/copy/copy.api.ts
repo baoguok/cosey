@@ -1,4 +1,5 @@
-import { type SlotsType, type ExtractPropTypes } from 'vue';
+import { ButtonProps } from 'element-plus';
+import { type SlotsType, type ExtractPropTypes, PropType } from 'vue';
 
 export const copyProps = {
   text: {
@@ -6,6 +7,10 @@ export const copyProps = {
   },
   color: {
     type: String,
+  },
+  type: {
+    type: String as PropType<ButtonProps['type']>,
+    default: '',
   },
 };
 

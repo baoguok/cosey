@@ -15,7 +15,7 @@ import {
   uniqid,
 } from '../../utils';
 import { useFetch, useProps } from '../../hooks';
-import TableQuery from '../table/table-query/table-query.vue';
+import TableQuery from '../table/table-query/table-query';
 import { type TableQueryExpose } from '..';
 
 export default defineComponent({

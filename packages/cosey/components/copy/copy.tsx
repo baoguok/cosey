@@ -20,6 +20,7 @@ export default defineComponent({
       return (
         <ElButton
           link
+          type={props.type}
           class={[hashId.value, prefixCls.value, { 'is-copied': copied.value }]}
           style={{ color: props.color }}
           onClick={() => copy(props.text || '')}

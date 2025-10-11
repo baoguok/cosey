@@ -7,8 +7,8 @@ import {
   TableQueryExpose,
   tableQueryExposeKeys,
   type TableQueryProps,
-} from './table-query/table-query';
-import { TableStatisticsColumn } from './table-stats/table-stats';
+} from './table-query/table-query.api';
+import { TableStatisticsColumn } from './table-stats/table-stats.api';
 
 export interface ToolbarConfig {
   reload?: boolean;

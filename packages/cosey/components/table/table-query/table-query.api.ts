@@ -2,11 +2,11 @@ import { type FieldType } from '../../field';
 import { type FormItemProps, formExposeKeys } from '../../form';
 import {
   type FormQuerySlots,
-  type FormQueryEmits,
   type FormQueryExpose,
   formQueryProps,
+  formQueryEmits,
 } from '../../form-query';
-import { type PropType, type ExtractPropTypes, VNodeChild } from 'vue';
+import type { PropType, ExtractPropTypes, VNodeChild, SlotsType } from 'vue';
 
 export type TableQueryScheme = FormItemProps<FieldType> & {
   render?: (params: { model: Record<string, any> }) => VNodeChild;
@@ -33,7 +33,13 @@ export type TableQueryProps = Partial<ExtractPropTypes<typeof tableQueryProps>>;
 
 export interface TableQuerySlots extends FormQuerySlots {}
 
-export interface TableQueryEmits extends /* @vue-ignore */ FormQueryEmits {}
+export const tableQuerySlots = Object as SlotsType<TableQuerySlots>;
+
+export const tableQueryEmits = {
+  ...formQueryEmits,
+};
+
+export type TableQueryEmits = typeof tableQueryEmits;
 
 export interface TableQueryCustomExpose {
   getFieldsValue: () => Record<string, any>;

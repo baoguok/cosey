@@ -1,6 +1,6 @@
 import { type TableColumnProps } from '../table-column/table-column.api';
 import { type ExtractPropTypes, type PropType } from 'vue';
-import { type FormDialogEmits, formDialogProps } from '../../form-dialog';
+import { formDialogEmits, formDialogProps } from '../../form-dialog';
 
 const tableExportExtraProps = {
   columns: {
@@ -36,7 +36,11 @@ export const omittedTableExportProps = Object.keys(
 
 export type TableExportProps = ExtractPropTypes<typeof tableExportProps>;
 
-export interface TableExportEmits extends FormDialogEmits {}
+export const tableExportEmits = {
+  ...formDialogEmits,
+};
+
+export type TableExportEmits = typeof tableExportEmits;
 
 export interface TableExportContext {
   setCheckedByColumn: (column: TableColumnProps, checked: boolean) => void;

@@ -1,5 +1,5 @@
-import { type DialogEmits, type DialogInstance, type ButtonProps, dialogProps } from 'element-plus';
-import { type PropType, type EmitFn, type ExtractPropTypes } from 'vue';
+import { type DialogInstance, type ButtonProps, dialogProps, dialogEmits } from 'element-plus';
+import type { PropType, ExtractPropTypes, SlotsType } from 'vue';
 
 export const formDialogButtonProps = {
   confirmText: {
@@ -57,20 +57,26 @@ export const formDialogProps = {
 export type FormDialogProps = ExtractPropTypes<typeof formDialogProps>;
 
 export interface ElDialogSlots {
-  default?: (props: Record<string, never>) => any;
-  header?: (props: { close?: () => void; titleId?: string; titleClass?: string }) => any;
-  footer?: (props: Record<string, never>) => any;
+  default: {};
+  header: { close?: () => void; titleId?: string; titleClass?: string };
+  footer: {};
 }
 
 export interface FormDialogSlots extends ElDialogSlots {
-  button?: (props: {
+  button: {
     submitting: boolean;
     confirm: () => any | Promise<any>;
     cancel: () => any;
-  }) => any;
+  };
 }
 
-export interface FormDialogEmits extends /* @vue-ignore */ EmitFn<DialogEmits> {}
+export const formDialogSlots = {} as SlotsType<FormDialogSlots>;
+
+export const formDialogEmits = {
+  ...dialogEmits,
+};
+
+export type FormDialogEmits = typeof formDialogEmits;
 
 export interface FormDialogExpose extends DialogInstance {}
 

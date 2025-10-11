@@ -191,3 +191,5 @@ export const fieldProps = {
     type: Function as PropType<(el: any) => void>,
   },
 };
+
+export * from './components/common';

@@ -1,3 +1,5 @@
+import { debugWarn } from 'element-plus/es/utils/error.mjs';
+
 let warned: Record<string, boolean> = {};
 
 export function warning(valid: boolean, message: string) {
@@ -32,3 +34,5 @@ export function warningOnce(valid: boolean, message: string) {
 export function noteOnce(valid: boolean, message: string) {
   call(note, valid, message);
 }
+
+export { debugWarn };

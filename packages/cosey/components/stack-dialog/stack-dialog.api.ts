@@ -1,9 +1,9 @@
-import { dialogProps, type DialogEmits, type DialogInstance } from 'element-plus';
+import { dialogEmits, dialogProps, type DialogInstance } from 'element-plus';
 import {
-  EmitFn,
-  ExtractPropTypes,
+  type ExtractPropTypes,
+  type InjectionKey,
+  type SlotsType,
   inject,
-  InjectionKey,
   onBeforeUnmount,
   provide,
   reactive,
@@ -18,7 +18,13 @@ export type StackDialogProps = ExtractPropTypes<typeof stackDialogProps>;
 
 export interface StackDialogSlots extends ElDialogSlots {}
 
-export interface StackDialogEmits extends /* @vue-ignore */ EmitFn<DialogEmits> {}
+export const stackDialogSlots = Object as SlotsType<StackDialogSlots>;
+
+export const stackDialogEmits = {
+  ...dialogEmits,
+};
+
+export type StackDialogEmits = typeof stackDialogEmits;
 
 export interface StackDialogExpose extends DialogInstance {}
 

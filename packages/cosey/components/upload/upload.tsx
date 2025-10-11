@@ -16,8 +16,15 @@ import {
   uploadEmits,
 } from './upload.api';
 import { CHANGE_EVENT, ElMessage, useFormItem } from 'element-plus';
-import { debugWarn } from 'element-plus/es/utils/error.mjs';
-import { chooseFiles, getFileType, isShallowEqual, uuid, isString, getBasename } from '../../utils';
+import {
+  chooseFiles,
+  getFileType,
+  isShallowEqual,
+  uuid,
+  isString,
+  getBasename,
+  debugWarn,
+} from '../../utils';
 import UploadItem from './upload-item';
 import { TransitionGroup } from '../transition-group';
 import Icon from '../icon/icon.vue';
