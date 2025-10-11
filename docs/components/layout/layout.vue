@@ -1,7 +1,9 @@
 <template>
-  <RootConfigProvider>
-    <CustomLayout />
-  </RootConfigProvider>
+  <ClientOnly>
+    <RootConfigProvider>
+      <CustomLayout />
+    </RootConfigProvider>
+  </ClientOnly>
 </template>
 
 <script lang="ts" setup>

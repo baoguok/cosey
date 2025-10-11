@@ -14,7 +14,6 @@ import 'vitepress/dist/client/theme-default/styles/components/vp-code-group.css'
 import 'vitepress/dist/client/theme-default/styles/components/vp-sponsor.css';
 
 import './styles/vp-doc.scss';
-import './styles/style.css';
 
 import { useOverrideVitePress } from './override-vite-press';
 

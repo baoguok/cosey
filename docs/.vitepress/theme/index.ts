@@ -1,5 +1,7 @@
 import type { Theme } from 'vitepress';
 
+import './style.css';
+
 import { createI18n } from 'vue-i18n';
 const i18n = createI18n({
   legacy: false,
@@ -24,8 +26,8 @@ import { icons as carbonIcons } from '@iconify-json/carbon';
 import { addIconifyIcon } from 'cosey/components';
 
 import 'virtual:group-icons.css';
-import { createWebHistory } from 'vue-router';
 import { useUploadApi } from '@/api/common';
+import { createMemoryHistory } from 'vue-router';
 
 addIconifyIcon('carbon', carbonIcons);
 
@@ -66,7 +68,7 @@ export default {
     const cosey = createCosey({
       router: {
         listening: false,
-        history: createWebHistory(),
+        history: createMemoryHistory(),
       },
       http: {
         baseURL: '/mock/api',

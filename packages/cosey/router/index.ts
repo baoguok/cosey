@@ -49,13 +49,13 @@ export function createCoseyRouter(options: CoseyRouterOptions = {}) {
 
   const mergedOptions = Object.assign(
     {
-      history: createWebHashHistory(),
       strict: true,
       scrollBehavior: () => ({ left: 0, top: 0 }),
     },
     restOptions,
     {
       routes: getAllStaticRoutes(),
+      history: restOptions.history || createWebHashHistory(),
     },
   );
 
