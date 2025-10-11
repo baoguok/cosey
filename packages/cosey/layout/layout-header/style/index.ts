@@ -11,7 +11,7 @@ export default getSimpleStyleHook('CoLayoutHeader', (token) => {
       insetInlineEnd: 0,
       zIndex: 1000,
       backgroundColor: token.colorBgContainer,
-      transition: `left ${token.motionDurationSlow}`,
+      transition: `inset-inline-start ${token.motionDurationSlow}`,
     },
   };
 });
