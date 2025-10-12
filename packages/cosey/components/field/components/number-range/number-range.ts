@@ -1,8 +1,6 @@
 import { type FieldComponentCommonProps } from '../common';
 import {
-  type InputNumberRangeSlots,
   type InputNumberRangeEmits,
-  type InputNumberRangeExpose,
   type InputNumberRangeProps,
 } from '../../../input-number-range';
 
@@ -15,8 +13,8 @@ export interface FieldNumberRangeProps extends FieldComponentCommonProps {
   componentSlots?: Partial<FieldNumberRangeSlots>;
 }
 
-export interface FieldNumberRangeSlots extends InputNumberRangeSlots {}
+export interface FieldNumberRangeSlots {}
 
 export interface FieldNumberRangeEmits extends InputNumberRangeEmits {}
 
-export interface FieldNumberRangeExpose extends InputNumberRangeExpose {}
+export interface FieldNumberRangeExpose {}

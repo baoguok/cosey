@@ -1,6 +1,6 @@
 {
   "name": "cosey",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "基于 Vue3 + vite 的后台管理系统框架",
   "type": "module",
   "main": "index.ts",
@@ -32,6 +32,7 @@
     "jszip": "^3.10.1",
     "katex": "^0.16.22",
     "lodash-es": "^4.17.21",
+    "mime": "^4.0.7",
     "nprogress": "^0.2.0",
     "pinia": "^3.0.2",
     "quill": "^2.0.3",
@@ -64,6 +65,7 @@
     "jszip": "^3.10.1",
     "katex": "^0.16.22",
     "lodash-es": "^4.17.21",
+    "mime": "^4.0.7",
     "nprogress": "^0.2.0",
     "pinia": "^3.0.2",
     "quill": "^2.0.3",
@@ -78,8 +80,5 @@
     "url": "git+https://github.com/sutras/cosey.git"
   },
   "author": "wuzhitao",
-  "license": "MIT",
-  "dependencies": {
-    "mime": "^4.0.7"
-  }
+  "license": "MIT"
 }
