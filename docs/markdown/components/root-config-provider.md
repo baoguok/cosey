@@ -10,14 +10,16 @@
 
 表格接口相关的 key 可通过此组件进行全局配置。
 
-```jsx
-<RootConfigProvider :table="{
-  keys: {
-    list: 'list',
-    total: 'total',
-    page: 'page',
-  }
-}">
+```vue
+<RootConfigProvider
+  :table="{
+    keys: {
+      list: 'list',
+      total: 'total',
+      page: 'page',
+    },
+  }"
+>
   <router-view></router-view>
 </RootConfigProvider>
 ```

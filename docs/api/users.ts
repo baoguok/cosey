@@ -1,41 +1,35 @@
-import axios from 'axios';
+import { useRequest } from 'cosey';
 
 const Api = {
-  UsersResource: '/mock/api/users',
+  UsersResource: '/users',
 };
 
-export const getUsers = async (params?: any) => {
-  return axios
-    .get(`${Api.UsersResource}`, {
-      params,
-    })
-    .then((res) => {
-      return res.data.data;
-    });
-};
+export const useUsersApi = () => {
+  return useRequest().map({
+    getUsers: (http) => (params?: any) => {
+      return http.get(Api.UsersResource, {
+        params,
+      });
+    },
 
-export const addUser = async (data: any) => {
-  return axios
-    .post(`${Api.UsersResource}`, {
-      data,
-    })
-    .then((res) => {
-      return res.data.data;
-    });
-};
+    getUser: (http) => (id: number) => {
+      return http.get(`${Api.UsersResource}/${id}`);
+    },
 
-export const updateUser = async (id: number, data: any) => {
-  return axios
-    .patch(`${Api.UsersResource}/${id}`, {
-      data,
-    })
-    .then((res) => {
-      return res.data.data;
-    });
-};
+    addUser: (http) => (data: any) => {
+      return http.post(Api.UsersResource, data);
+    },
 
-export const deleteUser = async (id: number) => {
-  return axios.delete(`${Api.UsersResource}/${id}`).then((res) => {
-    return res.data.data;
+    updateUser: (http) => (id: number, data: any) => {
+      return http.patch(`${Api.UsersResource}/${id}`, data);
+    },
+
+    deleteUser: (http) => (id: number) => {
+      return http.delete(`${Api.UsersResource}/${id}`);
+    },
+
+    updateBulkSilent: (http) => (data: { ids: number[]; value: number }) => {
+      return http.patch(`${Api.UsersResource}/bulk-silent`, data);
+    },
   });
 };

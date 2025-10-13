@@ -30,8 +30,14 @@ function getRGBVar(color: TinyColor) {
 export default getOverrideStyleHook('OverrideElementPlus', (token) => {
   const { hashId } = token;
 
+  const primaryColorPalettes = generateColorPalettes('primary', token);
+  const successColorPalettes = generateColorPalettes('success', token);
+  const warningColorPalettes = generateColorPalettes('warning', token);
+  const dangerColorPalettes = generateColorPalettes('error', token, 'danger');
+  const errorColorPalettes = generateColorPalettes('error', token);
+
   return {
-    [`.${hashId}`]: {
+    [`.${hashId}, .dark.${hashId}`]: {
       '--el-color-white': token.colorWhite,
       '--el-color-black': token.colorBlack,
       '--el-color-primary-rgb': getRGBVar(new TinyColor(token.colorPrimary)),
@@ -70,11 +76,11 @@ export default getOverrideStyleHook('OverrideElementPlus', (token) => {
       '--el-component-size-large': token.controlHeightLG,
       '--el-component-size': token.controlHeight,
       '--el-component-size-small': token.controlHeightSM,
-      ...generateColorPalettes('primary', token),
-      ...generateColorPalettes('success', token),
-      ...generateColorPalettes('warning', token),
-      ...generateColorPalettes('error', token, 'danger'),
-      ...generateColorPalettes('error', token),
+      ...primaryColorPalettes,
+      ...successColorPalettes,
+      ...warningColorPalettes,
+      ...dangerColorPalettes,
+      ...errorColorPalettes,
       // ...generateColorPalettes('info', token),
       '--el-bg-color': token.colorBgContainer,
       '--el-bg-color-page': token.colorBgLayout,
@@ -113,6 +119,14 @@ export default getOverrideStyleHook('OverrideElementPlus', (token) => {
       '--el-border-color-hover': token.colorTextDisabled,
       '--el-border': `${token.lineWidth} ${token.lineType} ${token.colorBorder}`,
       '--el-svg-monochrome-grey': token.colorBorder,
+
+      '--el-menu-active-color': token.colorPrimary,
+      '--el-menu-text-color': token.colorTextBase,
+      '--el-menu-hover-text-color': token.colorPrimary,
+      // '--el-menu-bg-color': var(--el-fill-color-blank),
+      '--el-menu-hover-bg-color': 'var(--el-color-primary-light-9)',
+      '--el-menu-item-hover-fill': 'var(--el-color-primary-light-9)',
+      '--el-menu-border-color': token.colorBorder,
     },
 
     '.el-button': {

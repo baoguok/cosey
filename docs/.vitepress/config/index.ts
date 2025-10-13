@@ -3,7 +3,7 @@ import path from 'node:path';
 import { markdownPlugin } from './markdown';
 import tailwindcss from '@tailwindcss/vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import injectStyles from './vite-plugin-inject-styles';
+// import injectStyles from './vite-plugin-inject-styles';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
 
@@ -22,7 +22,7 @@ export default defineConfig({
     plugins: [
       tailwindcss(),
       vueJsx(),
-      injectStyles(),
+      // injectStyles(),
       createSvgIconsPlugin({
         iconDirs: [path.resolve(process.cwd(), 'docs/assets/icons')],
         svgoOptions: process.env.NODE_ENV === 'production',
@@ -143,6 +143,7 @@ export default defineConfig({
             { text: 'FormDrawer 抽屉表单', link: '/components/form-drawer' },
             { text: 'FormList 表单列表', link: '/components/form-list' },
             { text: 'FormQuery 查询表单', link: '/components/form-query' },
+            { text: 'InputNumberRange 数字范围输入框', link: '/components/input-number-range' },
             { text: 'Upload 上传', link: '/components/upload' },
             { text: 'RemoteSelect 远程选择器', link: '/components/remote-select' },
           ],
@@ -152,6 +153,8 @@ export default defineConfig({
           items: [
             { text: 'Card 卡片', link: '/components/card' },
             { text: 'Highlight 代码高亮', link: '/components/highlight' },
+            { text: 'HorizontalTree 水平树', link: '/components/horizontal-tree' },
+            { text: 'LongText 长文本', link: '/components/long-text' },
             { text: 'MediaCard 媒体卡片', link: '/components/media-card' },
             {
               text: 'NumberFormat 数字格式化',
@@ -159,6 +162,9 @@ export default defineConfig({
             },
             { text: 'ScrollView 滚动视图', link: '/components/scroll-view' },
             { text: 'Table 表格', link: '/components/table' },
+            { text: 'StackDialog 层叠对话框', link: '/components/stack-dialog' },
+            { text: 'Panel 面板', link: '/components/panel' },
+            { text: 'Ribbon 丝带角标', link: '/components/ribbon' },
           ],
         },
         {

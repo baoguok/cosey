@@ -31,6 +31,7 @@
                           message: '不能为空',
                         },
                       ]"
+                      draggable
                       v-slot="{ row, getProp }"
                     >
                       <co-form-item

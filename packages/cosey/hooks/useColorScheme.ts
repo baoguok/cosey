@@ -4,7 +4,17 @@
  * 动态修改，持久化缓存
  */
 
-import { computed, inject, onBeforeUnmount, onMounted, provide, type Ref, ref, watch } from 'vue';
+import {
+  computed,
+  ComputedRef,
+  inject,
+  onBeforeUnmount,
+  onMounted,
+  provide,
+  type Ref,
+  ref,
+  watch,
+} from 'vue';
 import { usePersist } from './usePersist';
 import { isClient } from '../utils';
 
@@ -24,7 +34,7 @@ export interface ColorSchemeOption {
 interface ColorSchemeContext {
   colorSchemeOption: Ref<ColorSchemeOption>;
   colorScheme: Ref<ColorScheme>;
-  appliedColorScheme: Ref<AppliedColorScheme>;
+  appliedColorScheme: ComputedRef<AppliedColorScheme>;
 }
 
 export const colorSchemeOptions: ColorSchemeOption[] = [
@@ -96,7 +106,7 @@ export function useColorSchemeProvide() {
   const context: ColorSchemeContext = {
     colorSchemeOption,
     colorScheme,
-    appliedColorScheme,
+    appliedColorScheme: computed(() => appliedColorScheme.value),
   };
 
   provide<ColorSchemeContext>(colorSchemeContextSymbol, context);

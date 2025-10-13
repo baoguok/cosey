@@ -47,7 +47,7 @@ long-text/max-height
 | text       | 要渲染的文本         | string           | -      |
 | rows       | 最大显示行数         | number \| string | 3      |
 | max-width  | tooltip 最大显示宽度 | number \| string | 690    |
-| max-height | tooltip 最大显示宽度 | number \| string | 320    |
+| max-height | tooltip 最大显示高度 | number \| string | 320    |
 
 ### LongTextSlots
 

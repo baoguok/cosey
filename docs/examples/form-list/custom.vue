@@ -5,14 +5,9 @@
       prop="department"
       label="部门"
       width="md"
-      :rules="[{ required: true }]"
+      required
     />
-    <co-form-list
-      v-model="formModel.employees"
-      prop="employees"
-      label="员工"
-      :rules="[{ type: 'array', required: true }]"
-    >
+    <co-form-list v-model="formModel.employees" prop="employees" label="员工" required>
       <template #custom="{ list, getKey, getProp, add, remove, move }">
         <div class="flex flex-col gap-y-4">
           <co-dnd-sort @move="move">
@@ -26,7 +21,7 @@
                         :prop="getProp(index, 'name')"
                         label="姓名"
                         width="sm"
-                        :rules="[{ required: true }]"
+                        required
                       />
                       <co-form-item
                         v-model="row.gender"
@@ -35,7 +30,7 @@
                         field-type="radiogroup"
                         :field-props="{ options: genders }"
                         width="sm"
-                        :rules="[{ required: true }]"
+                        required
                       />
                     </el-space>
                     <el-space size="large">
@@ -44,14 +39,14 @@
                         :prop="getProp(index, 'num')"
                         label="工号"
                         width="sm"
-                        :rules="[{ required: true }]"
+                        required
                       />
                       <co-form-item
                         v-model="row.tel"
                         :prop="getProp(index, 'tel')"
                         label="电话"
                         width="sm"
-                        :rules="[{ required: true }]"
+                        required
                       />
                     </el-space>
                     <co-form-item
@@ -59,7 +54,7 @@
                       :prop="getProp(index, 'address')"
                       label="地址"
                       field-type="textarea"
-                      :rules="[{ required: true }]"
+                      required
                     />
                   </el-space>
                   <el-button class="absolute end-3 top-3" link type="danger" @click="remove(index)">

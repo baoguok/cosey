@@ -25,12 +25,12 @@ dist-ssr
 *.sw?
 
 # vitepress
-docs/.vitepress/cache
-docs/.vitepress/cache*
-
+.temp
 temp-components
 temp
 lib-dist
-.temp
+cache
 
 pnpm-lock.yaml
+
+/.vitepress

@@ -1,17 +1,18 @@
-import { nextTick, provide, ref } from 'vue';
+import { nextTick, provide, ref, SlotsType } from 'vue';
 import { type FormBubbleContext, type FormBubbleData, formBubbleContextSymbol } from './form.api';
 import { useTwoWayBinding } from '../../hooks';
 import { defineTemplate, createMergedExpose } from '../../utils';
 import { type FormDialogButtonProps, type FormDialogSlots } from '../form-dialog';
 import { ElButton } from 'element-plus';
 import { useLocale } from '../../hooks';
+import { UnwrapSlotsType } from '../../types/helper';
 
 interface UseBubbleTemplateOptions {
   props: {
     modelValue?: boolean;
     beforeClose?: (done: () => void) => void;
   } & FormDialogButtonProps;
-  slots: FormDialogSlots;
+  slots: UnwrapSlotsType<SlotsType<FormDialogSlots>>;
   emit: {
     (event: 'update:modelValue', visible: boolean): void;
     (event: 'open'): void;

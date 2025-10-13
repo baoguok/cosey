@@ -68,7 +68,7 @@ getPosts.abort();
 
 ## 接口配置
 
-`createCosey` 配置项 `http` 用于接口相关的配置。
+`createCosey` 函数配置项 `http` 用于接口相关的配置。
 
 ### baseURL
 
@@ -157,3 +157,17 @@ Token 添加到的请求头字段的键名
 - 默认值：`3000`
 
 错误提示显示时长，单位 ms。
+
+### originalResponse
+
+- 类型：`boolean`
+- 默认值：`false`
+
+是否直接返回 AxiosResponse 对象。
+
+### originalData
+
+- 类型：`boolean`
+- 默认值：`false`
+
+是否直接返回 AxiosResponse.data 属性值。

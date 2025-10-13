@@ -14,6 +14,14 @@ container/basic
 
 :::
 
+### 充满屏幕
+
+::: demo
+
+container/full-page
+
+:::
+
 ## API
 
 ### ContainerProps

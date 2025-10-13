@@ -34,10 +34,10 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue';
-import { type ScrollViewProps, type ScrollViewSlots } from './scroll-view';
+import { type ScrollViewProps, type ScrollViewSlots } from './scroll-view.api';
 import { useResizeObserver } from '../../hooks';
 
-import useStyle from './style';
+import useStyle from './scroll-view.style';
 import { useComponentConfig } from '../config-provider';
 
 defineOptions({

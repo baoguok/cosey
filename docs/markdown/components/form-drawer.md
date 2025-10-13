@@ -18,7 +18,7 @@ form-drawer/basic
 
 ### FormDrawerProps
 
-除了支持 `element-plus` 的 [Drawer Attributes](https://element-plus.org/zh-CN/component/drawer.html#%E5%B1%9E%E6%80%A7)，还支持以下属性：
+继承 `element-plus` 的 [Drawer Attributes](https://element-plus.org/zh-CN/component/drawer.html#%E5%B1%9E%E6%80%A7)，并添加以下属性：
 
 | 属性          | 描述             | 类型        | 默认值 |
 | ------------- | ---------------- | ----------- | ------ |
@@ -31,7 +31,7 @@ form-drawer/basic
 
 ### FormDrawerSlots
 
-除了支持 `element-plus` 的 [Drawer Slots](https://element-plus.org/zh-CN/component/drawer.html#%E6%8F%92%E6%A7%BD)，还支持以下插槽。
+继承 `element-plus` 的 [Drawer Slots](https://element-plus.org/zh-CN/component/drawer.html#%E6%8F%92%E6%A7%BD)，并添加以下插槽。
 
 | 插槽   | 描述           | 属性                                                                            |
 | ------ | -------------- | ------------------------------------------------------------------------------- |
@@ -39,8 +39,8 @@ form-drawer/basic
 
 ### FormDrawerEmits
 
-同 `element-plus` 的 [Drawer Events](https://element-plus.org/zh-CN/component/drawer.html#%E4%BA%8B%E4%BB%B6)。
+继承 `element-plus` 的 [Drawer Events](https://element-plus.org/zh-CN/component/drawer.html#%E4%BA%8B%E4%BB%B6)。
 
 ### FormDrawerExpose
 
-同 `element-plus` 的 [Drawer Exposes](https://element-plus.org/zh-CN/component/drawer.html#%E6%9A%B4%E9%9C%B2)。
+继承 `element-plus` 的 [Drawer Exposes](https://element-plus.org/zh-CN/component/drawer.html#%E6%9A%B4%E9%9C%B2)。

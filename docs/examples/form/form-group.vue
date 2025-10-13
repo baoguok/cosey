@@ -1,5 +1,5 @@
 <template>
-  <co-form-group>
+  <co-form-group alignment="flex-end">
     <co-form-item v-model="model.state1" label="field1" field-type="input" width="sm" />
     <co-form-item v-model="model.state2" label="field2" field-type="input" width="sm" />
   </co-form-group>

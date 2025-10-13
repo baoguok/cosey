@@ -1,0 +1,52 @@
+import { spaceProps } from 'element-plus';
+import { omit } from 'lodash-es';
+import type { ExtractPropTypes, SlotsType, PropType } from 'vue';
+import { isBoolean } from '../../utils';
+
+export const formGroupProps = {
+  ...omit(spaceProps, ['class', 'style']),
+  alignment: {
+    type: String as PropType<'stretch' | 'center' | 'flex-start' | 'flex-end'>,
+    default: 'flex-start',
+  },
+  size: {
+    type: [Number, String, Array] as PropType<
+      number | 'default' | 'small' | 'large' | [number, number]
+    >,
+    default: () => [32, 0],
+  },
+  wrap: {
+    type: Boolean,
+    default: true,
+  },
+  title: {
+    type: [String, Number],
+  },
+  borderStyle: {
+    type: String as PropType<'none' | 'solid' | 'dashed' | 'dotted'>,
+  },
+  position: {
+    type: String as PropType<'left' | 'right' | 'center'>,
+    default: 'left',
+  },
+  collapsible: {
+    type: Boolean,
+  },
+  collapsed: {
+    type: Boolean,
+  },
+};
+
+export type FormGroupProps = ExtractPropTypes<typeof formGroupProps>;
+
+export interface FormGroupSlots {
+  default: {};
+}
+
+export const formGroupSlots = Object as SlotsType<FormGroupSlots>;
+
+export const formGroupEmits = {
+  'update:collapsed': (collapsed: boolean) => isBoolean(collapsed),
+};
+
+export type FormGroupEmits = typeof formGroupEmits;

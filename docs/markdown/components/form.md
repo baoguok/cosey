@@ -71,7 +71,7 @@ form/form-item-extra
 
 ### FormGroup 表单组
 
-`FormGroup` 在需要的时候用来将表单项组合在一起，可以实现自定义的表单布局。`FormGroup` 是 `ElSpace` 和 `ElDivider` 的结合，支持这两个组件的所有属性。
+`FormGroup` 在需要的时候用来将表单项组合在一起，可以实现自定义的表单布局。
 
 ::: demo
 
@@ -165,7 +165,7 @@ form/all-fields
 
 ### FormProps
 
-除了支持 `element-plus` 的 [Form Attributes](https://element-plus.org/zh-CN/component/form.html#form-attributes) ，还支持以下属性。
+继承 `element-plus` 的 [Form Attributes](https://element-plus.org/zh-CN/component/form.html#form-attributes) ，并添加以下属性：
 
 | 属性         | 描述                                             | 类型                       | 默认值 |
 | ------------ | ------------------------------------------------ | -------------------------- | ------ |
@@ -182,10 +182,11 @@ form/all-fields
 | reset-props  | 重置按钮的属性                                   | ButtonProps                | -      |
 | hide-submit  | 是否隐藏提交按钮                                 | boolean                    | false  |
 | hide-reset   | 是否隐藏重置按钮                                 | boolean                    | false  |
+| hide-buttons | 同时隐藏提交和重置按钮                           | boolean                    | false  |
 
 ### FormSlots
 
-除了支持 `element-plus` 的 [Form Slots](https://element-plus.org/zh-CN/component/form.html#form-slots) ，还支持以下插槽。
+继承 `element-plus` 的 [Form Slots](https://element-plus.org/zh-CN/component/form.html#form-slots) ，并支持以下插槽。
 
 | 插槽   | 描述           | 属性                                                                          |
 | ------ | -------------- | ----------------------------------------------------------------------------- |
@@ -193,11 +194,11 @@ form/all-fields
 
 ### FormEmits
 
-同 `element-plus` 的 [Form 事件](https://element-plus.org/zh-CN/component/form.html#form-%E4%BA%8B%E4%BB%B6)。
+继承 `element-plus` 的 [Form 事件](https://element-plus.org/zh-CN/component/form.html#form-%E4%BA%8B%E4%BB%B6)。
 
 ### FormExpose
 
-除了支持 `element-plus` 的 [Form Exposes](https://element-plus.org/zh-CN/component/form.html#form-exposes) ，还支持以下属性。
+继承 `element-plus` 的 [Form Exposes](https://element-plus.org/zh-CN/component/form.html#form-exposes) ，并添加以下属性：
 
 | 属性   | 描述     | 类型                |
 | ------ | -------- | ------------------- |
@@ -205,12 +206,13 @@ form/all-fields
 
 ### FormItemProps
 
-除了支持 `element-plus` 的 [FormItem Attributes](https://element-plus.org/zh-CN/component/form.html#formitem-attributes) ，还支持以下属性。
+继承 `element-plus` 的 [FormItem Attributes](https://element-plus.org/zh-CN/component/form.html#formitem-attributes) ，并添加以下属性：
 
 | 属性                  | 描述                                                      | 类型                                                                                | 默认值  |
 | --------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------- |
 | field-type            | `field` 的类型                                            | FieldType                                                                           | 'input' |
 | field-props           | `field` 的 props                                          | MapFieldTypeComponentProps[FieldType]['componentProps']                             | -       |
+| field-slots           | `field` 的 slots                                          | MapFieldTypeComponentProps[FieldType]['componentSlots']                             | -       |
 | field-ref             | 获取 `field` 暴露的属性                                   | (el: any) => void                                                                   | -       |
 | model-value / v-model | 绑定 `field` 的值                                         | NonNullable<MapFieldTypeComponentProps[FieldType]['componentProps']> ['modelValue'] | -       |
 | width                 | 设置 `field` 为固定宽度                                   | FormItemWidth                                                                       | -       |
@@ -237,7 +239,7 @@ type FormItemWidth = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});
 
 ### FormItemSlots
 
-除了支持 `element-plus` 的 [FormItem Slots](https://element-plus.org/zh-CN/component/form.html#formitem-slots) ，以及对应 `field` 的插槽，还支持以下插槽。
+继承 `element-plus` 的 [FormItem Slots](https://element-plus.org/zh-CN/component/form.html#formitem-slots) ，以及对应 `field` 的插槽，并添加以下插槽：
 
 | 插槽    | 描述           | 属性 |
 | ------- | -------------- | ---- |
@@ -252,17 +254,22 @@ type FormItemWidth = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});
 
 ### FormItemExpose
 
-同 `element-plus` 的 [FormItem Exposes](https://element-plus.org/zh-CN/component/form.html#formitem-exposes)。
+继承 `element-plus` 的 [FormItem Exposes](https://element-plus.org/zh-CN/component/form.html#formitem-exposes)。
 
 ### FormGroupProps
 
-除了支持 `element-plus` 的 [Space Attributes](https://element-plus.org/zh-CN/component/space.html#attributes) 和 [Divider Attributes](https://element-plus.org/zh-CN/component/divider.html#attributes) ，还支持以下属性。
+继承 `element-plus` 的 [Space Attributes](https://element-plus.org/zh-CN/component/space.html#attributes) 和 [Divider Attributes](https://element-plus.org/zh-CN/component/divider.html#attributes) ，并添加以下属性：
 
-| 属性        | 描述               | 类型    | 默认值 |
-| ----------- | ------------------ | ------- | ------ |
-| title       | 设置表单组的标题   | string  | -      |
-| collapsible | 是否允许折叠       | boolean | false  |
-| collapsed   | 设置是否为折叠状态 | boolean | false  |
+| 属性         | 描述                     | 类型                                                          | 默认值       |
+| ------------ | ------------------------ | ------------------------------------------------------------- | ------------ |
+| alignment    | 对齐的方式 (align-items) | 'stretch' \| 'center' \| 'flex-start' \| 'flex-end'           | 'flex-start' |
+| size         | 间隔大小                 | number \| 'default' \| 'small' \| 'large' \| [number, number] | [32, 0]      |
+| wrap         | 设置是否自动折行         | boolean                                                       | true         |
+| title        | 设置表单组的标题         | string                                                        | -            |
+| border-style | 设置边框样式             | 'none' \| 'solid' \| 'dashed' \| 'dotted'                     | -            |
+| position     | 设置标题位置             | 'left' \| 'right' \| 'center'                                 | 'left'       |
+| collapsible  | 是否允许折叠             | boolean                                                       | false        |
+| collapsed    | 设置是否为折叠状态       | boolean                                                       | false        |
 
 ### FormGroupSlots
 
@@ -292,7 +299,7 @@ type FormItemWidth = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});
 
 #### checkboxgroup
 
-同 `element-plus` 的 [ElCheckboxGroup](https://element-plus.org/zh-CN/component/checkbox.html#checkboxgroup-api) 组件。还支持以下额外属性，
+同 `element-plus` 的 [ElCheckboxGroup](https://element-plus.org/zh-CN/component/checkbox.html#checkboxgroup-api) 组件。并添加以下属性：
 
 | 属性           | 描述                          | 类型                                            | 默认值     |
 | -------------- | ----------------------------- | ----------------------------------------------- | ---------- |
@@ -354,20 +361,29 @@ type FormItemWidth = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});
 
 同 `element-plus` 的 [ElInputNumber](https://element-plus.org/zh-CN/component/input-number.html) 组件。
 
+#### numberrange
+
+同 [InputNumberRange](./input-number-range) 组件。
+
 #### password
 
 同 `element-plus` 的 [ElInput](https://element-plus.org/zh-CN/component/input.html) 组件。并预设了 `type="password"` 属性。
 
 #### radiogroup
 
-同 `element-plus` 的 [ElRadioGroup](https://element-plus.org/zh-CN/component/radio.html#radiogroup-api) 组件。还支持以下额外属性。
+同 `element-plus` 的 [ElRadioGroup](https://element-plus.org/zh-CN/component/radio.html#radiogroup-api) 组件。并添加以下属性：
 
-| 属性      | 描述                          | 类型                                         | 默认值  |
-| --------- | ----------------------------- | -------------------------------------------- | ------- |
-| options   | 使用配置对象来生成单选按钮    | (Partial\<RadioProps> \| string \| number)[] | -       |
-| label-key | 自定义 `options` 中标签的键名 | string                                       | 'label' |
-| value-key | 自定义 `options` 中值的键名   | string                                       | 'value' |
-| type      | 设置单选框的类型              | 'button' \| 'radio'                          | 'radio' |
+| 属性 | 描述             | 类型                | 默认值  |
+| ---- | ---------------- | ------------------- | ------- |
+| type | 设置单选框的类型 | 'button' \| 'radio' | 'radio' |
+
+#### rate
+
+同 `element-plus` 的 [ElRate](https://element-plus.org/zh-CN/component/rate.html) 组件。
+
+#### remoteselect
+
+同 [RemoteSelect](./remote-select) 组件。
 
 #### segmented
 
@@ -375,29 +391,19 @@ type FormItemWidth = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});
 
 #### select
 
-同 `element-plus` 的 [ElSelect](https://element-plus.org/zh-CN/component/select.html) 组件。还支持以下额外属性。
+同 `element-plus` 的 [ElSelect](https://element-plus.org/zh-CN/component/select.html) 组件。并添加以下属性：
 
-| 属性      | 描述                          | 类型                | 默认值  |
-| --------- | ----------------------------- | ------------------- | ------- |
-| options   | 使用配置对象来生成选项        | FieldSelectOption[] | -       |
-| label-key | 自定义 `options` 中标签的键名 | string              | 'label' |
-| value-key | 自定义 `options` 中值的键名   | string              | 'value' |
-
-```ts
-type FieldSelectOption =
-  | {
-      label: string | number;
-      value: string | number | boolean;
-      disabled?: boolean;
-    }
-  | string
-  | number
-  | boolean;
-```
+| 属性         | 描述                   | 类型                                                                                | 默认值 |
+| ------------ | ---------------------- | ----------------------------------------------------------------------------------- | ------ |
+| option-props | 自定义 `ElOption` 属性 | Record<PropertyKey, any> \| (props: any, index: number) => Record<PropertyKey, any> | -      |
 
 #### selectv2
 
-同 `element-plus` 的 [ElSelectV2](https://element-plus.org/zh-CN/component/select-v2.html) 组件。
+同 `element-plus` 的 [ElSelectV2](https://element-plus.org/zh-CN/component/select-v2.html) 组件。并添加以下属性：
+
+| 属性         | 描述                   | 类型                                                                         | 默认值 |
+| ------------ | ---------------------- | ---------------------------------------------------------------------------- | ------ |
+| option-props | 自定义 `ElOption` 属性 | (props: Record<PropertyKey, any>, index: number) => Record<PropertyKey, any> | -      |
 
 #### slider
 
@@ -430,6 +436,10 @@ type FieldSelectOption =
 #### treeselect
 
 同 `element-plus` 的 [ElTreeSelect](https://element-plus.org/zh-CN/component/tree-select.html) 组件。
+
+#### upload
+
+同 [Upload](./upload) 组件。
 
 #### week
 

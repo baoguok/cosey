@@ -5,6 +5,7 @@ import { registerRouterGuard } from './router/guard';
 import { type CoseyOptions, provideGlobalConfig } from './config';
 import { registerGlobalComponents } from './layout';
 import { createPiniaStore } from './store';
+import { isClient } from './utils';
 
 export * from './request';
 export * from './layout';
@@ -22,13 +23,18 @@ export const createCosey = (options: CoseyOptions = {}) => {
 
   return {
     install(app: App) {
-      provideGlobalConfig(app, options);
+      // 全局配置，仅非ssr
+      if (isClient()) {
+        provideGlobalConfig(app, options);
+      }
 
       // 路由
       app.use(router);
 
       // 路由守卫
-      registerRouterGuard(router);
+      if (router.listening) {
+        registerRouterGuard(router);
+      }
 
       // 全局状态管理
       app.use(pinia);

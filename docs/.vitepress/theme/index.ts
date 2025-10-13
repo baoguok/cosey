@@ -1,16 +1,24 @@
 import type { Theme } from 'vitepress';
-import DefaultTheme from 'vitepress/theme';
+
+import './style.css';
+
+import { createI18n } from 'vue-i18n';
+const i18n = createI18n({
+  legacy: false,
+  missingWarn: false,
+  fallbackWarn: false,
+  silentTranslationWarn: true,
+  silentFallbackWarn: true,
+});
 
 import { App, Component } from 'vue';
 import Layout from '@/components/layout/layout.vue';
 
-import './style.css';
-
 import 'virtual:svg-icons-register';
 
-import 'virtual:ssr-style.css';
+// import 'virtual:ssr-style.css';
 
-import { registerGlobalComponents } from 'cosey';
+import { createCosey } from 'cosey';
 
 import { createMock } from '@cosey/mock';
 
@@ -18,6 +26,8 @@ import { icons as carbonIcons } from '@iconify-json/carbon';
 import { addIconifyIcon } from 'cosey/components';
 
 import 'virtual:group-icons.css';
+import { useUploadApi } from '@/api/common';
+import { createMemoryHistory } from 'vue-router';
 
 addIconifyIcon('carbon', carbonIcons);
 
@@ -52,10 +62,30 @@ function registerVPGlobalComponents(app: App) {
 }
 
 export default {
-  extends: DefaultTheme,
   async enhanceApp({ app }) {
     registerVPGlobalComponents(app);
-    registerGlobalComponents(app);
+
+    const cosey = createCosey({
+      router: {
+        listening: false,
+        history: createMemoryHistory(),
+      },
+      http: {
+        baseURL: '/mock/api',
+      },
+      api: {
+        login: () => async () => '',
+        getUserInfo: () => async () => ({}),
+        upload: () => {
+          return useUploadApi().singleUpload;
+        },
+      },
+    });
+
+    app.use(cosey);
+
+    app.use(i18n);
+
     if (!import.meta.env.SSR) {
       const mock = createMock({
         skipAuth: true,

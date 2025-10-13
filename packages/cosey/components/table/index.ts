@@ -3,7 +3,7 @@ import Table from './table.vue';
 
 export * from './table';
 export * from './table-column/table-column.api';
-export * from './table-query/table-query';
+export * from './table-query/table-query.api';
 export * from './useTable';
 
 const _Table = withInstall(Table);

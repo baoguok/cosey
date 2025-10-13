@@ -71,8 +71,8 @@ export interface FormItemProps<T extends FieldType> extends Partial<ElFormItemPr
   fieldType?: T;
   fieldProps?: MapFieldTypeComponentProps[T]['componentProps'];
   fieldSlots?: MapFieldTypeComponentProps[T]['componentSlots'];
-  modelValue?: NonNullable<MapFieldTypeComponentProps[T]['componentProps']>['modelValue'] | null;
   fieldRef?: (el: any) => void;
+  modelValue?: NonNullable<MapFieldTypeComponentProps[T]['componentProps']>['modelValue'] | null;
   width?: FormItemWidth;
   placeholder?: string;
   disabled?: boolean;
@@ -87,6 +87,7 @@ export const defaultFormItemProps = {
   fieldRef: () => {},
   showMessage: true,
   inlineMessage: false,
+  required: undefined,
 };
 
 export const exlucdeFieldSlotNames = ['error', 'label', 'default', 'tooltip', 'extra'] as const;

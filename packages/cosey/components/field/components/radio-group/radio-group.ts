@@ -5,7 +5,7 @@ import { Props } from '../../../../hooks';
 export type FieldRadioGroupOption = Partial<RadioProps> | string | number;
 
 export interface FieldRadioGroupProps extends FieldComponentCommonProps {
-  componentProps?: Partial<RadioGroupProps> & {
+  componentProps?: Partial<Omit<RadioGroupProps, 'options'>> & {
     'onUpdate:modelValue'?: (value?: string | number | boolean) => void;
     onChange?: (value?: string | number | boolean) => void;
     [key: PropertyKey]: any;

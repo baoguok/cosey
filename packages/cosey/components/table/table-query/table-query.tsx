@@ -1,0 +1,108 @@
+import { computed, defineComponent, onBeforeMount, reactive, ref, unref } from 'vue';
+import {
+  type TableQueryExpose,
+  type TableQueryCustomExpose,
+  omittedTableQueryProps,
+  tableQueryExposeKeys,
+  tableQueryProps,
+  tableQuerySlots,
+  tableQueryEmits,
+} from './table-query.api';
+import { reactiveOmit } from '@vueuse/core';
+import { createMergedExpose } from '../../../utils';
+import { cloneDeep } from 'lodash-es';
+import { FormItem } from '../../form';
+import { FormQuery, type FormQueryExpose } from '../../form-query';
+import { h } from 'vue';
+
+export default defineComponent({
+  name: 'CoTableQuery',
+  props: tableQueryProps,
+  slots: tableQuerySlots,
+  emits: tableQueryEmits,
+  setup(props, { expose }) {
+    const formQueryProps = reactiveOmit(props, omittedTableQueryProps);
+
+    const formQueryRef = ref<FormQueryExpose>();
+
+    const defaultModel = reactive<Record<string, any>>({});
+
+    const formModel = computed(() => {
+      return props.model || defaultModel;
+    });
+
+    onBeforeMount(() => {
+      props.schemes.forEach((item) => {
+        unref(formModel)[item.prop as string] = item.modelValue;
+      });
+    });
+
+    const onEnter = () => {
+      formQueryRef.value?.submit();
+    };
+
+    // expose
+    const customExpose: TableQueryCustomExpose = {
+      getFieldsValue() {
+        return cloneDeep(unref(formModel));
+      },
+      setFieldsValue(value) {
+        Object.assign(unref(formModel), value);
+      },
+      getFormModel() {
+        return unref(formModel);
+      },
+    };
+
+    expose<TableQueryExpose>(
+      createMergedExpose(tableQueryExposeKeys, () => formQueryRef.value, customExpose),
+    );
+
+    return () => {
+      return h(
+        FormQuery,
+        {
+          ...formQueryProps,
+          ref: formQueryRef,
+          model: unref(formModel),
+          onKeyup: (event: KeyboardEvent) => {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+              onEnter();
+            }
+          },
+          onKeydown: (event: KeyboardEvent) => {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+            }
+          },
+        },
+        () => {
+          return props.schemes.map((item) => {
+            const { slots, render, ...rest } = item;
+
+            if (render) {
+              return h(FormItem, rest, {
+                ...slots,
+                default: () => {
+                  return render({ model: unref(formModel) });
+                },
+              });
+            }
+
+            return h(
+              FormItem,
+              {
+                ...rest,
+                modelValue: unref(formModel)[rest.prop as string],
+                'onUpdate:modelValue': (value: any) =>
+                  (unref(formModel)[rest.prop as string] = value),
+              },
+              slots,
+            );
+          });
+        },
+      );
+    };
+  },
+});

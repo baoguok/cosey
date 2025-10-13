@@ -10,7 +10,7 @@
 
 要建立一个增删改查表格，可通过以下步骤：
 
-- 首先在 `src/config/component.ts` 中配置全局列表接口结构；
+- 首先在 `RootConfigProvider` 中配置全局列表接口结构；
 - 使用 `useTable` 配置表格属性，简化表格组件方法的调用；
 - 使用 `columns` 属性配置表格列；
 - 使用 `actionColumn` 属性配置操作列；
@@ -28,21 +28,41 @@ table/basic
 
 ### TableProps
 
-除了支持 `element-plus` 的 [Table 属性](https://element-plus.org/zh-CN/component/table.html#table-%E5%B1%9E%E6%80%A7) ，还支持以下属性。
+继承 `element-plus` 的 [Table 属性](https://element-plus.org/zh-CN/component/table#table-%E5%B1%9E%E6%80%A7) 并有以下属性：
 
-| 属性           | 描述                                   | 类型                                 | 默认值                     |
-| -------------- | -------------------------------------- | ------------------------------------ | -------------------------- |
-| api            | 请求数据的函数                         | (...args: any[]) => Promise\<any>    | -                          |
-| immediate      | 是否在挂载后立即请求数据               | boolean                              | true                       |
-| columns        | 定义表格列                             | TableColumnProps[]                   | []                         |
-| action-column  | 定义表格操作列                         | TableColumnProps                     | -                          |
-| pagination     | 设置分页属性或隐藏分页组件             | boolean \| PaginationProps           | true                       |
-| get-expose     | 获取 `TableExpose`，会在组件创建后调用 | (expose: TableExpose) => void        | -                          |
-| form-props     | 自定义查询表单属性                     | TableQueryProps                      | -                          |
-| before-fetch   | 请求之前对参数进行处理                 | (params: Record<string, any>) => any | -                          |
-| after-fetch    | 请求之后对返回值进行处理               | (res: any) => any                    | -                          |
-| toolbar-config | 设置工具栏按钮                         | ToolbarConfig \| boolean             | -                          |
-| keys           | 定义接口相关的键名                     | TableConfig['key']                   | defaultTableConfig['keys'] |
+| 属性               | 描述                                                                        | 类型                                                                                                 | 默认值                     |
+| ------------------ | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------- |
+| api                | 请求数据的函数                                                              | (...args: any[]) => Promise\<any>                                                                    | -                          |
+| immediate          | 是否在挂载后立即请求数据                                                    | boolean                                                                                              | true                       |
+| columns            | 定义表格列                                                                  | [TableColumnProps](#tablecolumnprops)[]                                                              | []                         |
+| action-column      | 定义表格操作列                                                              | [TableColumnProps](#tablecolumnprops)                                                                | -                          |
+| pagination         | 设置分页属性或隐藏分页组件                                                  | boolean \| [PaginationProps](https://element-plus.org/zh-CN/component/pagination#%E5%B1%9E%E6%80%A7) | true                       |
+| get-expose         | 获取 `TableExpose`，会在组件创建后调用                                      | (expose: TableExpose) => void                                                                        | -                          |
+| form-props         | 自定义查询表单属性                                                          | [TableQueryProps](#tablequeryprops)                                                                  | -                          |
+| transform-params   | 请求之前对参数进行处理                                                      | (params: Record<string, any>) => any                                                                 | -                          |
+| transform-response | 请求之后对返回值进行处理                                                    | (res: any) => any                                                                                    | -                          |
+| parallel-fetch     | 会和 `api` 同时请求，并接收相同的参数，并影响加载状态。常用于获取统计数据。 | (...args: any[]) => Promise\<any> \| any                                                             | -                          |
+| toolbar-config     | 设置工具栏按钮                                                              | [ToolbarConfig](#toolbarconfig) \| boolean                                                           | -                          |
+| keys               | 定义接口相关的键名                                                          | [TableConfig](#tableconfig)['keys']                                                                  | defaultTableConfig['keys'] |
+| stats-columns      | 定义统计列                                                                  | MaybeRef\<[TableStatisticsColumn](#tablestatisticscolumn)[]>                                         | -                          |
+| stats-data         | 统计数据                                                                    | MaybeRef\<Record<string, any>>                                                                       | -                          |
+
+### TableQueryProps
+
+继承 `[FormQueryProps](./form-query)` 并有以下额外属性：
+
+| 属性    | 描述           | 类型                                    | 默认值 |
+| ------- | -------------- | --------------------------------------- | ------ |
+| schemes | 请求数据的函数 | [TableQueryScheme](#tablequeryscheme)[] | []     |
+
+### TableQueryScheme
+
+```ts
+type TableQueryScheme = FormItemProps<FieldType> & {
+  render?: (params: { model: Record<string, any> }) => VNodeChild;
+  slots?: Record<string, unknown>;
+};
+```
 
 ### TableConfig
 
@@ -118,40 +138,57 @@ const defaultTableConfig = {
 | fullScreen | 是否显示全屏按钮   | boolean | true   |
 | setting    | 是否显示列设置按钮 | boolean | true   |
 
+### TableStatisticsColumn
+
+| 属性   | 描述                        | 类型                |
+| ------ | --------------------------- | ------------------- |
+| label  | 显示的标题                  | VNodeChild          |
+| prop   | 字段名称 对应列内容的字段名 | string              |
+| format | 用来格式化内容              | (value: any) => any |
+
 ### TableSlots
 
-除了支持 `element-plus` 的 <el-link type="primary" href="https://element-plus.org/zh-CN/component/table.html#table-%E6%8F%92%E6%A7%BD" target="_blank">Table 插槽</el-link> 和以下插槽，还能定义 `TableColumnProps["slots"]` 中同名的插槽。
+继承 `element-plus` 的 [Table 插槽](https://element-plus.org/zh-CN/component/table#table-%E6%8F%92%E6%A7%BD) 和以下插槽，并能定义 `TableColumnProps["slots"]` 中同名的插槽。
 
 | 插槽          | 描述                   | 属性 |
 | ------------- | ---------------------- | ---- |
 | toolbar-left  | 自定义工具栏左边的内容 | -    |
 | toolbar-right | 自定义工具栏右边的内容 | -    |
+| before-table  | 自定义表格上边内容     | -    |
+| stats-table   | 自定义表格统计内容     | -    |
 
 ### TableEmits
 
-同 <el-link type="primary" href="https://element-plus.org/zh-CN/component/table.html#table-%E4%BA%8B%E4%BB%B6" target="_blank">Table 事件</el-link> 。
+继承 `element-plus` 的 [Table 事件](https://element-plus.org/zh-CN/component/table#table-%E4%BA%8B%E4%BB%B6)。
 
 ### TableExpose
 
-除了支持 `element-plus` 的 [Table Exposes](https://element-plus.org/zh-CN/component/table.html#table-exposes) ，以及 `FormQueryExpose`，还支持以下属性。
+继承 `element-plus` 的 [Table Exposes](https://element-plus.org/zh-CN/component/table#table-exposes) ，以及 [FormQueryExpose](./form-query#formqueryprops)，并支持以下属性。
 
-| 属性           | 描述                             | 类型                                  |
-| -------------- | -------------------------------- | ------------------------------------- |
-| reload         | 刷新表格数据                     | () => void                            |
-| getFieldsValue | 获取查询表单数据（克隆后的对象） | () => Record\<string, any>            |
-| setFieldsValue | 设置表单模型数据                 | (value: Record\<string, any>) => void |
-| getFormModel   | 获取查询表单模型对象             | () => Record\<string, any>            |
+| 属性               | 描述                           | 类型                                       |
+| ------------------ | ------------------------------ | ------------------------------------------ |
+| reload             | 刷新表格数据                   | () => void                                 |
+| expandAll          | 展开所有                       | () => void                                 |
+| collapseAll        | 折叠所有                       | () => void                                 |
+| getFetchParams     | 获取接口请求参数               | () => Record<string, any>                  |
+| getFullFetchParams | 获取接口所有请求参数，包括分页 | () => Record<string, any>                  |
+| setData            | 设置表格数据                   | (data: any[]) => void                      |
+| getData            | 获取表格数据                   | () => any[]                                |
+| getRootEl          | 获取根元素                     | () => HTMLElement \| null                  |
+| getPagination      | 获取分页数据                   | () => \{ page: number; pageSize: number; } |
 
 ### TableColumnProps
 
-除了支持 `element-plus` 的 [Table-column 属性](https://element-plus.org/zh-CN/component/table.html#table-column-%E5%B1%9E%E6%80%A7)，还支持以下属性。
+继承 `element-plus` 的 [Table-column 属性](https://element-plus.org/zh-CN/component/table#table-column-%E5%B1%9E%E6%80%A7)，并支持以下属性。
 
-| 属性     | 描述                   | 类型                  | 默认值 |
-| -------- | ---------------------- | --------------------- | ------ |
-| slots    | 定义插槽或声明插槽名称 | TableColumnPropsSlots | -      |
-| renderer | 使用内置渲染器进行渲染 | RendererType          | 'text' |
-| hidden   | 是否隐藏当前列         | boolean               | false  |
-| columns  | 定义嵌套的表格列       | TableColumnProps[]    | -      |
+| 属性     | 描述                   | 类型                                                                                       | 默认值 |
+| -------- | ---------------------- | ------------------------------------------------------------------------------------------ | ------ |
+| slots    | 定义插槽或声明插槽名称 | TableColumnPropsSlots                                                                      | -      |
+| renderer | 使用内置渲染器进行渲染 | RendererType                                                                               | 'text' |
+| hidden   | 是否隐藏当前列         | boolean                                                                                    | false  |
+| columns  | 定义嵌套的表格列       | TableColumnProps[]                                                                         | -      |
+| tooltip  | 设置列头提示框         | string                                                                                     | -      |
+| format   | 格式化数据             | (cellValue: any, row: any, column: TableColumnCtx\<any>, index: number) => VNode \| string | -      |
 
 ### TableColumnPropsSlots
 
@@ -203,34 +240,52 @@ type TableColumnPropsSlots =
 
 #### media
 
-使用 `MediaCard` 组件渲染。
+使用 [MediaCard](./media-card) 组件渲染。
 
-| 参数  | 描述                 | 类型           |
-| ----- | -------------------- | -------------- |
-| props | 自定义组件的 `props` | MediaCardProps |
+| 参数  | 描述                 | 类型                                          |
+| ----- | -------------------- | --------------------------------------------- |
+| props | 自定义组件的 `props` | [MediaCardProps](./media-card#mediacardprops) |
+
+#### mediagroup
+
+使用 [MediaCardGroup](./media-card-group) 组件渲染。
+
+| 参数  | 描述                 | 类型                                                          |
+| ----- | -------------------- | ------------------------------------------------------------- |
+| props | 自定义组件的 `props` | [MediaCardGroupProps](./media-card-group#mediacardgroupprops) |
 
 #### tag
 
-使用 `ElTag` 组件渲染。
+使用 [ElTag](https://element-plus.org/zh-CN/component/tag) 组件渲染。
 
-| 参数  | 描述                                    | 类型               |
-| ----- | --------------------------------------- | ------------------ |
-| path  | 使用 `lodash` 的 `get` 函数获取嵌套数据 | string \| string[] |
-| props | 自定义组件的 `props`                    | ElTagProps         |
+| 参数  | 描述                                    | 类型                                                                      |
+| ----- | --------------------------------------- | ------------------------------------------------------------------------- |
+| path  | 使用 `lodash` 的 `get` 函数获取嵌套数据 | string \| string[]                                                        |
+| props | 自定义组件的 `props`                    | [ElTagProps](https://element-plus.org/zh-CN/component/tag#tag-attributes) |
 
 #### longtext
 
-使用 `LongText` 组件渲染。
+使用 [LongText](./long-text) 组件渲染。
 
-| 参数  | 描述                 | 类型          |
-| ----- | -------------------- | ------------- |
-| props | 自定义组件的 `props` | LongTextProps |
+| 参数  | 描述                 | 类型                                       |
+| ----- | -------------------- | ------------------------------------------ |
+| props | 自定义组件的 `props` | [LongTextProps](./long-text#longtextprops) |
 
 #### switch
 
-使用 `ElSwitch` 组件渲染。
+使用 [ElSwitch](https://element-plus.org/zh-CN/component/switch) 组件渲染。
 
-| 参数  | 描述                 | 类型                                    |
-| ----- | -------------------- | --------------------------------------- |
-| api   | 更新数据接口         | (value: any, row: any) => Promise\<any> |
-| props | 自定义组件的 `props` | SwitchProps                             |
+| 参数  | 描述                 | 类型                                                                      |
+| ----- | -------------------- | ------------------------------------------------------------------------- |
+| api   | 更新数据接口         | (value: any, row: any) => Promise\<any>                                   |
+| props | 自定义组件的 `props` | [SwitchProps](https://element-plus.org/zh-CN/component/switch#attributes) |
+
+#### click
+
+使用 [ElLink](https://element-plus.org/zh-CN/component/link) 组件渲染。
+
+| 参数    | 描述                 | 类型                                                                                     |
+| ------- | -------------------- | ---------------------------------------------------------------------------------------- |
+| props   | 自定义组件的 `props` | [LinkProps](https://element-plus.org/zh-CN/component/link#attributes)                    |
+| format  | 格式化内容           | [TableColumnProps](#tablecolumnprops)['format']                                          |
+| onClick | 点击时的回调         | (params: { row: any; value: any; index: number; column: TableColumnCtx\<any>; }) => void |

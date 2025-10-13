@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import LongText from './long-text.vue';
+import LongText from './long-text';
 
-export * from './long-text';
+export * from './long-text.api';
 
 const _LongText = withInstall(LongText);
 

@@ -1,6 +1,5 @@
 import Quill from 'quill';
 import { defineComponent, onMounted, provide, ref, shallowRef, useTemplateRef, watch } from 'vue';
-import { debugWarn } from 'element-plus/es/utils/error.mjs';
 import { CHANGE_EVENT, useFormItem } from 'element-plus';
 import { editorEmits, editorProps } from './editor.api';
 
@@ -19,6 +18,7 @@ import Toolbar from './components/toolbar/toolbar.vue';
 import TableToolbar from './components/table-toolbar/table-toolbar.vue';
 
 import { register } from './quill';
+import { debugWarn } from '../../utils';
 
 export default defineComponent({
   name: 'CoEditor',

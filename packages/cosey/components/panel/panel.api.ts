@@ -1,9 +1,4 @@
-import type { SlotsType } from 'vue';
-
-export interface PanelProps {
-  maxHeight?: string | number;
-  header?: string | number;
-}
+import type { ExtractPropTypes, SlotsType } from 'vue';
 
 export const panelProps = {
   maxHeight: {
@@ -13,6 +8,8 @@ export const panelProps = {
     type: [String, Number],
   },
 };
+
+export type PanelProps = ExtractPropTypes<typeof panelProps>;
 
 export interface PanelSlots {
   default?: {};

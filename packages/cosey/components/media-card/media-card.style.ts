@@ -60,6 +60,7 @@ export const getMediaCardFileNameStyle: GenerateStyle<TokenWithCommonCls<AliasTo
       lineHeight: 1.12,
       textAlign: 'center',
       ...getLineClampStyle(2),
+      WebkitAlignContent: 'center',
     },
 
     '&:is(.is-mini, .is-small)': {

@@ -17,7 +17,7 @@ Cosey 封装了认证流程：
 1.登录 --------> 2.获取登录用户信息 -----------> 3.授权 -> 4.动态添加路由 -> 5.跳转到首页
 ```
 
-可以看到，登录和用户信息接口是基础且必须的，需要在 `createCosey` 配置项 `api` 进行配置：
+可以看到，登录和用户信息接口是基础且必须的，需要在 `createCosey` 函数配置项 `api` 进行配置：
 
 ```ts [main.ts]
 import { createCosey } from 'cosey';
@@ -37,6 +37,7 @@ createCosey({
 
 - 登录接口必须返回一个 `token` 字符串；
 - 用户信息接口至少要返回 `avatar` 和 `nickname` 字段数据，以便用于展示，如果名称不一致，需要进行转换。
+- 如果没有用户信息接口，仅通过登录接口获取用户信息，在这种情况下，可以将登录时获取的用户信息保存到本地缓存，在 getUserInfo 中再读取本地缓存的值来返回。
 
 ### 修改密码
 
@@ -72,7 +73,7 @@ createCosey({
 
 ### 权限配置
 
-`createCosey` 提供了配置项 `defineAuthority` 用于定义权限信息，此函数会在上面的认证流程步骤3调用，接收登录用户信息，具体权限处理全凭开发者， Cosey 并不关心。
+`createCosey` 函数提供了配置项 `defineAuthority` 用于定义权限信息，此函数会在上面的认证流程步骤3调用，接收登录用户信息，具体权限处理全凭开发者， Cosey 并不关心。
 
 ```ts
 createCosey({
@@ -98,11 +99,29 @@ createCosey({
 
 同样，Cosey 并不关心具体判断逻辑。
 
+如果需要在 `filterRoute` 中访问钩子函数，可以传递一个带有 `hook` 属性的对象：
+
+```ts
+createCosey({
+  filterRoute: {
+    hook() {
+      const persist = usePersist();
+
+      return (route) => {
+        // 使用 persist
+
+        // 根据用户信息判断此路由是否通过
+      },
+    }
+  }
+});
+```
+
 `defineAuthority` 和 `filterRoute` 配置项就是 Cosey 对外进行权限管理的全部了。
 
 ## casl
 
-`create-cosey` 搭建的项目推荐了一个权限管理的方案：[casl](https://casl.js.org/v6/en/guide/intro)。
+`create-cosey` 搭建的项目推荐使用 [casl](https://casl.js.org/v6/en/guide/intro) 进行权限管理。
 
 下面演示如何将其与 Cosey 结合使用：
 

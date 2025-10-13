@@ -1,10 +1,10 @@
 import { type Plugin, Component } from 'vue';
 import { withInstall } from '../utils';
-import FormDialog from './form-dialog.vue';
+import FormDialog from './form-dialog';
 import { useFormDialogWidth } from './useFormDialogWidth';
-import { FormDialogProps } from './form-dialog';
+import { FormDialogProps } from './form-dialog.api';
 
-export * from './form-dialog';
+export * from './form-dialog.api';
 
 const _FormDialog: Component<FormDialogProps> & Plugin = withInstall(FormDialog);
 

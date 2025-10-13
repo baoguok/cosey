@@ -4,7 +4,7 @@ Cosey 提供了以设置组件属性的方式自定义主题。
 
 可通过 `RootConfigProvider` 组件 `theme` 属性设置主题色：
 
-```jsx
+```vue
 <RootConfigProvider
   :theme="{
     token: {

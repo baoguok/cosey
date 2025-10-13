@@ -1,4 +1,5 @@
 import '@/styles/index.css';
+import '@/styles/override-element-plus.scss';
 
 import { createApp } from 'vue';
 import { createCosey } from 'cosey';

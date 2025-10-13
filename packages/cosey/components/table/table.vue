@@ -117,7 +117,7 @@
           <slot name="before-table"></slot>
         </div>
         <slot name="stats-table"></slot>
-        <div :class="`${prefixCls}-table`">
+        <div :class="`${prefixCls}-table`" dir="ltr">
           <el-table
             ref="elTableRef"
             v-bind="elTableProps"
@@ -225,9 +225,9 @@ import {
 } from './table';
 import { type TableColumnProps } from './table-column/table-column.api';
 import TableColumn from './table-column/table-column';
-import TableColumnEditor from './table-column-editor/table-column-editor.vue';
-import TableQuery from './table-query/table-query.vue';
-import TableExport from './table-export/table-export.vue';
+import TableColumnEditor from './table-column-editor/table-column-editor';
+import TableQuery from './table-query/table-query';
+import TableExport from './table-export/table-export';
 import Icon from '../icon/icon.vue';
 import { useFetch, useFullPage, useResizeObserver } from '../../hooks';
 import {
@@ -249,7 +249,8 @@ import { useLocale } from '../../hooks';
 import { hColgroup } from 'element-plus/es/components/table/src/h-helper.mjs';
 import TableFooter from './table-footer';
 import { defaultSummaryMethod } from './table-footer/utils';
-import TableStats from './table-stats/table-stats.vue';
+import TableStats from './table-stats/table-stats';
+import { type TableQueryExpose } from './table-query/table-query.api';
 
 defineOptions({
   name: 'CoTable',
@@ -290,7 +291,7 @@ const passedElSlotsName = computed(() => {
 });
 
 const elTableRef = ref<TableInstance>();
-const tableQueryRef = useTemplateRef('tableQuery');
+const tableQueryRef = useTemplateRef<TableQueryExpose>('tableQuery');
 
 // order
 const mapOrderType = {

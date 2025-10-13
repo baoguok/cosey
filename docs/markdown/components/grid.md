@@ -86,7 +86,7 @@ grid/breakpoints
 
 ### RowProps
 
-在 <el-link type="primary" href="https://element-plus.org/zh-CN/component/layout.html#row-attributes" target="_blank">Row Attributes</el-link> 基础上，添加了以下属性。
+继承 [Row Attributes](https://element-plus.org/zh-CN/component/layout.html#row-attributes)，并添加以下属性：
 
 | 属性        | 描述       | 类型     | 默认值                      |
 | ----------- | ---------- | -------- | --------------------------- |
@@ -94,12 +94,12 @@ grid/breakpoints
 
 ### RowSlots
 
-同 <el-link type="primary" href="https://element-plus.org/zh-CN/component/layout.html#row-slots" target="_blank">Row Slots</el-link> 。
+继承 [Row Slots](https://element-plus.org/zh-CN/component/layout.html#row-slots)。
 
 ### ColProps
 
-同 <el-link type="primary" href="https://element-plus.org/zh-CN/component/layout.html#col-attributes" target="_blank">Col Attributes</el-link> 。
+继承 [Col Attributes](https://element-plus.org/zh-CN/component/layout.html#col-attributes)。
 
 ### ColSlots
 
-同 <el-link type="primary" href="https://element-plus.org/zh-CN/component/layout.html#col-slots" target="_blank">Col Slots</el-link> 。
+继承 [Col Slots](https://element-plus.org/zh-CN/component/layout.html#col-slots)。
