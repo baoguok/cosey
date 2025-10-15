@@ -32,9 +32,11 @@ export default defineComponent({
     });
 
     onBeforeMount(() => {
-      props.schemes.forEach((item) => {
-        unref(formModel)[item.prop as string] = item.modelValue;
-      });
+      if (!props.model) {
+        props.schemes.forEach((item) => {
+          unref(formModel)[item.prop as string] = item.modelValue;
+        });
+      }
     });
 
     const onEnter = () => {

@@ -46,6 +46,8 @@ table/basic
 | keys               | 定义接口相关的键名                                                          | [TableConfig](#tableconfig)['keys']                                                                  | defaultTableConfig['keys'] |
 | stats-columns      | 定义统计列                                                                  | MaybeRef\<[TableStatisticsColumn](#tablestatisticscolumn)[]>                                         | -                          |
 | stats-data         | 统计数据                                                                    | MaybeRef\<Record<string, any>>                                                                       | -                          |
+| summary-properties | 设置默认合计时仅展示指定列数据                                              | string[]                                                                                             | -                          |
+| transform-summary  | 转换合计列数据                                                              | (sums: any[]) => any[]                                                                               | -                          |
 
 ### TableQueryProps
 
