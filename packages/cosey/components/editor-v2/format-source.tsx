@@ -24,7 +24,7 @@ export default defineComponent({
     };
 
     const onConfirm = () => {
-      const fragment = editor.deserialize(value.value.replace(/\n+/g, ''));
+      const fragment = editor.deserialize(value.value);
 
       editor.select([]);
       editor.delete();

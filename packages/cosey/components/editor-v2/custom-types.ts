@@ -2,8 +2,7 @@
 import { Descendant, BaseEditor, BaseRange } from 'slate-vue3/core';
 import type { DOMEditor } from 'slate-vue3/dom';
 import { HEADING_WITH_PARA_TYPES } from './plugins/heading';
-
-export type FormatAlign = 'left' | 'center' | 'right' | 'justify';
+import { type FormatAlign } from './plugins/align';
 
 export const LIST_TYPES = ['numbered-list', 'bulleted-list'] as const;
 
@@ -34,6 +33,7 @@ export const mapElementTypeTagName: Record<string, string> = {
   'heading-four': 'h4',
   'heading-five': 'h5',
   'heading-six': 'h6',
+  'code-block': 'pre',
 };
 
 export const mapTagNameElementType = Object.fromEntries(
@@ -119,14 +119,6 @@ export type LinkElement = { type: 'link'; url: string; children: Descendant[] };
 
 export type ButtonElement = { type: 'button'; children: Descendant[] };
 
-export type BadgeElement = { type: 'badge'; children: Descendant[] };
-
-export type MentionElement = {
-  type: 'mention';
-  character: string;
-  children: CustomText[];
-};
-
 export type TableElement = { type: 'table'; children: any[] };
 
 export type TableCellElement = { type: 'table-cell'; children: CustomText[] };
@@ -144,13 +136,6 @@ export type VideoElement = {
 export type CodeBlockElement = {
   type: 'code-block';
   language: string;
-  children: Descendant[];
-};
-
-export type CodeElement = {
-  type: 'code';
-  language: string;
-  lang: string;
   children: Descendant[];
 };
 
@@ -174,9 +159,7 @@ export type CustomElement = (
   | ImageElement
   | LinkElement
   | ButtonElement
-  | BadgeElement
   | ListItemElement
-  | MentionElement
   | ParagraphElement
   | TableElement
   | TableRowElement
@@ -184,7 +167,6 @@ export type CustomElement = (
   | TitleElement
   | VideoElement
   | CodeBlockElement
-  | CodeElement
   | CodeLineElement
 ) & {
   indent?: number;

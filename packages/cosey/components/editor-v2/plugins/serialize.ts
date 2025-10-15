@@ -3,13 +3,13 @@ import { Descendant, Editor, isEditor, Node as SlateNode, Text } from 'slate-vue
 import { jsx } from 'slate-vue3/hyperscript';
 import { isString, toArray } from '../../../utils';
 import {
-  type FormatAlign,
   type CustomElement,
   type CustomText,
   mapElementTypeTagName,
   mapTagNameElementType,
 } from '../custom-types';
 import { INDENT_DELTA } from './render';
+import { FormatAlign } from './align';
 
 type DeserializeResult = Descendant | null | Descendant[];
 
@@ -32,6 +32,10 @@ function stringifyStyle(styles: Style): string {
     }
   }
   return ret;
+}
+
+function getLanguageByClass(cls: string) {
+  return cls.match(/language-([^ ]+)/)?.[1] || 'text';
 }
 
 function serialize(node: SlateNode): string {
@@ -71,16 +75,21 @@ function serialize(node: SlateNode): string {
     return string;
   }
 
-  const children = node.children
-    .map((n) => serialize(n))
-    .join('')
-    .replace(/\n+/g, '\n');
+  let children = '';
+
+  if (Editor.isEditor(node) || node.type !== 'code-block') {
+    children = node.children.map((n) => serialize(n)).join('');
+  }
 
   if (isEditor(node)) {
     return children;
   }
 
   switch (node.type) {
+    case 'code-block':
+      return `<pre class="language-${node.language}">${node.children
+        .map((n) => serialize(n))
+        .join('\n')}</pre>`;
     case 'block':
     case 'paragraph':
     case 'block-quote':
@@ -100,7 +109,7 @@ function serialize(node: SlateNode): string {
       const styleAttrs = styles ? ` style="${styles}"` : '';
 
       const tagName = mapElementTypeTagName[node.type];
-      return `\n<${tagName}${styleAttrs}>${children}</${tagName}>\n`;
+      return `<${tagName}${styleAttrs}>${children}</${tagName}>`;
     }
     default:
       return children;
@@ -109,12 +118,36 @@ function serialize(node: SlateNode): string {
 
 function deserialize(node: Node, markAttributes = {}): DeserializeResult {
   if (node.nodeType === Node.TEXT_NODE) {
-    return jsx('text', markAttributes, node.textContent);
+    if (!node.textContent || /^\s+$/.test(node.textContent)) return null;
+    return jsx(
+      'text',
+      markAttributes,
+      node.textContent.trim().replace(/\n+/g, ' ').replace(/ +/g, ' '),
+    );
   } else if (node.nodeType !== Node.ELEMENT_NODE) {
     return null;
   }
 
   const element = node as Element;
+
+  if (element.tagName === 'PRE') {
+    return jsx(
+      'element',
+      {
+        type: 'code-block',
+        language: getLanguageByClass(element.getAttribute('class') || ''),
+      },
+      element.textContent.split('\n').map((text) =>
+        jsx(
+          'element',
+          {
+            type: 'code-line',
+          },
+          [jsx('text', {}, text)],
+        ),
+      ),
+    );
+  }
 
   const nodeAttributes: Omit<CustomText, 'text'> & Omit<CustomElement, 'type' | 'children'> = {
     ...markAttributes,
@@ -189,6 +222,7 @@ export function withSerialize(editor: Editor) {
 
   editor.deserialize = (html: string) => {
     const document = new DOMParser().parseFromString(html, 'text/html');
+    console.log(document.body.childNodes);
     const result = deserialize(document.body);
     const fragment = result ? toArray(result) : [];
     return fragment.map((item) => {

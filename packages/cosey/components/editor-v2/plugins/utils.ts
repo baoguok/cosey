@@ -1,6 +1,17 @@
-import { Editor, Element, Node, Path, Text, Transforms } from 'slate-vue3/core';
+import {
+  Editor,
+  Element,
+  Node,
+  NodeEntry,
+  Path,
+  Point,
+  Range,
+  Text,
+  Transforms,
+} from 'slate-vue3/core';
 import { isList, isListItem } from './list';
 import { DOMEditor } from 'slate-vue3/dom';
+import { CustomElement } from '../custom-types';
 
 export function liftToRootNode(editor: Editor, path: Path) {
   let length = path.length;
@@ -94,4 +105,34 @@ export function toggleBlockAttr(editor: Editor, key: string, value: string) {
   Transforms.setNodes<Element>(editor, {
     [key]: active ? undefined : value,
   });
+}
+
+/**
+ * 判断光标是否指向某个块元素的最后
+ * @param editor 编辑器实例对象
+ * @param type 元素类型
+ * @param callback 可选的回调，在满足条件时调用，并接收此元素和其路径
+ * @returns
+ */
+export function isPointAtEndOfElement(
+  editor: Editor,
+  type: CustomElement['type'],
+  callback?: (match: NodeEntry) => void,
+) {
+  const selection = editor.selection;
+  if (!selection || !Range.isCollapsed(selection)) {
+    return false;
+  }
+
+  const [match] = Array.from(
+    Editor.nodes(editor, {
+      match: (n) => Element.isElement(n) && n.type === type,
+    }),
+  );
+
+  const result = !!(match && Point.equals(Editor.end(editor, match[1]), selection.focus));
+  if (result && callback) {
+    callback(match);
+  }
+  return result;
 }

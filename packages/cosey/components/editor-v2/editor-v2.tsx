@@ -25,6 +25,8 @@ import { useComponentConfig } from '../config-provider';
 import { type CustomElement } from './custom-types';
 import { useFocus } from './hooks/useFocus';
 import { withDefaultPlugins } from './plugins';
+import FormatLink from './format-link';
+import FormatCodeBlock from './format-code-block';
 
 const list = {
   type: 'bulleted-list',
@@ -118,6 +120,22 @@ const initialValue: CustomElement[] = [
     children: [{ text: 'A wise quote.' }],
   },
   {
+    type: 'code-block',
+    language: 'js',
+    children: `function stringifyStyle(styles: Style): string {
+      let ret = '';
+      for (const key in styles) {
+        const value = styles[key];
+        if ((isString(value) && value !== '') || typeof value === 'number') {
+          const normalizedKey = hyphenate(key);
+        }
+      }
+      return ret;
+    }`
+      .split('\n')
+      .map((text) => ({ type: 'code-line', children: [{ text }] })),
+  },
+  {
     type: 'paragraph',
     align: 'center',
     children: [{ text: 'Try it out for yourself!' }],
@@ -148,6 +166,7 @@ export default defineComponent({
             editor={editor}
             renderElement={editor.renderElement}
             renderLeaf={editor.renderLeaf}
+            decorate={editor.decorate}
           >
             <Toolbar>
               <ButtonGroup>
@@ -186,6 +205,10 @@ export default defineComponent({
               <ButtonGroup>
                 <FormatBlock format="block-quote" icon="co:quotes" />
                 <FormatMark format="code" icon="co:code" />
+              </ButtonGroup>
+              <ButtonGroup>
+                <FormatLink />
+                <FormatCodeBlock />
               </ButtonGroup>
               <ButtonGroup>
                 <FormatClear />

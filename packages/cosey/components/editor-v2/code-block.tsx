@@ -1,0 +1,46 @@
+import { defineComponent, PropType, useModel } from 'vue';
+import { isString } from '../../utils';
+import { DOMEditor } from 'slate-vue3/dom';
+import { useEditor } from 'slate-vue3';
+import { Node, Transforms } from 'slate-vue3/core';
+import { languageOptions } from './plugins/code-block';
+
+export const CodeBlock = defineComponent({
+  props: {
+    value: {
+      type: String,
+      default: 'text',
+    },
+    element: {
+      type: Object as PropType<Node>,
+      required: true,
+    },
+  },
+  emits: {
+    'update:value': (value: string) => isString(value),
+  },
+  setup(props, { slots }) {
+    const innerValue = useModel(props, 'value');
+    const editor = useEditor();
+
+    const onChange = (e: Event) => {
+      innerValue.value = (e.target as HTMLSelectElement).value;
+
+      const path = DOMEditor.findPath(editor, props.element);
+      Transforms.setNodes(editor, { language: innerValue.value }, { at: path });
+    };
+
+    return () => {
+      return (
+        <pre class={`language-${innerValue.value}`}>
+          <select value={innerValue.value} contenteditable={false} onChange={onChange}>
+            {languageOptions.map((option) => (
+              <option value={option.value}>{option.label}</option>
+            ))}
+          </select>
+          {slots.default?.()}
+        </pre>
+      );
+    };
+  },
+});

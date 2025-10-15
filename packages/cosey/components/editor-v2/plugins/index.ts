@@ -15,10 +15,12 @@ import { withClear } from './clear';
 import { withSerialize } from './serialize';
 import { withRender } from './render';
 import { withLink } from './link';
+import { withCodeBlock } from './code-block';
 
 const plugins = [
-  withNormalizeNode,
   withKeyboard,
+  withRender,
+  withNormalizeNode,
   withList,
   withHeading,
   withFont,
@@ -31,8 +33,8 @@ const plugins = [
   withAlign,
   withClear,
   withSerialize,
-  withRender,
   withLink,
+  withCodeBlock,
 ];
 
 export function withDefaultPlugins(editor: Editor) {

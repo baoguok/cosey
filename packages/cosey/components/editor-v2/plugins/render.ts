@@ -26,40 +26,43 @@ const renderElement = ({ attributes: attrs, children, element }: RenderElementPr
     attributes.style.listStyle = element.onlyListAsChildren ? 'none' : undefined;
   }
 
-  const tagName = mapElementTypeTagName[element.type] || 'p';
+  const tagName = mapElementTypeTagName[element.type] || mapElementTypeTagName.paragraph;
   return h(tagName, attributes, children);
 };
 
 const renderLeaf = ({ leaf, attributes, children }: RenderLeafProps) => {
-  const style: CSSProperties = {};
-  if ('bold' in leaf) {
-    style.fontWeight = 'bold';
-  }
-  if ('italic' in leaf) {
-    style.fontStyle = 'italic';
-  }
-  if ('underline' in leaf) {
-    style.borderBottom = '1px solid black';
-  }
-  if ('strikethrough' in leaf) {
-    style.textDecoration = 'line-through';
-  }
-  if ('font' in leaf) {
-    style.fontFamily = leaf.font;
-  }
-  if ('size' in leaf) {
-    style.fontSize = leaf.size;
-  }
-  if ('color' in leaf) {
-    style.color = leaf.color;
-  }
-  if ('background' in leaf) {
-    style.background = leaf.background;
-  }
+  const {
+    text,
+    bold,
+    italic,
+    underline,
+    strikethrough,
+    code,
+    superscript,
+    subscript,
+    font,
+    size,
+    color,
+    background,
+    ...rest
+  } = leaf;
+
+  const style: CSSProperties = {
+    fontWeight: bold ? 'bold' : undefined,
+    fontStyle: italic ? 'italic' : undefined,
+    borderBottom: underline ? '1px solid black' : undefined,
+    textDecoration: strikethrough ? 'line-through' : undefined,
+    fontFamily: font ? font : undefined,
+    fontSize: size ? size : undefined,
+    color: color ? color : undefined,
+    background: background ? background : undefined,
+  };
+
+  void text;
 
   return h(
-    'code' in leaf ? 'code' : 'superscript' in leaf ? 'sup' : 'subscript' in leaf ? 'sub' : 'span',
-    { ...attributes, style },
+    code ? 'code' : superscript ? 'sup' : subscript ? 'sub' : 'span',
+    { ...attributes, style, class: Object.keys(rest).join(' ') },
     children,
   );
 };

@@ -1,9 +1,9 @@
 import { useEditor } from 'slate-vue3';
 import Icon from '../icon/icon.vue';
 import Button from './button';
-import { type FormatAlign } from './custom-types';
 import { useBlockValueActive } from './hooks/useBlockValueActive';
 import { defineComponent, PropType } from 'vue';
+import { type FormatAlign } from './plugins/align';
 
 export default defineComponent({
   props: {

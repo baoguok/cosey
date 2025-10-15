@@ -201,6 +201,18 @@ export const getArticleStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> 
       borderRadius: token.borderRadiusXS,
       boxShadow: `0 2px 0 -1px ${token.colorBgContainer}, 0 2px ${token.colorBorder}`,
     },
+
+    pre: {
+      position: 'relative',
+      padding: '1rem',
+
+      select: {
+        position: 'absolute',
+        right: token.sizeXXS,
+        top: token.sizeXXS,
+        zIndex: 1,
+      },
+    },
   };
 };
 
