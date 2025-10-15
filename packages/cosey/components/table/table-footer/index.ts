@@ -31,9 +31,21 @@ export default defineComponent({
       required: true,
       type: Object as PropType<TableFooter<DefaultRow>['store']>,
     },
-    summaryMethod: Function as PropType<TableFooter<DefaultRow>['summaryMethod']>,
-    sumText: String,
-    border: Boolean,
+    summaryMethod: {
+      type: Function as PropType<TableFooter<DefaultRow>['summaryMethod']>,
+    },
+    summaryProperties: {
+      type: Array as PropType<string[]>,
+    },
+    transformSummary: {
+      type: Function as PropType<(sums: any[]) => any[]>,
+    },
+    sumText: {
+      type: String,
+    },
+    border: {
+      type: Boolean,
+    },
     defaultSort: {
       type: Object as PropType<TableFooter<DefaultRow>['defaultSort']>,
       default: () => {
@@ -60,7 +72,15 @@ export default defineComponent({
     };
   },
   render() {
-    const { columns, getCellStyles, getCellClasses, summaryMethod, sumText } = this;
+    const {
+      columns,
+      getCellStyles,
+      getCellClasses,
+      summaryMethod,
+      sumText,
+      summaryProperties,
+      transformSummary,
+    } = this;
     const data = unref(this.store.states.data) || [];
 
     let sums: any[] = [];
@@ -70,7 +90,7 @@ export default defineComponent({
         data,
       });
     } else {
-      sums = defaultSummaryMethod(columns, data, sumText);
+      sums = defaultSummaryMethod(columns, data, sumText, summaryProperties, transformSummary);
     }
 
     if (!Array.isArray(sums[0])) {

@@ -163,6 +163,8 @@
                     :store="store"
                     :sum-text="computedSumText"
                     :summary-method="summaryMethod"
+                    :summary-properties="summaryProperties"
+                    :transform-summary="transformSummary"
                   />
                 </table>
               </div>
@@ -407,7 +409,13 @@ const tableDataWithSummary = computed(() => {
           columns: columns,
           data: tableData.value,
         })
-      : defaultSummaryMethod(columns, data, props.sumText || t('co.table.total'));
+      : defaultSummaryMethod(
+          columns,
+          data,
+          props.sumText || t('co.table.total'),
+          props.summaryProperties,
+          props.transformSummary,
+        );
 
     if (!Array.isArray(sums[0])) {
       sums = [sums];
