@@ -1,4 +1,5 @@
-import { shallowRef } from 'vue';
+import { type ShallowRef, shallowRef } from 'vue';
+import { isNullish } from '../utils';
 
 export interface UseFetchOptions<T> {
   onSuccess?: (data: T) => void;
@@ -6,19 +7,42 @@ export interface UseFetchOptions<T> {
   onFinally?: () => void;
   immediate?: boolean;
   initialData?: T;
+  stale?: any;
 }
+
+interface UseFetchStale<T> {
+  isFetching: ShallowRef<boolean>;
+  data: ShallowRef<T | undefined>;
+  error: ShallowRef<any>;
+}
+
+interface UseFetchResult<T, U> extends UseFetchStale<T> {
+  execute: (params?: U | undefined) => Promise<void>;
+}
+
+const staleMap = new Map<any, UseFetchStale<any>>();
 
 export function useFetch<T = any, U = any>(
   fetcher: (params: U) => Promise<any> | any,
   options: UseFetchOptions<T> = {},
-) {
-  const { immediate = true, initialData, onSuccess, onError, onFinally } = options;
+): UseFetchResult<T, U> {
+  const { immediate = true, initialData, stale, onSuccess, onError, onFinally } = options;
 
-  const isFetching = shallowRef(false);
-  const data = shallowRef<T | undefined>(initialData);
-  const error = shallowRef<any>();
+  const { isFetching, error, data } = (!isNullish(stale) && staleMap.get(stale)) || {
+    isFetching: shallowRef(false),
+    data: shallowRef<T | undefined>(initialData),
+    error: shallowRef<any>(),
+  };
 
-  const execute = async (params?: U) => {
+  if (!isNullish(stale) && !staleMap.get(stale)) {
+    staleMap.set(stale, {
+      isFetching,
+      error,
+      data,
+    });
+  }
+
+  async function execute(params?: U) {
     if (isFetching.value) {
       return;
     }
@@ -37,7 +61,7 @@ export function useFetch<T = any, U = any>(
       isFetching.value = false;
       onFinally?.();
     }
-  };
+  }
 
   if (immediate) {
     Promise.resolve().then(() => {
@@ -47,8 +71,8 @@ export function useFetch<T = any, U = any>(
 
   return {
     isFetching,
-    data,
     error,
+    data,
     execute,
   };
 }

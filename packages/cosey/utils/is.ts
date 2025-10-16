@@ -67,3 +67,10 @@ export function isPrimitive(target: any): target is string | number | boolean {
 export function isEmpty(target: any) {
   return isNullish(target) || target === '' || (Array.isArray(target) && target.length === 0);
 }
+
+/**
+ * 判断是否为类Promise对象
+ */
+export function isThenable(target: any): target is PromiseLike<any> {
+  return (isFunction(target) || isObject(target)) && isFunction((target as PromiseLike<any>).then);
+}

@@ -679,19 +679,11 @@ const onReset = async () => {
 };
 
 const submit = async () => {
-  if (props.formProps) {
-    return tableQueryRef.value?.submit();
-  } else {
-    return onSubmit();
-  }
+  return props.formProps && tableQueryRef.value ? tableQueryRef.value.submit() : onSubmit();
 };
 
 const reset: TableExpose['reset'] = async (values) => {
-  if (props.formProps) {
-    return tableQueryRef.value?.reset(values);
-  } else {
-    return onReset();
-  }
+  return props.formProps && tableQueryRef.value ? tableQueryRef.value.reset(values) : onReset();
 };
 
 // stats
