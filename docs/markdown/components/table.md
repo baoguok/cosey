@@ -167,17 +167,18 @@ const defaultTableConfig = {
 
 继承 `element-plus` 的 [Table Exposes](https://element-plus.org/zh-CN/component/table#table-exposes) ，以及 [FormQueryExpose](./form-query#formqueryprops)，并支持以下属性。
 
-| 属性               | 描述                           | 类型                                       |
-| ------------------ | ------------------------------ | ------------------------------------------ |
-| reload             | 刷新表格数据                   | () => void                                 |
-| expandAll          | 展开所有                       | () => void                                 |
-| collapseAll        | 折叠所有                       | () => void                                 |
-| getFetchParams     | 获取接口请求参数               | () => Record<string, any>                  |
-| getFullFetchParams | 获取接口所有请求参数，包括分页 | () => Record<string, any>                  |
-| setData            | 设置表格数据                   | (data: any[]) => void                      |
-| getData            | 获取表格数据                   | () => any[]                                |
-| getRootEl          | 获取根元素                     | () => HTMLElement \| null                  |
-| getPagination      | 获取分页数据                   | () => \{ page: number; pageSize: number; } |
+| 属性               | 描述                           | 类型                                                  |
+| ------------------ | ------------------------------ | ----------------------------------------------------- |
+| reload             | 刷新表格数据                   | () => void                                            |
+| expandAll          | 展开所有                       | () => void                                            |
+| collapseAll        | 折叠所有                       | () => void                                            |
+| getFetchParams     | 获取接口请求参数               | () => Record<string, any>                             |
+| getFullFetchParams | 获取接口所有请求参数，包括分页 | () => Record<string, any>                             |
+| setData            | 设置表格数据                   | (data: any[]) => void                                 |
+| getData            | 获取表格数据                   | () => any[]                                           |
+| getRootEl          | 获取根元素                     | () => HTMLElement \| null                             |
+| getPagination      | 获取分页数据                   | () => \{ page: number; pageSize: number; }            |
+| reset              | 重置表单                       | (values?: Record<PropertyKey, any>) => Promise\<void> |
 
 ### TableColumnProps
 

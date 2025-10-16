@@ -686,9 +686,9 @@ const submit = async () => {
   }
 };
 
-const reset = async () => {
+const reset: TableExpose['reset'] = async (values) => {
   if (props.formProps) {
-    return tableQueryRef.value?.reset();
+    return tableQueryRef.value?.reset(values);
   } else {
     return onReset();
   }

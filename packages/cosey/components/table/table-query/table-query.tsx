@@ -44,16 +44,27 @@ export default defineComponent({
     };
 
     // expose
+    const setFieldsValue: TableQueryCustomExpose['setFieldsValue'] = (values) => {
+      Object.assign(unref(formModel), values);
+    };
+
+    const reset: TableQueryCustomExpose['reset'] = (values) => {
+      formQueryRef.value?.reset(() => {
+        if (values) {
+          setFieldsValue(values);
+        }
+      });
+    };
+
     const customExpose: TableQueryCustomExpose = {
       getFieldsValue() {
         return cloneDeep(unref(formModel));
       },
-      setFieldsValue(value) {
-        Object.assign(unref(formModel), value);
-      },
+      setFieldsValue,
       getFormModel() {
         return unref(formModel);
       },
+      reset,
     };
 
     expose<TableQueryExpose>(

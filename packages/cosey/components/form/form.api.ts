@@ -100,7 +100,7 @@ export const formEmits = {
 export type FormEmits = typeof formEmits;
 
 export interface FormExpose {
-  reset: () => void;
+  reset: (callback?: () => void) => void;
   submit: () => Promise<any>;
   validate: (callback?: FormValidateCallback) => FormValidationResult;
   validateField: (

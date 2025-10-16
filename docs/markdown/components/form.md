@@ -200,9 +200,10 @@ form/all-fields
 
 继承 `element-plus` 的 [Form Exposes](https://element-plus.org/zh-CN/component/form.html#form-exposes) ，并添加以下属性：
 
-| 属性   | 描述     | 类型                |
-| ------ | -------- | ------------------- |
-| submit | 提交表单 | () => Promise\<any> |
+| 属性   | 描述                                        | 类型                            |
+| ------ | ------------------------------------------- | ------------------------------- |
+| submit | 提交表单                                    | () => Promise\<any>             |
+| reset  | 重置表单，callback会在 reset 属性调用前调用 | (callback?: () => void) => void |
 
 ### FormItemProps
 
