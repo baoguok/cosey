@@ -48,7 +48,16 @@ export default defineComponent({
 
     return () => {
       return (
-        <ElForm ref="form" {...elFormProps} class={[hashId.value, prefixCls.value]}>
+        <ElForm
+          ref="form"
+          {...elFormProps}
+          class={[hashId.value, prefixCls.value]}
+          {...{
+            onSubmit: (event: SubmitEvent) => {
+              event.preventDefault();
+            },
+          }}
+        >
           <OptionalWrapper when={props.grid} component={Row} props={props.rowProps}>
             {slots.default?.({})}
             {!props.readonly && !formBubbleContext && !props.hideButtons && (

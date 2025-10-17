@@ -64,9 +64,11 @@ export function useFetch<T = any, U = any>(
   }
 
   if (immediate) {
-    Promise.resolve().then(() => {
-      execute();
-    });
+    if (isNullish(stale) || isNullish(data.value)) {
+      Promise.resolve().then(() => {
+        execute();
+      });
+    }
   }
 
   return {
