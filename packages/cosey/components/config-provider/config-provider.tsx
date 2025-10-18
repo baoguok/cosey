@@ -55,6 +55,9 @@ export default defineComponent({
       () => {
         outsideLocale.value = props.locale || en;
       },
+      {
+        immediate: true,
+      },
     );
 
     // theme

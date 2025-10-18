@@ -55,6 +55,7 @@ export default defineComponent({
           {...{
             onSubmit: (event: SubmitEvent) => {
               event.preventDefault();
+              submit();
             },
           }}
         >
