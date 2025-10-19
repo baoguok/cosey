@@ -9,7 +9,7 @@ import {
   tableQueryEmits,
 } from './table-query.api';
 import { reactiveOmit } from '@vueuse/core';
-import { createMergedExpose } from '../../../utils';
+import { createMergedExpose, isObject } from '../../../utils';
 import { cloneDeep } from 'lodash-es';
 import { FormItem } from '../../form';
 import { FormQuery, type FormQueryExpose } from '../../form-query';
@@ -91,7 +91,7 @@ export default defineComponent({
           },
         },
         () => {
-          return props.schemes.map((item) => {
+          return props.schemes.filter(isObject).map((item) => {
             const { slots, render, ...rest } = item;
 
             if (render) {
