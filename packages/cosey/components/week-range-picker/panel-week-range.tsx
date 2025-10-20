@@ -60,7 +60,7 @@ export default defineComponent({
         const row = (result[rowIndex] ??= []);
         const week = i + 1;
         const d = currentD.week(week);
-        const startDate = d.startOf('date');
+        const startDate = d.startOf('week');
         const endDate = d.endOf('week');
         const startStr = startDate.format('MM-DD');
         const endStr = endDate.format('MM-DD');
@@ -81,7 +81,9 @@ export default defineComponent({
 
     const pickedDates = ref<WeekInfo[]>([]);
 
-    const innerValue = ref<Dayjs[]>(parseDates(props.parsedValue));
+    const innerValue = ref<Dayjs[]>([]);
+
+    const selectedDates = ref<number[]>([]);
 
     watch(
       () => props.parsedValue,
@@ -102,8 +104,6 @@ export default defineComponent({
     );
 
     const isSelecting = computed(() => pickedDates.value.length === 1);
-
-    const selectedDates = ref<number[]>([]);
 
     const onPrevYear = () => {
       currentYearDate.value = dayjs(currentYearDate.value).subtract(1, 'year');
@@ -133,8 +133,9 @@ export default defineComponent({
         pickedDates.value = [];
       }
       pickedDates.value.push(weekInfo);
+      pickedDates.value.sort((a, b) => a.id - b.id);
 
-      selectedDates.value = pickedDates.value.map((item) => item.id).sort();
+      selectedDates.value = pickedDates.value.map((item) => item.id);
       if (selectedDates.value.length === 1) {
         const d = selectedDates.value[0];
         selectedDates.value = [d, d];
@@ -154,10 +155,6 @@ export default defineComponent({
 
       selectedDates.value = [pickedDates.value[0].id, weekInfo.id].sort();
     };
-
-    const onMouseDown = () => {};
-
-    const onMouseUp = () => {};
 
     const resetCurrentYear = (year: number) => {
       const currentYear = currentYearDate.value.year();
@@ -224,12 +221,7 @@ export default defineComponent({
             </div>
           </div>
           <div class={`${prefixCls.value}-content`}>
-            <table
-              onClick={onPickWeek}
-              onMousemove={onMouseMove}
-              onMousedown={onMouseDown}
-              onMouseup={onMouseUp}
-            >
+            <table onClick={onPickWeek} onMousemove={onMouseMove}>
               <tbody>
                 {weeks.value.map((row, i) => {
                   return (
