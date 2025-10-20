@@ -11,6 +11,11 @@ const i18n = createI18n({
   silentFallbackWarn: true,
 });
 
+import dayjs from 'dayjs';
+import dayjsZhCn from 'dayjs/locale/zh-cn';
+
+dayjs.locale(dayjsZhCn);
+
 import { App, Component } from 'vue';
 import Layout from '@/components/layout/layout.vue';
 

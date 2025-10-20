@@ -20,8 +20,8 @@ async function createFiles(
   // *.tsx
   await fse.outputFile(
     path.resolve(compDir, `${kebabName}.tsx`),
-    `import { type ${pascalName}Expose, ${camelName}Props, ${camelName}Slots, ${camelName}Emits } from './${camelName}.api';
-import useStyle from './${camelName}.style';
+    `import { type ${pascalName}Expose, ${camelName}Props, ${camelName}Slots, ${camelName}Emits } from './${kebabName}.api';
+import useStyle from './${kebabName}.style';
 import { useComponentConfig } from '../config-provider';
 import { defineComponent } from 'vue';
 
@@ -31,7 +31,7 @@ export default defineComponent({
   slots: ${camelName}Slots,
   emits: ${camelName}Emits,
   setup(props, { slots, expose }) {
-    const { prefixCls } = useComponentConfig('${camelName}', props);
+    const { prefixCls } = useComponentConfig('${kebabName}', props);
 
     const { hashId } = useStyle(prefixCls);
 
@@ -64,7 +64,7 @@ export default _${pascalName};
 
   // *.api.ts
   await fse.outputFile(
-    path.resolve(compDir, `${kebabName}.ts`),
+    path.resolve(compDir, `${kebabName}.api.ts`),
     `import type { ExtractPropTypes, SlotsType } from 'vue';
 
 export const ${camelName}Props = {};

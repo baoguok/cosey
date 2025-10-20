@@ -26,7 +26,8 @@ export default {
       home: 'Home',
     },
     form: {
-      weekOfYear: 'Week w, YYYY',
+      weekOfYear: '[Week] w, YYYY',
+      week: 'Week {w}',
       submit: 'Submit',
       reset: 'Reset',
       search: 'Search',

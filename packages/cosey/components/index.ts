@@ -50,6 +50,7 @@ export * from './transition-group';
 export * from './upload';
 export * from './video-card';
 export * from './video-viewer';
+export * from './week-range-picker';
 
 import { type App } from 'vue';
 import * as components from './components';

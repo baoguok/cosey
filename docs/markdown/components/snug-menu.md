@@ -30,10 +30,10 @@ snug-menu/horizontal
 
 ### SnugMenuProps
 
-| 属性                 | 描述                       | 类型                       | 默认值     |
-| -------------------- | -------------------------- | -------------------------- | ---------- |
-| mode                 | 菜单展示模式               | 'horizontal' \| 'vertical' | 'vertical' |
-| model-value(v-model) | 当前活动的菜单项的唯一标志 | string                     | -          |
+| 属性                  | 描述                       | 类型                       | 默认值     |
+| --------------------- | -------------------------- | -------------------------- | ---------- |
+| mode                  | 菜单展示模式               | 'horizontal' \| 'vertical' | 'vertical' |
+| model-value (v-model) | 当前活动的菜单项的唯一标志 | string                     | -          |
 
 ### SnugMenuSlots
 

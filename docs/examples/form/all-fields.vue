@@ -68,6 +68,7 @@
     <co-form-item v-model="formModel.dates" label="dates" field-type="dates" />
     <co-form-item label="datetime" field-type="datetime" v-model="formModel.datetime" />
     <co-form-item v-model="formModel.week" label="week" field-type="week" />
+    <co-form-item v-model="formModel.weekrange" label="weekrange" field-type="weekrange" />
     <co-form-item
       v-model="formModel.datetimerange"
       label="datetimerange"
@@ -149,6 +150,8 @@ import {
   generateData,
   Option,
 } from './data';
+import dayjs from 'dayjs';
+import { type FormExpose } from 'cosey/components';
 
 const readonly = ref(false);
 
@@ -189,6 +192,7 @@ const formModel = reactive({
   dates: [new Date(2000, 0, 1), new Date(2000, 0, 3), new Date(2000, 0, 5)],
   datetime: new Date(),
   week: new Date(),
+  weekrange: [new Date(), dayjs().add(2, 'week').toDate()],
   datetimerange: [new Date(2000, 0, 1, 0, 0, 0), new Date(2000, 0, 31, 23, 59, 59)] as [Date, Date],
   daterange: [new Date(2000, 0, 1), new Date(2000, 0, 15)] as [Date, Date],
   monthrange: [new Date(2000, 0), new Date(2000, 6)] as [Date, Date],
@@ -213,7 +217,7 @@ const formModel = reactive({
   treeselect: '3-1-1',
 });
 
-const formRef = useTemplateRef('form');
+const formRef = useTemplateRef<FormExpose>('form');
 
 const onSubmit = () => {
   formRef.value?.validate().then(() => {

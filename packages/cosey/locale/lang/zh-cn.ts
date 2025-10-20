@@ -26,7 +26,8 @@ export default {
       home: '首页',
     },
     form: {
-      weekOfYear: 'YYYY-第w周',
+      weekOfYear: 'YYYY 第w周',
+      week: '第{w}周',
       submit: '提交',
       reset: '重置',
       search: '查询',

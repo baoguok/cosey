@@ -27,6 +27,7 @@ export default {
     },
     form: {
       weekOfYear: 'الأسبوع w من سنة YYYY',
+      week: 'الأسبوع {w}',
       submit: 'إرسال',
       reset: 'إعادة تعيين',
       search: 'بحث',

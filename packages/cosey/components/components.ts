@@ -49,6 +49,7 @@ import { TransitionGroup } from './transition-group';
 import { Upload } from './upload';
 import { VideoCard } from './video-card';
 import { VideoViewer } from './video-viewer';
+import { WeekRangePicker } from './week-range-picker';
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -108,6 +109,7 @@ declare module 'vue' {
     CoUpload: typeof Upload;
     CoVideoCard: typeof VideoCard;
     CoVideoViewer: typeof VideoViewer;
+    CoWeekRangePicker: typeof WeekRangePicker;
   }
 }
 
@@ -168,4 +170,5 @@ export {
   Upload,
   VideoCard,
   VideoViewer,
+  WeekRangePicker,
 };
