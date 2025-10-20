@@ -1,10 +1,15 @@
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref, unref } from 'vue';
 import { omit } from 'lodash-es';
 import { ElButton, ElPopconfirm } from 'element-plus';
-import { tableActionItemProps } from './item.api';
+import {
+  type TableActionItemProps,
+  defaultTableActionItemProps,
+  tableActionItemProps,
+} from './item.api';
 import Icon from '../icon/icon.vue';
 import { useToken } from '../theme';
 import { useLocale } from '../../hooks';
+import { useConfig } from '../config-provider';
 
 export default defineComponent({
   name: 'CoTableActionItem',
@@ -15,20 +20,30 @@ export default defineComponent({
 
     const { token } = useToken();
 
+    const { tableAction: tableActionConfig } = useConfig();
+
+    const mergedProps = computed<TableActionItemProps>(() => {
+      return {
+        ...defaultTableActionItemProps,
+        ...unref(tableActionConfig)?.itemProps,
+        ...props.props,
+      };
+    });
+
     const buttonProps = computed(() => {
-      return omit(props, 'icon');
+      return omit(unref(mergedProps), ['icon', 'visible', 'hidden', 'popconfirm', 'label']);
     });
 
     const loading = ref(false);
 
     const mergedVisible = computed(() => {
-      return props.hidden ? false : props.visible;
+      return unref(mergedProps).hidden ? false : unref(mergedProps).visible;
     });
 
     const onConfirm = async (e: MouseEvent, confirm: (e: MouseEvent) => void) => {
       loading.value = true;
       try {
-        await props.popconfirm?.confirm?.(e);
+        await unref(mergedProps).popconfirm?.confirm?.(e);
         confirm(e);
       } catch {
         void 0;
@@ -44,19 +59,19 @@ export default defineComponent({
     return () => {
       if (!mergedVisible.value) return;
 
-      if (props.popconfirm) {
+      if (unref(mergedProps).popconfirm) {
         return (
-          <ElPopconfirm {...props.popconfirm}>
+          <ElPopconfirm {...unref(mergedProps).popconfirm}>
             {{
               reference: () => (
-                <ElButton {...omit(buttonProps.value, 'popconfirm')} style="margin: 0">
-                  {props.icon && (
+                <ElButton {...buttonProps.value} style="margin: 0">
+                  {unref(mergedProps).icon && (
                     <Icon
-                      name={props.icon}
+                      name={unref(mergedProps).icon}
                       style={{ marginInlineEnd: token.value.marginXXS + 'px' }}
                     />
                   )}
-                  {props.label}
+                  {unref(mergedProps).label}
                 </ElButton>
               ),
               actions: ({ confirm, cancel }: any) => {
@@ -83,10 +98,13 @@ export default defineComponent({
 
       return (
         <ElButton {...buttonProps.value} style="margin: 0">
-          {props.icon && (
-            <Icon name={props.icon} style={{ marginInlineEnd: token.value.marginXXS + 'px' }} />
+          {unref(mergedProps).icon && (
+            <Icon
+              name={unref(mergedProps).icon}
+              style={{ marginInlineEnd: token.value.marginXXS + 'px' }}
+            />
           )}
-          {props.label}
+          {unref(mergedProps).label}
         </ElButton>
       );
     };

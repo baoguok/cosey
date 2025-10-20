@@ -10,6 +10,7 @@ import {
 import { type TableConfig } from '../table';
 import { type ThemeConfig } from '../theme';
 import { type Language } from '../../locale';
+import { type TableActionConfig } from '../table-action';
 
 export const configProviderProps = {
   prefixCls: {
@@ -20,6 +21,9 @@ export const configProviderProps = {
   },
   table: {
     type: Object as PropType<TableConfig>,
+  },
+  tableAction: {
+    type: Object as PropType<TableActionConfig>,
   },
   locale: {
     type: Object as PropType<Language>,
@@ -32,6 +36,7 @@ export interface ConfigProviderInnerProps {
   getPrefixCls: (suffixCls?: string, customizePrefixCls?: string) => string;
   theme?: ComputedRef<ThemeConfig | undefined>;
   table: ComputedRef<TableConfig | undefined>;
+  tableAction: ComputedRef<TableActionConfig | undefined>;
   prefixCls: ComputedRef<string>;
 }
 
@@ -46,6 +51,7 @@ export const defaultConfigProvider: ConfigProviderInnerProps = {
   },
   prefixCls: computed(() => defaultPrefixCls),
   table: computed(() => void 0),
+  tableAction: computed(() => void 0),
 };
 
 export const useConfigProvide = (props: ConfigProviderInnerProps) => {
