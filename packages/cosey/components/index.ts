@@ -8,6 +8,7 @@ export * from './container';
 export * from './context-menu';
 export * from './copy';
 export * from './cssinjs';
+export * from './descriptions';
 export * from './dnd-sort';
 export * from './editor';
 export * from './field';

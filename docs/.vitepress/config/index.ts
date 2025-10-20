@@ -153,6 +153,7 @@ export default defineConfig({
           text: 'Data 数据展示',
           items: [
             { text: 'Card 卡片', link: '/components/card' },
+            { text: 'Descriptions 描述列表', link: '/components/descriptions' },
             { text: 'Highlight 代码高亮', link: '/components/highlight' },
             { text: 'HorizontalTree 水平树', link: '/components/horizontal-tree' },
             { text: 'LongText 长文本', link: '/components/long-text' },

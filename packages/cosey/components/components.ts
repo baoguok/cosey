@@ -7,6 +7,7 @@ import { ConfigProvider } from './config-provider';
 import { Container } from './container';
 import { ContextMenu, ContextMenuItem, ContextSubMenu } from './context-menu';
 import { Copy } from './copy';
+import { Descriptions } from './descriptions';
 import { DndSort, DndSortItem } from './dnd-sort';
 import { Editor } from './editor';
 import { Field } from './field';
@@ -64,6 +65,7 @@ declare module 'vue' {
     CoContextMenuItem: typeof ContextMenuItem;
     CoContextSubMenu: typeof ContextSubMenu;
     CoCopy: typeof Copy;
+    CoDescriptions: typeof Descriptions;
     CoDndSort: typeof DndSort;
     CoDndSortItem: typeof DndSortItem;
     CoEditor: typeof Editor;
@@ -125,6 +127,7 @@ export {
   ContextMenuItem,
   ContextSubMenu,
   Copy,
+  Descriptions,
   DndSort,
   DndSortItem,
   Editor,
