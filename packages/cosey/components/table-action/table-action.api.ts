@@ -1,7 +1,12 @@
 import { type ExtractPropTypes, type PropType } from 'vue';
 import { type TableActionItemProps } from './item.api';
 
-type TableActionItemAtom = TableActionItemProps | null | undefined;
+type TableActionItemAtom =
+  | TableActionItemProps
+  | null
+  | undefined
+  | boolean
+  | TableActionItemAtom[];
 
 export const tableActionProps = {
   actions: {

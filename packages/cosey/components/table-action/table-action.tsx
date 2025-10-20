@@ -5,6 +5,7 @@ import useStyle from './table-action.style';
 import { useComponentConfig } from '../config-provider';
 import { computed, defineComponent } from 'vue';
 import { TableActionItemProps } from './item.api';
+import { isObject } from '../../utils';
 
 export default defineComponent({
   name: 'CoTableAction',
@@ -25,7 +26,7 @@ export default defineComponent({
           {dyadicActions.value.map((actions, rowIndex) => {
             return (
               <div key={rowIndex} class={`${prefixCls.value}-row`}>
-                {actions.filter(Boolean).map((action, actionIndex) => {
+                {actions.filter(isObject).map((action, actionIndex) => {
                   return <Item key={actionIndex} props={action} />;
                 })}
               </div>
