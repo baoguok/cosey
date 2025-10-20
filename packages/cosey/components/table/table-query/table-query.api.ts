@@ -43,17 +43,19 @@ export type TableQueryEmits = typeof tableQueryEmits;
 
 export interface TableQueryCustomExpose {
   getFieldsValue: () => Record<string, any>;
-  setFieldsValue: (value: Record<string, any>) => void;
+  setFieldsValue: (values: Record<PropertyKey, any>) => void;
   getFormModel: () => Record<string, any>;
+  reset: (values?: Record<PropertyKey, any>) => void;
 }
 
-export interface TableQueryExpose extends FormQueryExpose, TableQueryCustomExpose {}
+export interface TableQueryExpose extends Omit<FormQueryExpose, 'reset'>, TableQueryCustomExpose {}
 
 export const tableQueryExposeKeys = [
   ...formExposeKeys,
   'getFieldsValue',
   'setFieldsValue',
   'getFormModel',
+  'reset',
 ];
 
 export function createScheme<T extends FieldType>(props: FormItemProps<T>) {

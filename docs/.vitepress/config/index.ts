@@ -146,12 +146,14 @@ export default defineConfig({
             { text: 'InputNumberRange 数字范围输入框', link: '/components/input-number-range' },
             { text: 'Upload 上传', link: '/components/upload' },
             { text: 'RemoteSelect 远程选择器', link: '/components/remote-select' },
+            { text: 'WeekRangePicker 周范围选择器', link: '/components/week-range-picker' },
           ],
         },
         {
           text: 'Data 数据展示',
           items: [
             { text: 'Card 卡片', link: '/components/card' },
+            { text: 'Descriptions 描述列表', link: '/components/descriptions' },
             { text: 'Highlight 代码高亮', link: '/components/highlight' },
             { text: 'HorizontalTree 水平树', link: '/components/horizontal-tree' },
             { text: 'LongText 长文本', link: '/components/long-text' },

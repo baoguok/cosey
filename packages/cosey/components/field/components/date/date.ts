@@ -16,6 +16,7 @@ export interface MapDateModeValueType {
   datetime: DateBaseValue;
   datetimerange: [DateBaseValue, DateBaseValue];
   week: DateBaseValue;
+  weekrange: Date[];
 }
 
 export type FieldDateMode = keyof MapDateModeValueType;

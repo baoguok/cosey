@@ -7,6 +7,7 @@ import { ConfigProvider } from './config-provider';
 import { Container } from './container';
 import { ContextMenu, ContextMenuItem, ContextSubMenu } from './context-menu';
 import { Copy } from './copy';
+import { Descriptions } from './descriptions';
 import { DndSort, DndSortItem } from './dnd-sort';
 import { Editor } from './editor';
 import { EditorV2 } from './editor-v2';
@@ -50,6 +51,7 @@ import { TransitionGroup } from './transition-group';
 import { Upload } from './upload';
 import { VideoCard } from './video-card';
 import { VideoViewer } from './video-viewer';
+import { WeekRangePicker } from './week-range-picker';
 
 declare module 'vue' {
   export interface GlobalComponents {
@@ -64,6 +66,7 @@ declare module 'vue' {
     CoContextMenuItem: typeof ContextMenuItem;
     CoContextSubMenu: typeof ContextSubMenu;
     CoCopy: typeof Copy;
+    CoDescriptions: typeof Descriptions;
     CoDndSort: typeof DndSort;
     CoDndSortItem: typeof DndSortItem;
     CoEditor: typeof Editor;
@@ -110,6 +113,7 @@ declare module 'vue' {
     CoUpload: typeof Upload;
     CoVideoCard: typeof VideoCard;
     CoVideoViewer: typeof VideoViewer;
+    CoWeekRangePicker: typeof WeekRangePicker;
   }
 }
 
@@ -125,6 +129,7 @@ export {
   ContextMenuItem,
   ContextSubMenu,
   Copy,
+  Descriptions,
   DndSort,
   DndSortItem,
   Editor,
@@ -171,4 +176,5 @@ export {
   Upload,
   VideoCard,
   VideoViewer,
+  WeekRangePicker,
 };

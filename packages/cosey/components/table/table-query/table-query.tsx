@@ -9,7 +9,7 @@ import {
   tableQueryEmits,
 } from './table-query.api';
 import { reactiveOmit } from '@vueuse/core';
-import { createMergedExpose } from '../../../utils';
+import { createMergedExpose, isObject } from '../../../utils';
 import { cloneDeep } from 'lodash-es';
 import { FormItem } from '../../form';
 import { FormQuery, type FormQueryExpose } from '../../form-query';
@@ -32,9 +32,11 @@ export default defineComponent({
     });
 
     onBeforeMount(() => {
-      props.schemes.forEach((item) => {
-        unref(formModel)[item.prop as string] = item.modelValue;
-      });
+      if (!props.model) {
+        props.schemes.forEach((item) => {
+          unref(formModel)[item.prop as string] = item.modelValue;
+        });
+      }
     });
 
     const onEnter = () => {
@@ -42,16 +44,27 @@ export default defineComponent({
     };
 
     // expose
+    const setFieldsValue: TableQueryCustomExpose['setFieldsValue'] = (values) => {
+      Object.assign(unref(formModel), values);
+    };
+
+    const reset: TableQueryCustomExpose['reset'] = (values) => {
+      formQueryRef.value?.reset(() => {
+        if (values) {
+          setFieldsValue(values);
+        }
+      });
+    };
+
     const customExpose: TableQueryCustomExpose = {
       getFieldsValue() {
         return cloneDeep(unref(formModel));
       },
-      setFieldsValue(value) {
-        Object.assign(unref(formModel), value);
-      },
+      setFieldsValue,
       getFormModel() {
         return unref(formModel);
       },
+      reset,
     };
 
     expose<TableQueryExpose>(
@@ -78,7 +91,7 @@ export default defineComponent({
           },
         },
         () => {
-          return props.schemes.map((item) => {
+          return props.schemes.filter(isObject).map((item) => {
             const { slots, render, ...rest } = item;
 
             if (render) {

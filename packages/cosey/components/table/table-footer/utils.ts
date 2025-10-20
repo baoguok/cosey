@@ -132,11 +132,17 @@ export function defaultSummaryMethod(
   columns: TableColumnCtx<DefaultRow>[],
   data: any[],
   sumText?: string,
+  summaryProperties?: string[],
+  transformSummary?: (sums: any[]) => any[],
 ) {
   const sums: any[] = [];
   columns.forEach((column, index) => {
     if (index === 0) {
       sums[index] = sumText;
+      return;
+    }
+    if (summaryProperties && !summaryProperties.includes(column.property)) {
+      sums[index] = '';
       return;
     }
     const values = data.map((item) => Number(item[column.property]));
@@ -163,5 +169,5 @@ export function defaultSummaryMethod(
       sums[index] = '';
     }
   });
-  return sums;
+  return transformSummary ? transformSummary(sums) : sums;
 }

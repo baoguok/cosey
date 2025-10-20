@@ -34,12 +34,17 @@ export default defineComponent({
       return props.table || unref(parentContext.table);
     });
 
+    const mergedTableAction = computed(() => {
+      return props.tableAction || unref(parentContext.tableAction);
+    });
+
     // config provider
     const configProvider: ConfigProviderInnerProps = {
       getPrefixCls,
       theme: mergedTheme,
       prefixCls: mergedPrefixCls,
       table: mergedTable,
+      tableAction: mergedTableAction,
     };
 
     useConfigProvide(configProvider);
@@ -54,6 +59,9 @@ export default defineComponent({
       () => props.locale,
       () => {
         outsideLocale.value = props.locale || en;
+      },
+      {
+        immediate: true,
       },
     );
 

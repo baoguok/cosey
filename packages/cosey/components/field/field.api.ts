@@ -35,6 +35,7 @@ import { type FieldTransferProps } from './components/transfer/transfer';
 import { type FieldTreeSelectProps } from './components/tree-select/tree-select';
 import { type FieldUploadProps } from './components/upload/upload';
 import { type FieldWeekProps } from './components/week/week';
+import { type FieldWeekRangeProps } from './components/week-range/week-range';
 import { type FieldYearProps } from './components/year/year';
 import { type FieldYearRangeProps } from './components/year-range/year-range';
 import { type FieldYearsProps } from './components/years/years';
@@ -74,6 +75,7 @@ import Transfer from './components/transfer/transfer.vue';
 import TreeSelect from './components/tree-select/tree-select.vue';
 import Upload from './components/upload/upload.vue';
 import Week from './components/week/week.vue';
+import WeekRange from './components/week-range/week-range.vue';
 import Year from './components/year/year.vue';
 import YearRange from './components/year-range/year-range.vue';
 import Years from './components/years/years.vue';
@@ -114,6 +116,7 @@ export interface MapFieldTypeComponentProps {
   treeselect: FieldTreeSelectProps;
   upload: FieldUploadProps;
   week: FieldWeekProps;
+  weekrange: FieldWeekRangeProps;
   year: FieldYearProps;
   yearrange: FieldYearRangeProps;
   years: FieldYearsProps;
@@ -156,6 +159,7 @@ export const mapFieldTypeComponent = {
   treeselect: TreeSelect,
   upload: Upload,
   week: Week,
+  weekrange: WeekRange,
   year: Year,
   yearrange: YearRange,
   years: Years,

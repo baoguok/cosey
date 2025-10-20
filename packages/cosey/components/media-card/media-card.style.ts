@@ -8,6 +8,7 @@ export interface ComponentToken {}
 export const getMediaCardStyle: GenerateStyle<AliasToken, CSSObject> = (token) => {
   return {
     position: 'relative',
+    flex: 'none',
     display: 'inline-flex',
     flexDirection: 'column',
     justifyContent: 'center',

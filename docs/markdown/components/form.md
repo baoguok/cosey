@@ -200,9 +200,10 @@ form/all-fields
 
 继承 `element-plus` 的 [Form Exposes](https://element-plus.org/zh-CN/component/form.html#form-exposes) ，并添加以下属性：
 
-| 属性   | 描述     | 类型                |
-| ------ | -------- | ------------------- |
-| submit | 提交表单 | () => Promise\<any> |
+| 属性   | 描述                                        | 类型                            |
+| ------ | ------------------------------------------- | ------------------------------- |
+| submit | 提交表单                                    | () => Promise\<any>             |
+| reset  | 重置表单，callback会在 reset 属性调用前调用 | (callback?: () => void) => void |
 
 ### FormItemProps
 
@@ -214,7 +215,7 @@ form/all-fields
 | field-props           | `field` 的 props                                          | MapFieldTypeComponentProps[FieldType]['componentProps']                             | -       |
 | field-slots           | `field` 的 slots                                          | MapFieldTypeComponentProps[FieldType]['componentSlots']                             | -       |
 | field-ref             | 获取 `field` 暴露的属性                                   | (el: any) => void                                                                   | -       |
-| model-value / v-model | 绑定 `field` 的值                                         | NonNullable<MapFieldTypeComponentProps[FieldType]['componentProps']> ['modelValue'] | -       |
+| model-value (v-model) | 绑定 `field` 的值                                         | NonNullable<MapFieldTypeComponentProps[FieldType]['componentProps']> ['modelValue'] | -       |
 | width                 | 设置 `field` 为固定宽度                                   | FormItemWidth                                                                       | -       |
 | placeholder           | 设置 `field` 占位符，仅对带有输入框的组件有效             | string                                                                              | -       |
 | disabled              | 设置 `field` 为禁用状态                                   | boolean                                                                             | false   |
@@ -444,6 +445,10 @@ type FormItemWidth = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});
 #### week
 
 同 `element-plus` 的 [ElDatePicker](https://element-plus.org/zh-CN/component/date-picker.html) 组件。并预设了 `type="week"` 属性。
+
+#### weekrange
+
+同 [WeekRangePicker](./week-range-picker) 组件。
 
 #### year
 

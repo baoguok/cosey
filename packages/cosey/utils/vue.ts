@@ -36,7 +36,8 @@ export function createMergedExpose<T = any>(
 
   for (const key of keys) {
     (result as any)[key] = (...args: any[]) => {
-      for (const expose of exposeList) {
+      for (let i = exposeList.length - 1; i >= 0; i--) {
+        const expose = exposeList[i];
         const obj = typeof expose === 'function' ? expose() : expose;
         if (obj && key in obj) {
           const value = obj[key];

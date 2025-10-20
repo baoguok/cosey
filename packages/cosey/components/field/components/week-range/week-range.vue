@@ -1,48 +1,45 @@
 <script lang="ts">
-import { ElDatePicker } from 'element-plus';
 import { defineComponent, h, mergeProps, type SlotsType } from 'vue';
-import { type FieldWeekProps, type FieldWeekSlots } from './week';
+import { type FieldWeekRangeProps, type FieldWeekRangeSlots } from './week-range';
 import dayjs from 'dayjs';
-import weekOfYear from 'dayjs/plugin/weekOfYear.js';
 import { addNullablePlaceholder } from '../../../../utils';
 import { useLocale } from '../../../../hooks';
-
-dayjs.extend(weekOfYear);
+import { WeekRangePicker } from '../../../week-range-picker';
 
 export default defineComponent(
-  (props: FieldWeekProps, { slots }) => {
+  (props: FieldWeekRangeProps, { slots }) => {
     const { t } = useLocale();
 
     return () => {
       if (props.readonly) {
         const value = props.componentProps?.modelValue;
-        return addNullablePlaceholder(value, (val) => dayjs(val).format(t('co.form.weekOfYear')));
+        return addNullablePlaceholder(value, (val) =>
+          val.map((item) => dayjs(item).format(t('co.form.weekOfYear'))).join(' - '),
+        );
       }
 
       return h(
-        ElDatePicker,
+        WeekRangePicker,
         mergeProps(
           {
-            placeholder: t('co.common.pleaseSelect'),
+            startPlaceholder: t('co.common.pleaseSelect'),
+            endPlaceholder: t('co.common.pleaseSelect'),
             style: {
               display: 'flex',
               width: '100%',
             },
           },
           props.componentProps ?? {},
-          {
-            type: 'week',
-          },
         ),
         slots,
       );
     };
   },
   {
-    name: 'CoFieldWeek',
+    name: 'CoFieldWeekRange',
     inheritAttrs: false,
     props: ['componentProps', 'componentSlots', 'readonly'],
-    slots: {} as SlotsType<FieldWeekSlots>,
+    slots: {} as SlotsType<FieldWeekRangeSlots>,
   },
 );
 </script>

@@ -163,6 +163,8 @@
                     :store="store"
                     :sum-text="computedSumText"
                     :summary-method="summaryMethod"
+                    :summary-properties="summaryProperties"
+                    :transform-summary="transformSummary"
                   />
                 </table>
               </div>
@@ -407,7 +409,13 @@ const tableDataWithSummary = computed(() => {
           columns: columns,
           data: tableData.value,
         })
-      : defaultSummaryMethod(columns, data, props.sumText || t('co.table.total'));
+      : defaultSummaryMethod(
+          columns,
+          data,
+          props.sumText || t('co.table.total'),
+          props.summaryProperties,
+          props.transformSummary,
+        );
 
     if (!Array.isArray(sums[0])) {
       sums = [sums];
@@ -671,19 +679,11 @@ const onReset = async () => {
 };
 
 const submit = async () => {
-  if (props.formProps) {
-    return tableQueryRef.value?.submit();
-  } else {
-    return onSubmit();
-  }
+  return props.formProps && tableQueryRef.value ? tableQueryRef.value.submit() : onSubmit();
 };
 
-const reset = async () => {
-  if (props.formProps) {
-    return tableQueryRef.value?.reset();
-  } else {
-    return onReset();
-  }
+const reset: TableExpose['reset'] = async (values) => {
+  return props.formProps && tableQueryRef.value ? tableQueryRef.value.reset(values) : onReset();
 };
 
 // stats

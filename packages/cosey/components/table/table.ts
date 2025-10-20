@@ -104,6 +104,12 @@ const tableExtraProps = {
   statsData: {
     type: Object as MaybeRef<any>,
   },
+  summaryProperties: {
+    type: Array as PropType<string[]>,
+  },
+  transformSummary: {
+    type: Function as PropType<(sums: any[]) => any[]>,
+  },
 };
 
 export const tableProps = {

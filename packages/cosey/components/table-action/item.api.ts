@@ -1,41 +1,27 @@
-import { buttonProps as elButtonProps, popconfirmProps } from 'element-plus';
-import { ExtractPublicPropTypes, PropType, type ExtractPropTypes } from 'vue';
+import { type ButtonProps, popconfirmProps } from 'element-plus';
+import { type PropType, type ExtractPropTypes } from 'vue';
 
-export const tableActionItemProps = {
-  ...elButtonProps,
-  link: {
-    type: Boolean as PropType<boolean>,
-    default: true,
-  },
-  type: {
-    type: String as PropType<'primary' | 'success' | 'warning' | 'danger' | 'info' | 'text'>,
-    default: 'primary',
-  },
-  label: {
-    type: String,
-  },
-  popconfirm: {
-    type: Object as PropType<
-      Partial<ExtractPropTypes<typeof popconfirmProps>> & {
-        confirm?: (event: MouseEvent) => any;
-        cancel?: (event: MouseEvent) => void;
-      }
-    >,
-  },
-  onClick: {
-    type: Function as PropType<(event: MouseEvent) => void>,
-  },
-  hidden: {
-    type: Boolean,
-    default: false,
-  },
-  visible: {
-    type: Boolean,
-    default: true,
-  },
-  icon: {
-    type: String,
-  },
+export interface TableActionItemProps extends Partial<ButtonProps> {
+  label?: string;
+  popconfirm?: Partial<ExtractPropTypes<typeof popconfirmProps>> & {
+    confirm?: (event: MouseEvent) => any;
+    cancel?: (event: MouseEvent) => void;
+  };
+  onClick?: (event: MouseEvent) => void;
+  hidden?: boolean;
+  visible?: boolean;
+  icon?: string;
+}
+
+export const defaultTableActionItemProps: TableActionItemProps = {
+  link: true,
+  type: 'primary',
+  hidden: false,
+  visible: true,
 };
 
-export type TableActionItem = ExtractPublicPropTypes<typeof tableActionItemProps>;
+export const tableActionItemProps = {
+  props: {
+    type: Object as PropType<TableActionItemProps>,
+  },
+};

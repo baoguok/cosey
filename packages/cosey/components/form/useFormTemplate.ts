@@ -54,8 +54,9 @@ export function useFormTemplate<T extends FormProps, U extends FormExpose = Form
     });
   };
 
-  const reset = () => {
+  const reset = (callback?: () => void) => {
     resetFields();
+    callback?.();
     props.reset?.();
   };
 
