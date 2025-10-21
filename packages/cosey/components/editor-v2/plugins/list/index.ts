@@ -3,7 +3,7 @@ import { Editor } from 'slate-vue3/core';
 import { indentList } from './indent-list';
 import { insertBreak } from './insert-break';
 import { formatList } from './format-list';
-import { ListType } from '../../custom-types';
+import { ListType } from '../../types';
 
 export * from './utils';
 

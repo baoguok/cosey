@@ -1,24 +1,150 @@
 import { useEditor } from 'slate-vue3';
 import Icon from '../icon/icon.vue';
 import Button from './button';
-import { defineComponent } from 'vue';
-import { useMarkActive } from './hooks/useMarkActive';
+import { computed, defineComponent, reactive, ref } from 'vue';
+import FormDialog from '../form-dialog/form-dialog';
+import Form from '../form/form';
+import FormItem from '../form/form-item.vue';
+import { useLocale } from '../../hooks';
+import { Editor, Element, Node, Range, Transforms } from 'slate-vue3/core';
+import { LinkElement } from './types';
+import { DOMEditor } from 'slate-vue3/dom';
 
 export default defineComponent({
   setup() {
     const editor = useEditor();
 
-    const isMarkActive = useMarkActive('link');
+    const isLinkActive = computed(() => {
+      const [link] = Editor.nodes(editor, {
+        match: (n) => Element.isElement(n) && n.type === 'link',
+      });
+      return !!link;
+    });
+
+    const { t } = useLocale();
+
+    const wrapLink = (url: string) => {
+      if (isLinkActive.value) {
+        Transforms.unwrapNodes(editor, {
+          match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'link',
+        });
+      }
+      const isCollapsed = editor.selection && Range.isCollapsed(editor.selection);
+      const link: LinkElement = {
+        type: 'link',
+        url,
+        target: '_blank',
+        children: isCollapsed ? [{ text: url }] : [],
+      };
+
+      if (isCollapsed) {
+        Transforms.insertNodes(editor, link);
+      } else {
+        Transforms.wrapNodes(editor, link, { split: true });
+        Transforms.collapse(editor, { edge: 'end' });
+      }
+    };
+
+    const unwrapLink = () => {
+      if (isLinkActive.value) {
+        Transforms.unwrapNodes(editor, {
+          match: (n) => Element.isElement(n) && n.type === 'link',
+        });
+      }
+    };
+
+    let upsertType: 'update' | 'insert' = 'insert';
 
     const onClick = () => {
-      editor.formatMark('link');
+      DOMEditor.focus(editor);
+
+      const [match] = Editor.nodes(editor, {
+        match: (n) => Element.isElement(n) && n.type === 'link',
+      });
+      if (match && Range.surrounds(editor.range(match[1]), editor.range(editor.selection!))) {
+        editor.select(match[1]);
+
+        const { url, target } = match[0];
+
+        Object.assign(formModel, {
+          url,
+          target,
+          text: Node.string(match[0]),
+        });
+        upsertType = 'update';
+      } else {
+        Object.assign(formModel, {
+          url: '',
+          target: '_blank',
+          text: editor.string(editor.selection!),
+        });
+        upsertType = 'insert';
+      }
+
+      visible.value = true;
     };
+
+    // form
+    const visible = ref(false);
+
+    const actionType = ref<'update' | 'insert'>('insert');
+
+    const title = computed(
+      () =>
+        `${actionType.value === 'update' ? t('co.editor.edit') : t('co.editor.insert')}${t('co.editor.link')}`,
+    );
+
+    const formModel = reactive({
+      url: '',
+      text: '',
+      target: '',
+    });
+
+    const targetOptions = [
+      { label: t('co.editor.currentWindow'), value: '_self' },
+      { label: t('co.editor.newWindow'), value: '_blank' },
+    ];
+
+    const onSubmit = () => {
+      if (!formModel.url) {
+        return;
+      }
+
+      editor.formatLink(formModel.url, formModel.target, formModel.text);
+    };
+
+    void wrapLink;
+    void unwrapLink;
+    void upsertType;
 
     return () => {
       return (
-        <Button active={isMarkActive.value} onClick={onClick}>
-          <Icon name="co:link" />
-        </Button>
+        <>
+          <Button active={isLinkActive.value} onClick={onClick}>
+            <Icon name="co:link" />
+          </Button>
+
+          <FormDialog v-model={visible.value} title={title.value} width="sm">
+            <Form model={formModel} label-width="auto" submit={onSubmit}>
+              <FormItem v-model={formModel.url} prop="url" label="URL" fieldType="input" />
+              <FormItem
+                v-model={formModel.text}
+                prop="text"
+                label={t('co.editor.displayedText')}
+                fieldType="input"
+              />
+              <FormItem
+                v-model={formModel.target}
+                prop="target"
+                label={t('co.editor.openLinkAt')}
+                fieldType="select"
+                fieldProps={{
+                  options: targetOptions,
+                }}
+              />
+            </Form>
+          </FormDialog>
+        </>
       );
     };
   },

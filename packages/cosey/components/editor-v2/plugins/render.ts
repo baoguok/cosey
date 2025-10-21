@@ -2,7 +2,7 @@ import { type RenderElementProps, type RenderLeafProps } from 'slate-vue3';
 import { Editor } from 'slate-vue3/core';
 import { type CSSProperties, h, VNode } from 'vue';
 import { isListItem } from './list';
-import { mapElementTypeTagName } from '../custom-types';
+import { mapElementTypeTagName } from '../types';
 
 export const INDENT_DELTA = 40;
 

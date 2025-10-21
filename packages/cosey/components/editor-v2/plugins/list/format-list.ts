@@ -1,5 +1,5 @@
 import { Editor, Element, isBlock, Node, NodeEntry, Path, Text, Transforms } from 'slate-vue3/core';
-import { ListType } from '../../custom-types';
+import { ListType } from '../../types';
 import { DOMEditor } from 'slate-vue3/dom';
 import { isList, isListItem } from './utils';
 import { liftToRootNode, mergePrevNode, normalizeList, setNodeType } from '../utils';

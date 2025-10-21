@@ -6,7 +6,7 @@ import {
   ListItemElement,
   ListType,
   NumberedListElement,
-} from '../../custom-types';
+} from '../../types';
 
 export function isListItem(element: unknown): element is ListItemElement {
   return Element.isElement(element) && element.type === LIST_ITEM;

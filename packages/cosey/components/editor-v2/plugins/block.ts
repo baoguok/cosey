@@ -1,6 +1,6 @@
 import { Editor, Element, Transforms } from 'slate-vue3/core';
 import { DOMEditor } from 'slate-vue3/dom';
-import { CustomElement } from '../custom-types';
+import { CustomElement } from '../types';
 
 declare module 'slate-vue3/core' {
   interface BaseEditor {

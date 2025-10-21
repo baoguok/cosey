@@ -1,6 +1,6 @@
 import { Ancestor, Editor, Element, NodeEntry, Text, Transforms } from 'slate-vue3/core';
 import { DOMEditor } from 'slate-vue3/dom';
-import { INDENT_ELEMENT_TYPES, IndentElementType } from '../custom-types';
+import { INDENT_ELEMENT_TYPES, IndentElementType } from '../types';
 
 declare module 'slate-vue3/core' {
   interface BaseEditor {

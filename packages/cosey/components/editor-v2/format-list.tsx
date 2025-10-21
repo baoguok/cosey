@@ -2,7 +2,7 @@ import { useEditor } from 'slate-vue3';
 import Icon from '../icon/icon.vue';
 import Button from './button';
 import { useBlockTypeActive } from './hooks/useBlockTypeActive';
-import { type ListType } from './custom-types';
+import { type ListType } from './types';
 import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({

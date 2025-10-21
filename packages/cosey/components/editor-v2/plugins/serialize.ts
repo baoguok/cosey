@@ -7,7 +7,7 @@ import {
   type CustomText,
   mapElementTypeTagName,
   mapTagNameElementType,
-} from '../custom-types';
+} from '../types';
 import { INDENT_DELTA } from './render';
 import { FormatAlign } from './align';
 

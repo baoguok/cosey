@@ -14,7 +14,7 @@ import 'prismjs/themes/prism-okaidia.css';
 
 import { type RenderElementProps, toRawWeakMap } from 'slate-vue3';
 import { Editor, Element, Node, NodeEntry, Path, Range, Transforms } from 'slate-vue3/core';
-import { CodeBlockElement } from '../custom-types';
+import { CodeBlockElement } from '../types';
 import { h } from 'vue';
 import { CodeBlock } from '../code-block';
 import { DOMEditor } from 'slate-vue3/dom';
@@ -39,6 +39,7 @@ export const languageOptions = [
 declare module 'slate-vue3/core' {
   interface BaseEditor {
     decorate: (nodeList: Node[]) => Range[];
+    formatCodeBlock: () => void;
   }
 }
 
@@ -185,6 +186,22 @@ function node2Decorations(editor: Editor) {
   return decorationsMap;
 }
 
+function formatCodeBlock(editor: Editor) {
+  Transforms.wrapNodes(
+    editor,
+    { type: 'code-block', language: 'plain', children: [] },
+    {
+      match: (n) => Element.isElement(n) && n.type === 'paragraph',
+      split: false,
+    },
+  );
+  Transforms.setNodes(
+    editor,
+    { type: 'code-line' as any },
+    { match: (n) => Element.isElement(n) && n.type === 'paragraph' },
+  );
+}
+
 export function withCodeBlock(editor: Editor) {
   editor.decorate = (nodeList: Node[]) => {
     const node = nodeList[0];
@@ -192,6 +209,10 @@ export function withCodeBlock(editor: Editor) {
       return node2Decorations(editor).get(node);
     }
     return [];
+  };
+
+  editor.formatCodeBlock = () => {
+    formatCodeBlock(editor);
   };
 
   // render element

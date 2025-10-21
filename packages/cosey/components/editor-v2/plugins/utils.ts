@@ -11,7 +11,7 @@ import {
 } from 'slate-vue3/core';
 import { isList, isListItem } from './list';
 import { DOMEditor } from 'slate-vue3/dom';
-import { CustomElement } from '../custom-types';
+import { CustomElement } from '../types';
 
 export function liftToRootNode(editor: Editor, path: Path) {
   let length = path.length;

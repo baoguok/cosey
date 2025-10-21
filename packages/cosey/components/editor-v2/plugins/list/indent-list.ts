@@ -5,7 +5,7 @@ import {
   ListItemElement,
   ListType,
   NumberedListElement,
-} from '../../custom-types';
+} from '../../types';
 import { Element } from 'slate-vue3/core';
 import { isList, isListItem } from './utils';
 

@@ -22,7 +22,7 @@ import FormatSource from './format-source';
 import { editorV2Props, editorV2Slots, editorV2Emits } from './editor-v2.api';
 import useStyle from './editor-v2.style';
 import { useComponentConfig } from '../config-provider';
-import { type CustomElement } from './custom-types';
+import { type CustomElement } from './types';
 import { useFocus } from './hooks/useFocus';
 import { withDefaultPlugins } from './plugins';
 import FormatLink from './format-link';
