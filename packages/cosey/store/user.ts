@@ -34,6 +34,10 @@ export const useUserStore = defineStore('cosey-user', () => {
 
   const filterRouteHandler = isFunction(filterRoute) ? filterRoute : filterRoute.hook();
 
+  const defineAuthorityHandler = isFunction(defineAuthority)
+    ? defineAuthority
+    : defineAuthority.hook();
+
   if (!apiConfig?.login) {
     warningOnce(!!apiConfig?.login, 'The "login" api is required.');
   }
@@ -96,7 +100,7 @@ export const useUserStore = defineStore('cosey-user', () => {
    * 设置权限
    */
   const setAuthorization = async () => {
-    return defineAuthority?.(userInfo.value!);
+    return defineAuthorityHandler(userInfo.value!);
   };
 
   const mapRoute = (routes: RouteRecordRaw[]): RouteRecordRaw[] => {

@@ -292,3 +292,42 @@ type TableColumnPropsSlots =
 | props   | 自定义组件的 `props` | [LinkProps](https://element-plus.org/zh-CN/component/link#attributes)                    |
 | format  | 格式化内容           | [TableColumnProps](#tablecolumnprops)['format']                                          |
 | onClick | 点击时的回调         | (params: { row: any; value: any; index: number; column: TableColumnCtx\<any>; }) => void |
+
+### TableActionProps
+
+继承 `element-plus` 的 [Table 属性](https://element-plus.org/zh-CN/component/table#table-%E5%B1%9E%E6%80%A7) 并有以下属性：
+
+| 属性    | 描述         | 类型                                             | 默认值 |
+| ------- | ------------ | ------------------------------------------------ | ------ |
+| actions | 定义操作按钮 | TableActionItemAtom[] \| TableActionItemAtom[][] | []     |
+
+### TableActionItemAtom
+
+```ts
+type TableActionItemAtom =
+  | TableActionItemProps
+  | null
+  | undefined
+  | boolean
+  | TableActionItemAtom[];
+```
+
+### TableActionItemProps
+
+继承 `element-plus` 的 [Button Attributes](https://element-plus.org/zh-CN/component/button#button-attributes) 并有以下属性：
+
+| 属性       | 描述           | 类型                                                                                                                                                                 | 默认值 |
+| ---------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| label      | 按钮内容       | string                                                                                                                                                               | -      |
+| popconfirm | 定义气泡确认框 | [PopconfirmProps](https://element-plus.org/zh-CN/component/popconfirm#attributes) & \{ confirm?: (event: MouseEvent) => any; cancel?: (event: MouseEvent) => void; } | -      |
+| onClick    | 点击按钮时出发 | (event: MouseEvent) => void                                                                                                                                          | -      |
+| visible    | 是否显示按钮   | boolean                                                                                                                                                              | true   |
+| icon       | 按钮前面的icon | [IconProps](./icon#iconprops)['name']                                                                                                                                | -      |
+
+### TableActionConfig
+
+```ts
+interface TableActionConfig {
+  itemProps?: TableActionItemProps;
+}
+```

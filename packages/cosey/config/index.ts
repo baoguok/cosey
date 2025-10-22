@@ -59,6 +59,8 @@ type FilterRouteHandler = (
   route: RouteRecordRaw,
 ) => RouteRecordRaw | void | boolean | undefined | null;
 
+type DefineAuthorityHandler = (userInfo: Record<any, any>) => void | Promise<void>;
+
 export type CoseyOptions = {
   router?: CoseyRouterOptions & RouterConfig;
   persist?: PersistConfig;
@@ -67,7 +69,7 @@ export type CoseyOptions = {
   site?: SiteConfig;
   api?: ApiConfig;
   filterRoute?: { hook: () => FilterRouteHandler } | FilterRouteHandler;
-  defineAuthority?: (userInfo: Record<any, any>) => void | Promise<void>;
+  defineAuthority?: { hook: () => DefineAuthorityHandler } | DefineAuthorityHandler;
   components?: LayoutComponents;
   slots?: LayoutSlots;
 };
@@ -79,7 +81,7 @@ export interface GlobalConfig {
   site: RequiredSiteConfig;
   api: RequiredApiConfig;
   filterRoute: NonNullable<CoseyOptions['filterRoute']>;
-  defineAuthority?: CoseyOptions['defineAuthority'];
+  defineAuthority: NonNullable<CoseyOptions['defineAuthority']>;
   components: NonNullable<CoseyOptions['components']>;
   slots: NonNullable<CoseyOptions['slots']>;
 }
@@ -95,7 +97,7 @@ export function provideGlobalConfig(app: App, options: CoseyOptions) {
     site = {},
     api = {},
     filterRoute = () => true,
-    defineAuthority,
+    defineAuthority = () => void 0,
     components = {},
     slots = {},
   } = options;
