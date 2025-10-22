@@ -3,7 +3,6 @@ import path from 'node:path';
 import { markdownPlugin } from './markdown';
 import tailwindcss from '@tailwindcss/vite';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-// import injectStyles from './vite-plugin-inject-styles';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
 
@@ -22,7 +21,6 @@ export default defineConfig({
     plugins: [
       tailwindcss(),
       vueJsx(),
-      // injectStyles(),
       createSvgIconsPlugin({
         iconDirs: [path.resolve(process.cwd(), 'docs/assets/icons')],
         svgoOptions: process.env.NODE_ENV === 'production',
@@ -76,7 +74,12 @@ export default defineConfig({
       { text: '组件', link: '/components/container' },
       {
         text: pkg.version,
-        items: [],
+        items: [
+          {
+            text: '更新日志',
+            link: 'https://github.com/sutras/cosey/blob/main/CHANGELOG.md',
+          },
+        ],
       },
       { text: '演示', link: 'https://cosey.wzt.zone/' },
     ],
