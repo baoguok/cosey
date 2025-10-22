@@ -221,6 +221,7 @@ const getEditorStyle: GenerateStyle<AliasTokenWithCommonCls, CSSInterpolation> =
 
   const toolbarCls = `${componentCls}-toolbar`;
   const containerCls = `${componentCls}-container`;
+  const wrapperCls = `${componentCls}-wrapper`;
   const contentCls = `${componentCls}-content`;
 
   return {
@@ -245,7 +246,6 @@ const getEditorStyle: GenerateStyle<AliasTokenWithCommonCls, CSSInterpolation> =
         border: `1px solid ${token.colorBorder}`,
         borderBottomLeftRadius: token.borderRadius,
         borderBottomRightRadius: token.borderRadius,
-        overflow: 'auto',
 
         '&.is-focus::before': {
           content: '""',
@@ -255,6 +255,10 @@ const getEditorStyle: GenerateStyle<AliasTokenWithCommonCls, CSSInterpolation> =
           borderRadius: token.borderRadius,
           pointerEvents: 'none',
         },
+      },
+
+      [wrapperCls]: {
+        overflow: 'auto',
       },
 
       [`${toolbarCls} ~ ${containerCls}`]: {

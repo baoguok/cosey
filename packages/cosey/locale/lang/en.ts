@@ -51,6 +51,7 @@ export default {
       edit: 'Edit',
       insert: 'Insert',
       link: 'Link',
+      insertLink: 'Insert link',
       currentWindow: 'Current window',
       newWindow: 'New window',
       sourceCode: 'Source code',

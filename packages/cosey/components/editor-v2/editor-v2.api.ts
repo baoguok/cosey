@@ -1,6 +1,13 @@
-import type { ExtractPropTypes, SlotsType } from 'vue';
+import type { ExtractPropTypes, InjectionKey, SlotsType } from 'vue';
 
-export const editorV2Props = {};
+export const editorV2Props = {
+  height: {
+    type: String,
+  },
+  maxHeight: {
+    type: String,
+  },
+};
 
 export type EditorV2Props = ExtractPropTypes<typeof editorV2Props>;
 
@@ -17,3 +24,9 @@ export type EditorV2Emits = typeof editorV2Emits;
 export interface EditorV2Expose {
   method: () => void;
 }
+
+export interface EditorV2Context {
+  popoverWrapper: HTMLDivElement;
+}
+
+export const editorContextKey = Symbol('editorContext') as InjectionKey<EditorV2Context>;

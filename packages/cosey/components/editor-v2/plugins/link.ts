@@ -1,5 +1,5 @@
-import { Editor, Transforms } from 'slate-vue3/core';
-import { type CustomElement } from '../types';
+import { Editor, Element, Location, Transforms } from 'slate-vue3/core';
+import { LinkElement, type CustomElement } from '../types';
 import { RenderElementProps } from 'slate-vue3';
 import { h } from 'vue';
 import { LinkComponent } from '../link-component';
@@ -10,19 +10,36 @@ declare module 'slate-vue3/core' {
   }
 }
 
+export function unwrapLink(editor: Editor, at?: Location) {
+  Transforms.unwrapNodes(editor, {
+    match: (n) => Element.isElement(n) && n.type === 'link',
+    at,
+  });
+}
+
+export function wrapLink(editor: Editor, url: string, target: string, text: string) {
+  const link: LinkElement = {
+    type: 'link',
+    url,
+    target,
+    children: [{ text }],
+  };
+
+  Transforms.delete(editor);
+  Transforms.insertNodes(editor, link);
+}
+
 export function withLink(editor: Editor) {
+  // is inline
   const isInline = editor.isInline;
   editor.isInline = (value: CustomElement) => {
     return value.type === 'link' ? true : isInline(value);
   };
 
-  // format
+  // format link
   editor.formatLink = (url: string, target: string, text: string) => {
-    Transforms.wrapNodes(
-      editor,
-      { type: 'link', target, url, children: [{ text }] },
-      { split: true },
-    );
+    unwrapLink(editor);
+    wrapLink(editor, url, target, text);
   };
 
   // render element
@@ -37,6 +54,7 @@ export function withLink(editor: Editor) {
           ...attributes,
           url: element.url,
           target: element.target,
+          element,
         },
         () => children,
       );

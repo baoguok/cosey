@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, provide, useTemplateRef } from 'vue';
 import { Slate, Editable } from 'slate-vue3';
 import { createEditor } from 'slate-vue3/core';
 import { withDOM } from 'slate-vue3/dom';
@@ -19,7 +19,7 @@ import ListType from './format-list';
 import FormatClear from './format-clear';
 import FormatSource from './format-source';
 
-import { editorV2Props, editorV2Slots, editorV2Emits } from './editor-v2.api';
+import { editorV2Props, editorV2Slots, editorV2Emits, editorContextKey } from './editor-v2.api';
 import useStyle from './editor-v2.style';
 import { useComponentConfig } from '../config-provider';
 import { type CustomElement } from './types';
@@ -110,7 +110,16 @@ const initialValue: CustomElement[] = [
       },
       { text: 'bold', bold: true },
       {
-        text: ', or add a semantically rendered block quote in the middle of the page, like this:',
+        text: ', or add a semantically ',
+      },
+      {
+        type: 'link',
+        target: '_blank',
+        url: 'https://www.baidu.com',
+        children: [{ text: 'rendered block quote' }],
+      },
+      {
+        text: ' in the middle of the page, like this:',
       },
     ],
   },
@@ -158,6 +167,30 @@ export default defineComponent({
     editor.children = initialValue;
 
     const { isFocus, onFocus, onBlur } = useFocus();
+
+    // popover container
+    const popoverContainer = document.createElement('div');
+    const popoverWrapper = document.createElement('div');
+    popoverContainer.append(popoverWrapper);
+    Object.assign(popoverContainer.style, {
+      position: 'absolute',
+      inset: 0,
+      overflow: 'hidden',
+      pointerEvents: 'none',
+    });
+    Object.assign(popoverWrapper.style, {
+      pointerEvents: 'auto',
+    });
+
+    const wrapperRef = useTemplateRef<HTMLDivElement>('wrapper');
+
+    onMounted(() => {
+      wrapperRef.value!.append(popoverContainer);
+    });
+
+    provide(editorContextKey, {
+      popoverWrapper,
+    });
 
     return () => {
       return (
@@ -225,10 +258,19 @@ export default defineComponent({
                 },
               ]}
             >
-              <Editable
-                class={`${prefixCls.value}-content`}
-                {...{ onFocus: onFocus, onBlur: onBlur, onKeydown: editor.onKeydown }}
-              />
+              <div
+                ref="wrapper"
+                class={[`${prefixCls.value}-wrapper`]}
+                style={{
+                  height: props.height,
+                  maxHeight: props.maxHeight,
+                }}
+              >
+                <Editable
+                  class={`${prefixCls.value}-content`}
+                  {...{ onFocus: onFocus, onBlur: onBlur, onKeydown: editor.onKeydown }}
+                />
+              </div>
             </div>
           </Slate>
         </div>

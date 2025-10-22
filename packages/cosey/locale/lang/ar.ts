@@ -51,6 +51,7 @@ export default {
       edit: 'تعديل',
       insert: 'إدراج',
       link: 'رابط',
+      insertLink: 'إدراج رابط',
       currentWindow: 'النافذة الحالية',
       newWindow: 'نافذة جديدة',
       sourceCode: 'الكود المصدري',

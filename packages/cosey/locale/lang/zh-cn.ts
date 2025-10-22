@@ -51,6 +51,7 @@ export default {
       edit: '编辑',
       insert: '插入',
       link: '链接',
+      insertLink: '插入链接',
       currentWindow: '当前窗口',
       newWindow: '新窗口',
       sourceCode: '源码',

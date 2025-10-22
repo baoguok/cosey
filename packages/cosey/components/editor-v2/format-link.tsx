@@ -1,14 +1,13 @@
+import { computed, defineComponent, reactive, ref } from 'vue';
 import { useEditor } from 'slate-vue3';
+import { Editor, Element, Node, Range } from 'slate-vue3/core';
+import { DOMEditor } from 'slate-vue3/dom';
 import Icon from '../icon/icon.vue';
 import Button from './button';
-import { computed, defineComponent, reactive, ref } from 'vue';
 import FormDialog from '../form-dialog/form-dialog';
 import Form from '../form/form';
 import FormItem from '../form/form-item.vue';
 import { useLocale } from '../../hooks';
-import { Editor, Element, Node, Range, Transforms } from 'slate-vue3/core';
-import { LinkElement } from './types';
-import { DOMEditor } from 'slate-vue3/dom';
 
 export default defineComponent({
   setup() {
@@ -22,38 +21,6 @@ export default defineComponent({
     });
 
     const { t } = useLocale();
-
-    const wrapLink = (url: string) => {
-      if (isLinkActive.value) {
-        Transforms.unwrapNodes(editor, {
-          match: (n) => !Editor.isEditor(n) && Element.isElement(n) && n.type === 'link',
-        });
-      }
-      const isCollapsed = editor.selection && Range.isCollapsed(editor.selection);
-      const link: LinkElement = {
-        type: 'link',
-        url,
-        target: '_blank',
-        children: isCollapsed ? [{ text: url }] : [],
-      };
-
-      if (isCollapsed) {
-        Transforms.insertNodes(editor, link);
-      } else {
-        Transforms.wrapNodes(editor, link, { split: true });
-        Transforms.collapse(editor, { edge: 'end' });
-      }
-    };
-
-    const unwrapLink = () => {
-      if (isLinkActive.value) {
-        Transforms.unwrapNodes(editor, {
-          match: (n) => Element.isElement(n) && n.type === 'link',
-        });
-      }
-    };
-
-    let upsertType: 'update' | 'insert' = 'insert';
 
     const onClick = () => {
       DOMEditor.focus(editor);
@@ -71,14 +38,12 @@ export default defineComponent({
           target,
           text: Node.string(match[0]),
         });
-        upsertType = 'update';
       } else {
         Object.assign(formModel, {
           url: '',
           target: '_blank',
           text: editor.string(editor.selection!),
         });
-        upsertType = 'insert';
       }
 
       visible.value = true;
@@ -86,13 +51,6 @@ export default defineComponent({
 
     // form
     const visible = ref(false);
-
-    const actionType = ref<'update' | 'insert'>('insert');
-
-    const title = computed(
-      () =>
-        `${actionType.value === 'update' ? t('co.editor.edit') : t('co.editor.insert')}${t('co.editor.link')}`,
-    );
 
     const formModel = reactive({
       url: '',
@@ -106,16 +64,12 @@ export default defineComponent({
     ];
 
     const onSubmit = () => {
-      if (!formModel.url) {
+      if (!formModel.url.trim() || !formModel.text.trim()) {
         return;
       }
 
       editor.formatLink(formModel.url, formModel.target, formModel.text);
     };
-
-    void wrapLink;
-    void unwrapLink;
-    void upsertType;
 
     return () => {
       return (
@@ -124,7 +78,7 @@ export default defineComponent({
             <Icon name="co:link" />
           </Button>
 
-          <FormDialog v-model={visible.value} title={title.value} width="sm">
+          <FormDialog v-model={visible.value} title={t('co.editor.insertLink')} width="sm">
             <Form model={formModel} label-width="auto" submit={onSubmit}>
               <FormItem v-model={formModel.url} prop="url" label="URL" fieldType="input" />
               <FormItem
