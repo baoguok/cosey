@@ -90,6 +90,8 @@ function serialize(node: SlateNode): string {
       return `<pre class="language-${node.language}">${node.children
         .map((n) => serialize(n))
         .join('\n')}</pre>`;
+    case 'link':
+      return `<a href="${node.url}" target="${node.target}">${children}</a>`;
     case 'block':
     case 'paragraph':
     case 'block-quote':
@@ -119,11 +121,7 @@ function serialize(node: SlateNode): string {
 function deserialize(node: Node, markAttributes = {}): DeserializeResult {
   if (node.nodeType === Node.TEXT_NODE) {
     if (!node.textContent || /^\s+$/.test(node.textContent)) return null;
-    return jsx(
-      'text',
-      markAttributes,
-      node.textContent.trim().replace(/\n+/g, ' ').replace(/ +/g, ' '),
-    );
+    return jsx('text', markAttributes, node.textContent.replace(/\n+/g, ' ').replace(/ +/g, ' '));
   } else if (node.nodeType !== Node.ELEMENT_NODE) {
     return null;
   }
@@ -210,6 +208,16 @@ function deserialize(node: Node, markAttributes = {}): DeserializeResult {
         children,
       );
     }
+    case 'A':
+      return jsx(
+        'element',
+        {
+          type: 'link',
+          target: element.getAttribute('target'),
+          url: element.getAttribute('href'),
+        },
+        children,
+      );
     default:
       return children;
   }
@@ -222,7 +230,6 @@ export function withSerialize(editor: Editor) {
 
   editor.deserialize = (html: string) => {
     const document = new DOMParser().parseFromString(html, 'text/html');
-    console.log(document.body.childNodes);
     const result = deserialize(document.body);
     const fragment = result ? toArray(result) : [];
     return fragment.map((item) => {
