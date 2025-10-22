@@ -1,5 +1,7 @@
 ## 0.0.0 (2025-10-22)
 
+- build: changelog ([0c4bb61](https://github.com/sutras/cosey/commit/0c4bb61))
+
 ## <small>0.9.4 (2025-10-21)</small>
 
 - feat: commit initial ([810f0de](https://github.com/sutras/cosey/commit/810f0de))
