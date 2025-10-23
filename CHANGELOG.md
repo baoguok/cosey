@@ -1,6 +1,9 @@
-## 0.0.0 (2025-10-22)
+## 0.0.0 (2025-10-23)
 
+- build: changelog ([ea7f653](https://github.com/sutras/cosey/commit/ea7f653))
+- build: changelog ([d38752f](https://github.com/sutras/cosey/commit/d38752f))
 - build: changelog ([0c4bb61](https://github.com/sutras/cosey/commit/0c4bb61))
+- feat(form-group): 新增tooltip属性和插槽 ([457cbf0](https://github.com/sutras/cosey/commit/457cbf0))
 
 ## <small>0.9.4 (2025-10-21)</small>
 

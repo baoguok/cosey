@@ -87,6 +87,14 @@ form/collapsible-form-group
 
 :::
 
+可以使用 `tooltip` 属性在标题右边显示提示语。
+
+::: demo
+
+form/form-group-tooltip
+
+:::
+
 ### 基础表单
 
 一个基础的表单除了表单项，还有提交、重置按钮，`Form` 内置了这些按钮，同时在提交时给提交按钮添加了加载效果。
@@ -267,6 +275,7 @@ type FormItemWidth = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});
 | size         | 间隔大小                 | number \| 'default' \| 'small' \| 'large' \| [number, number] | [32, 0]      |
 | wrap         | 设置是否自动折行         | boolean                                                       | true         |
 | title        | 设置表单组的标题         | string                                                        | -            |
+| tooltip      | 设置表单组标题的提示语   | string                                                        | -            |
 | border-style | 设置边框样式             | 'none' \| 'solid' \| 'dashed' \| 'dotted'                     | -            |
 | position     | 设置标题位置             | 'left' \| 'right' \| 'center'                                 | 'left'       |
 | collapsible  | 是否允许折叠             | boolean                                                       | false        |
@@ -274,9 +283,11 @@ type FormItemWidth = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});
 
 ### FormGroupSlots
 
-| 插槽    | 描述           | 属性 |
-| ------- | -------------- | ---- |
-| default | 自定义默认内容 | -    |
+| 插槽    | 描述                 | 属性 |
+| ------- | -------------------- | ---- |
+| default | 自定义默认内容       | -    |
+| title   | 自定义标题内容       | -    |
+| tooltip | 自定义标题提示语内容 | -    |
 
 ### FormGroupEmits
 
