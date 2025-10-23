@@ -1,6 +1,6 @@
 import { spaceProps } from 'element-plus';
 import { omit } from 'lodash-es';
-import type { ExtractPropTypes, SlotsType, PropType } from 'vue';
+import type { ExtractPropTypes, SlotsType, PropType, VNodeChild } from 'vue';
 import { isBoolean } from '../../utils';
 
 export const formGroupProps = {
@@ -20,7 +20,10 @@ export const formGroupProps = {
     default: true,
   },
   title: {
-    type: [String, Number],
+    type: null as unknown as PropType<VNodeChild>,
+  },
+  tooltip: {
+    type: null as unknown as PropType<VNodeChild>,
   },
   borderStyle: {
     type: String as PropType<'none' | 'solid' | 'dashed' | 'dotted'>,
@@ -40,7 +43,9 @@ export const formGroupProps = {
 export type FormGroupProps = ExtractPropTypes<typeof formGroupProps>;
 
 export interface FormGroupSlots {
-  default: {};
+  default?: {};
+  tooltip?: {};
+  title?: {};
 }
 
 export const formGroupSlots = Object as SlotsType<FormGroupSlots>;

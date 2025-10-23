@@ -4,6 +4,7 @@ import { reactiveOmit } from '@vueuse/core';
 import Icon from '../icon/icon.vue';
 import useStyle from './form-group.style';
 import { useComponentConfig } from '../config-provider';
+import { ElTooltip } from 'element-plus';
 
 export default defineComponent({
   name: 'CoFormGroup',
@@ -56,7 +57,7 @@ export default defineComponent({
             borderStyle: isBordered.value ? props.borderStyle : undefined,
           }}
         >
-          {props.title && (
+          {(props.title || slots.title) && (
             <div class={[`${prefixCls.value}-title`, `is-${props.position}`]}>
               <div
                 style={{
@@ -69,7 +70,18 @@ export default defineComponent({
                 {props.collapsible && (
                   <Icon name={innerCollapsed.value ? 'co:caret-up' : 'co:caret-down'} size="xl" />
                 )}
-                {props.title}
+                {props.title || slots.title?.()}
+                {(props.tooltip || slots.tooltip) && (
+                  <ElTooltip
+                    placement="top"
+                    v-slots={{
+                      content: () => props.tooltip || slots.tooltip?.(),
+                      default: () => (
+                        <Icon name="co:help" class={`${prefixCls.value}-title-icon`} size="md" />
+                      ),
+                    }}
+                  />
+                )}
               </div>
             </div>
           )}

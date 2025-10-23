@@ -267,6 +267,7 @@ type FormItemWidth = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});
 | size         | 间隔大小                 | number \| 'default' \| 'small' \| 'large' \| [number, number] | [32, 0]      |
 | wrap         | 设置是否自动折行         | boolean                                                       | true         |
 | title        | 设置表单组的标题         | string                                                        | -            |
+| tooltip      | 设置表单组标题的提示语   | string                                                        | -            |
 | border-style | 设置边框样式             | 'none' \| 'solid' \| 'dashed' \| 'dotted'                     | -            |
 | position     | 设置标题位置             | 'left' \| 'right' \| 'center'                                 | 'left'       |
 | collapsible  | 是否允许折叠             | boolean                                                       | false        |
@@ -274,9 +275,11 @@ type FormItemWidth = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});
 
 ### FormGroupSlots
 
-| 插槽    | 描述           | 属性 |
-| ------- | -------------- | ---- |
-| default | 自定义默认内容 | -    |
+| 插槽    | 描述                 | 属性 |
+| ------- | -------------------- | ---- |
+| default | 自定义默认内容       | -    |
+| title   | 自定义标题内容       | -    |
+| tooltip | 自定义标题提示语内容 | -    |
 
 ### FormGroupEmits
 

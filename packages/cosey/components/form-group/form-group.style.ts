@@ -39,6 +39,11 @@ export default getSimpleStyleHook('CoFormGroup', (token) => {
           transform: 'translateY(-50%)',
         },
       },
+      [`${componentCls}-title-icon`]: {
+        marginInlineStart: token.marginXXS,
+        cursor: 'pointer',
+        alignSelf: 'center',
+      },
     },
   };
 });
