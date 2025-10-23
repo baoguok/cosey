@@ -87,6 +87,14 @@ form/collapsible-form-group
 
 :::
 
+可以使用 `tooltip` 属性在标题右边显示提示语。
+
+::: demo
+
+form/form-group-tooltip
+
+:::
+
 ### 基础表单
 
 一个基础的表单除了表单项，还有提交、重置按钮，`Form` 内置了这些按钮，同时在提交时给提交按钮添加了加载效果。
