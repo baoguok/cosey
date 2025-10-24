@@ -1,8 +1,8 @@
-import { defineComponent, PropType, useModel } from 'vue';
+import { defineComponent, useModel } from 'vue';
 import { isString } from '../../utils';
 import { DOMEditor } from 'slate-vue3/dom';
-import { useEditor } from 'slate-vue3';
-import { Node, Transforms } from 'slate-vue3/core';
+import { useEditor, useElement } from 'slate-vue3';
+import { Transforms } from 'slate-vue3/core';
 import { languageOptions } from './plugins/code-block';
 
 export const CodeBlock = defineComponent({
@@ -10,10 +10,6 @@ export const CodeBlock = defineComponent({
     value: {
       type: String,
       default: 'text',
-    },
-    element: {
-      type: Object as PropType<Node>,
-      required: true,
     },
   },
   emits: {
@@ -23,10 +19,12 @@ export const CodeBlock = defineComponent({
     const innerValue = useModel(props, 'value');
     const editor = useEditor();
 
+    const element = useElement();
+
     const onChange = (e: Event) => {
       innerValue.value = (e.target as HTMLSelectElement).value;
 
-      const path = DOMEditor.findPath(editor, props.element);
+      const path = DOMEditor.findPath(editor, element.value);
       Transforms.setNodes(editor, { language: innerValue.value }, { at: path });
     };
 

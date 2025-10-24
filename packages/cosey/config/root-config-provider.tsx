@@ -1,12 +1,7 @@
 import { computed, defineComponent, provide, reactive } from 'vue';
 import { useColorSchemeProvide } from '../hooks';
 import { getAlgorithm, rootConfigProviderProps } from './root-config-provider.api';
-import {
-  ConfigProvider,
-  containerContextKey,
-  useStackDialogProvide,
-  useUploadProvide,
-} from '../components';
+import { ConfigProvider, containerContextKey, useStackDialogProvide } from '../components';
 import { useLayoutStore } from '../store';
 import { useGlobalConfig } from './index';
 import useNprogressStyle from './nprogress.style';
@@ -14,6 +9,7 @@ import useNprogressStyle from './nprogress.style';
 import 'element-plus/dist/index.css';
 import 'element-plus/theme-chalk/dark/css-vars.css';
 import { ElConfigProvider } from 'element-plus';
+import { provideUploadConfig } from './upload';
 
 export default defineComponent({
   name: 'CoRootConfigProvider',
@@ -43,7 +39,7 @@ export default defineComponent({
 
     if (apiConfig) {
       const uploadApi = apiConfig.upload?.();
-      useUploadProvide({
+      provideUploadConfig({
         request: uploadApi,
       });
     }

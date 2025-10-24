@@ -1,7 +1,7 @@
 import { type AxiosRequestConfig } from 'axios';
 import { type MediaCardBaseProps } from '../media-card';
-import { type UploadContext } from '../upload-context';
-import { ExtractPropTypes, PropType, SlotsType } from 'vue';
+import type { ExtractPropTypes, PropType, SlotsType } from 'vue';
+import { type UploadContext } from '../../config/upload';
 
 export type UploadFileStatus = 'unready' | 'ready' | 'loading' | 'success' | 'error';
 

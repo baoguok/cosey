@@ -1,7 +1,7 @@
 import { escapeHtml, hyphenate, parseStringStyle } from '@vue/shared';
 import { Descendant, Editor, isEditor, Node as SlateNode, Text } from 'slate-vue3/core';
 import { jsx } from 'slate-vue3/hyperscript';
-import { isString, toArray } from '../../../utils';
+import { isUndefined, toArray } from '../../../utils';
 import {
   type CustomElement,
   type CustomText,
@@ -26,12 +26,25 @@ function stringifyStyle(styles: Style): string {
   let ret = '';
   for (const key in styles) {
     const value = styles[key];
-    if ((isString(value) && value !== '') || typeof value === 'number') {
+    if (typeof value === 'number' || value) {
       const normalizedKey = hyphenate(key);
       ret += `${normalizedKey}:${value};`;
     }
   }
   return ret;
+}
+
+function serializeElement(tag: string, attrs: [string, any][], children?: string) {
+  let sAttrs = attrs
+    .filter((item) => item[1])
+    .map(([key, value]) => {
+      return value === true ? key : `${key}="${value}"`;
+    })
+    .join(' ');
+
+  sAttrs = sAttrs ? ` ${sAttrs}` : '';
+
+  return `<${tag}${sAttrs}${isUndefined(children) ? ` />` : `>${children || ''}</${tag}>`}`;
 }
 
 function getLanguageByClass(cls: string) {
@@ -42,37 +55,42 @@ function serialize(node: SlateNode): string {
   if (Text.isText(node)) {
     let string = escapeHtml(node.text);
     if (node.strikethrough) {
-      string = `<s>${string}</s>`;
+      string = serializeElement('s', [], string);
     }
     if (node.underline) {
-      string = `<u>${string}</u>`;
+      string = serializeElement('u', [], string);
     }
     if (node.italic) {
-      string = `<em>${string}</em>`;
+      string = serializeElement('em', [], string);
     }
     if (node.bold) {
-      string = `<strong>${string}</strong>`;
+      string = serializeElement('strong', [], string);
     }
     if (node.code) {
-      string = `<code>${string}</code>`;
+      string = serializeElement('code', [], string);
     }
     if (node.superscript) {
-      string = `<sup>${string}</sup>`;
+      string = serializeElement('sup', [], string);
     }
     if (node.subscript) {
-      string = `<sub>${string}</sub>`;
+      string = serializeElement('sub', [], string);
     }
 
-    const styles = stringifyStyle({
-      fontFamily: node.font,
-      fontSize: node.size,
-      color: node.color,
-      background: node.background,
-    });
-    if (styles) {
-      string = `<span style="${styles}">${string}</span>`;
-    }
-    return string;
+    return serializeElement(
+      'span',
+      [
+        [
+          'style',
+          stringifyStyle({
+            fontFamily: node.font,
+            fontSize: node.size,
+            color: node.color,
+            background: node.background,
+          }),
+        ],
+      ],
+      string,
+    );
   }
 
   let children = '';
@@ -87,11 +105,26 @@ function serialize(node: SlateNode): string {
 
   switch (node.type) {
     case 'code-block':
-      return `<pre class="language-${node.language}">${node.children
-        .map((n) => serialize(n))
-        .join('\n')}</pre>`;
+      return serializeElement(
+        'pre',
+        [['class', `language-${node.language}`]],
+        node.children.map((n) => serialize(n)).join('\n'),
+      );
     case 'link':
-      return `<a href="${node.url}" target="${node.target}">${children}</a>`;
+      return serializeElement(
+        'a',
+        [
+          ['href', node.url],
+          ['target', node.target],
+        ],
+        children,
+      );
+    case 'image':
+      return serializeElement('img', [
+        ['src', node.url],
+        ['width', node.width],
+        ['height', node.height],
+      ]);
     case 'block':
     case 'paragraph':
     case 'block-quote':
@@ -104,14 +137,19 @@ function serialize(node: SlateNode): string {
     case 'heading-four':
     case 'heading-five':
     case 'heading-six': {
-      const styles = stringifyStyle({
-        paddingLeft: node.indent ? node.indent * INDENT_DELTA + 'px' : null,
-        textAlign: node.align,
-      });
-      const styleAttrs = styles ? ` style="${styles}"` : '';
-
-      const tagName = mapElementTypeTagName[node.type];
-      return `<${tagName}${styleAttrs}>${children}</${tagName}>`;
+      return serializeElement(
+        mapElementTypeTagName[node.type],
+        [
+          [
+            'style',
+            stringifyStyle({
+              paddingLeft: node.indent ? node.indent * INDENT_DELTA + 'px' : null,
+              textAlign: node.align,
+            }),
+          ],
+        ],
+        children,
+      );
     }
     default:
       return children;
@@ -218,6 +256,13 @@ function deserialize(node: Node, markAttributes = {}): DeserializeResult {
         },
         children,
       );
+    case 'IMG':
+      return jsx('element', {
+        type: 'image',
+        url: element.getAttribute('src'),
+        width: element.getAttribute('width'),
+        height: element.getAttribute('height'),
+      });
     default:
       return children;
   }

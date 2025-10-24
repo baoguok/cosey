@@ -1,6 +1,6 @@
 import { Editor, Element, Location, Transforms } from 'slate-vue3/core';
-import { LinkElement, type CustomElement } from '../types';
-import { RenderElementProps } from 'slate-vue3';
+import { LinkElement } from '../types';
+import { type RenderElementProps } from 'slate-vue3';
 import { h } from 'vue';
 import { LinkComponent } from '../link-component';
 
@@ -32,14 +32,8 @@ export function wrapLink(editor: Editor, url: string, target: string, text: stri
 export function withLink(editor: Editor) {
   // is inline
   const isInline = editor.isInline;
-  editor.isInline = (value: CustomElement) => {
-    return value.type === 'link' ? true : isInline(value);
-  };
-
-  // format link
-  editor.formatLink = (url: string, target: string, text: string) => {
-    unwrapLink(editor);
-    wrapLink(editor, url, target, text);
+  editor.isInline = (element) => {
+    return element.type === 'link' ? true : isInline(element);
   };
 
   // render element
@@ -61,6 +55,12 @@ export function withLink(editor: Editor) {
     }
 
     return renderElement(props);
+  };
+
+  // format link
+  editor.formatLink = (url: string, target: string, text: string) => {
+    unwrapLink(editor);
+    wrapLink(editor, url, target, text);
   };
 
   return editor;

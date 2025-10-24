@@ -1,9 +1,8 @@
 import { ElButton, ElDivider, ElPopover, useLocale } from 'element-plus';
-import { useEditor } from 'slate-vue3';
-import { defineComponent, inject, PropType } from 'vue';
+import { useEditor, useElement } from 'slate-vue3';
+import { defineComponent, inject } from 'vue';
 import { unwrapLink } from './plugins/link';
 import { DOMEditor } from 'slate-vue3/dom';
-import { Node } from 'slate-vue3/core';
 import Icon from '../icon/icon.vue';
 import { useComponentConfig } from '../config-provider';
 import useStyle from './link-component.stye';
@@ -17,10 +16,6 @@ export const LinkComponent = defineComponent({
     target: {
       type: String,
     },
-    element: {
-      type: Object as PropType<Node>,
-      required: true,
-    },
   },
   setup(props, { slots }) {
     const { t } = useLocale();
@@ -29,12 +24,14 @@ export const LinkComponent = defineComponent({
 
     const editor = useEditor();
 
+    const element = useElement();
+
     const onOpenLink = () => {
       window.open(props.url, '_blank');
     };
 
     const onRemoveLink = () => {
-      unwrapLink(editor, DOMEditor.findPath(editor, props.element));
+      unwrapLink(editor, DOMEditor.findPath(editor, element.value));
     };
 
     const editorContext = inject(editorContextKey)!;

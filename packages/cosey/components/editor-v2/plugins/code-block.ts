@@ -222,7 +222,7 @@ export function withCodeBlock(editor: Editor) {
     const { attributes: attrs, children, element } = props;
 
     if (element.type === 'code-block') {
-      return h(CodeBlock, { element }, () => children);
+      return h(CodeBlock, () => children);
     }
     if (element.type === 'code-line') {
       return h('div', { ...attrs, style: { position: 'relative' } }, children);

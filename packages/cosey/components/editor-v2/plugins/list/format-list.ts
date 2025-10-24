@@ -68,7 +68,6 @@ export function formatList(editor: Editor, value: ListType) {
   }
 
   if (mayNormalizeListPaths) {
-    console.log('mayNormalizeListPaths', mayNormalizeListPaths);
     if (isList(Node.getIf(editor, mayNormalizeListPaths))) {
       normalizeList(editor, mayNormalizeListPaths);
     }

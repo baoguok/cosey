@@ -18,6 +18,9 @@ import FormatAlign from './format-align';
 import ListType from './format-list';
 import FormatClear from './format-clear';
 import FormatSource from './format-source';
+import FormatLink from './format-link';
+import FormatCodeBlock from './format-code-block';
+import FormatImage from './format-image';
 
 import { editorV2Props, editorV2Slots, editorV2Emits, editorContextKey } from './editor-v2.api';
 import useStyle from './editor-v2.style';
@@ -25,8 +28,6 @@ import { useComponentConfig } from '../config-provider';
 import { type CustomElement } from './types';
 import { useFocus } from './hooks/useFocus';
 import { withDefaultPlugins } from './plugins';
-import FormatLink from './format-link';
-import FormatCodeBlock from './format-code-block';
 
 const list = {
   type: 'bulleted-list',
@@ -241,6 +242,7 @@ export default defineComponent({
               </ButtonGroup>
               <ButtonGroup>
                 <FormatLink />
+                <FormatImage />
                 <FormatCodeBlock />
               </ButtonGroup>
               <ButtonGroup>

@@ -11,7 +11,6 @@ import { useComponentConfig } from '../config-provider';
 import { syntaxOptions } from './modules/syntax';
 
 import { editorContextKey } from './quillContext';
-import { useUpload } from '../upload';
 
 import Resize from './components/resize/resize.vue';
 import Toolbar from './components/toolbar/toolbar.vue';
@@ -19,6 +18,7 @@ import TableToolbar from './components/table-toolbar/table-toolbar.vue';
 
 import { register } from './quill';
 import { debugWarn } from '../../utils';
+import { injectUploadConfig } from '../../config/upload';
 
 export default defineComponent({
   name: 'CoEditor',
@@ -38,7 +38,7 @@ export default defineComponent({
 
     useImageLoadingStyle();
 
-    const { request } = useUpload() || {};
+    const { request } = injectUploadConfig() || {};
 
     const element = useTemplateRef<HTMLElement>('element');
 

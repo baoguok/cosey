@@ -31,8 +31,8 @@ import Icon from '../icon/icon.vue';
 
 import useStyle from './upload.style';
 import { useComponentConfig } from '../config-provider';
-import { useUpload } from '../upload-context';
 import { useLocale } from '../../hooks';
+import { injectUploadConfig } from '../../config/upload';
 
 export default defineComponent({
   name: 'CoUpload',
@@ -46,7 +46,7 @@ export default defineComponent({
 
     const { hashId } = useStyle(prefixCls);
 
-    const { request } = useUpload() || {};
+    const { request } = injectUploadConfig() || {};
 
     const mergedLimit = computed(() => (props.single ? 1 : props.limit));
 

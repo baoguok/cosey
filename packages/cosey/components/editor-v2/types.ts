@@ -112,6 +112,9 @@ export type HeadingSixElement = {
 export type ImageElement = {
   type: 'image';
   url: string;
+  width?: string | number;
+  height?: string | number;
+  file?: File;
   children: EmptyText[];
 };
 

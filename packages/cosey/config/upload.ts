@@ -11,10 +11,10 @@ export interface UploadContext {
 
 const uploadContextKey = Symbol('uploadContext') as InjectionKey<UploadContext>;
 
-export const useUploadProvide = (context: UploadContext) => {
+export const provideUploadConfig = (context: UploadContext) => {
   provide(uploadContextKey, context);
 };
 
-export const useUpload = () => {
+export const injectUploadConfig = () => {
   return inject(uploadContextKey, null);
 };

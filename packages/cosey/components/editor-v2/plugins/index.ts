@@ -16,6 +16,7 @@ import { withSerialize } from './serialize';
 import { withRender } from './render';
 import { withLink } from './link';
 import { withCodeBlock } from './code-block';
+import { withImage } from './image';
 
 const plugins = [
   withKeyboard,
@@ -35,6 +36,7 @@ const plugins = [
   withSerialize,
   withLink,
   withCodeBlock,
+  withImage,
 ];
 
 export function withDefaultPlugins(editor: Editor) {

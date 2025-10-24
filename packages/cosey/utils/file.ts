@@ -127,3 +127,31 @@ export function downloadAttachment(
     window.URL.revokeObjectURL(link.href);
   }, 100);
 }
+
+export const imageExtensions = [
+  'jpg',
+  'jpeg',
+  'png',
+  'gif',
+  'webp',
+  'bmp',
+  'heic',
+  'heif',
+  'tiff',
+  'tif',
+  'svg',
+  'eps',
+  'ico',
+];
+
+/**
+ * 判断是否为图片地址
+ */
+export function isImageUrl(url: string) {
+  try {
+    const ext = new URL(url).pathname.split('.').pop();
+    return !!ext && imageExtensions.includes(ext);
+  } catch {
+    return false;
+  }
+}

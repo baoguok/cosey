@@ -11,6 +11,8 @@ import { useLocale } from '../../hooks';
 
 export default defineComponent({
   setup() {
+    const { t } = useLocale();
+
     const editor = useEditor();
 
     const isLinkActive = computed(() => {
@@ -19,8 +21,6 @@ export default defineComponent({
       });
       return !!link;
     });
-
-    const { t } = useLocale();
 
     const onClick = () => {
       DOMEditor.focus(editor);
