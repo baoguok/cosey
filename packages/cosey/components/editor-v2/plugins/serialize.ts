@@ -125,6 +125,13 @@ function serialize(node: SlateNode): string {
         ['width', node.width],
         ['height', node.height],
       ]);
+    case 'video':
+      return serializeElement('video', [
+        ['src', node.url],
+        ['width', node.width],
+        ['height', node.height],
+        ['controls', true],
+      ]);
     case 'block':
     case 'paragraph':
     case 'block-quote':
@@ -259,6 +266,13 @@ function deserialize(node: Node, markAttributes = {}): DeserializeResult {
     case 'IMG':
       return jsx('element', {
         type: 'image',
+        url: element.getAttribute('src'),
+        width: element.getAttribute('width'),
+        height: element.getAttribute('height'),
+      });
+    case 'VIDEO':
+      return jsx('element', {
+        type: 'video',
         url: element.getAttribute('src'),
         width: element.getAttribute('width'),
         height: element.getAttribute('height'),

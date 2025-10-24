@@ -1,4 +1,4 @@
-import { useInheritRef, type RenderElementProps } from 'slate-vue3';
+import { useInheritRef } from 'slate-vue3';
 import { Editor, Transforms } from 'slate-vue3/core';
 import { h } from 'vue';
 import { ImageComponent } from '../image-component';
@@ -43,7 +43,7 @@ export function withImage(editor: Editor) {
 
   // render element
   const renderElement = editor.renderElement;
-  editor.renderElement = (props: RenderElementProps) => {
+  editor.renderElement = (props) => {
     const { attributes, children, element } = props;
 
     if (element.type === 'image') {

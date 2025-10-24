@@ -16,7 +16,7 @@ export default getSimpleStyleHook('CoEditorUpload', (token) => {
         inset: 0,
         content: '""',
         backgroundColor: token.colorBgContainer,
-        opacity: 0.65,
+        opacity: 0.8,
       },
 
       [`${componentCls}-content`]: {

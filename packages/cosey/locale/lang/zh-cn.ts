@@ -58,6 +58,7 @@ export default {
       width: '宽度',
       height: '高度',
       video: '视频',
+      image: '图片',
     },
     table: {
       export: '导出',

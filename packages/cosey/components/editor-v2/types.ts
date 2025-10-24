@@ -118,6 +118,14 @@ export type ImageElement = {
   children: EmptyText[];
 };
 
+export type VideoElement = {
+  type: 'video';
+  url: string;
+  width?: string | number;
+  height?: string | number;
+  children: EmptyText[];
+};
+
 export type LinkElement = { type: 'link'; url: string; target: string; children: Descendant[] };
 
 export type ButtonElement = { type: 'button'; children: Descendant[] };
@@ -129,12 +137,6 @@ export type TableCellElement = { type: 'table-cell'; children: CustomText[] };
 export type TableRowElement = { type: 'table-row'; children: any[] };
 
 export type TitleElement = { type: 'title'; children: Descendant[] };
-
-export type VideoElement = {
-  type: 'video';
-  url: string;
-  children: EmptyText[];
-};
 
 export type CodeBlockElement = {
   type: 'code-block';

@@ -1,4 +1,10 @@
-import { ExtractPropTypes, ExtractPublicPropTypes, type PropType, type SlotsType } from 'vue';
+import {
+  CSSProperties,
+  ExtractPropTypes,
+  ExtractPublicPropTypes,
+  type PropType,
+  type SlotsType,
+} from 'vue';
 import { rowColumns } from '../row';
 
 export type ColSizeObject = {
@@ -48,6 +54,9 @@ export const colProps = {
   },
   xxl: {
     type: [Number, Object] as PropType<ColSize>,
+  },
+  style: {
+    type: [Object, String] as PropType<CSSProperties | string>,
   },
 };
 

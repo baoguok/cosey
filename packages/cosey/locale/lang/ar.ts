@@ -58,6 +58,7 @@ export default {
       width: 'العرض',
       height: 'الارتفاع',
       video: 'فيديو',
+      image: 'صورة',
     },
     table: {
       export: 'تصدير',

@@ -1,18 +1,19 @@
 import { computed, defineComponent, reactive, ref } from 'vue';
 import { useEditor } from 'slate-vue3';
-import { Editor, Element, Path } from 'slate-vue3/core';
-import { DOMEditor } from 'slate-vue3/dom';
+import { Element, Node, Path, Transforms } from 'slate-vue3/core';
 import Icon from '../icon/icon.vue';
 import Button from './button';
-import { chooseFiles } from '../../utils';
 import FormDialog from '../form-dialog/form-dialog';
 import Form from '../form/form';
 import FormItem from '../form/form-item.vue';
 import { useLocale } from '../../hooks';
-import { Transforms } from 'slate-vue3/core';
-import { ElButton } from 'element-plus';
-import { Node } from 'slate-vue3/core';
-import { type ImageElement } from './types';
+import { Range } from 'slate-vue3/core';
+import { VideoElement } from './types';
+import { DOMEditor } from 'slate-vue3/dom';
+
+function isVideoNode(node?: Node) {
+  return Element.isElement(node) && node.type === 'video';
+}
 
 export default defineComponent({
   setup() {
@@ -21,29 +22,17 @@ export default defineComponent({
     const editor = useEditor();
 
     const isActive = computed(() => {
-      const [link] = Editor.nodes(editor, {
-        match: (n) => Element.isElement(n) && n.type === 'image',
-      });
-      return !!link;
+      if (editor.selection && Range.isCollapsed(editor.selection)) {
+        if (isVideoNode(Node.parent(editor, editor.node(editor.selection)[1]))) {
+          return true;
+        }
+      }
+      return false;
     });
-
-    const onSelect = () => {
-      visible.value = false;
-
-      chooseFiles({
-        accept: 'image/*',
-        multiple: false,
-      }).then((files) => {
-        DOMEditor.focus(editor);
-        files.forEach((file) => {
-          editor.insertImage('', file);
-        });
-      });
-    };
 
     const onClick = () => {
       if (isActive.value) {
-        const element = Node.parent(editor, editor.node(editor.selection!)[1]) as ImageElement;
+        const element = Node.parent(editor, editor.node(editor.selection!)[1]) as VideoElement;
         Object.assign(model, {
           url: element.url,
           width: element.width,
@@ -64,7 +53,7 @@ export default defineComponent({
 
     const title = computed(
       () =>
-        `${actionType.value === 'update' ? t('co.editor.edit') : t('co.editor.insert')}${t('co.editor.image')}`,
+        `${actionType.value === 'update' ? t('co.editor.edit') : t('co.editor.insert')}${t('co.editor.video')}`,
     );
 
     const model = reactive({
@@ -90,7 +79,7 @@ export default defineComponent({
           },
         );
       } else {
-        editor.insertImage(model.url, undefined, model.width, model.height);
+        editor.insertVideo(model.url, model.width, model.height);
       }
     };
 
@@ -98,21 +87,12 @@ export default defineComponent({
       return (
         <>
           <Button active={isActive.value} onClick={onClick}>
-            <Icon name="co:image" />
+            <Icon name="co:video-player" />
           </Button>
 
           <FormDialog v-model={visible.value} title={title.value} width="sm">
             <Form model={model} labelWidth="auto" grid rowProps={{ gutter: 16 }} submit={onSubmit}>
-              <FormItem
-                v-model={model.url}
-                prop="url"
-                label="URL"
-                field-type="input"
-                colProps={{ span: 20 }}
-              />
-              <ElButton text onClick={onSelect}>
-                <Icon name="co:upload" />
-              </ElButton>
+              <FormItem v-model={model.url} prop="url" label="URL" field-type="input" />
               <FormItem
                 v-model={model.width}
                 prop="width"

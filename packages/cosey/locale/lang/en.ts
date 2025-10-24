@@ -58,6 +58,7 @@ export default {
       width: 'Width',
       height: 'Height',
       video: 'Video',
+      image: 'Image',
     },
     table: {
       export: 'Export',

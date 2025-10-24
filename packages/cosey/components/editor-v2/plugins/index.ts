@@ -17,6 +17,7 @@ import { withRender } from './render';
 import { withLink } from './link';
 import { withCodeBlock } from './code-block';
 import { withImage } from './image';
+import { withVideo } from './video';
 
 const plugins = [
   withKeyboard,
@@ -37,6 +38,7 @@ const plugins = [
   withLink,
   withCodeBlock,
   withImage,
+  withVideo,
 ];
 
 export function withDefaultPlugins(editor: Editor) {

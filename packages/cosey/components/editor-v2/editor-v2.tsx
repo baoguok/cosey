@@ -21,6 +21,7 @@ import FormatSource from './format-source';
 import FormatLink from './format-link';
 import FormatCodeBlock from './format-code-block';
 import FormatImage from './format-image';
+import FormatVideo from './format-video';
 
 import { editorV2Props, editorV2Slots, editorV2Emits, editorContextKey } from './editor-v2.api';
 import useStyle from './editor-v2.style';
@@ -243,6 +244,7 @@ export default defineComponent({
               <ButtonGroup>
                 <FormatLink />
                 <FormatImage />
+                <FormatVideo />
                 <FormatCodeBlock />
               </ButtonGroup>
               <ButtonGroup>

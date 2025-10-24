@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@casl/ability": "^6.7.3",
-    "@cosey/icons": "^0.1.6",
+    "@cosey/icons": "^0.1.7",
     "@ctrl/tinycolor": "^4.1.0",
     "@element-plus/icons-vue": "^2.3.1",
     "@emotion/hash": "^0.9.2",
@@ -49,7 +49,7 @@
   },
   "peerDependencies": {
     "@casl/ability": "^6.7.3",
-    "@cosey/icons": "^0.1.6",
+    "@cosey/icons": "^0.1.7",
     "@ctrl/tinycolor": "^4.1.0",
     "@element-plus/icons-vue": "^2.3.1",
     "@emotion/hash": "^0.9.2",
