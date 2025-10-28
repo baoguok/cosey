@@ -1,5 +1,5 @@
 import { Editor } from 'slate-vue3/core';
-import { toggleBlockAttr } from './utils';
+import { toggleBlockAttr } from '../utils';
 
 declare module 'slate-vue3/core' {
   interface BaseEditor {

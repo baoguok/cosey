@@ -18,11 +18,14 @@ import { withLink } from './link';
 import { withCodeBlock } from './code-block';
 import { withImage } from './image';
 import { withVideo } from './video';
+import { withHtml } from './html';
+import { withTable } from './table';
 
 const plugins = [
   withKeyboard,
   withRender,
   withNormalizeNode,
+  withHtml,
   withList,
   withHeading,
   withFont,
@@ -39,6 +42,7 @@ const plugins = [
   withCodeBlock,
   withImage,
   withVideo,
+  withTable,
 ];
 
 export function withDefaultPlugins(editor: Editor) {

@@ -1,4 +1,4 @@
-import { Descendant, Editor, Element, Node, Text, Transforms } from 'slate-vue3/core';
+import { Descendant, Editor, Element, Node, Text } from 'slate-vue3/core';
 import { isList, isListItem } from './list';
 
 type WithEditorFirstArg<T extends (...args: any) => any> = (
@@ -17,7 +17,7 @@ const normalizeNode: WithEditorFirstArg<Editor['normalizeNode']> = (editor, entr
   // Ensure that block and inline nodes have at least one text child.
   if (Element.isElement(node) && node.children.length === 0) {
     const child = { text: '' };
-    Transforms.insertNodes(editor, child, {
+    editor.insertNodes(child, {
       at: path.concat(0),
       voids: true,
     });
@@ -28,7 +28,7 @@ const normalizeNode: WithEditorFirstArg<Editor['normalizeNode']> = (editor, entr
   if (isList(node)) {
     for (let i = 0; i < node.children.length; i++) {
       if (!isListItem(node.children[i])) {
-        Transforms.removeNodes(editor, {
+        editor.removeNodes({
           at: [...path, i],
         });
         i--;
@@ -68,15 +68,15 @@ const normalizeNode: WithEditorFirstArg<Editor['normalizeNode']> = (editor, entr
     if (isInlineOrText !== shouldHaveInlines) {
       if (isInlineOrText) {
         if (options?.fallbackElement) {
-          Transforms.wrapNodes(editor, options.fallbackElement(), {
+          editor.wrapNodes(options.fallbackElement(), {
             at: path.concat(n),
             voids: true,
           });
         } else {
-          Transforms.removeNodes(editor, { at: path.concat(n), voids: true });
+          editor.removeNodes({ at: path.concat(n), voids: true });
         }
       } else {
-        // Transforms.unwrapNodes(editor, { at: path.concat(n), voids: true });
+        // editor.unwrapNodes( { at: path.concat(n), voids: true });
       }
       n--;
     } else if (Element.isElement(child)) {
@@ -84,14 +84,14 @@ const normalizeNode: WithEditorFirstArg<Editor['normalizeNode']> = (editor, entr
       if (editor.isInline(child)) {
         if (prev == null || !Text.isText(prev)) {
           const newChild = { text: '' };
-          Transforms.insertNodes(editor, newChild, {
+          editor.insertNodes(newChild, {
             at: path.concat(n),
             voids: true,
           });
           n++;
         } else if (isLast) {
           const newChild = { text: '' };
-          Transforms.insertNodes(editor, newChild, {
+          editor.insertNodes(newChild, {
             at: path.concat(n + 1),
             voids: true,
           });
@@ -115,16 +115,16 @@ const normalizeNode: WithEditorFirstArg<Editor['normalizeNode']> = (editor, entr
       // Merge adjacent text nodes that are empty or match.
       if (prev != null && Text.isText(prev)) {
         if (Text.equals(child, prev, { loose: true })) {
-          Transforms.mergeNodes(editor, { at: path.concat(n), voids: true });
+          editor.mergeNodes({ at: path.concat(n), voids: true });
           n--;
         } else if (prev.text === '') {
-          Transforms.removeNodes(editor, {
+          editor.removeNodes({
             at: path.concat(n - 1),
             voids: true,
           });
           n--;
         } else if (child.text === '') {
-          Transforms.removeNodes(editor, {
+          editor.removeNodes({
             at: path.concat(n),
             voids: true,
           });

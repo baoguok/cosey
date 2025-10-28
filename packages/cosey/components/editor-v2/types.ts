@@ -34,6 +34,11 @@ export const mapElementTypeTagName: Record<string, string> = {
   'heading-five': 'h5',
   'heading-six': 'h6',
   'code-block': 'pre',
+  table: 'table',
+  'table-head': 'thead',
+  'table-body': 'tbody',
+  'table-row': 'tr',
+  'table-cell': 'td',
 };
 
 export const mapTagNameElementType = Object.fromEntries(
@@ -126,15 +131,42 @@ export type VideoElement = {
   children: EmptyText[];
 };
 
-export type LinkElement = { type: 'link'; url: string; target: string; children: Descendant[] };
+export type LinkElement = {
+  type: 'link';
+  url: string;
+  target: string;
+  children: Descendant[];
+};
 
-export type ButtonElement = { type: 'button'; children: Descendant[] };
+export type ButtonElement = {
+  type: 'button';
+  children: Descendant[];
+};
 
-export type TableElement = { type: 'table'; children: any[] };
+export type TableElement = {
+  type: 'table';
+  children: Descendant[];
+};
 
-export type TableCellElement = { type: 'table-cell'; children: CustomText[] };
+export type TableHeadElement = {
+  type: 'table-head';
+  children: Descendant[];
+};
 
-export type TableRowElement = { type: 'table-row'; children: any[] };
+export type TableBodyElement = {
+  type: 'table-body';
+  children: Descendant[];
+};
+
+export type TableRowElement = {
+  type: 'table-row';
+  children: Descendant[];
+};
+
+export type TableCellElement = {
+  type: 'table-cell';
+  children: CustomText[];
+};
 
 export type TitleElement = { type: 'title'; children: Descendant[] };
 
@@ -167,6 +199,8 @@ export type CustomElement = (
   | ListItemElement
   | ParagraphElement
   | TableElement
+  | TableHeadElement
+  | TableBodyElement
   | TableRowElement
   | TableCellElement
   | TitleElement

@@ -143,7 +143,12 @@ function serialize(node: SlateNode): string {
     case 'heading-three':
     case 'heading-four':
     case 'heading-five':
-    case 'heading-six': {
+    case 'heading-six':
+    case 'table':
+    case 'table-head':
+    case 'table-body':
+    case 'table-row':
+    case 'table-cell': {
       return serializeElement(
         mapElementTypeTagName[node.type],
         [
@@ -237,7 +242,12 @@ function deserialize(node: Node, markAttributes = {}): DeserializeResult {
     case 'H3':
     case 'H4':
     case 'H5':
-    case 'H6': {
+    case 'H6':
+    case 'TABLE':
+    case 'THEAD':
+    case 'TBODY':
+    case 'TR':
+    case 'TD': {
       const attributes: Omit<CustomElement, 'type' | 'children'> = {};
       const styleStr = element.getAttribute('style');
       const styleObj = styleStr ? parseStringStyle(styleStr) : {};

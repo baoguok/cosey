@@ -1,8 +1,8 @@
-import { Editor, Element, isBlock, Node, NodeEntry, Path, Text, Transforms } from 'slate-vue3/core';
+import { Editor, Element, isBlock, Node, NodeEntry, Path, Text } from 'slate-vue3/core';
 import { ListType } from '../../types';
 import { DOMEditor } from 'slate-vue3/dom';
 import { isList, isListItem } from './utils';
-import { liftToRootNode, mergePrevNode, normalizeList, setNodeType } from '../utils';
+import { liftToRootNode, mergePrevNode, normalizeList, setNodeType } from '../../utils';
 
 export function formatList(editor: Editor, value: ListType) {
   DOMEditor.focus(editor);
@@ -53,8 +53,7 @@ export function formatList(editor: Editor, value: ListType) {
       }
     } else {
       setNodeType(editor, 'list-item', path);
-      Transforms.wrapNodes(
-        editor,
+      editor.wrapNodes(
         { type: value, children: [] },
         {
           at: path,

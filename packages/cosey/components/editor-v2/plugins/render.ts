@@ -1,8 +1,9 @@
-import { type RenderElementProps, type RenderLeafProps } from 'slate-vue3';
+import { RenderPlaceholderProps, type RenderElementProps, type RenderLeafProps } from 'slate-vue3';
 import { Editor } from 'slate-vue3/core';
 import { type CSSProperties, h, VNode } from 'vue';
 import { isListItem } from './list';
 import { mapElementTypeTagName } from '../types';
+import { PlaceholderComponent } from '../placeholder-component';
 
 export const INDENT_DELTA = 40;
 
@@ -10,6 +11,7 @@ declare module 'slate-vue3/core' {
   interface BaseEditor {
     renderElement: (props: RenderElementProps) => VNode;
     renderLeaf: (props: RenderLeafProps) => VNode;
+    renderPlaceholder: (props: RenderPlaceholderProps) => VNode;
   }
 }
 
@@ -67,9 +69,21 @@ const renderLeaf = ({ leaf, attributes, children }: RenderLeafProps) => {
   );
 };
 
+const renderPlaceholder = ({ children, attributes }: RenderPlaceholderProps) => {
+  return h(
+    PlaceholderComponent,
+    {
+      ...attributes,
+      style: {},
+    },
+    () => children,
+  );
+};
+
 export function withRender(editor: Editor) {
   editor.renderLeaf = renderLeaf;
   editor.renderElement = renderElement;
+  editor.renderPlaceholder = renderPlaceholder;
 
   return editor;
 }

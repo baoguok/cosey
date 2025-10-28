@@ -1,6 +1,6 @@
 import { getSimpleStyleHook } from '../theme';
 
-export default getSimpleStyleHook('EditorListPicker', (token) => {
+export default getSimpleStyleHook('EditorV2ListPicker', (token) => {
   const { componentCls } = token;
 
   return {

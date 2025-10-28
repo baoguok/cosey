@@ -1,4 +1,4 @@
-import { Editor, Element, Path, Transforms } from 'slate-vue3/core';
+import { Editor, Element, Path } from 'slate-vue3/core';
 import { DOMEditor } from 'slate-vue3/dom';
 
 export const HEADING_TYPES = [
@@ -26,7 +26,7 @@ export function withHeading(editor: Editor) {
   editor.formatHeading = (value: HeadingType) => {
     DOMEditor.focus(editor);
 
-    Transforms.setNodes<Element>(editor, {
+    editor.setNodes<Element>({
       type: value,
     });
   };
@@ -45,10 +45,10 @@ export function withHeading(editor: Editor) {
           type: 'paragraph' as const,
           children: [{ text: '' }],
         };
-        Transforms.insertNodes(editor, newParagraph, {
+        editor.insertNodes(newParagraph, {
           at: Path.next(path),
         });
-        Transforms.select(editor, Path.next(path));
+        editor.select(Path.next(path));
         return;
       }
     }

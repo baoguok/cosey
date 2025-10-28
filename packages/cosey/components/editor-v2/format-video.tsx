@@ -1,6 +1,6 @@
 import { computed, defineComponent, reactive, ref } from 'vue';
 import { useEditor } from 'slate-vue3';
-import { Element, Node, Path, Transforms } from 'slate-vue3/core';
+import { Element, Node, Path } from 'slate-vue3/core';
 import Icon from '../icon/icon.vue';
 import Button from './button';
 import FormDialog from '../form-dialog/form-dialog';
@@ -69,8 +69,7 @@ export default defineComponent({
 
       if (actionType.value === 'update') {
         DOMEditor.focus(editor);
-        Transforms.setNodes(
-          editor,
+        editor.setNodes(
           {
             ...model,
           },

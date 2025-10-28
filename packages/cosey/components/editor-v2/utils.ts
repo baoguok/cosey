@@ -1,24 +1,14 @@
-import {
-  Editor,
-  Element,
-  Node,
-  NodeEntry,
-  Path,
-  Point,
-  Range,
-  Text,
-  Transforms,
-} from 'slate-vue3/core';
-import { isList, isListItem } from './list';
+import { Editor, Element, Node, NodeEntry, Path, Point, Range, Text } from 'slate-vue3/core';
+import { isList, isListItem } from './plugins/list';
 import { DOMEditor } from 'slate-vue3/dom';
-import { CustomElement } from '../types';
+import { CustomElement } from './types';
 
 export function liftToRootNode(editor: Editor, path: Path) {
   let length = path.length;
   let currentPath = path;
 
   while (length > 1) {
-    Transforms.liftNodes(editor, {
+    editor.liftNodes({
       at: currentPath,
     });
 
@@ -43,8 +33,7 @@ export function normalizeList(editor: Editor, path: Path) {
     },
   }).forEach(([element, path]) => {
     if (element.children.length === 1 && isList(element.children[0])) {
-      Transforms.setNodes(
-        editor,
+      editor.setNodes(
         {
           onlyListAsChildren: true,
         },
@@ -57,8 +46,7 @@ export function normalizeList(editor: Editor, path: Path) {
 }
 
 export function setNodeType(editor: Editor, type: string, path: Path) {
-  Transforms.setNodes(
-    editor,
+  editor.setNodes(
     {
       type: type as any,
     },
@@ -77,7 +65,7 @@ export function mergePrevNode(editor: Editor, path: Path | null | undefined) {
       (Text.isText(prevNode) && Text.isText(node)) ||
       (Element.isElement(prevNode) && Element.isElement(node) && prevNode.type === node.type)
     ) {
-      Transforms.mergeNodes(editor, {
+      editor.mergeNodes({
         at: path,
       });
     }
@@ -102,7 +90,7 @@ export function toggleBlockAttr(editor: Editor, key: string, value: string) {
 
   const active = !!match;
 
-  Transforms.setNodes<Element>(editor, {
+  editor.setNodes<Element>({
     [key]: active ? undefined : value,
   });
 }
@@ -135,4 +123,88 @@ export function isPointAtEndOfElement(
     callback(match);
   }
   return result;
+}
+
+/**
+ * 判断两范围是否相等
+ *
+ * 不像 Range.equals 需要anchor和focus的位置相同；此函数在anchor和focus相反时也能返回真。
+ *
+ *
+ */
+export function isRangeEqual(r1: Range, r2: Range) {
+  return (
+    (Point.equals(r1.anchor, r2.anchor) && Point.equals(r1.focus, r2.focus)) ||
+    (Point.equals(r1.anchor, r2.focus) && Point.equals(r1.focus, r2.anchor))
+  );
+}
+
+/**
+ * 判断某个 point 是否在指定块元素的首行
+ */
+export function isPointAtFirstLine(
+  editor: Editor,
+  elementPath: Path,
+  point: Point,
+  callback: () => void,
+) {
+  const containerStart = Editor.start(editor, elementPath);
+
+  if (Point.equals(point, containerStart)) {
+    return callback();
+  }
+
+  const string = Editor.string(editor, {
+    anchor: containerStart,
+    focus: point,
+  });
+
+  const result = !string.includes('\n');
+
+  if (result) {
+    return callback();
+  }
+
+  return result;
+}
+
+/**
+ * 判断某个 point 是否在指定块元素的尾行
+ */
+export function isPointAtLastLine(
+  editor: Editor,
+  elementPath: Path,
+  point: Point,
+  callback: () => void,
+) {
+  const containerEnd = Editor.end(editor, elementPath);
+
+  if (Point.equals(point, containerEnd)) {
+    return callback();
+  }
+
+  const string = Editor.string(editor, {
+    anchor: point,
+    focus: containerEnd,
+  });
+
+  const result = !string.includes('\n');
+
+  if (result) {
+    return callback();
+  }
+
+  return result;
+}
+
+/**
+ * 接收 range，返回排序后的 range
+ */
+export function sortRange(range: Range): Range {
+  return Range.isBackward(range)
+    ? {
+        anchor: range.focus,
+        focus: range.anchor,
+      }
+    : range;
 }

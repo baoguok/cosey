@@ -11,7 +11,7 @@ export default defineComponent({
     click: (event: MouseEvent) => event instanceof MouseEvent,
   },
   setup(props, { slots, emit, expose }) {
-    const { prefixCls } = useComponentConfig('editor-button');
+    const { prefixCls } = useComponentConfig('editor-v2-button');
 
     const buttonRef = useTemplateRef('button');
 

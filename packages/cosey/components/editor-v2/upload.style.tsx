@@ -1,6 +1,6 @@
 import { getSimpleStyleHook } from '../theme';
 
-export default getSimpleStyleHook('CoEditorUpload', (token) => {
+export default getSimpleStyleHook('CoEditorV2Upload', (token) => {
   const { componentCls } = token;
 
   return {

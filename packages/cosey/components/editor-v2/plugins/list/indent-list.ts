@@ -1,4 +1,4 @@
-import { Editor, Transforms, Path, Node, Text, Location, PathRef } from 'slate-vue3/core';
+import { Editor, Path, Node, Text, Location, PathRef } from 'slate-vue3/core';
 import {
   BulletedListElement,
   LIST_ITEM,
@@ -32,8 +32,7 @@ function getListItems(editor: Editor) {
 }
 
 function setSingleListChildren(editor: Editor, location: Location, isSingle: boolean) {
-  Transforms.setNodes(
-    editor,
+  editor.setNodes(
     {
       onlyListAsChildren: isSingle,
     },
@@ -163,7 +162,7 @@ function inflateListItem(editor: Editor, listItemInfo: FlatListItemInfo[], path:
       while (index >= 0) {
         const subNode = sourceItemNode.children[index];
         if (!isList(subNode)) {
-          Transforms.moveNodes(editor, {
+          editor.moveNodes({
             at: [...sourceItemPath, index],
             to: [...lastItemPath, 0],
           });

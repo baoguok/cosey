@@ -23,7 +23,7 @@ export default defineComponent({
     select: (item: ListItem) => isObject(item),
   },
   setup(props, { emit }) {
-    const { prefixCls } = useComponentConfig('editor-list');
+    const { prefixCls } = useComponentConfig('editor-v2-list');
     const { hashId } = useStyle(prefixCls);
 
     const onSelect = (item: ListItem) => {

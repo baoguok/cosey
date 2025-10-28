@@ -14,7 +14,7 @@ export default defineComponent({
     'chevron-click': (event: MouseEvent) => event instanceof MouseEvent,
   },
   setup(props, { slots, emit }) {
-    const { prefixCls } = useComponentConfig('editor-button');
+    const { prefixCls } = useComponentConfig('editor-v2-button');
 
     const onBtnClick = (event: MouseEvent) => {
       emit('click', event);

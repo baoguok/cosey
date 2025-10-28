@@ -4,7 +4,7 @@ import useStyle from './placeholder-component.style';
 
 export const PlaceholderComponent = defineComponent({
   setup(props, { slots }) {
-    const { prefixCls } = useComponentConfig('editor-image', props);
+    const { prefixCls } = useComponentConfig('editor-v2-placeholder', props);
     const { hashId } = useStyle(prefixCls);
 
     return () => {

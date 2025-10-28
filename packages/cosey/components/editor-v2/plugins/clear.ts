@@ -1,4 +1,4 @@
-import { Editor, Element, Point, Range, Text, Transforms } from 'slate-vue3/core';
+import { Editor, Element, Point, Range, Text } from 'slate-vue3/core';
 import { DOMEditor } from 'slate-vue3/dom';
 
 declare module 'slate-vue3/core' {
@@ -26,7 +26,7 @@ export function withClear(editor: Editor) {
           if (key !== 'text') newProps[key] = undefined; // 清除所有文本样式
         });
         if (Object.keys(newProps).length > 0) {
-          Transforms.setNodes(editor, newProps, { at: path });
+          editor.setNodes(newProps, { at: path });
         }
       });
     });
@@ -59,7 +59,7 @@ export function withClear(editor: Editor) {
           }
         });
         if (Object.keys(newProps).length > 0) {
-          Transforms.setNodes(editor, newProps, { at: path });
+          editor.setNodes(newProps, { at: path });
         }
       }
     });

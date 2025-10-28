@@ -13,13 +13,13 @@ import 'prismjs/components/prism-java';
 import 'prismjs/themes/prism-okaidia.css';
 
 import { type RenderElementProps, toRawWeakMap } from 'slate-vue3';
-import { Editor, Element, Node, NodeEntry, Path, Range, Transforms } from 'slate-vue3/core';
+import { Editor, Element, Node, NodeEntry, Path, Range } from 'slate-vue3/core';
 import { CodeBlockElement } from '../types';
 import { h } from 'vue';
 import { CodeBlock } from '../code-block';
 import { DOMEditor } from 'slate-vue3/dom';
 import { Hotkeys } from './keyboard';
-import { isPointAtEndOfElement } from './utils';
+import { isPointAtEndOfElement } from '../utils';
 
 export const languageOptions = [
   { value: 'css', label: 'CSS' },
@@ -187,22 +187,22 @@ function node2Decorations(editor: Editor) {
 }
 
 function formatCodeBlock(editor: Editor) {
-  Transforms.wrapNodes(
-    editor,
+  editor.wrapNodes(
     { type: 'code-block', language: 'plain', children: [] },
     {
       match: (n) => Element.isElement(n) && n.type === 'paragraph',
       split: false,
     },
   );
-  Transforms.setNodes(
-    editor,
+  editor.setNodes(
     { type: 'code-line' as any },
     { match: (n) => Element.isElement(n) && n.type === 'paragraph' },
   );
 }
 
 export function withCodeBlock(editor: Editor) {
+  const { renderElement, formatIndent, onKeydown } = editor;
+
   editor.decorate = (nodeList: Node[]) => {
     const node = nodeList[0];
     if (Element.isElement(node) && node.type === 'code-line') {
@@ -214,9 +214,6 @@ export function withCodeBlock(editor: Editor) {
   editor.formatCodeBlock = () => {
     formatCodeBlock(editor);
   };
-
-  // render element
-  const renderElement = editor.renderElement;
 
   editor.renderElement = (props: RenderElementProps) => {
     const { attributes: attrs, children, element } = props;
@@ -230,9 +227,6 @@ export function withCodeBlock(editor: Editor) {
 
     return renderElement(props);
   };
-
-  // indent
-  const formatIndent = editor.formatIndent;
 
   editor.formatIndent = (value: number) => {
     DOMEditor.focus(editor);
@@ -253,15 +247,11 @@ export function withCodeBlock(editor: Editor) {
     return formatIndent(value);
   };
 
-  // keydown
-  const onKeydown = editor.onKeydown;
-
   editor.onKeydown = (event: KeyboardEvent) => {
     if (Hotkeys.isSoftBreak(event)) {
       if (
         isPointAtEndOfElement(editor, 'code-block', ([, path]) => {
-          Transforms.insertNodes(
-            editor,
+          editor.insertNodes(
             {
               type: 'paragraph',
               children: [{ text: '' }],
@@ -270,7 +260,7 @@ export function withCodeBlock(editor: Editor) {
               at: Path.next(path),
             },
           );
-          Transforms.move(editor);
+          editor.move();
         })
       ) {
         event.preventDefault();

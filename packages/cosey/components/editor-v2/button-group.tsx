@@ -5,7 +5,7 @@ export default defineComponent({
   setup(props, { slots }) {
     void props;
 
-    const { prefixCls } = useComponentConfig('editor-button-group');
+    const { prefixCls } = useComponentConfig('editor-v2-button-group');
     return () => {
       return <div class={`${prefixCls.value}`}>{slots.default?.()}</div>;
     };

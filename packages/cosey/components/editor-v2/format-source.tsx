@@ -4,6 +4,7 @@ import { useEditor } from 'slate-vue3';
 import Icon from '../icon/icon.vue';
 import Button from './button';
 import { useLocale } from '../../hooks';
+import { Selection } from 'slate-vue3/core';
 
 export default defineComponent({
   setup() {
@@ -14,7 +15,10 @@ export default defineComponent({
     const visible = ref(false);
     const value = ref('');
 
+    let selection: Selection;
+
     const onShow = () => {
+      selection = editor.selection;
       value.value = editor.serialize() || '';
       visible.value = true;
     };
@@ -29,6 +33,9 @@ export default defineComponent({
       editor.select([]);
       editor.delete();
       editor.insertFragment(fragment);
+      if (selection) {
+        editor.setSelection(selection);
+      }
 
       visible.value = false;
     };

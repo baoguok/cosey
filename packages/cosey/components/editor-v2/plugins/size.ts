@@ -32,7 +32,7 @@ export function withSize(editor: Editor) {
 
     let numSize = 14;
     if (size) {
-      numSize = parseInt(size);
+      numSize = parseInt(size as string);
     } else {
       const domRange = DOMEditor.toDOMRange(editor, editor.selection!);
       let node = domRange.startContainer;

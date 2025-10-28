@@ -1,4 +1,4 @@
-import { Editor, Element, Transforms } from 'slate-vue3/core';
+import { Editor, Element } from 'slate-vue3/core';
 import { DOMEditor } from 'slate-vue3/dom';
 import { CustomElement } from '../types';
 
@@ -23,7 +23,7 @@ export function withBlock(editor: Editor) {
 
     const active = !!match;
 
-    Transforms.setNodes<Element>(editor, {
+    editor.setNodes<Element>({
       type: active ? 'paragraph' : value,
     } as CustomElement);
   };

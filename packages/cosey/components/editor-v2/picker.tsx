@@ -31,7 +31,7 @@ export default defineComponent({
     content: {};
   }>,
   setup(props, { slots, emit }) {
-    const { prefixCls } = useComponentConfig('editor-picker');
+    const { prefixCls } = useComponentConfig('editor-v2-picker');
     const { hashId } = useStyle(prefixCls);
 
     const contentRef = useTemplateRef<HTMLElement>('content');

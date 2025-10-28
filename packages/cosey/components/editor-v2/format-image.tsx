@@ -9,7 +9,6 @@ import FormDialog from '../form-dialog/form-dialog';
 import Form from '../form/form';
 import FormItem from '../form/form-item.vue';
 import { useLocale } from '../../hooks';
-import { Transforms } from 'slate-vue3/core';
 import { ElButton } from 'element-plus';
 import { Node } from 'slate-vue3/core';
 import { type ImageElement } from './types';
@@ -80,8 +79,7 @@ export default defineComponent({
 
       if (actionType.value === 'update') {
         DOMEditor.focus(editor);
-        Transforms.setNodes(
-          editor,
+        editor.setNodes(
           {
             ...model,
           },

@@ -2,7 +2,6 @@ import { defineComponent, useModel } from 'vue';
 import { isString } from '../../utils';
 import { DOMEditor } from 'slate-vue3/dom';
 import { useEditor, useElement } from 'slate-vue3';
-import { Transforms } from 'slate-vue3/core';
 import { languageOptions } from './plugins/code-block';
 
 export const CodeBlock = defineComponent({
@@ -25,7 +24,7 @@ export const CodeBlock = defineComponent({
       innerValue.value = (e.target as HTMLSelectElement).value;
 
       const path = DOMEditor.findPath(editor, element.value);
-      Transforms.setNodes(editor, { language: innerValue.value }, { at: path });
+      editor.setNodes({ language: innerValue.value }, { at: path });
     };
 
     return () => {

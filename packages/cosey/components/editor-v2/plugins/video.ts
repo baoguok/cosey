@@ -1,4 +1,4 @@
-import { Transforms, type Editor } from 'slate-vue3/core';
+import { type Editor } from 'slate-vue3/core';
 import { h } from 'vue';
 import { VideoComponent } from '../video-component';
 import { useInheritRef } from 'slate-vue3';
@@ -17,8 +17,8 @@ const insertVideo = (
   height?: number | string,
 ) => {
   const video: VideoElement = { type: 'video', url, width, height, children: [{ text: '' }] };
-  Transforms.insertNodes(editor, video);
-  Transforms.move(editor);
+  editor.insertNodes(video);
+  editor.move();
 };
 
 export function withVideo(editor: Editor) {

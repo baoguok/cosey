@@ -15,6 +15,7 @@ export const getButtonStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> =
       alignItems: 'center',
       width: 28,
       height: 28,
+      flex: 'none',
       fontSize: 20,
       whiteSpace: 'nowrap',
       borderRadius: token.borderRadiusSM,
@@ -88,7 +89,7 @@ export const getButtonStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> =
 
 export const getArticleStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> = (token) => {
   return {
-    'p, ol, ul, pre, blockquote, h1, h2, h3, h4, h5, h6': {
+    'p, ol, ul, pre, blockquote, h1, h2, h3, h4, h5, h6, table': {
       margin: 0,
       padding: 0,
       marginBottom: token.marginSM,
@@ -127,6 +128,12 @@ export const getArticleStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> 
         border: `${token.lineWidth} ${token.lineType} ${token.colorBorder}`,
         paddingInline: token.paddingXS,
         paddingBlock: token.paddingXXS,
+      },
+
+      thead: {
+        'td,th': {
+          backgroundColor: token.colorBgTextHover,
+        },
       },
     },
 
@@ -179,8 +186,6 @@ export const getArticleStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> 
 
     blockquote: {
       borderLeft: `4px solid ${token.colorBorder}`,
-      marginBottom: 5,
-      marginTop: 5,
       paddingLeft: 16,
     },
 
@@ -232,8 +237,8 @@ const getEditorStyle: GenerateStyle<AliasTokenWithCommonCls, CSSInterpolation> =
       [toolbarCls]: {
         display: 'flex',
         flexWrap: 'wrap',
-        columnGap: token.padding,
-        rowGap: token.paddingXXS,
+        columnGap: token.sizeLG,
+        rowGap: token.sizeXXS,
         paddingInline: token.paddingSM,
         paddingBlock: token.paddingXS,
         border: `1px solid ${token.colorBorder}`,

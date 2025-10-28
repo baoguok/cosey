@@ -19,7 +19,7 @@ export default defineComponent({
     clear: () => true,
   },
   setup(props, { slots, emit }) {
-    const { prefixCls } = useComponentConfig('editor-color-picker');
+    const { prefixCls } = useComponentConfig('editor-v2-color-picker');
     const { hashId } = useStyle(prefixCls);
 
     const innerVisible = computed({

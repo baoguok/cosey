@@ -1,5 +1,5 @@
 import { useInheritRef } from 'slate-vue3';
-import { Editor, Transforms } from 'slate-vue3/core';
+import { Editor } from 'slate-vue3/core';
 import { h } from 'vue';
 import { ImageComponent } from '../image-component';
 import { isImageUrl } from '../../../utils';
@@ -24,8 +24,8 @@ const insertImage = (
   height?: number | string,
 ) => {
   const image: ImageElement = { type: 'image', url, width, height, file, children: [{ text: '' }] };
-  Transforms.insertNodes(editor, image);
-  Transforms.move(editor);
+  editor.insertNodes(image);
+  editor.move();
 };
 
 export function withImage(editor: Editor) {

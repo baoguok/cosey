@@ -1,12 +1,12 @@
-import { ElButton, ElDivider, ElPopover, useLocale } from 'element-plus';
+import { ElButton, ElDivider, useLocale } from 'element-plus';
 import { useEditor, useElement } from 'slate-vue3';
-import { defineComponent, inject } from 'vue';
+import { defineComponent } from 'vue';
 import { unwrapLink } from './plugins/link';
 import { DOMEditor } from 'slate-vue3/dom';
 import Icon from '../icon/icon.vue';
 import { useComponentConfig } from '../config-provider';
 import useStyle from './link-component.stye';
-import { editorContextKey } from './editor-v2.api';
+import WidgetPopover from './widget-popover';
 
 export const LinkComponent = defineComponent({
   props: {
@@ -19,7 +19,7 @@ export const LinkComponent = defineComponent({
   },
   setup(props, { slots }) {
     const { t } = useLocale();
-    const { prefixCls } = useComponentConfig('editor-link', props);
+    const { prefixCls } = useComponentConfig('editor-v2-link', props);
     const { hashId } = useStyle(prefixCls);
 
     const editor = useEditor();
@@ -34,15 +34,9 @@ export const LinkComponent = defineComponent({
       unwrapLink(editor, DOMEditor.findPath(editor, element.value));
     };
 
-    const editorContext = inject(editorContextKey)!;
-
     return () => {
       return (
-        <ElPopover
-          placement="bottom"
-          trigger="click"
-          popperClass={[hashId.value, `${prefixCls.value}-popper`]}
-          appendTo={editorContext.popoverWrapper}
+        <WidgetPopover
           v-slots={{
             reference: () => (
               <a href={props.url} target={props.target}>

@@ -1,4 +1,4 @@
-import { Editor, Element, Location, Transforms } from 'slate-vue3/core';
+import { Editor, Element, Location } from 'slate-vue3/core';
 import { LinkElement } from '../types';
 import { type RenderElementProps } from 'slate-vue3';
 import { h } from 'vue';
@@ -11,7 +11,7 @@ declare module 'slate-vue3/core' {
 }
 
 export function unwrapLink(editor: Editor, at?: Location) {
-  Transforms.unwrapNodes(editor, {
+  editor.unwrapNodes({
     match: (n) => Element.isElement(n) && n.type === 'link',
     at,
   });
@@ -25,8 +25,8 @@ export function wrapLink(editor: Editor, url: string, target: string, text: stri
     children: [{ text }],
   };
 
-  Transforms.delete(editor);
-  Transforms.insertNodes(editor, link);
+  editor.delete();
+  editor.insertNodes(link);
 }
 
 export function withLink(editor: Editor) {

@@ -17,7 +17,7 @@ export default defineComponent({
     success: (url: string) => isString(url),
   },
   setup(props, { emit }) {
-    const { prefixCls } = useComponentConfig('editor-upload', props);
+    const { prefixCls } = useComponentConfig('editor-v2-upload', props);
     const { hashId } = useStyle(prefixCls);
     const { t } = useLocale();
 

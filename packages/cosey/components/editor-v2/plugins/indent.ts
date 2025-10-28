@@ -1,4 +1,4 @@
-import { Ancestor, Editor, Element, NodeEntry, Text, Transforms } from 'slate-vue3/core';
+import { Ancestor, Editor, Element, NodeEntry, Text } from 'slate-vue3/core';
 import { DOMEditor } from 'slate-vue3/dom';
 import { INDENT_ELEMENT_TYPES, IndentElementType } from '../types';
 
@@ -39,8 +39,7 @@ function indentNonList(editor: Editor, value: number) {
       indent = 0;
     }
 
-    Transforms.setNodes<Element>(
-      editor,
+    editor.setNodes<Element>(
       {
         indent,
       },
