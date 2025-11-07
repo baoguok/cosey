@@ -1,5 +1,4 @@
 import { Descendant, Editor, Element, Node, Text } from 'slate-vue3/core';
-import { isList, isListItem } from './list';
 
 type WithEditorFirstArg<T extends (...args: any) => any> = (
   editor: Editor,
@@ -25,17 +24,17 @@ const normalizeNode: WithEditorFirstArg<Editor['normalizeNode']> = (editor, entr
   }
 
   // list 只能包含 list-item
-  if (isList(node)) {
-    for (let i = 0; i < node.children.length; i++) {
-      if (!isListItem(node.children[i])) {
-        editor.removeNodes({
-          at: [...path, i],
-        });
-        i--;
-      }
-    }
-    return;
-  }
+  // if (isList(node)) {
+  //   for (let i = 0; i < node.children.length; i++) {
+  //     if (!isListItem(node.children[i])) {
+  //       editor.removeNodes({
+  //         at: [...path, i],
+  //       });
+  //       i--;
+  //     }
+  //   }
+  //   return;
+  // }
 
   // Determine whether the node should have block or inline children.
   const shouldHaveInlines = Editor.isEditor(node)
@@ -135,7 +134,9 @@ const normalizeNode: WithEditorFirstArg<Editor['normalizeNode']> = (editor, entr
   }
 };
 
+void normalizeNode;
+
 export function withNormalizeNode(editor: Editor) {
-  editor.normalizeNode = (...args) => normalizeNode(editor, ...args);
+  // editor.normalizeNode = (...args) => normalizeNode(editor, ...args);
   return editor;
 }

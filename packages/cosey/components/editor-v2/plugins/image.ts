@@ -28,21 +28,36 @@ const insertImage = (
   editor.move();
 };
 
+function insertData(editor: Editor, data: DataTransfer) {
+  const text = data.getData('text/plain');
+  const { files } = data;
+
+  if (files.length > 0) {
+    Array.from(files).forEach((file) => {
+      const [mime] = file.type.split('/');
+
+      if (mime === 'image') {
+        insertImage(editor, '', file);
+      }
+    });
+    return true;
+  } else if (isImageUrl(text)) {
+    insertImage(editor, text);
+    return true;
+  }
+}
+
 export function withImage(editor: Editor) {
-  // is inline
-  const isInline = editor.isInline;
+  const { isInline, isVoid, renderElement, insertData: srcInsertData } = editor;
+
   editor.isInline = (element) => {
     return element.type === 'image' ? true : isInline(element);
   };
 
-  // is void
-  const isVoid = editor.isVoid;
   editor.isVoid = (element) => {
     return element.type === 'image' ? true : isVoid(element);
   };
 
-  // render element
-  const renderElement = editor.renderElement;
   editor.renderElement = (props) => {
     const { attributes, children, element } = props;
 
@@ -64,23 +79,9 @@ export function withImage(editor: Editor) {
   };
 
   // insert data
-  const insertData = editor.insertData;
   editor.insertData = (data) => {
-    const text = data.getData('text/plain');
-    const { files } = data;
-
-    if (files.length > 0) {
-      Array.from(files).forEach((file) => {
-        const [mime] = file.type.split('/');
-
-        if (mime === 'image') {
-          insertImage(editor, '', file);
-        }
-      });
-    } else if (isImageUrl(text)) {
-      insertImage(editor, text);
-    } else {
-      insertData(data);
+    if (!insertData(editor, data)) {
+      srcInsertData(data);
     }
   };
 

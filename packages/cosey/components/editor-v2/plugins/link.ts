@@ -7,17 +7,18 @@ import { LinkComponent } from '../link-component';
 declare module 'slate-vue3/core' {
   interface BaseEditor {
     formatLink: (url: string, target: string, text: string) => void;
+    unwrapLink: (at?: Location) => void;
   }
 }
 
-export function unwrapLink(editor: Editor, at?: Location) {
+function unwrapLink(editor: Editor, at?: Location) {
   editor.unwrapNodes({
     match: (n) => Element.isElement(n) && n.type === 'link',
     at,
   });
 }
 
-export function wrapLink(editor: Editor, url: string, target: string, text: string) {
+function wrapLink(editor: Editor, url: string, target: string, text: string) {
   const link: LinkElement = {
     type: 'link',
     url,
@@ -29,15 +30,18 @@ export function wrapLink(editor: Editor, url: string, target: string, text: stri
   editor.insertNodes(link);
 }
 
+function formatLink(editor: Editor, url: string, target: string, text: string) {
+  unwrapLink(editor);
+  wrapLink(editor, url, target, text);
+}
+
 export function withLink(editor: Editor) {
-  // is inline
-  const isInline = editor.isInline;
+  const { isInline, renderElement } = editor;
+
   editor.isInline = (element) => {
     return element.type === 'link' ? true : isInline(element);
   };
 
-  // render element
-  const renderElement = editor.renderElement;
   editor.renderElement = (props: RenderElementProps) => {
     const { attributes, children, element } = props;
 
@@ -57,10 +61,12 @@ export function withLink(editor: Editor) {
     return renderElement(props);
   };
 
-  // format link
   editor.formatLink = (url: string, target: string, text: string) => {
-    unwrapLink(editor);
-    wrapLink(editor, url, target, text);
+    formatLink(editor, url, target, text);
+  };
+
+  editor.unwrapLink = (at?: Location) => {
+    unwrapLink(editor, at);
   };
 
   return editor;

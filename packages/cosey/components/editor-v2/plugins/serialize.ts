@@ -6,7 +6,7 @@ import {
   type CustomElement,
   type CustomText,
   mapElementTypeTagName,
-  mapTagNameElementType,
+  tagToElementTypeMap,
 } from '../types';
 import { INDENT_DELTA } from './render';
 import { FormatAlign } from './align';
@@ -32,6 +32,11 @@ function stringifyStyle(styles: Style): string {
     }
   }
   return ret;
+}
+
+function getStyleObject(element: Element) {
+  const styleStr = element.getAttribute('style');
+  return styleStr ? parseStringStyle(styleStr) : {};
 }
 
 function serializeElement(tag: string, attrs: [string, any][], children?: string) {
@@ -132,23 +137,14 @@ function serialize(node: SlateNode): string {
         ['height', node.height],
         ['controls', true],
       ]);
-    case 'block':
     case 'paragraph':
     case 'block-quote':
-    case 'bulleted-list':
-    case 'numbered-list':
-    case 'list-item':
     case 'heading-one':
     case 'heading-two':
     case 'heading-three':
     case 'heading-four':
     case 'heading-five':
-    case 'heading-six':
-    case 'table':
-    case 'table-head':
-    case 'table-body':
-    case 'table-row':
-    case 'table-cell': {
+    case 'heading-six': {
       return serializeElement(
         mapElementTypeTagName[node.type],
         [
@@ -163,12 +159,21 @@ function serialize(node: SlateNode): string {
         children,
       );
     }
+    case 'bulleted-list':
+    case 'numbered-list':
+    case 'list-item':
+    case 'table':
+    case 'table-head':
+    case 'table-body':
+    case 'table-row':
+    case 'table-cell':
+      return serializeElement(mapElementTypeTagName[node.type], [], children);
     default:
       return children;
   }
 }
 
-function deserialize(node: Node, markAttributes = {}): DeserializeResult {
+function doDeserialize(node: Node, markAttributes = {}): DeserializeResult {
   if (node.nodeType === Node.TEXT_NODE) {
     if (!node.textContent || /^\s+$/.test(node.textContent)) return null;
     return jsx('text', markAttributes, node.textContent.replace(/\n+/g, ' ').replace(/ +/g, ' '));
@@ -220,7 +225,7 @@ function deserialize(node: Node, markAttributes = {}): DeserializeResult {
   }
 
   const children = Array.from(element.childNodes)
-    .map((node) => deserialize(node, nodeAttributes))
+    .map((node) => doDeserialize(node, nodeAttributes))
     .flat()
     .filter(Boolean) as Descendant[];
 
@@ -231,35 +236,46 @@ function deserialize(node: Node, markAttributes = {}): DeserializeResult {
   switch (element.tagName) {
     case 'BODY':
       return jsx('fragment', {}, children);
-    case 'DIV':
     case 'P':
     case 'BLOCKQUOTE':
-    case 'UL':
-    case 'OL':
-    case 'LI':
     case 'H1':
     case 'H2':
     case 'H3':
     case 'H4':
     case 'H5':
-    case 'H6':
-    case 'TABLE':
-    case 'THEAD':
-    case 'TBODY':
-    case 'TR':
-    case 'TD': {
-      const attributes: Omit<CustomElement, 'type' | 'children'> = {};
-      const styleStr = element.getAttribute('style');
-      const styleObj = styleStr ? parseStringStyle(styleStr) : {};
-      if (styleObj['padding-left']) {
-        attributes.indent = parseFloat(styleObj['padding-left'] as string) / INDENT_DELTA;
+    case 'H6': {
+      const attributes: Record<string, any> = {};
+      const style = getStyleObject(element);
+      if (style['padding-left']) {
+        attributes.indent = parseFloat(style['padding-left'] as string) / INDENT_DELTA;
       }
-      if (styleObj['text-align']) {
-        attributes.align = styleObj['text-align'] as FormatAlign;
+      if (style['text-align']) {
+        attributes.align = style['text-align'] as FormatAlign;
       }
       return jsx(
         'element',
-        { type: mapTagNameElementType[element.tagName], ...attributes },
+        { type: tagToElementTypeMap[element.tagName], ...attributes },
+        children,
+      );
+    }
+    case 'UL':
+    case 'OL':
+    case 'LI':
+    case 'TABLE':
+    case 'THEAD':
+    case 'TBODY':
+    case 'TR': {
+      return jsx('element', { type: tagToElementTypeMap[element.tagName] }, children);
+    }
+    case 'TD': {
+      const attributes: Record<string, any> = {};
+      const style = getStyleObject(element);
+      if (style['text-align']) {
+        attributes.align = style['text-align'] as FormatAlign;
+      }
+      return jsx(
+        'element',
+        { type: tagToElementTypeMap[element.tagName], ...attributes },
         children,
       );
     }
@@ -292,24 +308,28 @@ function deserialize(node: Node, markAttributes = {}): DeserializeResult {
   }
 }
 
+function deserialize(html: string): Descendant[] {
+  const document = new DOMParser().parseFromString(html, 'text/html');
+  const result = doDeserialize(document.body);
+  const fragment = result ? toArray(result) : [];
+  return fragment.map((item) => {
+    if (Text.isText(item)) {
+      return {
+        type: 'paragraph',
+        children: [item],
+      };
+    }
+    return item;
+  });
+}
+
 export function withSerialize(editor: Editor) {
   editor.serialize = () => {
     return serialize(editor).trim();
   };
 
   editor.deserialize = (html: string) => {
-    const document = new DOMParser().parseFromString(html, 'text/html');
-    const result = deserialize(document.body);
-    const fragment = result ? toArray(result) : [];
-    return fragment.map((item) => {
-      if (Text.isText(item)) {
-        return {
-          type: 'paragraph',
-          children: [item],
-        };
-      }
-      return item;
-    });
+    return deserialize(html);
   };
 
   return editor;

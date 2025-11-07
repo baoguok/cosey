@@ -8,24 +8,28 @@ declare module 'slate-vue3/core' {
   }
 }
 
+function formatBlock(editor: Editor, value: string) {
+  DOMEditor.focus(editor);
+
+  const [match] = Array.from(
+    editor.nodes({
+      at: Editor.unhangRange(editor, editor.selection!),
+      match: (n) => {
+        return !Editor.isEditor(n) && Element.isElement(n) && n.type === value;
+      },
+    }),
+  );
+
+  const active = !!match;
+
+  editor.setNodes<Element>({
+    type: active ? 'paragraph' : value,
+  } as CustomElement);
+}
+
 export function withBlock(editor: Editor) {
   editor.formatBlock = (value: string) => {
-    DOMEditor.focus(editor);
-
-    const [match] = Array.from(
-      Editor.nodes(editor, {
-        at: Editor.unhangRange(editor, editor.selection!),
-        match: (n) => {
-          return !Editor.isEditor(n) && Element.isElement(n) && n.type === value;
-        },
-      }),
-    );
-
-    const active = !!match;
-
-    editor.setNodes<Element>({
-      type: active ? 'paragraph' : value,
-    } as CustomElement);
+    formatBlock(editor, value);
   };
 
   return editor;

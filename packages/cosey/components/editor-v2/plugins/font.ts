@@ -7,15 +7,19 @@ declare module 'slate-vue3/core' {
   }
 }
 
+function formatFont(editor: Editor, value: string) {
+  DOMEditor.focus(editor);
+
+  if (Range.isCollapsed(editor.selection!)) {
+    return;
+  }
+
+  Editor.addMark(editor, 'font', value);
+}
+
 export function withFont(editor: Editor) {
   editor.formatFont = (value: string) => {
-    DOMEditor.focus(editor);
-
-    if (Range.isCollapsed(editor.selection!)) {
-      return;
-    }
-
-    Editor.addMark(editor, 'font', value);
+    formatFont(editor, value);
   };
 
   return editor;

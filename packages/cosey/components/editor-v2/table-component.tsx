@@ -4,12 +4,11 @@ import useStyle from './table-component.style';
 import { useEditor, useElement } from 'slate-vue3';
 import { Range } from 'slate-vue3/core';
 import { DOMEditor } from 'slate-vue3/dom';
-import { sortRange } from './utils';
+import { getSortedRange } from './utils';
 import Icon from '../icon/icon.vue';
 import ButtonGroup from './button-group';
 import Button from './button';
 import WidgetPopover from './widget-popover';
-import { isTableCell } from './plugins/table';
 
 export const TableComponent = defineComponent({
   setup(props, { slots }) {
@@ -25,7 +24,7 @@ export const TableComponent = defineComponent({
         editor.selection &&
         Range.surrounds(
           editor.range(DOMEditor.findPath(editor, element.value)),
-          sortRange(editor.selection),
+          getSortedRange(editor.selection),
         )
       );
     });
@@ -42,7 +41,7 @@ export const TableComponent = defineComponent({
       if (!popperVisible.value) return null;
 
       const cell = editor.above({
-        match: isTableCell,
+        match: editor.isTableCell,
       });
 
       if (!cell) return null;

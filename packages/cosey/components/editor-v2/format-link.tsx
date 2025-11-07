@@ -1,6 +1,6 @@
 import { computed, defineComponent, reactive, ref } from 'vue';
 import { useEditor } from 'slate-vue3';
-import { Editor, Element, Node, Range } from 'slate-vue3/core';
+import { Element, Node, Range } from 'slate-vue3/core';
 import { DOMEditor } from 'slate-vue3/dom';
 import Icon from '../icon/icon.vue';
 import Button from './button';
@@ -16,7 +16,7 @@ export default defineComponent({
     const editor = useEditor();
 
     const isLinkActive = computed(() => {
-      const [link] = Editor.nodes(editor, {
+      const [link] = editor.nodes({
         match: (n) => Element.isElement(n) && n.type === 'link',
       });
       return !!link;
@@ -25,7 +25,7 @@ export default defineComponent({
     const onClick = () => {
       DOMEditor.focus(editor);
 
-      const [match] = Editor.nodes(editor, {
+      const [match] = editor.nodes({
         match: (n) => Element.isElement(n) && n.type === 'link',
       });
       if (match && Range.surrounds(editor.range(match[1]), editor.range(editor.selection!))) {

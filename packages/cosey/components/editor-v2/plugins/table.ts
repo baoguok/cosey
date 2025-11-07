@@ -1,13 +1,19 @@
 import { h } from 'vue';
 import { Element, Point, Editor, Range, Node, Path } from 'slate-vue3/core';
-import { isPointAtFirstLine, isPointAtLastLine } from '../utils';
+import {
+  getRangePosition,
+  getSortedRange,
+  isPointAtFirstLine,
+  isPointAtLastLine,
+  RangePosition,
+} from '../utils';
 import { Hotkeys } from './keyboard';
 import {
   type TableElement,
   type TableCellElement,
   type TableRowElement,
-  TableBodyElement,
-  TableHeadElement,
+  type TableBodyElement,
+  type TableHeadElement,
 } from '../types';
 import { TableComponent } from '../table-component';
 import { DOMEditor } from 'slate-vue3/dom';
@@ -26,27 +32,28 @@ declare module 'slate-vue3/core' {
     deleteTable: (tablePath: Path) => void;
     moveToHead: (tablePath: Path, cellPath: Path) => void;
     moveToBody: (tablePath: Path, cellPath: Path) => void;
+    isTableCell: (node: any) => node is TableCellElement;
   }
 }
 
-export function isTable(node: any): node is TableElement {
-  return Element.isElement(node) && node.type === 'table';
+function isTable(node: any): node is TableElement {
+  return Element.isElementType(node, 'table');
 }
 
-export function isTableRow(node: any): node is TableRowElement {
-  return Element.isElement(node) && node.type === 'table-row';
+function isTableRow(node: any): node is TableRowElement {
+  return Element.isElementType(node, 'table-row');
 }
 
-export function isTableCell(node: any): node is TableCellElement {
-  return Element.isElement(node) && node.type === 'table-cell';
+function isTableCell(node: any): node is TableCellElement {
+  return Element.isElementType(node, 'table-cell');
 }
 
-export function isTableBody(node: any): node is TableBodyElement {
-  return Element.isElement(node) && node.type === 'table-body';
+function isTableBody(node: any): node is TableBodyElement {
+  return Element.isElementType(node, 'table-body');
 }
 
-export function isTableHead(node: any): node is TableBodyElement {
-  return Element.isElement(node) && node.type === 'table-head';
+function isTableHead(node: any): node is TableBodyElement {
+  return Element.isElementType(node, 'table-head');
 }
 
 function insertTable(editor: Editor, rowCount: number, columnCount: number) {
@@ -309,9 +316,175 @@ function moveToBody(editor: Editor, tablePath: Path, cellPath: Path) {
   }
 }
 
+function deleteBackward(editor: Editor) {
+  if (editor.selection && Range.isCollapsed(editor.selection)) {
+    const [cell] = editor.nodes({
+      match: isTableCell,
+    });
+    if (cell) {
+      const [, cellPath] = cell;
+      const start = Editor.start(editor, cellPath);
+
+      if (Point.equals(editor.selection.anchor, start)) {
+        return true;
+      }
+    }
+  }
+}
+
+function deleteForward(editor: Editor) {
+  if (editor.selection && Range.isCollapsed(editor.selection)) {
+    const [cell] = editor.nodes({
+      match: isTableCell,
+    });
+
+    if (cell) {
+      const [, cellPath] = cell;
+      const end = Editor.end(editor, cellPath);
+
+      if (Point.equals(editor.selection.anchor, end)) {
+        return true;
+      }
+    }
+  }
+}
+
+function deleteFragment(editor: Editor) {
+  if (editor.selection) {
+    const [table] = editor.nodes({
+      match: isTable,
+    });
+    if (table) {
+      const [, tablePath] = table;
+      const tableRange = Editor.range(editor, tablePath);
+      const pos = getRangePosition(tableRange, getSortedRange(editor.selection));
+
+      if (pos !== RangePosition.COVER_BOTH) {
+        const [start, end] = Range.edges(editor.selection);
+        const [tableStart, tableEnd] = Range.edges(tableRange);
+
+        if (Point.isBefore(start, tableStart)) {
+          const anchor = start;
+          const focus = Editor.before(editor, tableStart)!;
+          if (!Point.equals(anchor, focus)) {
+            editor.delete({ at: { anchor, focus } });
+          }
+        } else if (Point.isAfter(end, tableEnd)) {
+          const anchor = Editor.after(editor, tableEnd)!;
+          const focus = end;
+          if (!Point.equals(anchor, focus)) {
+            editor.delete({ at: { anchor, focus } });
+          }
+        }
+
+        const cells = Array.from(
+          editor.nodes({
+            match: isTableCell,
+          }),
+        );
+        for (const [, cellPath] of cells) {
+          const cellRange = Editor.range(editor, cellPath);
+          const range = Range.intersection(cellRange, editor.selection);
+          if (range) {
+            if (Range.isCollapsed(range)) {
+              continue;
+            }
+
+            editor.delete({
+              at: range,
+            });
+          }
+        }
+
+        return true;
+      }
+    }
+  }
+}
+
+function insertBreak(editor: Editor) {
+  if (editor.selection) {
+    const [table] = editor.nodes({
+      match: isTable,
+    });
+    if (table) {
+      return true;
+    }
+  }
+}
+
+function onKeydown(editor: Editor, event: KeyboardEvent) {
+  if (Hotkeys.isMoveDown(event)) {
+    if (editor.selection) {
+      const [cell] = editor.nodes({
+        match: isTableCell,
+        at: editor.selection.focus,
+      });
+      if (cell) {
+        event.preventDefault();
+        const cellPath = cell[1];
+        if (
+          isPointAtLastLine(editor, cellPath, editor.selection.focus, () => {
+            const cellIndex = cellPath[cellPath.length - 1];
+
+            const [, rowPath] = editor.parent(cellPath);
+            const maybeNextRow = editor.next({
+              at: rowPath,
+            });
+            if (maybeNextRow && isTableRow(maybeNextRow[0])) {
+              const nextRowCellPath = [...maybeNextRow[1], cellIndex];
+              editor.select(editor.end(nextRowCellPath));
+              return true;
+            }
+          })
+        ) {
+          event.preventDefault();
+          return true;
+        }
+      }
+    }
+  }
+  if (Hotkeys.isMoveUp(event)) {
+    if (editor.selection) {
+      const [cell] = editor.nodes({
+        match: isTableCell,
+        at: editor.selection.focus,
+      });
+      if (cell) {
+        event.preventDefault();
+        const cellPath = cell[1];
+        if (
+          isPointAtFirstLine(editor, cellPath, editor.selection.focus, () => {
+            const cellIndex = cellPath[cellPath.length - 1];
+
+            const [, rowPath] = editor.parent(cellPath);
+            const maybeNextRow = editor.previous({
+              at: rowPath,
+            });
+            if (maybeNextRow && isTableRow(maybeNextRow[0])) {
+              const nextRowCellPath = [...maybeNextRow[1], cellIndex];
+              editor.select(editor.end(nextRowCellPath));
+              return true;
+            }
+          })
+        ) {
+          event.preventDefault();
+          return true;
+        }
+      }
+    }
+  }
+}
+
 export function withTable(editor: Editor) {
-  const { renderElement, deleteBackward, deleteForward, insertBreak, deleteFragment, onKeydown } =
-    editor;
+  const {
+    renderElement,
+    deleteBackward: srcDeleteBackward,
+    deleteForward: srcDeleteForward,
+    insertBreak: srcInsertBreak,
+    deleteFragment: srcDeleteFragment,
+    onKeydown: srcOnKeydown,
+  } = editor;
 
   editor.renderElement = (props) => {
     const { attributes, children, element } = props;
@@ -342,169 +515,33 @@ export function withTable(editor: Editor) {
   };
 
   editor.deleteBackward = (unit) => {
-    if (editor.selection && Range.isCollapsed(editor.selection)) {
-      const [cell] = Editor.nodes(editor, {
-        match: isTableCell,
-      });
-      if (cell) {
-        const [, cellPath] = cell;
-        const start = Editor.start(editor, cellPath);
-
-        if (Point.equals(editor.selection.anchor, start)) {
-          return;
-        }
-      }
+    if (!deleteBackward(editor)) {
+      srcDeleteBackward(unit);
     }
-    deleteBackward(unit);
   };
 
   editor.deleteForward = (unit) => {
-    if (editor.selection && Range.isCollapsed(editor.selection)) {
-      const [cell] = Editor.nodes(editor, {
-        match: isTableCell,
-      });
-
-      if (cell) {
-        const [, cellPath] = cell;
-        const end = Editor.end(editor, cellPath);
-
-        if (Point.equals(editor.selection.anchor, end)) {
-          return;
-        }
-      }
+    if (!deleteForward(editor)) {
+      srcDeleteForward(unit);
     }
-    deleteForward(unit);
   };
 
   editor.deleteFragment = (options) => {
-    if (editor.selection) {
-      const [table] = Editor.nodes(editor, {
-        match: isTable,
-      });
-      if (table) {
-        const [, tablePath] = table;
-        const tableRange = Editor.range(editor, tablePath);
-
-        const [start, end] = Range.edges(editor.selection);
-        const [tableStart, tableEnd] = Range.edges(tableRange);
-
-        if (!Point.isBefore(start, tableStart) || !Point.isAfter(end, tableEnd)) {
-          if (Point.isBefore(start, tableStart)) {
-            const anchor = start;
-            const focus = Editor.before(editor, tableStart)!;
-            if (!Point.equals(anchor, focus)) {
-              editor.delete({ at: { anchor, focus } });
-            }
-          } else if (Point.isAfter(end, tableEnd)) {
-            const anchor = Editor.after(editor, tableEnd)!;
-            const focus = end;
-            if (!Point.equals(anchor, focus)) {
-              editor.delete({ at: { anchor, focus } });
-            }
-          }
-
-          const cells = Array.from(
-            Editor.nodes(editor, {
-              match: isTableCell,
-            }),
-          );
-          for (const [, cellPath] of cells) {
-            const cellRange = Editor.range(editor, cellPath);
-            const range = Range.intersection(cellRange, editor.selection);
-            if (range) {
-              if (Range.isCollapsed(range)) {
-                continue;
-              }
-
-              editor.delete({
-                at: range,
-              });
-            }
-          }
-
-          return;
-        }
-      }
+    if (!deleteFragment(editor)) {
+      srcDeleteFragment(options);
     }
-
-    deleteFragment(options);
   };
 
   editor.insertBreak = () => {
-    if (editor.selection) {
-      const [table] = Editor.nodes(editor, {
-        match: isTable,
-      });
-      if (table) {
-        return;
-      }
+    if (!insertBreak(editor)) {
+      srcInsertBreak();
     }
-    insertBreak();
   };
 
   editor.onKeydown = (event) => {
-    if (Hotkeys.isMoveDown(event)) {
-      if (editor.selection) {
-        const [cell] = Editor.nodes(editor, {
-          match: isTableCell,
-          at: editor.selection.focus,
-        });
-        if (cell) {
-          event.preventDefault();
-          const cellPath = cell[1];
-          if (
-            isPointAtLastLine(editor, cellPath, editor.selection.focus, () => {
-              const cellIndex = cellPath[cellPath.length - 1];
-
-              const [, rowPath] = editor.parent(cellPath);
-              const maybeNextRow = editor.next({
-                at: rowPath,
-              });
-              if (maybeNextRow && isTableRow(maybeNextRow[0])) {
-                const nextRowCellPath = [...maybeNextRow[1], cellIndex];
-                editor.select(editor.end(nextRowCellPath));
-                return true;
-              }
-            })
-          ) {
-            event.preventDefault();
-            return;
-          }
-        }
-      }
+    if (!onKeydown(editor, event)) {
+      srcOnKeydown(event);
     }
-    if (Hotkeys.isMoveUp(event)) {
-      if (editor.selection) {
-        const [cell] = Editor.nodes(editor, {
-          match: isTableCell,
-          at: editor.selection.focus,
-        });
-        if (cell) {
-          event.preventDefault();
-          const cellPath = cell[1];
-          if (
-            isPointAtFirstLine(editor, cellPath, editor.selection.focus, () => {
-              const cellIndex = cellPath[cellPath.length - 1];
-
-              const [, rowPath] = editor.parent(cellPath);
-              const maybeNextRow = editor.previous({
-                at: rowPath,
-              });
-              if (maybeNextRow && isTableRow(maybeNextRow[0])) {
-                const nextRowCellPath = [...maybeNextRow[1], cellIndex];
-                editor.select(editor.end(nextRowCellPath));
-                return true;
-              }
-            })
-          ) {
-            event.preventDefault();
-            return;
-          }
-        }
-      }
-    }
-
-    onKeydown(event);
   };
 
   editor.insertTable = (rowCount: number, columnCount: number) => {
@@ -554,6 +591,8 @@ export function withTable(editor: Editor) {
   editor.moveToBody = (tablePath: Path, cellPath: Path) => {
     moveToBody(editor, tablePath, cellPath);
   };
+
+  editor.isTableCell = isTableCell;
 
   return editor;
 }

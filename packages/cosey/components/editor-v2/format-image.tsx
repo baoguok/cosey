@@ -1,6 +1,6 @@
 import { computed, defineComponent, reactive, ref } from 'vue';
 import { useEditor } from 'slate-vue3';
-import { Editor, Element, Path } from 'slate-vue3/core';
+import { Element, Path } from 'slate-vue3/core';
 import { DOMEditor } from 'slate-vue3/dom';
 import Icon from '../icon/icon.vue';
 import Button from './button';
@@ -20,7 +20,7 @@ export default defineComponent({
     const editor = useEditor();
 
     const isActive = computed(() => {
-      const [link] = Editor.nodes(editor, {
+      const [link] = editor.nodes({
         match: (n) => Element.isElement(n) && n.type === 'image',
       });
       return !!link;

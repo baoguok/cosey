@@ -12,7 +12,7 @@ export function useBlockTypeActive(format: string) {
     const nodeEntries: NodeEntry<Element>[] = [];
 
     // 遍历选区中的所有文本节点
-    for (const [, path] of Editor.nodes(editor, {
+    for (const [, path] of editor.nodes({
       at: editor.selection!,
       match: Text.isText,
     })) {

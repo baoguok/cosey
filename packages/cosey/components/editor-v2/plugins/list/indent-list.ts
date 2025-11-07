@@ -13,7 +13,7 @@ function getListItems(editor: Editor) {
   const listItems: [ListItemElement, Path][] = [];
 
   // 遍历选区中的所有文本节点
-  for (const [, path] of Editor.nodes(editor, {
+  for (const [, path] of editor.nodes({
     at: editor.selection!,
     match: Text.isText,
   })) {
@@ -31,11 +31,9 @@ function getListItems(editor: Editor) {
   return listItems;
 }
 
-function setSingleListChildren(editor: Editor, location: Location, isSingle: boolean) {
+function setSingleListChildren(editor: Editor, location: Location) {
   editor.setNodes(
-    {
-      onlyListAsChildren: isSingle,
-    },
+    {},
     {
       at: location,
     },
@@ -228,7 +226,7 @@ function updateFlatIndex(listItemInfo: FlatListItemInfo[]) {
 }
 
 export function indentList(editor: Editor, delta: number) {
-  const list = Editor.nodes(editor, {
+  const list = editor.nodes({
     match: isList,
     mode: 'highest',
   });

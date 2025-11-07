@@ -13,13 +13,12 @@ import 'prismjs/components/prism-java';
 import 'prismjs/themes/prism-okaidia.css';
 
 import { type RenderElementProps, toRawWeakMap } from 'slate-vue3';
-import { Editor, Element, Node, NodeEntry, Path, Range } from 'slate-vue3/core';
+import { Editor, Element, Node, NodeEntry, Path, Range, Text } from 'slate-vue3/core';
 import { CodeBlockElement } from '../types';
 import { h } from 'vue';
 import { CodeBlock } from '../code-block';
-import { DOMEditor } from 'slate-vue3/dom';
 import { Hotkeys } from './keyboard';
-import { isPointAtEndOfElement } from '../utils';
+import { getRangePosition, getSortedRange, isPointAtEndOfElement, RangePosition } from '../utils';
 
 export const languageOptions = [
   { value: 'css', label: 'CSS' },
@@ -146,7 +145,7 @@ const normalizeTokens = (tokens: Array<PrismToken | string>): Token[][] => {
 
 function node2Decorations(editor: Editor) {
   const decorationsMap = new toRawWeakMap<Node, Range[]>();
-  const blockEntries = Editor.nodes(editor, {
+  const blockEntries = editor.nodes({
     at: [],
     mode: 'highest',
     match: (n) => Element.isElement(n) && n.type === 'code-block',
@@ -200,15 +199,101 @@ function formatCodeBlock(editor: Editor) {
   );
 }
 
+function decorate(editor: Editor, nodeList: Node[]) {
+  const node = nodeList[0];
+  if (Element.isElement(node) && node.type === 'code-line') {
+    return node2Decorations(editor).get(node);
+  }
+  return [];
+}
+
+function formatIndent(editor: Editor, value: number) {
+  const codeLineNodes = Array.from(
+    editor.nodes({
+      match: (node) => Element.isElement(node) && node.type === 'code-line',
+    }),
+  );
+
+  function shouldInsert() {
+    const range = getSortedRange(editor.selection!);
+    if (codeLineNodes.length === 1) {
+      const pos = getRangePosition(editor.range(codeLineNodes[0][1]), range);
+      return (
+        pos === RangePosition.CONTAIN ||
+        pos === RangePosition.AFTER_BEGIN ||
+        pos === RangePosition.BEFORE_END
+      );
+    }
+    return false;
+  }
+
+  if (codeLineNodes.length > 0) {
+    const selection = editor.selection!;
+
+    if (Range.isCollapsed(selection) || shouldInsert()) {
+      if (value === 1) {
+        Editor.insertText(editor, '  ');
+      }
+    } else {
+      codeLineNodes.forEach(([, path]) => {
+        const firstNode = Node.first(editor, path);
+        if (Text.isText(firstNode[0])) {
+          const text = firstNode[0].text;
+
+          if (value === 1) {
+            editor.insertText('  ', {
+              at: editor.start(firstNode[1]),
+            });
+          } else {
+            const blankNum = Math.min(text.match(/^ +/)?.[0].length || 0, 2);
+            if (blankNum > 0) {
+              editor.delete({
+                at: {
+                  anchor: {
+                    path: firstNode[1],
+                    offset: 0,
+                  },
+                  focus: {
+                    path: firstNode[1],
+                    offset: blankNum,
+                  },
+                },
+              });
+            }
+          }
+        }
+      });
+    }
+  }
+}
+
+function onKeydown(editor: Editor, event: KeyboardEvent) {
+  if (Hotkeys.isSoftBreak(event)) {
+    if (
+      isPointAtEndOfElement(editor, 'code-block', ([, path]) => {
+        editor.insertNodes(
+          {
+            type: 'paragraph',
+            children: [{ text: '' }],
+          },
+          {
+            at: Path.next(path),
+          },
+        );
+        editor.move();
+      })
+    ) {
+      event.preventDefault();
+      return true;
+    }
+  }
+}
+
 export function withCodeBlock(editor: Editor) {
-  const { renderElement, formatIndent, onKeydown } = editor;
+  const { renderElement, formatIndent: srcFormatIndent, onKeydown: srcOnKeydown } = editor;
 
   editor.decorate = (nodeList: Node[]) => {
-    const node = nodeList[0];
-    if (Element.isElement(node) && node.type === 'code-line') {
-      return node2Decorations(editor).get(node);
-    }
-    return [];
+    return decorate(editor, nodeList);
   };
 
   editor.formatCodeBlock = () => {
@@ -229,46 +314,14 @@ export function withCodeBlock(editor: Editor) {
   };
 
   editor.formatIndent = (value: number) => {
-    DOMEditor.focus(editor);
-
-    if (
-      Array.from(
-        Editor.nodes(editor, {
-          match: (node) => Element.isElement(node) && node.type === 'code-block',
-        }),
-      ).length > 0
-    ) {
-      if (value === 1) {
-        Editor.insertText(editor, '  ');
-      }
-      return;
-    }
-
-    return formatIndent(value);
+    formatIndent(editor, value);
+    return srcFormatIndent(value);
   };
 
   editor.onKeydown = (event: KeyboardEvent) => {
-    if (Hotkeys.isSoftBreak(event)) {
-      if (
-        isPointAtEndOfElement(editor, 'code-block', ([, path]) => {
-          editor.insertNodes(
-            {
-              type: 'paragraph',
-              children: [{ text: '' }],
-            },
-            {
-              at: Path.next(path),
-            },
-          );
-          editor.move();
-        })
-      ) {
-        event.preventDefault();
-        return;
-      }
+    if (!onKeydown(editor, event)) {
+      srcOnKeydown(event);
     }
-
-    return onKeydown(event);
   };
 
   return editor;

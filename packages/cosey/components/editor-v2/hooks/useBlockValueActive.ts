@@ -8,7 +8,7 @@ export function useBlockValueActive(key: string, value: string) {
   return computed(() => {
     if (!editor.selection) return false;
     const [match] = Array.from(
-      Editor.nodes(editor, {
+      editor.nodes({
         at: Editor.unhangRange(editor, editor.selection),
         match: (n) => {
           return !Editor.isEditor(n) && Element.isElement(n) && n[key as keyof typeof n] === value;

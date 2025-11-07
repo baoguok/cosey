@@ -114,32 +114,37 @@ declare module 'slate-vue3/core' {
   }
 }
 
+function onKeydown(editor: Editor, event: KeyboardEvent) {
+  if (Hotkeys.isBold(event)) {
+    event.preventDefault();
+    return editor.formatMark('bold');
+  }
+
+  if (Hotkeys.isItalic(event)) {
+    event.preventDefault();
+    return editor.formatMark('italic');
+  }
+
+  if (Hotkeys.isUnderline(event)) {
+    event.preventDefault();
+    return editor.formatMark('underline');
+  }
+
+  if (Hotkeys.isIndent(event)) {
+    event.preventDefault();
+    return editor.formatIndent(1);
+  }
+
+  if (Hotkeys.isOutdent(event)) {
+    event.preventDefault();
+    return editor.formatIndent(-1);
+  }
+}
+
 export function withKeyboard(editor: Editor) {
   editor.onKeydown = (event: KeyboardEvent) => {
-    if (Hotkeys.isBold(event)) {
-      event.preventDefault();
-      return editor.formatMark('bold');
-    }
-
-    if (Hotkeys.isItalic(event)) {
-      event.preventDefault();
-      return editor.formatMark('italic');
-    }
-
-    if (Hotkeys.isUnderline(event)) {
-      event.preventDefault();
-      return editor.formatMark('underline');
-    }
-
-    if (Hotkeys.isIndent(event)) {
-      event.preventDefault();
-      return editor.formatIndent(1);
-    }
-
-    if (Hotkeys.isOutdent(event)) {
-      event.preventDefault();
-      return editor.formatIndent(-1);
-    }
+    onKeydown(editor, event);
   };
+
   return editor;
 }

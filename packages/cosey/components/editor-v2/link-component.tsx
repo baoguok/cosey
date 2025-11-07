@@ -1,7 +1,6 @@
 import { ElButton, ElDivider, useLocale } from 'element-plus';
 import { useEditor, useElement } from 'slate-vue3';
 import { defineComponent } from 'vue';
-import { unwrapLink } from './plugins/link';
 import { DOMEditor } from 'slate-vue3/dom';
 import Icon from '../icon/icon.vue';
 import { useComponentConfig } from '../config-provider';
@@ -31,7 +30,7 @@ export const LinkComponent = defineComponent({
     };
 
     const onRemoveLink = () => {
-      unwrapLink(editor, DOMEditor.findPath(editor, element.value));
+      editor.unwrapLink(DOMEditor.findPath(editor, element.value));
     };
 
     return () => {

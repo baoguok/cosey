@@ -1,6 +1,16 @@
-import { Ancestor, Editor, Element, NodeEntry, Text } from 'slate-vue3/core';
+import { Editor, Element } from 'slate-vue3/core';
 import { DOMEditor } from 'slate-vue3/dom';
-import { INDENT_ELEMENT_TYPES, IndentElementType } from '../types';
+
+const indentableElements = [
+  'paragraph',
+  'heading-one',
+  'heading-two',
+  'heading-three',
+  'heading-four',
+  'heading-five',
+  'heading-six',
+  'block-quote',
+];
 
 declare module 'slate-vue3/core' {
   interface BaseEditor {
@@ -8,25 +18,16 @@ declare module 'slate-vue3/core' {
   }
 }
 
-function indentNonList(editor: Editor, value: number) {
-  const nodeEntries: NodeEntry<Ancestor>[] = [];
+function formatIndent(editor: Editor, value: number) {
+  DOMEditor.focus(editor);
 
-  // 遍历选区中的所有文本节点
-  for (const [, path] of Editor.nodes(editor, {
-    at: editor.selection!,
-    match: Text.isText,
-  })) {
-    // 获取每个文本节点的最近 block 祖先
-    const nodeEntry = Editor.above(editor, {
-      at: path,
-      match: (n) =>
-        Element.isElement(n) && INDENT_ELEMENT_TYPES.includes(n.type as IndentElementType),
-    });
-
-    if (nodeEntry && nodeEntries.every(([el]) => el !== nodeEntry[0])) {
-      nodeEntries.push(nodeEntry);
-    }
-  }
+  const nodeEntries = [
+    ...editor.nodes({
+      match(node) {
+        return Element.isElement(node) && indentableElements.includes(node.type);
+      },
+    }),
+  ];
 
   for (const entry of nodeEntries) {
     const element = entry[0] as Element;
@@ -51,11 +52,8 @@ function indentNonList(editor: Editor, value: number) {
 }
 
 export function withIndent(editor: Editor) {
-  editor.formatIndent = (value: number) => {
-    DOMEditor.focus(editor);
-
-    editor.indentList(value);
-    indentNonList(editor, value);
+  editor.formatIndent = (value) => {
+    formatIndent(editor, value);
   };
 
   return editor;

@@ -20,40 +20,48 @@ declare module 'slate-vue3/core' {
   }
 }
 
+function formatHeading(editor: Editor, value: HeadingType) {
+  DOMEditor.focus(editor);
+
+  editor.setNodes<Element>({
+    type: value,
+  });
+}
+
+function insertBreak(editor: Editor) {
+  const [match] = editor.nodes({
+    match: (n) => Element.isElement(n) && /^heading/.test(n.type),
+  });
+
+  if (match) {
+    const [, path] = match;
+    const isAtEnd = Editor.isEnd(editor, editor.selection!.focus, path);
+
+    if (isAtEnd) {
+      const newParagraph = {
+        type: 'paragraph' as const,
+        children: [{ text: '' }],
+      };
+      editor.insertNodes(newParagraph, {
+        at: Path.next(path),
+      });
+      editor.select(Path.next(path));
+      return true;
+    }
+  }
+}
+
 export function withHeading(editor: Editor) {
-  const { insertBreak } = editor;
+  const { insertBreak: srcInsertBreak } = editor;
 
   editor.formatHeading = (value: HeadingType) => {
-    DOMEditor.focus(editor);
-
-    editor.setNodes<Element>({
-      type: value,
-    });
+    formatHeading(editor, value);
   };
 
   editor.insertBreak = () => {
-    const [match] = Editor.nodes(editor, {
-      match: (n) => Element.isElement(n) && /^heading/.test(n.type),
-    });
-
-    if (match) {
-      const [, path] = match;
-      const isAtEnd = Editor.isEnd(editor, editor.selection!.focus, path);
-
-      if (isAtEnd) {
-        const newParagraph = {
-          type: 'paragraph' as const,
-          children: [{ text: '' }],
-        };
-        editor.insertNodes(newParagraph, {
-          at: Path.next(path),
-        });
-        editor.select(Path.next(path));
-        return;
-      }
+    if (!insertBreak(editor)) {
+      srcInsertBreak();
     }
-
-    insertBreak();
   };
 
   return editor;

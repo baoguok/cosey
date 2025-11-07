@@ -7,19 +7,23 @@ declare module 'slate-vue3/core' {
   }
 }
 
+function formatColor(editor: Editor, color?: string) {
+  DOMEditor.focus(editor);
+
+  if (Range.isCollapsed(editor.selection!)) {
+    return;
+  }
+
+  if (color) {
+    Editor.addMark(editor, 'color', color);
+  } else {
+    Editor.removeMark(editor, 'color');
+  }
+}
+
 export function withColor(editor: Editor) {
   editor.formatColor = (color?: string) => {
-    DOMEditor.focus(editor);
-
-    if (Range.isCollapsed(editor.selection!)) {
-      return;
-    }
-
-    if (color) {
-      Editor.addMark(editor, 'color', color);
-    } else {
-      Editor.removeMark(editor, 'color');
-    }
+    formatColor(editor, color);
   };
 
   return editor;

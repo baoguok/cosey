@@ -1,7 +1,6 @@
 /// <reference types="vite/client" />
 import { Descendant, BaseEditor, BaseRange } from 'slate-vue3/core';
 import type { DOMEditor } from 'slate-vue3/dom';
-import { HEADING_WITH_PARA_TYPES } from './plugins/heading';
 import { type FormatAlign } from './plugins/align';
 
 export const LIST_TYPES = ['numbered-list', 'bulleted-list'] as const;
@@ -10,29 +9,18 @@ export type ListType = (typeof LIST_TYPES)[number];
 
 export const LIST_ITEM = 'list-item';
 
-export const LIST_AND_ITEM_TYPES = [...LIST_TYPES, LIST_ITEM] as const;
-
-export type ListTypeWithItem = (typeof LIST_AND_ITEM_TYPES)[number];
-
-export type HeadingWithParaType = (typeof HEADING_WITH_PARA_TYPES)[number];
-
-export const INDENT_ELEMENT_TYPES = [...HEADING_WITH_PARA_TYPES, 'block-quote'] as const;
-
-export type IndentElementType = (typeof INDENT_ELEMENT_TYPES)[number];
-
 export const mapElementTypeTagName: Record<string, string> = {
-  block: 'div',
   paragraph: 'p',
-  'block-quote': 'blockquote',
-  'bulleted-list': 'ul',
-  'numbered-list': 'ol',
-  'list-item': 'li',
   'heading-one': 'h1',
   'heading-two': 'h2',
   'heading-three': 'h3',
   'heading-four': 'h4',
   'heading-five': 'h5',
   'heading-six': 'h6',
+  'block-quote': 'blockquote',
+  'bulleted-list': 'ul',
+  'numbered-list': 'ol',
+  'list-item': 'li',
   'code-block': 'pre',
   table: 'table',
   'table-head': 'thead',
@@ -41,7 +29,7 @@ export const mapElementTypeTagName: Record<string, string> = {
   'table-cell': 'td',
 };
 
-export const mapTagNameElementType = Object.fromEntries(
+export const tagToElementTypeMap = Object.fromEntries(
   Object.entries(mapElementTypeTagName).map(([elementType, tagName]) => [
     tagName.toUpperCase(),
     elementType,
@@ -51,16 +39,57 @@ export const mapTagNameElementType = Object.fromEntries(
 export type ParagraphElement = {
   type: 'paragraph';
   children: Descendant[];
+  align?: FormatAlign;
+  indent?: number;
+};
+
+export type HeadingOneElement = {
+  type: 'heading-one';
+  children: Descendant[];
+  align?: FormatAlign;
+  indent?: number;
+};
+
+export type HeadingTwoElement = {
+  type: 'heading-two';
+  children: Descendant[];
+  align?: FormatAlign;
+  indent?: number;
+};
+
+export type HeadingThreeElement = {
+  type: 'heading-three';
+  children: Descendant[];
+  align?: FormatAlign;
+  indent?: number;
+};
+
+export type HeadingFourElement = {
+  type: 'heading-four';
+  children: Descendant[];
+  align?: FormatAlign;
+  indent?: number;
+};
+
+export type HeadingFiveElement = {
+  type: 'heading-five';
+  children: Descendant[];
+  align?: FormatAlign;
+  indent?: number;
+};
+
+export type HeadingSixElement = {
+  type: 'heading-six';
+  children: Descendant[];
+  align?: FormatAlign;
+  indent?: number;
 };
 
 export type BlockQuoteElement = {
   type: 'block-quote';
   children: Descendant[];
-};
-
-export type BlockElement = {
-  type: 'block';
-  children: Descendant[];
+  align?: FormatAlign;
+  indent?: number;
 };
 
 export type BulletedListElement = {
@@ -75,42 +104,6 @@ export type NumberedListElement = {
 
 export type ListItemElement = {
   type: typeof LIST_ITEM;
-  onlyListAsChildren?: boolean;
-  children: Descendant[];
-};
-
-export type EditableVoidElement = {
-  type: 'editable-void';
-  children: EmptyText[];
-};
-
-export type HeadingOneElement = {
-  type: 'heading-one';
-  children: Descendant[];
-};
-
-export type HeadingTwoElement = {
-  type: 'heading-two';
-  children: Descendant[];
-};
-
-export type HeadingThreeElement = {
-  type: 'heading-three';
-  children: Descendant[];
-};
-
-export type HeadingFourElement = {
-  type: 'heading-four';
-  children: Descendant[];
-};
-
-export type HeadingFiveElement = {
-  type: 'heading-five';
-  children: Descendant[];
-};
-
-export type HeadingSixElement = {
-  type: 'heading-six';
   children: Descendant[];
 };
 
@@ -138,11 +131,6 @@ export type LinkElement = {
   children: Descendant[];
 };
 
-export type ButtonElement = {
-  type: 'button';
-  children: Descendant[];
-};
-
 export type TableElement = {
   type: 'table';
   children: Descendant[];
@@ -166,9 +154,8 @@ export type TableRowElement = {
 export type TableCellElement = {
   type: 'table-cell';
   children: CustomText[];
+  align?: FormatAlign;
 };
-
-export type TitleElement = { type: 'title'; children: Descendant[] };
 
 export type CodeBlockElement = {
   type: 'code-block';
@@ -181,36 +168,28 @@ export type CodeLineElement = {
   children: Descendant[];
 };
 
-export type CustomElement = (
-  | BlockQuoteElement
-  | BlockElement
-  | BulletedListElement
-  | NumberedListElement
-  | EditableVoidElement
+export type CustomElement =
+  | ParagraphElement
   | HeadingOneElement
   | HeadingTwoElement
   | HeadingThreeElement
   | HeadingFourElement
   | HeadingFiveElement
   | HeadingSixElement
-  | ImageElement
-  | LinkElement
-  | ButtonElement
+  | BlockQuoteElement
+  | BulletedListElement
+  | NumberedListElement
   | ListItemElement
-  | ParagraphElement
+  | ImageElement
+  | VideoElement
+  | LinkElement
   | TableElement
   | TableHeadElement
   | TableBodyElement
   | TableRowElement
   | TableCellElement
-  | TitleElement
-  | VideoElement
   | CodeBlockElement
-  | CodeLineElement
-) & {
-  indent?: number;
-  align?: FormatAlign;
-};
+  | CodeLineElement;
 
 export type CustomText = {
   text: string;

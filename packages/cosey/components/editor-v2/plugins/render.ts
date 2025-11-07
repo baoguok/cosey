@@ -1,7 +1,6 @@
 import { RenderPlaceholderProps, type RenderElementProps, type RenderLeafProps } from 'slate-vue3';
 import { Editor } from 'slate-vue3/core';
 import { type CSSProperties, h, VNode } from 'vue';
-import { isListItem } from './list';
 import { mapElementTypeTagName } from '../types';
 import { PlaceholderComponent } from '../placeholder-component';
 
@@ -19,14 +18,11 @@ const renderElement = ({ attributes: attrs, children, element }: RenderElementPr
   const attributes = {
     ...attrs,
     style: {
-      textAlign: element.align,
-      paddingLeft: element.indent ? element.indent * INDENT_DELTA + 'px' : '',
+      textAlign: 'align' in element ? element.align : undefined,
+      paddingLeft:
+        'indent' in element && element.indent ? element.indent * INDENT_DELTA + 'px' : '',
     } as CSSProperties,
   };
-
-  if (isListItem(element)) {
-    attributes.style.listStyle = element.onlyListAsChildren ? 'none' : undefined;
-  }
 
   const tagName = mapElementTypeTagName[element.type] || mapElementTypeTagName.paragraph;
   return h(tagName, attributes, children);

@@ -14,7 +14,7 @@ export function useBlockList(types: string[], initial?: string) {
         current.value = initial;
       } else {
         const [match] = Array.from(
-          Editor.nodes(editor, {
+          editor.nodes({
             at: Editor.unhangRange(editor, editor.selection),
             match: (n) => !Editor.isEditor(n) && Element.isElement(n) && types.includes(n.type),
           }),

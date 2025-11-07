@@ -38,50 +38,50 @@ const list = {
       type: 'list-item',
       children: [
         { text: '111' },
-        {
-          type: 'bulleted-list',
-          children: [
-            {
-              type: 'list-item',
-              children: [
-                { text: '111-111' },
-                {
-                  type: 'bulleted-list',
-                  children: [
-                    {
-                      type: 'list-item',
-                      children: [{ text: '111-111-111' }],
-                    },
-                    {
-                      type: 'list-item',
-                      children: [{ text: '111-111-222' }],
-                    },
-                    {
-                      type: 'list-item',
-                      children: [{ text: '111-111-333' }],
-                    },
-                    {
-                      type: 'list-item',
-                      children: [{ text: '111-111-444' }],
-                    },
-                    {
-                      type: 'list-item',
-                      children: [{ text: '111-111-555' }],
-                    },
-                  ],
-                },
-              ],
-            },
-            {
-              type: 'list-item',
-              children: [{ text: '111-222' }],
-            },
-            {
-              type: 'list-item',
-              children: [{ text: '111-333' }],
-            },
-          ],
-        },
+        // {
+        //   type: 'bulleted-list',
+        //   children: [
+        //     {
+        //       type: 'list-item',
+        //       children: [
+        //         { text: '111-111' },
+        //         {
+        //           type: 'bulleted-list',
+        //           children: [
+        //             {
+        //               type: 'list-item',
+        //               children: [{ text: '111-111-111' }],
+        //             },
+        //             {
+        //               type: 'list-item',
+        //               children: [{ text: '111-111-222' }],
+        //             },
+        //             {
+        //               type: 'list-item',
+        //               children: [{ text: '111-111-333' }],
+        //             },
+        //             {
+        //               type: 'list-item',
+        //               children: [{ text: '111-111-444' }],
+        //             },
+        //             {
+        //               type: 'list-item',
+        //               children: [{ text: '111-111-555' }],
+        //             },
+        //           ],
+        //         },
+        //       ],
+        //     },
+        //     {
+        //       type: 'list-item',
+        //       children: [{ text: '111-222' }],
+        //     },
+        //     {
+        //       type: 'list-item',
+        //       children: [{ text: '111-333' }],
+        //     },
+        //   ],
+        // },
       ],
     },
     {

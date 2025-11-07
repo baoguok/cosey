@@ -5,10 +5,10 @@
     </el-card> -->
 
     <el-card shadow="never" class="mb-4">
-      <EditorV2 max-height="500px"></EditorV2>
+      <EditorV2></EditorV2>
     </el-card>
 
-    <co-card class="relative" style="height: 400px">
+    <co-card class="relative" style="height: 400px; display: none">
       <div class="flex">
         <el-avatar :size="80" class="flex-none" :src="userStore.userInfo?.avatar">
           <co-icon name="carbon:user" />

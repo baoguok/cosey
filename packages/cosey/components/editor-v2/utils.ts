@@ -1,5 +1,4 @@
 import { Editor, Element, Node, NodeEntry, Path, Point, Range, Text } from 'slate-vue3/core';
-import { isList, isListItem } from './plugins/list';
 import { DOMEditor } from 'slate-vue3/dom';
 import { CustomElement } from './types';
 
@@ -23,26 +22,6 @@ export function liftToRootNode(editor: Editor, path: Path) {
   }
 
   return currentPath;
-}
-
-export function normalizeList(editor: Editor, path: Path) {
-  Editor.nodes(editor, {
-    at: path,
-    match(node) {
-      return isListItem(node);
-    },
-  }).forEach(([element, path]) => {
-    if (element.children.length === 1 && isList(element.children[0])) {
-      editor.setNodes(
-        {
-          onlyListAsChildren: true,
-        },
-        {
-          at: path,
-        },
-      );
-    }
-  });
 }
 
 export function setNodeType(editor: Editor, type: string, path: Path) {
@@ -72,11 +51,49 @@ export function mergePrevNode(editor: Editor, path: Path | null | undefined) {
   }
 }
 
+export function isSameType(node: Node | undefined | null, another: Node | undefined | null) {
+  return (
+    (Text.isText(node) && Text.isText(another)) ||
+    (Element.isElement(node) && Element.isElement(another) && node.type === another.type)
+  );
+}
+
+/**
+ * 将指定位置处的节点与同一深度的前和后一个节点合并
+ */
+export function mergeSiblingNode(editor: Editor, path: Path | null | undefined) {
+  if (path && path.length) {
+    const node = Node.getIf(editor, path);
+
+    let mergedPrevious = false;
+
+    if (Path.hasPrevious(path)) {
+      const prevNode = Node.getIf(editor, Path.previous(path));
+      if (isSameType(prevNode, node)) {
+        editor.mergeNodes({
+          at: path,
+        });
+        mergedPrevious = true;
+      }
+    }
+
+    const mergedPath = mergedPrevious ? Path.previous(path) : path;
+    const mergedNode = Node.getIf(editor, mergedPath);
+    const nextPath = Path.next(mergedPath);
+    const nextNode = Node.getIf(editor, nextPath);
+    if (isSameType(nextNode, mergedNode)) {
+      editor.mergeNodes({
+        at: nextPath,
+      });
+    }
+  }
+}
+
 export function toggleBlockAttr(editor: Editor, key: string, value: string) {
   DOMEditor.focus(editor);
 
   const [match] = Array.from(
-    Editor.nodes(editor, {
+    editor.nodes({
       at: Editor.unhangRange(editor, editor.selection!),
       match: (n) => {
         return (
@@ -113,7 +130,7 @@ export function isPointAtEndOfElement(
   }
 
   const [match] = Array.from(
-    Editor.nodes(editor, {
+    editor.nodes({
       match: (n) => Element.isElement(n) && n.type === type,
     }),
   );
@@ -200,11 +217,68 @@ export function isPointAtLastLine(
 /**
  * 接收 range，返回排序后的 range
  */
-export function sortRange(range: Range): Range {
+export function getSortedRange(range: Range): Range {
   return Range.isBackward(range)
     ? {
         anchor: range.focus,
         focus: range.anchor,
       }
     : range;
+}
+
+// before 0b100
+// equal 0b010
+// after 0b001
+
+function pathCompare(path: Path, another: Path): number {
+  const min = Math.min(path.length, another.length);
+
+  for (let i = 0; i < min; i++) {
+    if (path[i] < another[i]) return 0b100;
+    if (path[i] > another[i]) return 0b001;
+  }
+
+  return 0b010;
+}
+
+function pointCompare(point: Point, another: Point): number {
+  const result = pathCompare(point.path, another.path);
+
+  if (result === 0b010) {
+    if (point.offset < another.offset) return 0b100;
+    if (point.offset > another.offset) return 0b001;
+    return 0b010;
+  }
+
+  return result;
+}
+
+export enum RangePosition {
+  BEFORE = 0b100100100100,
+  BEFORE_BEGIN = 0b100100010100,
+  INTERSECT_BEGIN = 0b100100001100,
+  AFTER_BEGIN = 0b010100001100,
+  CONTAIN = 0b001100001100,
+  BEFORE_END = 0b001100001010,
+  INTERSECT_END = 0b001100001001,
+  AFTER_END = 0b001010001001,
+  AFTER = 0b001001001001,
+  COVER = 0b010100001010,
+  COVER_BEGIN = 0b100100001010,
+  COVER_END = 0b010100001001,
+  COVER_BOTH = 0b100100001001,
+  BEGIN = 0b010100010100,
+  END = 0b001010001010,
+}
+
+/**
+ * 获取目标相较于当前范围的位置
+ */
+export function getRangePosition(range: Range, target: Range): RangePosition {
+  const ss = pointCompare(target.anchor, range.anchor);
+  const se = pointCompare(target.anchor, range.focus);
+  const es = pointCompare(target.focus, range.anchor);
+  const ee = pointCompare(target.focus, range.focus);
+
+  return (ss << 9) | (se << 6) | (es << 3) | ee;
 }

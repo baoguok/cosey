@@ -22,20 +22,16 @@ const insertVideo = (
 };
 
 export function withVideo(editor: Editor) {
-  // is inline
-  const isInline = editor.isInline;
+  const { isInline, isVoid, renderElement } = editor;
+
   editor.isInline = (element) => {
     return element.type === 'video' ? true : isInline(element);
   };
 
-  // is void
-  const isVoid = editor.isVoid;
   editor.isVoid = (element) => {
     return element.type === 'video' ? true : isVoid(element);
   };
 
-  // render element
-  const renderElement = editor.renderElement;
   editor.renderElement = (props) => {
     const { attributes, children, element } = props;
 
@@ -55,7 +51,6 @@ export function withVideo(editor: Editor) {
     return renderElement(props);
   };
 
-  // insert video
   editor.insertVideo = (url: string, width?: number | string, height?: number | string) => {
     insertVideo(editor, url, width, height);
   };
