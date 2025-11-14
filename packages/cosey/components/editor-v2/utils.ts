@@ -1,6 +1,34 @@
-import { Editor, Element, Node, NodeEntry, Path, Point, Range, Text } from 'slate-vue3/core';
-import { DOMEditor } from 'slate-vue3/dom';
-import { CustomElement } from './types';
+import {
+  Editor,
+  Element,
+  Node,
+  NodeEntry,
+  NodeMatch,
+  Path,
+  Point,
+  Range,
+  Text,
+} from 'slate-vue3/core';
+import {
+  CustomElement,
+  HEADING_TYPES,
+  HeadingElement,
+  NORMAL_BLOCK_TYPES,
+  type HeadingType,
+  type NormalBlockType,
+} from './types';
+
+export function isParagraph(n: unknown) {
+  return Element.isElementType(n, 'paragraph');
+}
+
+export function isNormalBlock(n: unknown) {
+  return Element.isElement(n) && NORMAL_BLOCK_TYPES.includes(n.type as NormalBlockType);
+}
+
+export function isHeading(n: unknown): n is HeadingElement {
+  return Element.isElement(n) && HEADING_TYPES.includes(n.type as HeadingType);
+}
 
 export function liftToRootNode(editor: Editor, path: Path) {
   let length = path.length;
@@ -58,43 +86,12 @@ export function isSameType(node: Node | undefined | null, another: Node | undefi
   );
 }
 
-/**
- * 将指定位置处的节点与同一深度的前和后一个节点合并
- */
-export function mergeSiblingNode(editor: Editor, path: Path | null | undefined) {
-  if (path && path.length) {
-    const node = Node.getIf(editor, path);
-
-    let mergedPrevious = false;
-
-    if (Path.hasPrevious(path)) {
-      const prevNode = Node.getIf(editor, Path.previous(path));
-      if (isSameType(prevNode, node)) {
-        editor.mergeNodes({
-          at: path,
-        });
-        mergedPrevious = true;
-      }
-    }
-
-    const mergedPath = mergedPrevious ? Path.previous(path) : path;
-    const mergedNode = Node.getIf(editor, mergedPath);
-    const nextPath = Path.next(mergedPath);
-    const nextNode = Node.getIf(editor, nextPath);
-    if (isSameType(nextNode, mergedNode)) {
-      editor.mergeNodes({
-        at: nextPath,
-      });
-    }
-  }
-}
-
 export function toggleBlockAttr(editor: Editor, key: string, value: string) {
-  DOMEditor.focus(editor);
+  if (!editor.selection) return;
 
   const [match] = Array.from(
     editor.nodes({
-      at: Editor.unhangRange(editor, editor.selection!),
+      at: Editor.unhangRange(editor, editor.selection),
       match: (n) => {
         return (
           !Editor.isEditor(n) &&
@@ -281,4 +278,62 @@ export function getRangePosition(range: Range, target: Range): RangePosition {
   const ee = pointCompare(target.focus, range.focus);
 
   return (ss << 9) | (se << 6) | (es << 3) | ee;
+}
+
+/**
+ * 获取上一个同级节点，找不到则返回 undefined
+ */
+export function getPreviousSibling<T extends Node>(
+  editor: Editor,
+  path: Path,
+  options: {
+    quit?: (node: Node, path: Path) => boolean;
+    match?: NodeMatch<T>;
+  } = {},
+): NodeEntry<T> | undefined {
+  const { match, quit } = options;
+
+  const [parentNode, parentPath] = editor.parent(path);
+
+  for (let i = path[path.length - 1] - 1; i >= 0; i--) {
+    const childNode = parentNode.children[i];
+    const childPath = [...parentPath, i];
+
+    if (!childNode) return;
+
+    if (quit && quit(childNode, childPath)) return;
+
+    if (!match || match(childNode, childPath)) {
+      return [childNode as T, childPath];
+    }
+  }
+}
+
+/**
+ * 获取下一个同级节点，找不到则返回 undefined
+ */
+export function getNextSibling<T extends Node>(
+  editor: Editor,
+  path: Path,
+  options: {
+    quit?: (node: Node, path: Path) => boolean;
+    match?: (node: Node, path: Path) => boolean;
+  } = {},
+): NodeEntry<T> | undefined {
+  const { match = () => true, quit } = options;
+
+  const [parentNode, parentPath] = editor.parent(path);
+
+  for (let i = path[path.length - 1] + 1; i < parentNode.children.length; i++) {
+    const childNode = parentNode.children[i];
+    const childPath = [...parentPath, i];
+
+    if (!childNode) return;
+
+    if (quit && quit(childNode, childPath)) return;
+
+    if (match(childNode, childPath)) {
+      return [childNode as T, childPath];
+    }
+  }
 }

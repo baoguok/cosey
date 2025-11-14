@@ -2,8 +2,7 @@ import { computed, defineComponent } from 'vue';
 import { useEditor } from 'slate-vue3';
 import { useToken } from '../theme';
 import Select from './select';
-import { useBlockList } from './hooks/useBlockList';
-import { HEADING_TYPES, HEADING_WITH_PARA_TYPES, type HeadingType } from './plugins/heading';
+import { HEADING_TYPES, type HeadingParagraphType } from './types';
 
 export default defineComponent({
   setup() {
@@ -38,16 +37,16 @@ export default defineComponent({
 
     const editor = useEditor();
 
-    const current = useBlockList(HEADING_WITH_PARA_TYPES as unknown as string[], 'paragraph');
+    const activeType = computed(() => editor.getActiveHeadingType());
 
-    const onChange = (value: HeadingType) => {
+    const onChange = (value: HeadingParagraphType) => {
       editor.formatHeading(value);
     };
 
     return () => {
       return (
         <Select
-          v-model={current.value}
+          v-model={activeType.value}
           list={list.value}
           button-width="100px"
           onChange={onChange}

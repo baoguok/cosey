@@ -35,7 +35,7 @@ export const CodeBlock = defineComponent({
               <option value={option.value}>{option.label}</option>
             ))}
           </select>
-          {slots.default?.()}
+          <div>{slots.default?.()}</div>
         </pre>
       );
     };

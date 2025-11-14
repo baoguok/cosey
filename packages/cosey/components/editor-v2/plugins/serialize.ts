@@ -1,5 +1,11 @@
 import { escapeHtml, hyphenate, parseStringStyle } from '@vue/shared';
-import { Descendant, Editor, isEditor, Node as SlateNode, Text } from 'slate-vue3/core';
+import {
+  Descendant,
+  Editor,
+  isEditor,
+  Node as SlateNode,
+  Text as SlateText,
+} from 'slate-vue3/core';
 import { jsx } from 'slate-vue3/hyperscript';
 import { isUndefined, toArray } from '../../../utils';
 import {
@@ -10,6 +16,8 @@ import {
 } from '../types';
 import { INDENT_DELTA } from './render';
 import { FormatAlign } from './align';
+import { deserializeList } from './list/deserialize';
+import { serializeList } from './list/serialize';
 
 type DeserializeResult = Descendant | null | Descendant[];
 
@@ -56,51 +64,58 @@ function getLanguageByClass(cls: string) {
   return cls.match(/language-([^ ]+)/)?.[1] || 'text';
 }
 
-function serialize(node: SlateNode): string {
-  if (Text.isText(node)) {
-    let string = escapeHtml(node.text);
-    if (node.strikethrough) {
-      string = serializeElement('s', [], string);
-    }
-    if (node.underline) {
-      string = serializeElement('u', [], string);
-    }
-    if (node.italic) {
-      string = serializeElement('em', [], string);
-    }
-    if (node.bold) {
-      string = serializeElement('strong', [], string);
-    }
-    if (node.code) {
-      string = serializeElement('code', [], string);
-    }
-    if (node.superscript) {
-      string = serializeElement('sup', [], string);
-    }
-    if (node.subscript) {
-      string = serializeElement('sub', [], string);
-    }
+function serializeText(node: SlateText) {
+  let string = escapeHtml(node.text);
+  if (node.strikethrough) {
+    string = serializeElement('s', [], string);
+  }
+  if (node.underline) {
+    string = serializeElement('u', [], string);
+  }
+  if (node.italic) {
+    string = serializeElement('em', [], string);
+  }
+  if (node.bold) {
+    string = serializeElement('strong', [], string);
+  }
+  if (node.code) {
+    string = serializeElement('code', [], string);
+  }
+  if (node.superscript) {
+    string = serializeElement('sup', [], string);
+  }
+  if (node.subscript) {
+    string = serializeElement('sub', [], string);
+  }
 
-    return serializeElement(
-      'span',
+  return serializeElement(
+    'span',
+    [
       [
-        [
-          'style',
-          stringifyStyle({
-            fontFamily: node.font,
-            fontSize: node.size,
-            color: node.color,
-            background: node.background,
-          }),
-        ],
+        'style',
+        stringifyStyle({
+          fontFamily: node.font,
+          fontSize: node.size,
+          color: node.color,
+          background: node.background,
+        }),
       ],
-      string,
-    );
+    ],
+    string,
+  );
+}
+
+function serialize(node: SlateNode): string {
+  if (SlateText.isText(node)) {
+    return serializeText(node);
   }
 
   let children = '';
 
-  if (Editor.isEditor(node) || node.type !== 'code-block') {
+  if (
+    Editor.isEditor(node) ||
+    (node.type !== 'code-block' && node.type !== 'bulleted-list' && node.type !== 'numbered-list')
+  ) {
     children = node.children.map((n) => serialize(n)).join('');
   }
 
@@ -159,8 +174,9 @@ function serialize(node: SlateNode): string {
         children,
       );
     }
-    case 'bulleted-list':
-    case 'numbered-list':
+    case 'nested-bulleted-list':
+    case 'nested-numbered-list':
+    case 'nested-list-item':
     case 'list-item':
     case 'table':
     case 'table-head':
@@ -168,21 +184,28 @@ function serialize(node: SlateNode): string {
     case 'table-row':
     case 'table-cell':
       return serializeElement(mapElementTypeTagName[node.type], [], children);
+    case 'bulleted-list':
+    case 'numbered-list': {
+      return serializeList(node, serialize);
+    }
     default:
       return children;
   }
 }
 
-function doDeserialize(node: Node, markAttributes = {}): DeserializeResult {
+function deserialize(node: Node, markAttributes = {}): DeserializeResult {
   if (node.nodeType === Node.TEXT_NODE) {
     if (!node.textContent || /^\s+$/.test(node.textContent)) return null;
     return jsx('text', markAttributes, node.textContent.replace(/\n+/g, ' ').replace(/ +/g, ' '));
-  } else if (node.nodeType !== Node.ELEMENT_NODE) {
+  }
+
+  if (node.nodeType !== Node.ELEMENT_NODE) {
     return null;
   }
 
   const element = node as Element;
 
+  // special: pre
   if (element.tagName === 'PRE') {
     return jsx(
       'element',
@@ -200,6 +223,11 @@ function doDeserialize(node: Node, markAttributes = {}): DeserializeResult {
         ),
       ),
     );
+  }
+
+  // spacial: list
+  if (element instanceof HTMLUListElement || element instanceof HTMLOListElement) {
+    return deserializeList(element, deserialize);
   }
 
   const nodeAttributes: Omit<CustomText, 'text'> & Omit<CustomElement, 'type' | 'children'> = {
@@ -225,7 +253,7 @@ function doDeserialize(node: Node, markAttributes = {}): DeserializeResult {
   }
 
   const children = Array.from(element.childNodes)
-    .map((node) => doDeserialize(node, nodeAttributes))
+    .map((node) => deserialize(node, nodeAttributes))
     .flat()
     .filter(Boolean) as Descendant[];
 
@@ -258,26 +286,14 @@ function doDeserialize(node: Node, markAttributes = {}): DeserializeResult {
         children,
       );
     }
-    case 'UL':
-    case 'OL':
     case 'LI':
     case 'TABLE':
     case 'THEAD':
     case 'TBODY':
-    case 'TR': {
+    case 'TR':
+    case 'TD':
+    case 'TH': {
       return jsx('element', { type: tagToElementTypeMap[element.tagName] }, children);
-    }
-    case 'TD': {
-      const attributes: Record<string, any> = {};
-      const style = getStyleObject(element);
-      if (style['text-align']) {
-        attributes.align = style['text-align'] as FormatAlign;
-      }
-      return jsx(
-        'element',
-        { type: tagToElementTypeMap[element.tagName], ...attributes },
-        children,
-      );
     }
     case 'A':
       return jsx(
@@ -290,37 +306,30 @@ function doDeserialize(node: Node, markAttributes = {}): DeserializeResult {
         children,
       );
     case 'IMG':
-      return jsx('element', {
-        type: 'image',
-        url: element.getAttribute('src'),
-        width: element.getAttribute('width'),
-        height: element.getAttribute('height'),
-      });
+      return jsx(
+        'element',
+        {
+          type: 'image',
+          url: element.getAttribute('src'),
+          width: element.getAttribute('width'),
+          height: element.getAttribute('height'),
+        },
+        { text: '' },
+      );
     case 'VIDEO':
-      return jsx('element', {
-        type: 'video',
-        url: element.getAttribute('src'),
-        width: element.getAttribute('width'),
-        height: element.getAttribute('height'),
-      });
+      return jsx(
+        'element',
+        {
+          type: 'video',
+          url: element.getAttribute('src'),
+          width: element.getAttribute('width'),
+          height: element.getAttribute('height'),
+        },
+        { text: '' },
+      );
     default:
       return children;
   }
-}
-
-function deserialize(html: string): Descendant[] {
-  const document = new DOMParser().parseFromString(html, 'text/html');
-  const result = doDeserialize(document.body);
-  const fragment = result ? toArray(result) : [];
-  return fragment.map((item) => {
-    if (Text.isText(item)) {
-      return {
-        type: 'paragraph',
-        children: [item],
-      };
-    }
-    return item;
-  });
 }
 
 export function withSerialize(editor: Editor) {
@@ -329,7 +338,37 @@ export function withSerialize(editor: Editor) {
   };
 
   editor.deserialize = (html: string) => {
-    return deserialize(html);
+    const document = new DOMParser().parseFromString(html, 'text/html');
+    const deserializedResult = deserialize(document.body);
+    const fragment = deserializedResult ? toArray(deserializedResult) : [];
+
+    return fragment;
+
+    // const result: CustomElement[] = [];
+    // let textGroup: (SlateText | CustomElement)[] = [];
+
+    // function maybePushText() {
+    //   if (textGroup.length > 0) {
+    //     result.push({
+    //       type: 'paragraph',
+    //       children: textGroup,
+    //     });
+    //     textGroup = [];
+    //   }
+    // }
+
+    // fragment.forEach((item) => {
+    //   if (SlateText.isText(item) || (SlateElement.isElement(item) && editor.isInline(item))) {
+    //     textGroup.push(item);
+    //   } else {
+    //     maybePushText();
+    //     result.push(item);
+    //   }
+    // });
+
+    // maybePushText();
+
+    // return result;
   };
 
   return editor;

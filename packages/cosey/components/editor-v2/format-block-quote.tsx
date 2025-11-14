@@ -7,16 +7,16 @@ export default defineComponent({
   setup() {
     const editor = useEditor();
 
-    const isActive = computed(() => editor.isCodeBlockActive());
+    const isActive = computed(() => editor.isBlockQuoteActive());
 
     const onClick = () => {
-      editor.formatCodeBlock();
+      editor.formatBlockQuote();
     };
 
     return () => {
       return (
         <Button active={isActive.value} onClick={onClick}>
-          <Icon name="co:code-block" />
+          <Icon name="co:quotes" />
         </Button>
       );
     };

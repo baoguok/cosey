@@ -1,5 +1,4 @@
 import { Editor } from 'slate-vue3/core';
-import { withNormalizeNode } from './normalize-node';
 import { withKeyboard } from './keyboard';
 import { withList } from './list';
 import { withHeading } from './heading';
@@ -9,7 +8,7 @@ import { withBackground } from './background';
 import { withSize } from './size';
 import { withIndent } from './indent';
 import { withMark } from './mark';
-import { withBlock } from './block';
+import { withBlockQuote } from './block-quote';
 import { withAlign } from './align';
 import { withClear } from './clear';
 import { withSerialize } from './serialize';
@@ -24,7 +23,6 @@ import { withTable } from './table';
 const plugins = [
   withKeyboard,
   withRender,
-  withNormalizeNode,
   withIndent,
   withHtml,
   withList,
@@ -34,7 +32,7 @@ const plugins = [
   withBackground,
   withSize,
   withMark,
-  withBlock,
+  withBlockQuote,
   withAlign,
   withClear,
   withSerialize,

@@ -1,5 +1,4 @@
 import { Editor, Range } from 'slate-vue3/core';
-import { DOMEditor } from 'slate-vue3/dom';
 
 declare module 'slate-vue3/core' {
   interface BaseEditor {
@@ -8,11 +7,9 @@ declare module 'slate-vue3/core' {
 }
 
 function formatBackground(editor: Editor, color?: string) {
-  DOMEditor.focus(editor);
+  if (!editor.selection) return;
 
-  if (Range.isCollapsed(editor.selection!)) {
-    return;
-  }
+  if (Range.isCollapsed(editor.selection)) return;
 
   if (color) {
     Editor.addMark(editor, 'background', color);

@@ -12,13 +12,19 @@ import 'prismjs/components/prism-java';
 
 import 'prismjs/themes/prism-okaidia.css';
 
-import { type RenderElementProps, toRawWeakMap } from 'slate-vue3';
+import { type RenderElementProps, toRawWeakMap, useInheritRef } from 'slate-vue3';
 import { Editor, Element, Node, NodeEntry, Path, Range, Text } from 'slate-vue3/core';
-import { CodeBlockElement } from '../types';
+import { CodeBlockElement, ParagraphElement } from '../types';
 import { h } from 'vue';
 import { CodeBlock } from '../code-block';
 import { Hotkeys } from './keyboard';
-import { getRangePosition, getSortedRange, isPointAtEndOfElement, RangePosition } from '../utils';
+import {
+  getRangePosition,
+  getSortedRange,
+  isNormalBlock,
+  isPointAtEndOfElement,
+  RangePosition,
+} from '../utils';
 
 export const languageOptions = [
   { value: 'css', label: 'CSS' },
@@ -39,6 +45,7 @@ declare module 'slate-vue3/core' {
   interface BaseEditor {
     decorate: (nodeList: Node[]) => Range[];
     formatCodeBlock: () => void;
+    isCodeBlockActive: () => boolean;
   }
 }
 
@@ -148,7 +155,7 @@ function node2Decorations(editor: Editor) {
   const blockEntries = editor.nodes({
     at: [],
     mode: 'highest',
-    match: (n) => Element.isElement(n) && n.type === 'code-block',
+    match: isCodeBlock,
   });
 
   Array.from(blockEntries).forEach(([block, blockPath]: NodeEntry<CodeBlockElement>) => {
@@ -186,23 +193,34 @@ function node2Decorations(editor: Editor) {
 }
 
 function formatCodeBlock(editor: Editor) {
-  editor.wrapNodes(
-    { type: 'code-block', language: 'plain', children: [] },
-    {
-      match: (n) => Element.isElement(n) && n.type === 'paragraph',
-      split: false,
-    },
-  );
-  editor.setNodes(
-    { type: 'code-line' as any },
-    { match: (n) => Element.isElement(n) && n.type === 'paragraph' },
-  );
+  if (!editor.selection) return;
+
+  const isActive = editor.isCodeBlockActive();
+
+  if (isActive) {
+    editor.unwrapNodes({
+      match: isCodeBlock,
+      split: true,
+    });
+    editor.setNodes<ParagraphElement>(
+      {
+        type: 'paragraph',
+      },
+      { match: isCodeLine },
+    );
+  } else {
+    editor.wrapNodes(
+      { type: 'code-block', language: 'plain', children: [] },
+      { match: isNormalBlock },
+    );
+    editor.setNodes({ type: 'code-line' }, { match: isNormalBlock });
+  }
 }
 
 function decorate(editor: Editor, nodeList: Node[]) {
   const node = nodeList[0];
-  if (Element.isElement(node) && node.type === 'code-line') {
-    return node2Decorations(editor).get(node);
+  if (isCodeLine(node)) {
+    return node2Decorations(editor).get(node) || [];
   }
   return [];
 }
@@ -210,7 +228,7 @@ function decorate(editor: Editor, nodeList: Node[]) {
 function formatIndent(editor: Editor, value: number) {
   const codeLineNodes = Array.from(
     editor.nodes({
-      match: (node) => Element.isElement(node) && node.type === 'code-line',
+      match: isCodeLine,
     }),
   );
 
@@ -289,8 +307,111 @@ function onKeydown(editor: Editor, event: KeyboardEvent) {
   }
 }
 
+function isCodeBlock(element: unknown): element is CodeBlockElement {
+  return Element.isElementType(element, 'code-block');
+}
+
+function isCodeLine(element: unknown): element is CodeBlockElement {
+  return Element.isElementType(element, 'code-line');
+}
+
+/**
+ * code-block 只允许包含 code-line 节点；
+ * 其他类型节点会替换为 code-line，后者内容为前者的内容字符串。
+ */
+function normalizeCodeBlock(editor: Editor, entry: NodeEntry<Node>) {
+  const [node, path] = entry;
+
+  if (!isCodeBlock(node)) return;
+
+  const children = Array.from(Node.children(editor, path));
+
+  for (const [childNode, childPath] of children) {
+    if (!isCodeLine(childNode)) {
+      const text = editor.string(childPath);
+      editor.removeNodes({
+        at: childPath,
+      });
+      editor.insertNodes(
+        {
+          type: 'code-line',
+          children: [{ text }],
+        },
+        {
+          at: childPath,
+        },
+      );
+
+      return true;
+    }
+  }
+}
+
+/**
+ * code-line 只允许包含文本节点，其他类型节点会被转换为文本节点;
+ * code-line 父节点只能是 code-block，否则转换为 paragraph。
+ */
+function normalizeCodeLine(editor: Editor, entry: NodeEntry<Node>) {
+  const [node, path] = entry;
+
+  if (!isCodeLine(node)) return;
+
+  if (!isCodeBlock(Node.parent(editor, path))) {
+    editor.setNodes(
+      {
+        type: 'paragraph',
+      },
+      {
+        at: path,
+      },
+    );
+    return true;
+  }
+
+  const children = Array.from(Node.children(editor, path));
+
+  for (const [childNode, childPath] of children) {
+    if (!Text.isText(childNode)) {
+      const text = editor.string(childPath);
+      editor.removeNodes({
+        at: childPath,
+      });
+      editor.insertNodes(
+        {
+          text,
+        },
+        {
+          at: childPath,
+        },
+      );
+
+      return true;
+    }
+  }
+}
+
+function normalizeNode(editor: Editor, entry: NodeEntry<Node>) {
+  return normalizeCodeBlock(editor, entry) || normalizeCodeLine(editor, entry);
+}
+
+function isCodeBlockActive(editor: Editor) {
+  if (!editor.selection) return false;
+
+  const nodes = editor.nodes({
+    at: editor.edges(editor.selection)[0],
+    match: isCodeBlock,
+  });
+
+  return !nodes.next().done;
+}
+
 export function withCodeBlock(editor: Editor) {
-  const { renderElement, formatIndent: srcFormatIndent, onKeydown: srcOnKeydown } = editor;
+  const {
+    renderElement,
+    formatIndent: srcFormatIndent,
+    onKeydown: srcOnKeydown,
+    normalizeNode: srcNormalizeNode,
+  } = editor;
 
   editor.decorate = (nodeList: Node[]) => {
     return decorate(editor, nodeList);
@@ -301,13 +422,13 @@ export function withCodeBlock(editor: Editor) {
   };
 
   editor.renderElement = (props: RenderElementProps) => {
-    const { attributes: attrs, children, element } = props;
+    const { attributes, children, element } = props;
 
     if (element.type === 'code-block') {
-      return h(CodeBlock, () => children);
+      return h(CodeBlock, useInheritRef(attributes), () => children);
     }
     if (element.type === 'code-line') {
-      return h('div', { ...attrs, style: { position: 'relative' } }, children);
+      return h('div', { ...attributes, style: { position: 'relative' } }, children);
     }
 
     return renderElement(props);
@@ -322,6 +443,16 @@ export function withCodeBlock(editor: Editor) {
     if (!onKeydown(editor, event)) {
       srcOnKeydown(event);
     }
+  };
+
+  editor.normalizeNode = (entry, options) => {
+    if (!normalizeNode(editor, entry)) {
+      srcNormalizeNode(entry, options);
+    }
+  };
+
+  editor.isCodeBlockActive = () => {
+    return isCodeBlockActive(editor);
   };
 
   return editor;

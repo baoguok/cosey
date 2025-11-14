@@ -1,11 +1,11 @@
 import { computed, defineComponent, PropType, ref } from 'vue';
 import Picker from './picker';
 import ButtonSelect from './button-select';
-import List, { type ListItem } from './list';
+import SelectList, { type SelectListItem } from './select-list';
 
 export default defineComponent({
   props: {
-    list: { type: Array as PropType<ListItem[]>, required: true },
+    list: { type: Array as PropType<SelectListItem[]>, required: true },
     modelValue: { type: null },
     buttonWidth: { type: String },
   },
@@ -20,7 +20,7 @@ export default defineComponent({
       return props.list.find((item) => item.value === props.modelValue)?.label || props.modelValue;
     });
 
-    const onSelect = (item: ListItem) => {
+    const onSelect = (item: SelectListItem) => {
       emit('update:modelValue', item.value);
       emit('change', item.value);
       visible.value = false;
@@ -42,7 +42,7 @@ export default defineComponent({
               </ButtonSelect>
             ),
             content: () => (
-              <List list={props.list} selectedValue={props.modelValue} onSelect={onSelect} />
+              <SelectList list={props.list} selectedValue={props.modelValue} onSelect={onSelect} />
             ),
           }}
         />

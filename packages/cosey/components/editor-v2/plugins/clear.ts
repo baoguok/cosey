@@ -1,5 +1,4 @@
 import { Editor, Element, Point, Range, Text } from 'slate-vue3/core';
-import { DOMEditor } from 'slate-vue3/dom';
 
 declare module 'slate-vue3/core' {
   interface BaseEditor {
@@ -7,17 +6,17 @@ declare module 'slate-vue3/core' {
   }
 }
 
-function clearForamts(editor: Editor) {
-  DOMEditor.focus(editor);
+const clearableElementProps = ['align', 'indent'];
 
-  if (!editor.selection || Range.isCollapsed(editor.selection)) {
-    return;
-  }
+function clearForamts(editor: Editor) {
+  if (!editor.selection) return;
+
+  if (Range.isCollapsed(editor.selection)) return;
 
   // 1. 清除行内文本样式（bold/italic/underline等）
   const textNodes = Array.from(
     editor.nodes({
-      at: editor.selection!,
+      at: editor.selection,
       match: (n) => Text.isText(n),
     }),
   );
@@ -37,7 +36,7 @@ function clearForamts(editor: Editor) {
   // 2. 清除块级元素的非必要属性（如align/color，但保留type）
   const elementNodes = Array.from(
     editor.nodes({
-      at: editor.selection!,
+      at: editor.selection,
       match: (n) => Element.isElement(n),
     }),
   );
@@ -52,9 +51,8 @@ function clearForamts(editor: Editor) {
     ) {
       const newProps: Record<string, any> = {};
       Object.keys(node).forEach((key) => {
-        // 保留元素类型（type）和必要的结构属性
-        if (key !== 'type' && key !== 'children') {
-          newProps[key] = undefined; // 清除align/color等
+        if (clearableElementProps.includes(key)) {
+          newProps[key] = undefined;
         }
       });
       if (Object.keys(newProps).length > 0) {

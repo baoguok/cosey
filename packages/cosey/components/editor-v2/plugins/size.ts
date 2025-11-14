@@ -10,9 +10,9 @@ declare module 'slate-vue3/core' {
 }
 
 function formatSize(editor: Editor, value: string) {
-  DOMEditor.focus(editor);
+  if (!editor.selection) return;
 
-  if (Range.isCollapsed(editor.selection!)) {
+  if (Range.isCollapsed(editor.selection)) {
     return;
   }
 
@@ -20,9 +20,9 @@ function formatSize(editor: Editor, value: string) {
 }
 
 function formatSizeDelta(editor: Editor, delta: number, callback: (numSize: number) => void) {
-  DOMEditor.focus(editor);
+  if (!editor.selection) return;
 
-  if (Range.isCollapsed(editor.selection!)) {
+  if (Range.isCollapsed(editor.selection)) {
     return;
   }
 
@@ -33,7 +33,7 @@ function formatSizeDelta(editor: Editor, delta: number, callback: (numSize: numb
   if (size) {
     numSize = parseInt(size as string);
   } else {
-    const domRange = DOMEditor.toDOMRange(editor, editor.selection!);
+    const domRange = DOMEditor.toDOMRange(editor, editor.selection);
     let node = domRange.startContainer;
     if (node.nodeType === 3) {
       node = node.parentElement!;

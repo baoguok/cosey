@@ -1,4 +1,9 @@
-import { RenderPlaceholderProps, type RenderElementProps, type RenderLeafProps } from 'slate-vue3';
+import {
+  RenderPlaceholderProps,
+  useInheritRef,
+  type RenderElementProps,
+  type RenderLeafProps,
+} from 'slate-vue3';
 import { Editor } from 'slate-vue3/core';
 import { type CSSProperties, h, VNode } from 'vue';
 import { mapElementTypeTagName } from '../types';
@@ -69,7 +74,7 @@ const renderPlaceholder = ({ children, attributes }: RenderPlaceholderProps) => 
   return h(
     PlaceholderComponent,
     {
-      ...attributes,
+      ...useInheritRef(attributes),
       style: {},
     },
     () => children,

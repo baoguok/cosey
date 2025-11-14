@@ -92,7 +92,7 @@ export const getArticleStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> 
     'p, ol, ul, pre, blockquote, h1, h2, h3, h4, h5, h6, table': {
       margin: 0,
       padding: 0,
-      marginBottom: token.marginSM,
+      marginBlock: token.marginSM,
     },
 
     'h1, h2, h3, h4, h5, h6': {
@@ -137,31 +137,31 @@ export const getArticleStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> 
       },
     },
 
-    'ol, ul': {
-      paddingInlineStart: token.paddingXL,
-    },
+    // 'ol, ul': {
+    //   paddingInlineStart: token.paddingXL,
+    // },
 
-    ul: {
-      listStyleType: 'disc',
-    },
+    // ul: {
+    //   listStyleType: 'disc',
+    // },
 
-    ':is(dir, menu, ol, ul)': {
-      'ul, ol': {
-        marginBottom: 0,
-      },
-      ul: {
-        listStyleType: 'circle',
-      },
-      ':is(dir, menu, ol, ul)': {
-        ul: {
-          listStyleType: 'square',
-        },
-      },
-    },
+    // ':is(dir, menu, ol, ul)': {
+    //   'ul, ol': {
+    //     marginBottom: 0,
+    //   },
+    //   ul: {
+    //     listStyleType: 'circle',
+    //   },
+    //   ':is(dir, menu, ol, ul)': {
+    //     ul: {
+    //       listStyleType: 'square',
+    //     },
+    //   },
+    // },
 
-    ol: {
-      listStyleType: 'decimal',
-    },
+    // ol: {
+    //   listStyleType: 'decimal',
+    // },
 
     a: {
       color: token.colorLink,
@@ -209,13 +209,18 @@ export const getArticleStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> 
 
     pre: {
       position: 'relative',
-      padding: '1rem',
+      overflow: 'hidden',
 
       select: {
         position: 'absolute',
         right: token.sizeXXS,
         top: token.sizeXXS,
         zIndex: 1,
+      },
+
+      '> div': {
+        padding: '1rem',
+        overflow: 'auto',
       },
     },
   };

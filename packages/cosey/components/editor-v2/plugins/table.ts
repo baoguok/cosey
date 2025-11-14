@@ -1,12 +1,6 @@
 import { h } from 'vue';
-import { Element, Point, Editor, Range, Node, Path } from 'slate-vue3/core';
-import {
-  getRangePosition,
-  getSortedRange,
-  isPointAtFirstLine,
-  isPointAtLastLine,
-  RangePosition,
-} from '../utils';
+import { Element, Point, Editor, Range, Node, Path, NodeEntry } from 'slate-vue3/core';
+import { isPointAtFirstLine, isPointAtLastLine } from '../utils';
 import { Hotkeys } from './keyboard';
 import {
   type TableElement,
@@ -17,6 +11,7 @@ import {
 } from '../types';
 import { TableComponent } from '../table-component';
 import { DOMEditor } from 'slate-vue3/dom';
+import { useInheritRef } from 'slate-vue3';
 
 declare module 'slate-vue3/core' {
   interface BaseEditor {
@@ -32,12 +27,21 @@ declare module 'slate-vue3/core' {
     deleteTable: (tablePath: Path) => void;
     moveToHead: (tablePath: Path, cellPath: Path) => void;
     moveToBody: (tablePath: Path, cellPath: Path) => void;
+    isTable: (node: any) => node is TableElement;
     isTableCell: (node: any) => node is TableCellElement;
   }
 }
 
 function isTable(node: any): node is TableElement {
   return Element.isElementType(node, 'table');
+}
+
+function isTableHead(node: any): node is TableBodyElement {
+  return Element.isElementType(node, 'table-head');
+}
+
+function isTableBody(node: any): node is TableBodyElement {
+  return Element.isElementType(node, 'table-body');
 }
 
 function isTableRow(node: any): node is TableRowElement {
@@ -48,12 +52,18 @@ function isTableCell(node: any): node is TableCellElement {
   return Element.isElementType(node, 'table-cell');
 }
 
-function isTableBody(node: any): node is TableBodyElement {
-  return Element.isElementType(node, 'table-body');
+function createTableCell(): TableCellElement {
+  return {
+    type: 'table-cell',
+    children: [{ text: '' }],
+  };
 }
 
-function isTableHead(node: any): node is TableBodyElement {
-  return Element.isElementType(node, 'table-head');
+function createTableRow(cellCount: number): TableRowElement {
+  return {
+    type: 'table-row',
+    children: Array(cellCount).fill(0).map(createTableCell),
+  };
 }
 
 function insertTable(editor: Editor, rowCount: number, columnCount: number) {
@@ -64,19 +74,7 @@ function insertTable(editor: Editor, rowCount: number, columnCount: number) {
         type: 'table-body',
         children: Array(rowCount)
           .fill(0)
-          .map(() => {
-            return {
-              type: 'table-row',
-              children: Array(columnCount)
-                .fill(0)
-                .map(() => {
-                  return {
-                    type: 'table-cell',
-                    children: [{ text: '' }],
-                  };
-                }),
-            };
-          }),
+          .map(() => createTableRow(columnCount)),
       },
     ],
   };
@@ -88,22 +86,9 @@ function insertRow(editor: Editor, _tablePath: Path, cellPath: Path, isNext?: bo
   const rowNode = editor.node(rowPath)[0] as TableRowElement;
   const columns = rowNode.children.length;
 
-  editor.insertNodes(
-    {
-      type: 'table-row',
-      children: Array(columns)
-        .fill(0)
-        .map(() => {
-          return {
-            type: 'table-cell',
-            children: [{ text: '' }],
-          };
-        }),
-    },
-    {
-      at: isNext ? Path.next(rowPath) : rowPath,
-    },
-  );
+  editor.insertNodes(createTableRow(columns), {
+    at: isNext ? Path.next(rowPath) : rowPath,
+  });
 }
 
 function insertRowAbove(editor: Editor, tablePath: Path, cellPath: Path) {
@@ -123,15 +108,9 @@ function insertColumn(editor: Editor, tablePath: Path, cellPath: Path, isNext?: 
   function insertNodes(node: TableBodyElement | TableHeadElement) {
     node.children.forEach((row) => {
       const rowPath = DOMEditor.findPath(editor, row);
-      editor.insertNodes(
-        {
-          type: 'table-cell',
-          children: [{ text: '' }],
-        },
-        {
-          at: [...rowPath, cellIndex],
-        },
-      );
+      editor.insertNodes(createTableCell(), {
+        at: [...rowPath, cellIndex],
+      });
     });
   }
 
@@ -316,101 +295,252 @@ function moveToBody(editor: Editor, tablePath: Path, cellPath: Path) {
   }
 }
 
+/**
+ * 避免删除 table-cell
+ */
 function deleteBackward(editor: Editor) {
   if (editor.selection && Range.isCollapsed(editor.selection)) {
-    const [cell] = editor.nodes({
+    const generator = editor.nodes({
       match: isTableCell,
     });
-    if (cell) {
+    const { value: cell, done } = generator.next();
+
+    if (!done) {
       const [, cellPath] = cell;
       const start = Editor.start(editor, cellPath);
 
       if (Point.equals(editor.selection.anchor, start)) {
         return true;
       }
+    } else {
+      const generator = editor.nodes({
+        at: editor.before(editor.selection.anchor),
+        match: isTable,
+      });
+
+      if (!generator.next().done) {
+        return true;
+      }
     }
   }
 }
 
+/**
+ * 避免删除 table-cell
+ */
 function deleteForward(editor: Editor) {
   if (editor.selection && Range.isCollapsed(editor.selection)) {
-    const [cell] = editor.nodes({
+    const generator = editor.nodes({
       match: isTableCell,
     });
 
-    if (cell) {
+    const { value: cell, done } = generator.next();
+
+    if (!done) {
       const [, cellPath] = cell;
-      const end = Editor.end(editor, cellPath);
+      const end = editor.end(cellPath);
 
       if (Point.equals(editor.selection.anchor, end)) {
         return true;
       }
-    }
-  }
-}
+    } else {
+      const generator = editor.nodes({
+        at: editor.after(editor.selection.anchor),
+        match: isTable,
+      });
 
-function deleteFragment(editor: Editor) {
-  if (editor.selection) {
-    const [table] = editor.nodes({
-      match: isTable,
-    });
-    if (table) {
-      const [, tablePath] = table;
-      const tableRange = Editor.range(editor, tablePath);
-      const pos = getRangePosition(tableRange, getSortedRange(editor.selection));
-
-      if (pos !== RangePosition.COVER_BOTH) {
-        const [start, end] = Range.edges(editor.selection);
-        const [tableStart, tableEnd] = Range.edges(tableRange);
-
-        if (Point.isBefore(start, tableStart)) {
-          const anchor = start;
-          const focus = Editor.before(editor, tableStart)!;
-          if (!Point.equals(anchor, focus)) {
-            editor.delete({ at: { anchor, focus } });
-          }
-        } else if (Point.isAfter(end, tableEnd)) {
-          const anchor = Editor.after(editor, tableEnd)!;
-          const focus = end;
-          if (!Point.equals(anchor, focus)) {
-            editor.delete({ at: { anchor, focus } });
-          }
-        }
-
-        const cells = Array.from(
-          editor.nodes({
-            match: isTableCell,
-          }),
-        );
-        for (const [, cellPath] of cells) {
-          const cellRange = Editor.range(editor, cellPath);
-          const range = Range.intersection(cellRange, editor.selection);
-          if (range) {
-            if (Range.isCollapsed(range)) {
-              continue;
-            }
-
-            editor.delete({
-              at: range,
-            });
-          }
-        }
-
+      if (!generator.next().done) {
         return true;
       }
     }
   }
 }
 
-function insertBreak(editor: Editor) {
-  if (editor.selection) {
-    const [table] = editor.nodes({
+interface RangeItem {
+  type: 'table' | 'non-table';
+  full?: boolean;
+  range: Range;
+}
+
+function getSplitedTableRange(editor: Editor) {
+  const tableEntries = Array.from(
+    editor.nodes({
       match: isTable,
+    }),
+  );
+
+  const ranges = tableEntries.reduce((ranges, current) => {
+    const [tableStart, tableEnd] = Range.edges(editor.range(current[1]));
+
+    const prev = ranges[ranges.length - 1];
+    if (prev) {
+      ranges.push({
+        type: 'non-table',
+        range: {
+          anchor: editor.after(prev.range.focus)!,
+          focus: editor.before(tableStart)!,
+        },
+      });
+    }
+    ranges.push({
+      type: 'table',
+      full: true,
+      range: {
+        anchor: tableStart,
+        focus: tableEnd,
+      },
     });
-    if (table) {
+    return ranges;
+  }, [] as RangeItem[]);
+
+  const [selectionStart, selectionEnd] = Range.edges(editor.selection!);
+
+  const firstRange = ranges[0].range;
+  if (Point.isBefore(selectionStart, firstRange.anchor)) {
+    ranges.unshift({
+      type: 'non-table',
+      range: {
+        anchor: selectionStart,
+        focus: editor.before(firstRange.anchor)!,
+      },
+    });
+  } else {
+    ranges[0].full = false;
+    firstRange.anchor = selectionStart;
+  }
+
+  const lastRange = ranges[ranges.length - 1].range;
+  if (Point.isAfter(selectionEnd, lastRange.focus)) {
+    ranges.push({
+      type: 'non-table',
+      range: {
+        anchor: editor.after(lastRange.focus)!,
+        focus: selectionEnd,
+      },
+    });
+  } else {
+    ranges[ranges.length - 1].full = false;
+    lastRange.focus = selectionEnd;
+  }
+
+  return ranges;
+}
+
+function clearTableCells(editor: Editor, range: Range) {
+  const cellEntries = Array.from(
+    editor.nodes({
+      at: range,
+      match: isTableCell,
+    }),
+  );
+
+  const [start, end] = editor.edges(editor.selection!);
+
+  for (const [, path] of cellEntries) {
+    const [cellStart, cellEnd] = editor.edges(path);
+
+    const anchor = Point.isBefore(start, cellStart) ? cellStart : start;
+    const focus = Point.isAfter(end, cellEnd) ? cellEnd : end;
+
+    if (Point.equals(anchor, focus)) {
+      continue;
+    }
+
+    editor.delete({
+      at: {
+        anchor,
+        focus,
+      },
+    });
+  }
+}
+
+/**
+ * fix: 表格位于文档最后，无法插入换行符。
+ */
+/**
+ * 1. anchor 和 focus 光标都不在表格上面，走默认流程
+ * 2. anchor 和 focus 位于同一个单元格，走默认流程
+ * 3. 使用表格范围分割选区
+ *   a. 删除非表格区域、完全覆盖的表格
+ *   b. 非完全覆盖表格则删除与选区相交的单元格内容
+ */
+function deleteFragment(editor: Editor) {
+  if (!editor.selection) return;
+
+  const [anchorCell] = editor.nodes({ at: editor.selection.anchor, match: isTableCell });
+  const [focusCell] = editor.nodes({ at: editor.selection.focus, match: isTableCell });
+
+  if (!anchorCell && !focusCell) return;
+
+  if (anchorCell && focusCell && Path.equals(anchorCell[1], focusCell[1])) return;
+
+  const ranges = getSplitedTableRange(editor);
+
+  // 倒序删除，避免改变 location
+  for (let i = ranges.length - 1; i >= 0; i--) {
+    const { type, full, range } = ranges[i];
+
+    if (Range.isCollapsed(range)) continue;
+
+    if (type === 'non-table') {
+      editor.delete({
+        at: range,
+      });
+    } else if (full) {
+      editor.delete({
+        at: {
+          anchor: editor.before(range.anchor)!,
+          focus: editor.after(range.focus)!,
+        },
+      });
+    } else {
+      clearTableCells(editor, range);
+    }
+  }
+
+  return true;
+}
+
+function wrapTableCellChildren(editor: Editor, cellPath: Path) {
+  const children = Array.from(Node.children(editor, cellPath));
+
+  for (const [childNode, childPath] of children) {
+    if (!Element.isElement(childNode) || editor.isInline(childNode)) {
+      editor.wrapNodes(
+        {
+          type: 'paragraph',
+          children: [],
+        },
+        {
+          at: childPath,
+        },
+      );
+
       return true;
     }
   }
+}
+
+/**
+ * 折叠选区：
+ *   1. 走默认流程
+ * 扩展选区：
+ *   1. anchor 和 focus 光标都不在表格上面，走默认流程
+ *   2. anchor 和 focus 位于同一个单元格，走默认流程
+ *   3. 选区与表格相交，阻止默认行为
+ */
+function insertBreak(editor: Editor) {
+  if (!editor.selection || Range.isCollapsed(editor.selection)) return;
+
+  const [anchorCell] = editor.nodes({ at: editor.selection.anchor, match: isTableCell });
+  const [focusCell] = editor.nodes({ at: editor.selection.focus, match: isTableCell });
+
+  if (!anchorCell && !focusCell) return;
+
+  if (anchorCell && focusCell && Path.equals(anchorCell[1], focusCell[1])) return;
+
+  return true;
 }
 
 function onKeydown(editor: Editor, event: KeyboardEvent) {
@@ -476,14 +606,124 @@ function onKeydown(editor: Editor, event: KeyboardEvent) {
   }
 }
 
+function normalizeTable(editor: Editor, entry: NodeEntry<Node>) {
+  const [node, path] = entry;
+
+  if (!isTable(node)) return;
+
+  const children = Array.from(Node.children(editor, path));
+
+  for (const [childNode, childPath] of children) {
+    if (!isTableHead(childNode) && !isTableBody(childNode)) {
+      editor.removeNodes({
+        at: childPath,
+      });
+
+      return true;
+    }
+  }
+}
+
+function normalizeTableHead(editor: Editor, entry: NodeEntry<Node>) {
+  const [node, path] = entry;
+
+  if (!isTableHead(node)) return;
+
+  const children = Array.from(Node.children(editor, path));
+
+  for (const [childNode, childPath] of children) {
+    if (!isTableRow(childNode)) {
+      editor.removeNodes({
+        at: childPath,
+      });
+
+      return true;
+    }
+  }
+}
+
+function normalizeTableBody(editor: Editor, entry: NodeEntry<Node>) {
+  const [node, path] = entry;
+
+  if (!isTableBody(node)) return;
+
+  const children = Array.from(Node.children(editor, path));
+
+  for (const [childNode, childPath] of children) {
+    if (!isTableRow(childNode)) {
+      editor.removeNodes({
+        at: childPath,
+      });
+
+      return true;
+    }
+  }
+}
+
+function normalizeTableRow(editor: Editor, entry: NodeEntry<Node>) {
+  const [node, path] = entry;
+
+  if (!isTableRow(node)) return;
+
+  const children = Array.from(Node.children(editor, path));
+
+  for (const [childNode, childPath] of children) {
+    if (!isTableCell(childNode)) {
+      editor.removeNodes({
+        at: childPath,
+      });
+
+      return true;
+    }
+  }
+}
+
+function normalizeTableCell(editor: Editor, entry: NodeEntry<Node>) {
+  const [node, path] = entry;
+
+  if (!isTableCell(node)) return;
+
+  return wrapTableCellChildren(editor, path);
+}
+
+function normalizeNode(editor: Editor, entry: NodeEntry<Node>) {
+  return (
+    normalizeTable(editor, entry) ||
+    normalizeTableHead(editor, entry) ||
+    normalizeTableBody(editor, entry) ||
+    normalizeTableRow(editor, entry) ||
+    normalizeTableCell(editor, entry)
+  );
+}
+
+/**
+ * 1. anchor 和 focus 光标都不在表格上面，走默认流程
+ * 2. anchor 和 focus 位于同一个单元格，走默认流程
+ * 3. 其他情况则阻止默认行为
+ */
+function insertData(editor: Editor) {
+  if (!editor.selection) return;
+
+  const [anchorCell] = editor.nodes({ at: editor.selection.anchor, match: isTableCell });
+  const [focusCell] = editor.nodes({ at: editor.selection.focus, match: isTableCell });
+
+  if (!anchorCell && !focusCell) return;
+
+  if (anchorCell && focusCell && Path.equals(anchorCell[1], focusCell[1])) return;
+
+  return true;
+}
+
 export function withTable(editor: Editor) {
   const {
     renderElement,
     deleteBackward: srcDeleteBackward,
     deleteForward: srcDeleteForward,
-    insertBreak: srcInsertBreak,
     deleteFragment: srcDeleteFragment,
+    insertBreak: srcInsertBreak,
     onKeydown: srcOnKeydown,
+    normalizeNode: srcNormalizeNode,
+    insertData: srcInsertData,
   } = editor;
 
   editor.renderElement = (props) => {
@@ -491,7 +731,7 @@ export function withTable(editor: Editor) {
 
     switch (element.type) {
       case 'table':
-        return h(TableComponent, attributes, () => children);
+        return h(TableComponent, useInheritRef(attributes), () => children);
       case 'table-head':
         return h('thead', attributes, children);
       case 'table-body':
@@ -499,16 +739,7 @@ export function withTable(editor: Editor) {
       case 'table-row':
         return h('tr', attributes, children);
       case 'table-cell':
-        return h(
-          'td',
-          {
-            ...attributes,
-            style: {
-              textAlign: element.align,
-            },
-          },
-          children,
-        );
+        return h('td', attributes, children);
     }
 
     return renderElement(props);
@@ -592,7 +823,20 @@ export function withTable(editor: Editor) {
     moveToBody(editor, tablePath, cellPath);
   };
 
+  editor.isTable = isTable;
   editor.isTableCell = isTableCell;
+
+  editor.normalizeNode = (entry, options) => {
+    if (!normalizeNode(editor, entry)) {
+      srcNormalizeNode(entry, options);
+    }
+  };
+
+  editor.insertData = (data) => {
+    if (!insertData(editor)) {
+      srcInsertData(data);
+    }
+  };
 
   return editor;
 }

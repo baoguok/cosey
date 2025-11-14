@@ -29,9 +29,17 @@ export const TableComponent = defineComponent({
       );
     });
 
-    const popperVisible = computed(
-      () => editor.selection && Range.isCollapsed(editor.selection) && isActive.value,
-    );
+    const popperVisible = computed(() => {
+      if (!editor.selection || Range.isExpanded(editor.selection)) return false;
+
+      const table = editor.above({
+        at: editor.selection,
+        match: editor.isTable,
+        mode: 'lowest',
+      });
+
+      return table && table[0] === element.value;
+    });
 
     const tablePath = computed(() => {
       return DOMEditor.findPath(editor, element.value);

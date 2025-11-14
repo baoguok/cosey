@@ -7,8 +7,9 @@ import { withHistory } from 'slate-vue3/history';
 import Toolbar from './toolbar';
 import ButtonGroup from './button-group';
 import FormatMark from './format-mark';
-import FormatBlock from './format-block';
 import FormatHeading from './format-heading';
+import FormatBlockQuote from './format-block-quote';
+import FormatTable from './format-table';
 import FormatFont from './format-font';
 import FormatSize from './format-size';
 import FormatColor from './format-color';
@@ -29,64 +30,129 @@ import { useComponentConfig } from '../config-provider';
 import { type CustomElement } from './types';
 import { useFocus } from './hooks/useFocus';
 import { withDefaultPlugins } from './plugins';
-import FormatTable from './format-table';
 
 const list = {
   type: 'bulleted-list',
   children: [
     {
       type: 'list-item',
+      listType: 'bulleted-list',
+      level: 0,
       children: [
-        { text: '111' },
-        // {
-        //   type: 'bulleted-list',
-        //   children: [
-        //     {
-        //       type: 'list-item',
-        //       children: [
-        //         { text: '111-111' },
-        //         {
-        //           type: 'bulleted-list',
-        //           children: [
-        //             {
-        //               type: 'list-item',
-        //               children: [{ text: '111-111-111' }],
-        //             },
-        //             {
-        //               type: 'list-item',
-        //               children: [{ text: '111-111-222' }],
-        //             },
-        //             {
-        //               type: 'list-item',
-        //               children: [{ text: '111-111-333' }],
-        //             },
-        //             {
-        //               type: 'list-item',
-        //               children: [{ text: '111-111-444' }],
-        //             },
-        //             {
-        //               type: 'list-item',
-        //               children: [{ text: '111-111-555' }],
-        //             },
-        //           ],
-        //         },
-        //       ],
-        //     },
-        //     {
-        //       type: 'list-item',
-        //       children: [{ text: '111-222' }],
-        //     },
-        //     {
-        //       type: 'list-item',
-        //       children: [{ text: '111-333' }],
-        //     },
-        //   ],
-        // },
+        {
+          text: '列表项1 ',
+        },
       ],
     },
     {
       type: 'list-item',
-      children: [{ text: '222' }],
+      listType: 'numbered-list',
+      level: 1,
+      children: [
+        {
+          text: '列表项11 ',
+        },
+      ],
+    },
+    {
+      type: 'list-item',
+      listType: 'bulleted-list',
+      level: 2,
+      children: [
+        {
+          text: '列表项111 ',
+        },
+      ],
+    },
+    {
+      type: 'list-item',
+      listType: 'numbered-list',
+      level: 3,
+      children: [
+        {
+          text: '列表项1111',
+        },
+      ],
+    },
+    {
+      type: 'list-item',
+      listType: 'numbered-list',
+      level: 3,
+      children: [
+        {
+          text: '列表项2222',
+        },
+      ],
+    },
+    {
+      type: 'list-item',
+      listType: 'numbered-list',
+      level: 3,
+      children: [
+        {
+          text: '列表项3333',
+        },
+      ],
+    },
+    {
+      type: 'list-item',
+      listType: 'bulleted-list',
+      level: 2,
+      children: [
+        {
+          text: '列表项222',
+        },
+      ],
+    },
+    {
+      type: 'list-item',
+      listType: 'bulleted-list',
+      level: 2,
+      children: [
+        {
+          text: '列表项333',
+        },
+      ],
+    },
+    {
+      type: 'list-item',
+      listType: 'numbered-list',
+      level: 1,
+      children: [
+        {
+          text: '列表项22',
+        },
+      ],
+    },
+    {
+      type: 'list-item',
+      listType: 'numbered-list',
+      level: 1,
+      children: [
+        {
+          text: '列表项33',
+        },
+      ],
+    },
+    {
+      type: 'list-item',
+      listType: 'bulleted-list',
+      level: 0,
+      children: [
+        {
+          text: '列表项2',
+        },
+      ],
+    },
+    {
+      type: 'list-item',
+      listType: 'bulleted-list',
+      level: 0,
+      children: [
+        {
+          text: '列表项3',
+        },
+      ],
     },
   ],
 };
@@ -115,19 +181,39 @@ const initialValue: CustomElement[] = [
             children: [
               {
                 type: 'table-cell',
-                children: [{ text: '' }],
+                children: [
+                  {
+                    type: 'paragraph',
+                    children: [{ text: '' }],
+                  },
+                ],
               },
               {
                 type: 'table-cell',
-                children: [{ text: 'Human', bold: true }],
+                children: [
+                  {
+                    type: 'paragraph',
+                    children: [{ text: 'Human', bold: true }],
+                  },
+                ],
               },
               {
                 type: 'table-cell',
-                children: [{ text: 'Dog', bold: true }],
+                children: [
+                  {
+                    type: 'paragraph',
+                    children: [{ text: 'Dog', bold: true }],
+                  },
+                ],
               },
               {
                 type: 'table-cell',
-                children: [{ text: 'Cat', bold: true }],
+                children: [
+                  {
+                    type: 'paragraph',
+                    children: [{ text: 'Cat', bold: true }],
+                  },
+                ],
               },
             ],
           },
@@ -136,19 +222,39 @@ const initialValue: CustomElement[] = [
             children: [
               {
                 type: 'table-cell',
-                children: [{ text: '# of Feet', bold: true }],
+                children: [
+                  {
+                    type: 'paragraph',
+                    children: [{ text: '# of Feet', bold: true }],
+                  },
+                ],
               },
               {
                 type: 'table-cell',
-                children: [{ text: '2' }],
+                children: [
+                  {
+                    type: 'paragraph',
+                    children: [{ text: '2' }],
+                  },
+                ],
               },
               {
                 type: 'table-cell',
-                children: [{ text: '4' }],
+                children: [
+                  {
+                    type: 'paragraph',
+                    children: [{ text: '4' }],
+                  },
+                ],
               },
               {
                 type: 'table-cell',
-                children: [{ text: '4' }],
+                children: [
+                  {
+                    type: 'paragraph',
+                    children: [{ text: '8' }],
+                  },
+                ],
               },
             ],
           },
@@ -157,19 +263,39 @@ const initialValue: CustomElement[] = [
             children: [
               {
                 type: 'table-cell',
-                children: [{ text: '# of Lives', bold: true }],
+                children: [
+                  {
+                    type: 'paragraph',
+                    children: [{ text: '# of Lives', bold: true }],
+                  },
+                ],
               },
               {
                 type: 'table-cell',
-                children: [{ text: '1' }],
+                children: [
+                  {
+                    type: 'paragraph',
+                    children: [{ text: '1' }],
+                  },
+                ],
               },
               {
                 type: 'table-cell',
-                children: [{ text: '1' }],
+                children: [
+                  {
+                    type: 'paragraph',
+                    children: [{ text: '5' }],
+                  },
+                ],
               },
               {
                 type: 'table-cell',
-                children: [{ text: '9' }],
+                children: [
+                  {
+                    type: 'paragraph',
+                    children: [{ text: '9' }],
+                  },
+                ],
               },
             ],
           },
@@ -312,7 +438,7 @@ export default defineComponent({
                 <FormatAlign format="justify" icon="co:text-align-justify" />
               </ButtonGroup>
               <ButtonGroup>
-                <FormatBlock format="block-quote" icon="co:quotes" />
+                <FormatBlockQuote />
                 <FormatMark format="code" icon="co:code" />
               </ButtonGroup>
               <ButtonGroup>

@@ -78,14 +78,12 @@ export function withImage(editor: Editor) {
     return renderElement(props);
   };
 
-  // insert data
   editor.insertData = (data) => {
     if (!insertData(editor, data)) {
       srcInsertData(data);
     }
   };
 
-  // insert image
   editor.insertImage = (
     url: string,
     file?: File,

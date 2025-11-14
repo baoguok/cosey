@@ -3,11 +3,27 @@ import { Descendant, BaseEditor, BaseRange } from 'slate-vue3/core';
 import type { DOMEditor } from 'slate-vue3/dom';
 import { type FormatAlign } from './plugins/align';
 
-export const LIST_TYPES = ['numbered-list', 'bulleted-list'] as const;
+export type ListType = 'numbered-list' | 'bulleted-list';
+export type NestedListType = 'nested-numbered-list' | 'nested-bulleted-list';
 
-export type ListType = (typeof LIST_TYPES)[number];
+export const HEADING_TYPES = [
+  'heading-one',
+  'heading-two',
+  'heading-three',
+  'heading-four',
+  'heading-five',
+  'heading-six',
+] as const;
 
-export const LIST_ITEM = 'list-item';
+export const HEADING_WITH_PARA_TYPES = ['paragraph', ...HEADING_TYPES] as const;
+
+export type HeadingParagraphType = (typeof HEADING_WITH_PARA_TYPES)[number];
+
+export type HeadingType = (typeof HEADING_TYPES)[number];
+
+export const NORMAL_BLOCK_TYPES = [...HEADING_WITH_PARA_TYPES, 'block-quote'] as const;
+
+export type NormalBlockType = (typeof NORMAL_BLOCK_TYPES)[number];
 
 export const mapElementTypeTagName: Record<string, string> = {
   paragraph: 'p',
@@ -21,6 +37,9 @@ export const mapElementTypeTagName: Record<string, string> = {
   'bulleted-list': 'ul',
   'numbered-list': 'ol',
   'list-item': 'li',
+  'nested-bulleted-list': 'ul',
+  'nested-numbered-list': 'ol',
+  'nested-list-item': 'li',
   'code-block': 'pre',
   table: 'table',
   'table-head': 'thead',
@@ -29,12 +48,26 @@ export const mapElementTypeTagName: Record<string, string> = {
   'table-cell': 'td',
 };
 
-export const tagToElementTypeMap = Object.fromEntries(
-  Object.entries(mapElementTypeTagName).map(([elementType, tagName]) => [
-    tagName.toUpperCase(),
-    elementType,
-  ]),
-);
+export const tagToElementTypeMap = {
+  P: 'paragraph',
+  H1: 'heading-one',
+  H2: 'heading-two',
+  H3: 'heading-three',
+  H4: 'heading-four',
+  H5: 'heading-five',
+  H6: 'heading-six',
+  BLOCKQUOTE: 'block-quote',
+  UL: 'bulleted-list',
+  OL: 'numbered-list',
+  LI: 'list-item',
+  PRE: 'code-block',
+  TABLE: 'table',
+  THEAD: 'table-head',
+  TBODY: 'table-body',
+  TR: 'table-row',
+  TD: 'table-cell',
+  TH: 'table-cell',
+};
 
 export type ParagraphElement = {
   type: 'paragraph';
@@ -94,17 +127,37 @@ export type BlockQuoteElement = {
 
 export type BulletedListElement = {
   type: 'bulleted-list';
-  children: Descendant[];
+  children: ListItemElement[];
 };
 
 export type NumberedListElement = {
   type: 'numbered-list';
-  children: Descendant[];
+  children: ListItemElement[];
 };
 
 export type ListItemElement = {
-  type: typeof LIST_ITEM;
+  type: 'list-item';
+  listType: 'bulleted-list' | 'numbered-list';
   children: Descendant[];
+  level: number;
+};
+
+export type NestedBulletedListElement = {
+  type: 'nested-bulleted-list';
+  children: NestedListItemElement[];
+  parent: NestedListItemElement | null;
+};
+
+export type NestedNumberedListElement = {
+  type: 'nested-numbered-list';
+  children: NestedListItemElement[];
+  parent: NestedListItemElement | null;
+};
+
+export type NestedListItemElement = {
+  type: 'nested-list-item';
+  children: Descendant[];
+  parent: NestedBulletedListElement | NestedNumberedListElement | null;
 };
 
 export type ImageElement = {
@@ -153,8 +206,7 @@ export type TableRowElement = {
 
 export type TableCellElement = {
   type: 'table-cell';
-  children: CustomText[];
-  align?: FormatAlign;
+  children: Descendant[];
 };
 
 export type CodeBlockElement = {
@@ -168,6 +220,14 @@ export type CodeLineElement = {
   children: Descendant[];
 };
 
+export type HeadingElement =
+  | HeadingOneElement
+  | HeadingTwoElement
+  | HeadingThreeElement
+  | HeadingFourElement
+  | HeadingFiveElement
+  | HeadingSixElement;
+
 export type CustomElement =
   | ParagraphElement
   | HeadingOneElement
@@ -180,6 +240,9 @@ export type CustomElement =
   | BulletedListElement
   | NumberedListElement
   | ListItemElement
+  | NestedBulletedListElement
+  | NestedNumberedListElement
+  | NestedListItemElement
   | ImageElement
   | VideoElement
   | LinkElement

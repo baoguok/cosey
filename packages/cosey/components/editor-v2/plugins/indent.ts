@@ -1,5 +1,4 @@
 import { Editor, Element } from 'slate-vue3/core';
-import { DOMEditor } from 'slate-vue3/dom';
 
 const indentableElements = [
   'paragraph',
@@ -19,7 +18,7 @@ declare module 'slate-vue3/core' {
 }
 
 function formatIndent(editor: Editor, value: number) {
-  DOMEditor.focus(editor);
+  if (!editor.selection) return;
 
   const nodeEntries = [
     ...editor.nodes({

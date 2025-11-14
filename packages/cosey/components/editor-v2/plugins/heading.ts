@@ -1,36 +1,52 @@
 import { Editor, Element, Path } from 'slate-vue3/core';
-import { DOMEditor } from 'slate-vue3/dom';
-
-export const HEADING_TYPES = [
-  'heading-one',
-  'heading-two',
-  'heading-three',
-  'heading-four',
-  'heading-five',
-  'heading-six',
-] as const;
-
-export const HEADING_WITH_PARA_TYPES = ['paragraph', ...HEADING_TYPES] as const;
-
-export type HeadingType = (typeof HEADING_TYPES)[number];
+import { type HeadingParagraphType } from '../types';
+import { isHeading, isNormalBlock } from '../utils';
 
 declare module 'slate-vue3/core' {
   interface BaseEditor {
-    formatHeading: (value: HeadingType) => void;
+    formatHeading: (value: HeadingParagraphType) => void;
+    getActiveHeadingType: () => HeadingParagraphType;
   }
 }
 
-function formatHeading(editor: Editor, value: HeadingType) {
-  DOMEditor.focus(editor);
+function getActiveHeadingType(editor: Editor) {
+  if (!editor.selection) return 'paragraph';
 
-  editor.setNodes<Element>({
-    type: value,
+  const nodes = editor.nodes({
+    at: editor.edges(editor.selection)[0],
+    match: isHeading,
   });
+
+  const { done, value } = nodes.next();
+
+  return done ? 'paragraph' : value[0].type;
+}
+
+function formatHeading(editor: Editor, value: HeadingParagraphType) {
+  if (!editor.selection) return;
+
+  const activeType = getActiveHeadingType(editor);
+
+  if (activeType === value) {
+    editor.setNodes<Element>(
+      {
+        type: 'paragraph',
+      },
+      { match: isNormalBlock },
+    );
+  } else {
+    editor.setNodes<Element>(
+      {
+        type: value,
+      },
+      { match: isNormalBlock },
+    );
+  }
 }
 
 function insertBreak(editor: Editor) {
   const [match] = editor.nodes({
-    match: (n) => Element.isElement(n) && /^heading/.test(n.type),
+    match: isHeading,
   });
 
   if (match) {
@@ -38,13 +54,15 @@ function insertBreak(editor: Editor) {
     const isAtEnd = Editor.isEnd(editor, editor.selection!.focus, path);
 
     if (isAtEnd) {
-      const newParagraph = {
-        type: 'paragraph' as const,
-        children: [{ text: '' }],
-      };
-      editor.insertNodes(newParagraph, {
-        at: Path.next(path),
-      });
+      editor.insertNodes(
+        {
+          type: 'paragraph' as const,
+          children: [{ text: '' }],
+        },
+        {
+          at: Path.next(path),
+        },
+      );
       editor.select(Path.next(path));
       return true;
     }
@@ -54,7 +72,7 @@ function insertBreak(editor: Editor) {
 export function withHeading(editor: Editor) {
   const { insertBreak: srcInsertBreak } = editor;
 
-  editor.formatHeading = (value: HeadingType) => {
+  editor.formatHeading = (value: HeadingParagraphType) => {
     formatHeading(editor, value);
   };
 
@@ -62,6 +80,10 @@ export function withHeading(editor: Editor) {
     if (!insertBreak(editor)) {
       srcInsertBreak();
     }
+  };
+
+  editor.getActiveHeadingType = () => {
+    return getActiveHeadingType(editor);
   };
 
   return editor;

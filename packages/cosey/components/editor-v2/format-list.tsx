@@ -1,9 +1,8 @@
 import { useEditor } from 'slate-vue3';
 import Icon from '../icon/icon.vue';
 import Button from './button';
-import { useBlockTypeActive } from './hooks/useBlockTypeActive';
 import { type ListType } from './types';
-import { defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   props: {
@@ -13,7 +12,9 @@ export default defineComponent({
   setup(props) {
     const editor = useEditor();
 
-    const isBlockActive = useBlockTypeActive(props.format);
+    const isListActive = computed(() => {
+      return editor.getListTypeAtStartPoint() === props.format;
+    });
 
     const onClick = () => {
       editor.formatList(props.format);
@@ -21,7 +22,7 @@ export default defineComponent({
 
     return () => {
       return (
-        <Button active={isBlockActive.value} onClick={onClick}>
+        <Button active={isListActive.value} onClick={onClick}>
           <Icon name={props.icon} />
         </Button>
       );

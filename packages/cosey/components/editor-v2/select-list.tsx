@@ -1,9 +1,9 @@
 import { useComponentConfig } from '../config-provider';
-import useStyle from './list.style';
+import useStyle from './select-list.style';
 import { CSSProperties, defineComponent, PropType } from 'vue';
 import { isObject } from '../../utils';
 
-export interface ListItem {
+export interface SelectListItem {
   label: string;
   value: any;
   style?: CSSProperties;
@@ -15,18 +15,18 @@ export default defineComponent({
       type: null,
     },
     list: {
-      type: Array as PropType<ListItem[]>,
+      type: Array as PropType<SelectListItem[]>,
       required: true,
     },
   },
   emits: {
-    select: (item: ListItem) => isObject(item),
+    select: (item: SelectListItem) => isObject(item),
   },
   setup(props, { emit }) {
-    const { prefixCls } = useComponentConfig('editor-v2-list');
+    const { prefixCls } = useComponentConfig('editor-v2-select-list');
     const { hashId } = useStyle(prefixCls);
 
-    const onSelect = (item: ListItem) => {
+    const onSelect = (item: SelectListItem) => {
       emit('select', item);
     };
 
