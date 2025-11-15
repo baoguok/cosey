@@ -69,7 +69,7 @@ export default defineComponent({
       () => props.modelValue,
       () => {
         if (props.validateEvent) {
-          formItem?.validate?.(CHANGE_EVENT).catch((err) => debugWarn(err));
+          formItem?.validate?.(CHANGE_EVENT).catch(debugWarn);
         }
       },
     );

@@ -9,7 +9,7 @@ import {
 } from 'element-plus';
 import { ExtractPropTypes, SlotsType, type PropType } from 'vue';
 import { type RowProps } from '../row';
-import { type ColProps } from '../col';
+import { type ColPublicProps, type ColProps } from '../col';
 import { type FormItemWidth } from './form-item.api';
 import { Arrayable } from '@vueuse/core';
 
@@ -26,7 +26,7 @@ export const formProps = {
     type: Object as PropType<RowProps>,
   },
   colProps: {
-    type: Object as PropType<ColProps>,
+    type: Object as PropType<ColPublicProps>,
   },
   readonly: {
     type: Boolean,

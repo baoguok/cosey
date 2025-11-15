@@ -1,114 +1,112 @@
-import Quill from 'quill';
-import { defineComponent, onMounted, provide, ref, shallowRef, useTemplateRef, watch } from 'vue';
-import { CHANGE_EVENT, useFormItem } from 'element-plus';
-import { editorEmits, editorProps } from './editor.api';
+import { computed, defineComponent, h, watch } from 'vue';
+import { Slate, Editable, RenderPlaceholderProps, useInheritRef } from 'slate-vue3';
+import { createEditor } from 'slate-vue3/core';
+import { withDOM } from 'slate-vue3/dom';
+import { withHistory } from 'slate-vue3/history';
 
-import useStyle, { useHljsStyle } from './editor.style';
-import useImageLoadingStyle from './modules/image-uploader/formats/image-loading.style';
+import Toolbar from './toolbar';
+import ButtonGroup from './button-group';
+import FormatMark from './formats/format-mark';
+import FormatHeading from './formats/format-heading';
+import FormatBlockQuote from './formats/format-block-quote';
+import FormatTable from './formats/format-table';
+import FormatFont from './formats/format-font';
+import FormatSize from './formats/format-size';
+import FormatColor from './formats/format-color';
+import FormatBackground from './formats/format-background';
+import FormatIndent from './formats/format-indent';
+import FormatAlign from './formats/format-align';
+import ListType from './formats/format-list';
+import FormatClear from './formats/format-clear';
+import FormatSource from './formats/format-source';
+import FormatLink from './formats/format-link';
+import FormatCodeBlock from './formats/format-code-block';
+import FormatImage from './formats/format-image';
+import FormatVideo from './formats/format-video';
+import FormatFormula from './formats/format-formula';
 
+import { editorProps, editorSlots, editorEmits } from './editor.api';
+import useStyle from './editor.style';
 import { useComponentConfig } from '../config-provider';
-
-import { syntaxOptions } from './modules/syntax';
-
-import { editorContextKey } from './quillContext';
-
-import Resize from './components/resize/resize.vue';
-import Toolbar from './components/toolbar/toolbar.vue';
-import TableToolbar from './components/table-toolbar/table-toolbar.vue';
-
-import { register } from './quill';
+import { useFocus } from './hooks/useFocus';
+import { withDefaultPlugins } from './plugins';
+import contentPlaceholder from './contents/content-placeholder';
+import { useLocale } from '../../hooks';
+import { usePopoverContainer } from './usePopoverContainer';
+import { CHANGE_EVENT, useFormItem } from 'element-plus';
 import { debugWarn } from '../../utils';
-import { injectUploadConfig } from '../../config/upload';
 
 export default defineComponent({
   name: 'CoEditor',
-  inheritAttrs: false,
   props: editorProps,
+  slots: editorSlots,
   emits: editorEmits,
   setup(props, { emit }) {
-    register();
-
     const { prefixCls } = useComponentConfig('editor', props);
 
     const { hashId } = useStyle(prefixCls);
 
-    useHljsStyle();
+    const { t } = useLocale();
 
-    // quill
+    // editor
+    const editor = withDefaultPlugins(withHistory(withDOM(createEditor())));
 
-    useImageLoadingStyle();
+    editor.children = [{ type: 'paragraph', children: [{ text: '' }] }];
 
-    const { request } = injectUploadConfig() || {};
+    const { isFocus, onFocus, onBlur } = useFocus();
 
-    const element = useTemplateRef<HTMLElement>('element');
+    // popover container
+    const { mountPoint } = usePopoverContainer();
 
-    const quill = shallowRef<any>();
-
-    provide(editorContextKey, { quill });
-
-    const createQuill = () => {
-      return new Quill(element.value!, {
-        modules: {
-          syntax: syntaxOptions,
-          uploader: false,
-          table: true,
-          imageUploader: {
-            upload: (file: File) => {
-              return (props.request || request)?.(file);
-            },
-          },
-          customList: true,
+    // placeholder
+    const renderPlaceholder = ({ attributes }: RenderPlaceholderProps) => {
+      return h(
+        contentPlaceholder,
+        {
+          ...useInheritRef(attributes),
+          style: {},
         },
-        placeholder: props.placeholder,
-      });
+        () => props.placeholder || t('co.common.pleaseInput'),
+      );
     };
 
-    // form
+    // value
+    const innerValue = computed(() => props.modelValue ?? '');
 
-    const innerValue = ref(props.modelValue);
+    let currentValue = '';
 
     const { formItem } = useFormItem();
 
-    const setEditorValue = (value = '') => {
-      quill.value?.clipboard.dangerouslyPasteHTML(value);
-    };
-
-    const initEditor = () => {
-      quill.value = createQuill();
-
-      if (innerValue.value) {
-        setEditorValue(innerValue.value);
-      }
-
-      quill.value.on('text-change', () => {
-        let value = quill.value!.getSemanticHTML();
-        if (value === '<p></p>') {
-          value = '';
+    watch(
+      innerValue,
+      () => {
+        if (innerValue.value !== currentValue) {
+          currentValue = innerValue.value;
+          editor.setContent(innerValue.value);
         }
-        if (value !== innerValue.value) {
-          innerValue.value = value;
-          emit('update:modelValue', value);
-          emit('change', value);
-        }
-      });
-    };
+      },
+      {
+        immediate: true,
+      },
+    );
 
     watch(
       () => props.modelValue,
-      (value) => {
-        if (value !== innerValue.value) {
-          innerValue.value = value;
-          setEditorValue(value);
-        }
+      () => {
         if (props.validateEvent) {
-          formItem?.validate?.(CHANGE_EVENT).catch((err) => debugWarn(err));
+          formItem?.validate?.(CHANGE_EVENT).catch(debugWarn);
         }
       },
     );
 
-    onMounted(() => {
-      initEditor();
-    });
+    const onValueChange = () => {
+      const nextValue = editor.getContent();
+      if (nextValue !== currentValue) {
+        currentValue = nextValue;
+        emit('update:modelValue', currentValue);
+        emit('change', currentValue);
+      }
+    };
 
     return () => {
       return (
@@ -121,16 +119,91 @@ export default defineComponent({
             },
           ]}
         >
-          <Toolbar />
-          <div
-            ref="element"
-            class={`${prefixCls.value}-container`}
-            style={{
-              height: props.height,
-            }}
-          ></div>
-          <Resize />
-          <TableToolbar />
+          <Slate
+            editor={editor}
+            renderElement={editor.renderElement}
+            renderLeaf={editor.renderLeaf}
+            renderPlaceholder={renderPlaceholder}
+            decorate={editor.decorate}
+            onValuechange={onValueChange}
+          >
+            <Toolbar>
+              <ButtonGroup>
+                <FormatHeading />
+                <FormatFont />
+                <FormatSize />
+              </ButtonGroup>
+              <ButtonGroup>
+                <FormatMark format="bold" icon="co:text-bold" />
+                <FormatMark format="italic" icon="co:text-italic" />
+                <FormatMark format="underline" icon="co:text-underline" />
+                <FormatMark format="strikethrough" icon="co:text-strikethrough" />
+              </ButtonGroup>
+              <ButtonGroup>
+                <FormatMark format="superscript" icon="co:text-superscript" />
+                <FormatMark format="subscript" icon="co:text-subscript" />
+              </ButtonGroup>
+              <ButtonGroup>
+                <FormatColor />
+                <FormatBackground />
+              </ButtonGroup>
+              <ButtonGroup>
+                <ListType format="numbered-list" icon="co:list-numbered" />
+                <ListType format="bulleted-list" icon="co:list-bulleted" />
+              </ButtonGroup>
+              <ButtonGroup>
+                <FormatIndent delta={-1} icon="co:text-indent-less" />
+                <FormatIndent delta={+1} icon="co:text-indent-more" />
+              </ButtonGroup>
+              <ButtonGroup>
+                <FormatAlign format="left" icon="co:text-align-left" />
+                <FormatAlign format="center" icon="co:text-align-center" />
+                <FormatAlign format="right" icon="co:text-align-right" />
+                <FormatAlign format="justify" icon="co:text-align-justify" />
+              </ButtonGroup>
+              <ButtonGroup>
+                <FormatBlockQuote />
+                <FormatMark format="code" icon="co:code" />
+              </ButtonGroup>
+              <ButtonGroup>
+                <FormatLink />
+                <FormatImage />
+                <FormatVideo />
+                <FormatTable />
+                <FormatCodeBlock />
+                <FormatFormula />
+              </ButtonGroup>
+              <ButtonGroup>
+                <FormatClear />
+              </ButtonGroup>
+              <ButtonGroup>
+                <FormatSource />
+              </ButtonGroup>
+            </Toolbar>
+            <div
+              class={[
+                `${prefixCls.value}-container`,
+                {
+                  'is-focus': isFocus.value,
+                },
+              ]}
+            >
+              <div
+                ref={mountPoint}
+                class={[`${prefixCls.value}-wrapper`]}
+                style={{
+                  height: props.height,
+                  maxHeight: props.maxHeight,
+                }}
+              >
+                <Editable
+                  placeholder=" "
+                  class={`${prefixCls.value}-content`}
+                  {...{ onFocus: onFocus, onBlur: onBlur, onKeydown: editor.onKeydown }}
+                />
+              </div>
+            </div>
+          </Slate>
         </div>
       );
     };

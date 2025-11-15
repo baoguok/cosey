@@ -6,34 +6,34 @@ export const inputNumberRangeProps = {
     type: Array as PropType<number[]>,
   },
   min: {
-    type: Number as PropType<number>,
+    type: Number,
   },
   max: {
-    type: Number as PropType<number>,
+    type: Number,
   },
   step: {
-    type: Number as PropType<number>,
+    type: Number,
   },
   stepStrictly: {
-    type: Boolean as PropType<boolean>,
+    type: Boolean,
   },
   precision: {
-    type: Number as PropType<number>,
+    type: Number,
   },
   startPlaceholder: {
-    type: String as PropType<string>,
+    type: String,
   },
   endPlaceholder: {
-    type: String as PropType<string>,
+    type: String,
   },
   readonly: {
-    type: Boolean as PropType<boolean>,
+    type: Boolean,
   },
   disabled: {
-    type: Boolean as PropType<boolean>,
+    type: Boolean,
   },
   validateEvent: {
-    type: Boolean as PropType<boolean>,
+    type: Boolean,
     default: true,
   },
 };

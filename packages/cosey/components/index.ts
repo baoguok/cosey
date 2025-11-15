@@ -11,7 +11,7 @@ export * from './cssinjs';
 export * from './descriptions';
 export * from './dnd-sort';
 export * from './editor';
-export * from './editor-v2';
+export * from './editor';
 export * from './field';
 export * from './file-card';
 export * from './form';
