@@ -1,6 +1,6 @@
 import { type Editor } from 'slate-vue3/core';
 import { h } from 'vue';
-import { VideoComponent } from '../video-component';
+import ContentVideo from '../contents/content-video';
 import { useInheritRef } from 'slate-vue3';
 import { CustomEditor, VideoElement } from '../types';
 
@@ -37,7 +37,7 @@ export function withVideo(editor: Editor) {
 
     if (element.type === 'video') {
       return h(
-        VideoComponent,
+        ContentVideo,
         {
           ...useInheritRef(attributes),
           url: element.url,

@@ -1,8 +1,8 @@
 <template>
   <co-container>
-    <!-- <el-card shadow="never" class="mb-4">
+    <el-card shadow="never" class="mb-4">
       <Editor></Editor>
-    </el-card> -->
+    </el-card>
 
     <el-card shadow="never" class="mb-4">
       <EditorV2></EditorV2>

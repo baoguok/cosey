@@ -27,7 +27,7 @@ import {
 } from '../../utils';
 import UploadItem from './upload-item';
 import { TransitionGroup } from '../transition-group';
-import Icon from '../icon/icon.vue';
+import Icon from '../icon/icon';
 
 import useStyle from './upload.style';
 import { useComponentConfig } from '../config-provider';

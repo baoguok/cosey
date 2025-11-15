@@ -6,7 +6,7 @@ import {
   defaultTableActionItemProps,
   tableActionItemProps,
 } from './item.api';
-import Icon from '../icon/icon.vue';
+import Icon from '../icon/icon';
 import { useToken } from '../theme';
 import { useLocale } from '../../hooks';
 import { useConfig } from '../config-provider';

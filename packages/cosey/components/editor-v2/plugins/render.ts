@@ -7,7 +7,7 @@ import {
 import { Editor } from 'slate-vue3/core';
 import { type CSSProperties, h, VNode } from 'vue';
 import { mapElementTypeTagName } from '../types';
-import { PlaceholderComponent } from '../placeholder-component';
+import ContentPlaceholder from '../contents/content-placeholder';
 
 export const INDENT_DELTA = 40;
 
@@ -72,7 +72,7 @@ const renderLeaf = ({ leaf, attributes, children }: RenderLeafProps) => {
 
 const renderPlaceholder = ({ children, attributes }: RenderPlaceholderProps) => {
   return h(
-    PlaceholderComponent,
+    ContentPlaceholder,
     {
       ...useInheritRef(attributes),
       style: {},

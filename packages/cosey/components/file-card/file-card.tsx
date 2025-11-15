@@ -1,4 +1,4 @@
-import Icon from '../icon/icon.vue';
+import Icon from '../icon/icon';
 import { fileCardProps, fileCardSlots } from './file-card.api';
 import useStyle from './file-card.style';
 import { useComponentConfig } from '../config-provider';

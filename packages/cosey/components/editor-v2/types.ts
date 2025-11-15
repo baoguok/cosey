@@ -1,4 +1,3 @@
-/// <reference types="vite/client" />
 import { Descendant, BaseEditor, BaseRange } from 'slate-vue3/core';
 import type { DOMEditor } from 'slate-vue3/dom';
 import { type FormatAlign } from './plugins/align';
@@ -46,17 +45,18 @@ export const mapElementTypeTagName: Record<string, string> = {
   'table-body': 'tbody',
   'table-row': 'tr',
   'table-cell': 'td',
+  formula: 'math',
 };
 
 export const tagToElementTypeMap = {
   P: 'paragraph',
+  BLOCKQUOTE: 'block-quote',
   H1: 'heading-one',
   H2: 'heading-two',
   H3: 'heading-three',
   H4: 'heading-four',
   H5: 'heading-five',
   H6: 'heading-six',
-  BLOCKQUOTE: 'block-quote',
   UL: 'bulleted-list',
   OL: 'numbered-list',
   LI: 'list-item',
@@ -160,29 +160,7 @@ export type NestedListItemElement = {
   parent: NestedBulletedListElement | NestedNumberedListElement | null;
 };
 
-export type ImageElement = {
-  type: 'image';
-  url: string;
-  width?: string | number;
-  height?: string | number;
-  file?: File;
-  children: EmptyText[];
-};
-
-export type VideoElement = {
-  type: 'video';
-  url: string;
-  width?: string | number;
-  height?: string | number;
-  children: EmptyText[];
-};
-
-export type LinkElement = {
-  type: 'link';
-  url: string;
-  target: string;
-  children: Descendant[];
-};
+// table element
 
 export type TableElement = {
   type: 'table';
@@ -208,6 +186,40 @@ export type TableCellElement = {
   type: 'table-cell';
   children: Descendant[];
 };
+
+// inline element
+
+export type ImageElement = {
+  type: 'image';
+  url: string;
+  width?: string | number;
+  height?: string | number;
+  file?: File;
+  children: EmptyText[];
+};
+
+export type VideoElement = {
+  type: 'video';
+  url: string;
+  width?: string | number;
+  height?: string | number;
+  children: EmptyText[];
+};
+
+export type LinkElement = {
+  type: 'link';
+  url: string;
+  target: string;
+  children: Descendant[];
+};
+
+export type FormulaElement = {
+  type: 'formula';
+  formula: string;
+  children: EmptyText[];
+};
+
+// code
 
 export type CodeBlockElement = {
   type: 'code-block';
@@ -246,6 +258,7 @@ export type CustomElement =
   | ImageElement
   | VideoElement
   | LinkElement
+  | FormulaElement
   | TableElement
   | TableHeadElement
   | TableBodyElement

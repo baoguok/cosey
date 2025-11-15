@@ -6,23 +6,23 @@ import { withHistory } from 'slate-vue3/history';
 
 import Toolbar from './toolbar';
 import ButtonGroup from './button-group';
-import FormatMark from './format-mark';
-import FormatHeading from './format-heading';
-import FormatBlockQuote from './format-block-quote';
-import FormatTable from './format-table';
-import FormatFont from './format-font';
-import FormatSize from './format-size';
-import FormatColor from './format-color';
-import FormatBackground from './format-background';
-import FormatIndent from './format-indent';
-import FormatAlign from './format-align';
-import ListType from './format-list';
-import FormatClear from './format-clear';
-import FormatSource from './format-source';
-import FormatLink from './format-link';
-import FormatCodeBlock from './format-code-block';
-import FormatImage from './format-image';
-import FormatVideo from './format-video';
+import FormatMark from './formats/format-mark';
+import FormatHeading from './formats/format-heading';
+import FormatBlockQuote from './formats/format-block-quote';
+import FormatTable from './formats/format-table';
+import FormatFont from './formats/format-font';
+import FormatSize from './formats/format-size';
+import FormatColor from './formats/format-color';
+import FormatBackground from './formats/format-background';
+import FormatIndent from './formats/format-indent';
+import FormatAlign from './formats/format-align';
+import ListType from './formats/format-list';
+import FormatClear from './formats/format-clear';
+import FormatSource from './formats/format-source';
+import FormatLink from './formats/format-link';
+import FormatCodeBlock from './formats/format-code-block';
+import FormatImage from './formats/format-image';
+import FormatVideo from './formats/format-video';
 
 import { editorV2Props, editorV2Slots, editorV2Emits, editorContextKey } from './editor-v2.api';
 import useStyle from './editor-v2.style';
@@ -30,6 +30,7 @@ import { useComponentConfig } from '../config-provider';
 import { type CustomElement } from './types';
 import { useFocus } from './hooks/useFocus';
 import { withDefaultPlugins } from './plugins';
+import FormatFormula from './formats/format-formula';
 
 const list = {
   type: 'bulleted-list',
@@ -447,6 +448,7 @@ export default defineComponent({
                 <FormatVideo />
                 <FormatTable />
                 <FormatCodeBlock />
+                <FormatFormula />
               </ButtonGroup>
               <ButtonGroup>
                 <FormatClear />

@@ -65,7 +65,7 @@ import { type FieldType, Field } from '../field';
 import { type FormQueryContext, formQueryContextSymbol } from '../form-query/form-query.api';
 import { OptionalWrapper } from '../optional-wrapper';
 import { Col } from '../col';
-import Icon from '../icon/icon.vue';
+import Icon from '../icon/icon';
 import { useFormItemWidth } from './useFormItemWidth';
 import { omitUndefined, createMergedExpose, isString, isNumber, toArray } from '../../utils';
 import { ElFormItem, ElTooltip, type FormItemInstance } from 'element-plus';

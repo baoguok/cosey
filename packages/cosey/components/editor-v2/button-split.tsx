@@ -1,7 +1,7 @@
 import { defineComponent, inject, onMounted, useTemplateRef } from 'vue';
 import { useComponentConfig } from '../config-provider';
-import Icon from '../icon/icon.vue';
-import { pickerContextKey } from './picker.api';
+import Icon from '../icon/icon';
+import { pickerContextKey } from './formats/picker.api';
 import Button, { type EditorButtonExpose } from './button';
 
 export default defineComponent({

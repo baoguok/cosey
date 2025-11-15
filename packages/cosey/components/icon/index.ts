@@ -1,7 +1,7 @@
 import { withInstall } from '../utils';
-import Icon from './icon.vue';
+import Icon from './icon';
 
-export * from './icon';
+export * from './icon.api';
 
 const _Icon = withInstall(Icon);
 

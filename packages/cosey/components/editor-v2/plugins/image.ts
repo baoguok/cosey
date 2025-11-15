@@ -1,7 +1,7 @@
 import { useInheritRef } from 'slate-vue3';
 import { Editor } from 'slate-vue3/core';
 import { h } from 'vue';
-import { ImageComponent } from '../image-component';
+import ContentImage from '../contents/content-image';
 import { isImageUrl } from '../../../utils';
 import type { CustomEditor, ImageElement } from '../types';
 
@@ -63,7 +63,7 @@ export function withImage(editor: Editor) {
 
     if (element.type === 'image') {
       return h(
-        ImageComponent,
+        ContentImage,
         {
           ...useInheritRef(attributes),
           url: element.url,

@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue';
-import Icon from '../icon/icon.vue';
+import Icon from '../icon/icon';
 import useStyle from './close.style';
 import { useComponentConfig } from '../config-provider';
 import { closeEmits } from './close.api';

@@ -19,6 +19,7 @@ import { withImage } from './image';
 import { withVideo } from './video';
 import { withHtml } from './html';
 import { withTable } from './table';
+import { withFormula } from './formula';
 
 const plugins = [
   withKeyboard,
@@ -41,6 +42,7 @@ const plugins = [
   withImage,
   withVideo,
   withTable,
+  withFormula,
 ];
 
 export function withDefaultPlugins(editor: Editor) {

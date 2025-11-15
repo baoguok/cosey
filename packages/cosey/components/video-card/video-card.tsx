@@ -2,7 +2,7 @@ import { defineComponent, ref } from 'vue';
 import { type VideoCardExpose, videoCardProps, videoCardEmits } from './video-card.api';
 import { useLockscreen } from 'element-plus';
 import VideoViewer from '../video-viewer/video-viewer';
-import Icon from '../icon/icon.vue';
+import Icon from '../icon/icon';
 import useStyle from './video-card.style';
 import { useComponentConfig } from '../config-provider';
 

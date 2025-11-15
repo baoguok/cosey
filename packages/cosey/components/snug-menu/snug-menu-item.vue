@@ -25,7 +25,7 @@ import {
   type SnugMenuItemSlots,
 } from './snug-menu-item';
 import { type SnugMenuContext, snugMenuContextSymbol } from './snug-menu';
-import Icon from '../icon/icon.vue';
+import Icon from '../icon/icon';
 import { useComponentConfig } from '../config-provider';
 import { useI18n } from 'vue-i18n';
 

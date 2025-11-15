@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import useStyle from './table-column.style';
 import { useComponentConfig } from '../../config-provider';
 import { useLocale } from '../../../hooks';
-import Icon from '../../icon/icon.vue';
+import Icon from '../../icon/icon';
 import { useToken } from '../../theme';
 
 const TableColumn = defineComponent({

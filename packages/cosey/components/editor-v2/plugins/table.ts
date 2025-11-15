@@ -1,6 +1,6 @@
 import { h } from 'vue';
 import { Element, Point, Editor, Range, Node, Path, NodeEntry } from 'slate-vue3/core';
-import { isPointAtFirstLine, isPointAtLastLine } from '../utils';
+import { isBlockElement, isEdgesEqual, isPointAtFirstLine, isPointAtLastLine } from '../utils';
 import { Hotkeys } from './keyboard';
 import {
   type TableElement,
@@ -9,7 +9,7 @@ import {
   type TableBodyElement,
   type TableHeadElement,
 } from '../types';
-import { TableComponent } from '../table-component';
+import ContentTable from '../contents/content-table';
 import { DOMEditor } from 'slate-vue3/dom';
 import { useInheritRef } from 'slate-vue3';
 
@@ -67,6 +67,23 @@ function createTableRow(cellCount: number): TableRowElement {
 }
 
 function insertTable(editor: Editor, rowCount: number, columnCount: number) {
+  if (!editor.selection) return;
+
+  const generator = editor.nodes({
+    at: editor.selection,
+    mode: 'lowest',
+    match(n, path) {
+      return (
+        isBlockElement(editor, n) &&
+        isEdgesEqual(editor.edges(path), editor.edges(editor.selection!))
+      );
+    },
+  });
+
+  const { done, value } = generator.next();
+
+  const shouldRemoveNode = !done;
+
   const table: Node = {
     type: 'table',
     children: [
@@ -78,7 +95,23 @@ function insertTable(editor: Editor, rowCount: number, columnCount: number) {
       },
     ],
   };
-  editor.insertNodes(table);
+  const nodes: Node[] = [table];
+
+  const after = editor.after(editor.selection);
+  if (!after) {
+    nodes.push({
+      type: 'paragraph',
+      children: [{ text: '' }],
+    });
+  }
+
+  editor.insertNodes(nodes);
+
+  if (shouldRemoveNode) {
+    editor.removeNodes({
+      at: value[1],
+    });
+  }
 }
 
 function insertRow(editor: Editor, _tablePath: Path, cellPath: Path, isNext?: boolean) {
@@ -350,6 +383,18 @@ function deleteForward(editor: Editor) {
       });
 
       if (!generator.next().done) {
+        const [[node, path]] = editor.nodes({
+          at: editor.selection,
+          mode: 'lowest',
+          match: (n) => isBlockElement(editor, n),
+        });
+
+        if (editor.isEmpty(node)) {
+          editor.removeNodes({
+            at: path,
+          });
+        }
+
         return true;
       }
     }
@@ -550,28 +595,49 @@ function onKeydown(editor: Editor, event: KeyboardEvent) {
         match: isTableCell,
         at: editor.selection.focus,
       });
-      if (cell) {
-        event.preventDefault();
-        const cellPath = cell[1];
-        if (
-          isPointAtLastLine(editor, cellPath, editor.selection.focus, () => {
-            const cellIndex = cellPath[cellPath.length - 1];
 
-            const [, rowPath] = editor.parent(cellPath);
-            const maybeNextRow = editor.next({
-              at: rowPath,
-            });
-            if (maybeNextRow && isTableRow(maybeNextRow[0])) {
-              const nextRowCellPath = [...maybeNextRow[1], cellIndex];
-              editor.select(editor.end(nextRowCellPath));
-              return true;
-            }
-          })
-        ) {
-          event.preventDefault();
-          return true;
+      if (!cell) return;
+
+      const cellPath = cell[1];
+
+      if (isPointAtLastLine(editor, cellPath, editor.selection.focus)) {
+        event.preventDefault();
+
+        const cellIndex = cellPath[cellPath.length - 1];
+
+        const [[, tablePath]] = editor.nodes({
+          at: cellPath,
+          match: isTable,
+        });
+
+        const [, rowPath] = editor.parent(cellPath);
+        const maybeNextRow = editor.next({
+          at: rowPath,
+          match: (n, path) => isTableRow(n) && Path.isAncestor(tablePath, path),
+        });
+        if (maybeNextRow) {
+          const nextRowCellPath = [...maybeNextRow[1], cellIndex];
+          editor.select(editor.start(nextRowCellPath));
+        } else {
+          const after = editor.after(tablePath);
+          if (after) {
+            editor.select(after);
+          } else {
+            editor.insertNodes(
+              {
+                type: 'paragraph',
+                children: [{ text: '' }],
+              },
+              {
+                at: Path.next(tablePath),
+              },
+            );
+            editor.select(Path.next(tablePath));
+          }
         }
       }
+
+      return true;
     }
   }
   if (Hotkeys.isMoveUp(event)) {
@@ -580,28 +646,49 @@ function onKeydown(editor: Editor, event: KeyboardEvent) {
         match: isTableCell,
         at: editor.selection.focus,
       });
-      if (cell) {
-        event.preventDefault();
-        const cellPath = cell[1];
-        if (
-          isPointAtFirstLine(editor, cellPath, editor.selection.focus, () => {
-            const cellIndex = cellPath[cellPath.length - 1];
 
-            const [, rowPath] = editor.parent(cellPath);
-            const maybeNextRow = editor.previous({
-              at: rowPath,
-            });
-            if (maybeNextRow && isTableRow(maybeNextRow[0])) {
-              const nextRowCellPath = [...maybeNextRow[1], cellIndex];
-              editor.select(editor.end(nextRowCellPath));
-              return true;
-            }
-          })
-        ) {
-          event.preventDefault();
-          return true;
+      if (!cell) return;
+
+      const cellPath = cell[1];
+
+      if (isPointAtFirstLine(editor, cellPath, editor.selection.focus)) {
+        event.preventDefault();
+
+        const cellIndex = cellPath[cellPath.length - 1];
+
+        const [[, tablePath]] = editor.nodes({
+          at: cellPath,
+          match: isTable,
+        });
+
+        const [, rowPath] = editor.parent(cellPath);
+        const maybeNextRow = editor.previous({
+          at: rowPath,
+          match: (n, path) => isTableRow(n) && Path.isAncestor(tablePath, path),
+        });
+        if (maybeNextRow) {
+          const nextRowCellPath = [...maybeNextRow[1], cellIndex];
+          editor.select(editor.end(nextRowCellPath));
+        } else {
+          const before = editor.before(tablePath);
+          if (before) {
+            editor.select(before);
+          } else {
+            editor.insertNodes(
+              {
+                type: 'paragraph',
+                children: [{ text: '' }],
+              },
+              {
+                at: [0],
+              },
+            );
+            editor.select([0]);
+          }
         }
       }
+
+      return true;
     }
   }
 }
@@ -730,8 +817,9 @@ export function withTable(editor: Editor) {
     const { attributes, children, element } = props;
 
     switch (element.type) {
-      case 'table':
-        return h(TableComponent, useInheritRef(attributes), () => children);
+      case 'table': {
+        return h(ContentTable, useInheritRef(attributes), () => children);
+      }
       case 'table-head':
         return h('thead', attributes, children);
       case 'table-body':

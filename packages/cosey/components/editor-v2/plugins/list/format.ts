@@ -2,6 +2,7 @@ import { Editor, Element, Path } from 'slate-vue3/core';
 import { type ListItemElement, type ListType, type ParagraphElement } from '../../types';
 import { type NodeEntry } from 'slate-vue3/core';
 import { getListTypeAtStartPoint, isList, isListItem } from './utils';
+import { isBlockElement } from '../../utils';
 
 const replaceableElements = [
   'block',
@@ -29,7 +30,7 @@ function findConsecutiveListItems(editor: Editor) {
   // 获取选区内的所有节点
   const nodes = Array.from(
     editor.nodes({
-      match: (n) => Element.isElement(n) && Editor.isBlock(editor, n),
+      match: (n) => isBlockElement(editor, n),
     }),
   );
 

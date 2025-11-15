@@ -1,6 +1,6 @@
 import { Editor } from 'slate-vue3/core';
 import { ListItemElement, ListType } from '../../types';
-import { ListItemComponent } from '../../list-item-component';
+import ContentListItem from '../../contents/content-list-item';
 import { h } from 'vue';
 import { useInheritRef } from 'slate-vue3';
 import { normalizeNode } from './normalize';
@@ -35,7 +35,7 @@ export function withList(editor: Editor) {
         return h('ol', attributes, children);
       case 'list-item':
         return h(
-          ListItemComponent,
+          ContentListItem,
           {
             ...useInheritRef(attributes),
             level: element.level,

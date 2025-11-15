@@ -30,6 +30,10 @@ export function isHeading(n: unknown): n is HeadingElement {
   return Element.isElement(n) && HEADING_TYPES.includes(n.type as HeadingType);
 }
 
+export function isBlockElement(editor: Editor, n: unknown): n is CustomElement {
+  return Element.isElement(n) && editor.isBlock(n);
+}
+
 export function liftToRootNode(editor: Editor, path: Path) {
   let length = path.length;
   let currentPath = path;
@@ -156,59 +160,37 @@ export function isRangeEqual(r1: Range, r2: Range) {
 /**
  * 判断某个 point 是否在指定块元素的首行
  */
-export function isPointAtFirstLine(
-  editor: Editor,
-  elementPath: Path,
-  point: Point,
-  callback: () => void,
-) {
-  const containerStart = Editor.start(editor, elementPath);
-
-  if (Point.equals(point, containerStart)) {
-    return callback();
-  }
-
-  const string = Editor.string(editor, {
-    anchor: containerStart,
-    focus: point,
+export function isPointAtFirstLine(editor: Editor, elementPath: Path, point: Point) {
+  const [currentBlock] = editor.nodes({
+    at: point,
+    mode: 'lowest',
+    match: (n) => isBlockElement(editor, n),
   });
 
-  const result = !string.includes('\n');
+  const previousBlock = editor.previous({
+    at: currentBlock[1],
+    match: (n, path) => isBlockElement(editor, n) && Path.isAncestor(elementPath, path),
+  });
 
-  if (result) {
-    return callback();
-  }
-
-  return result;
+  return !previousBlock;
 }
 
 /**
  * 判断某个 point 是否在指定块元素的尾行
  */
-export function isPointAtLastLine(
-  editor: Editor,
-  elementPath: Path,
-  point: Point,
-  callback: () => void,
-) {
-  const containerEnd = Editor.end(editor, elementPath);
-
-  if (Point.equals(point, containerEnd)) {
-    return callback();
-  }
-
-  const string = Editor.string(editor, {
-    anchor: point,
-    focus: containerEnd,
+export function isPointAtLastLine(editor: Editor, elementPath: Path, point: Point) {
+  const [currentBlock] = editor.nodes({
+    at: point,
+    mode: 'lowest',
+    match: (n) => isBlockElement(editor, n),
   });
 
-  const result = !string.includes('\n');
+  const nextBlock = editor.next({
+    at: currentBlock[1],
+    match: (n, path) => isBlockElement(editor, n) && Path.isAncestor(elementPath, path),
+  });
 
-  if (result) {
-    return callback();
-  }
-
-  return result;
+  return !nextBlock;
 }
 
 /**
@@ -336,4 +318,8 @@ export function getNextSibling<T extends Node>(
       return [childNode as T, childPath];
     }
   }
+}
+
+export function isEdgesEqual(edges: [Point, Point], another: [Point, Point]) {
+  return Point.equals(edges[0], another[0]) && Point.equals(edges[1], another[1]);
 }

@@ -2,7 +2,7 @@ import { Editor, Element, Location } from 'slate-vue3/core';
 import { LinkElement } from '../types';
 import { useInheritRef, type RenderElementProps } from 'slate-vue3';
 import { h } from 'vue';
-import { LinkComponent } from '../link-component';
+import ContentLink from '../contents/content-link';
 
 declare module 'slate-vue3/core' {
   interface BaseEditor {
@@ -47,7 +47,7 @@ export function withLink(editor: Editor) {
 
     if (element.type === 'link') {
       return h(
-        LinkComponent,
+        ContentLink,
         {
           ...useInheritRef(attributes),
           url: element.url,

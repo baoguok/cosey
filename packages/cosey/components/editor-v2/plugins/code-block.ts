@@ -16,7 +16,7 @@ import { type RenderElementProps, toRawWeakMap, useInheritRef } from 'slate-vue3
 import { Editor, Element, Node, NodeEntry, Path, Range, Text } from 'slate-vue3/core';
 import { CodeBlockElement, ParagraphElement } from '../types';
 import { h } from 'vue';
-import { CodeBlock } from '../code-block';
+import ContentCodeBlock from '../contents/content-code-block';
 import { Hotkeys } from './keyboard';
 import {
   getRangePosition,
@@ -425,7 +425,7 @@ export function withCodeBlock(editor: Editor) {
     const { attributes, children, element } = props;
 
     if (element.type === 'code-block') {
-      return h(CodeBlock, useInheritRef(attributes), () => children);
+      return h(ContentCodeBlock, useInheritRef(attributes), () => children);
     }
     if (element.type === 'code-line') {
       return h('div', { ...attributes, style: { position: 'relative' } }, children);

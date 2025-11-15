@@ -1,7 +1,7 @@
 import { computed, defineComponent, ref, watch } from 'vue';
 import { formGroupEmits, formGroupProps, formGroupSlots } from './form-group.api';
 import { reactiveOmit } from '@vueuse/core';
-import Icon from '../icon/icon.vue';
+import Icon from '../icon/icon';
 import useStyle from './form-group.style';
 import { useComponentConfig } from '../config-provider';
 import { ElTooltip } from 'element-plus';
