@@ -56,7 +56,7 @@ export const highlightProps = {
   },
   lang: {
     type: String as PropType<Lang | (string & {})>,
-    default: 'txt',
+    default: 'text',
   },
   maxHeight: {
     type: String,

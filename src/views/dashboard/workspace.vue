@@ -1,10 +1,6 @@
 <template>
   <co-container>
-    <el-card shadow="never" class="mb-4">
-      <co-editor v-model="value" />
-    </el-card>
-
-    <co-card class="relative" style="height: 400px">
+    <co-card class="relative">
       <div class="flex">
         <el-avatar :size="80" class="flex-none" :src="userStore.userInfo?.avatar">
           <co-icon name="carbon:user" />
@@ -25,7 +21,6 @@
 
 <script lang="ts" setup>
 import { useUserStore } from 'cosey';
-import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -33,8 +28,6 @@ const { t } = useI18n();
 defineOptions({
   name: 'Workspace',
 });
-
-const value = ref('');
 
 const userStore = useUserStore();
 </script>

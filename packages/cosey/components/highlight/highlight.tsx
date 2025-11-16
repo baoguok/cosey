@@ -1,7 +1,7 @@
 import { computed, defineComponent } from 'vue';
 import { ElScrollbar } from 'element-plus';
 import { Prism, highlightProps, highlightSlots } from './highlight.api';
-import useStyle from './highlight.style';
+import useStyle, { useGlobalHighlightStyle } from './highlight.style';
 import { useComponentConfig } from '../config-provider';
 import Copy from '../copy/copy';
 
@@ -14,10 +14,12 @@ export default defineComponent({
 
     const { hashId } = useStyle(prefixCls);
 
+    useGlobalHighlightStyle();
+
     const highlightedCode = computed(() =>
       Prism.highlight(
         props.code || '',
-        Prism.languages[props.lang] || Prism.languages['txt'],
+        Prism.languages[props.lang] || Prism.languages['text'],
         props.lang,
       ),
     );

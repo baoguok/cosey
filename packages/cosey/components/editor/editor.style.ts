@@ -231,6 +231,7 @@ const getEditorStyle: GenerateStyle<AliasTokenWithCommonCls, CSSInterpolation> =
         '&.is-focus::before': {
           content: '""',
           position: 'absolute',
+          zIndex: 10,
           inset: 0,
           border: `2px solid ${token.colorPrimaryHover}`,
           borderRadius: token.borderRadius,

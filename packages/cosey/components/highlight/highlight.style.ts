@@ -1,9 +1,10 @@
 import { CSSObject } from '../cssinjs';
-import { getSimpleStyleHook } from '../theme';
+import { getGlobalStyleHook, getSimpleStyleHook } from '../theme';
 
 export function getHljsDark(): CSSObject {
   return {
     'pre[class*="language-"], code[class*="language-"]': {
+      display: 'block',
       color: '#d4d4d4',
       fontSize: '13px',
       textShadow: 'none',
@@ -34,12 +35,10 @@ export function getHljsDark(): CSSObject {
     },
     'pre[class*="language-"]': {
       padding: '1em',
-      margin: '.5em 0',
       overflow: 'auto',
       background: '#1e1e1e',
     },
     ':not(pre) > code[class*="language-"]': {
-      padding: '.1em .3em',
       borderRadius: '.3em',
       color: '#db4c69',
       background: '#1e1e1e',
@@ -196,6 +195,7 @@ export function getHljsDark(): CSSObject {
 export function getHljsLight(): CSSObject {
   return {
     'code[class*="language-"], pre[class*="language-"]': {
+      display: 'block',
       background: 'hsl(230, 1%, 98%)',
       color: 'hsl(230, 8%, 24%)',
       fontFamily: '"Fira Code", "Fira Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace',
@@ -225,12 +225,10 @@ export function getHljsLight(): CSSObject {
       },
     'pre[class*="language-"]': {
       padding: '1em',
-      margin: '0.5em 0',
       overflow: 'auto',
       borderRadius: '0.3em',
     },
     ':not(pre) > code[class*="language-"]': {
-      padding: '0.2em 0.3em',
       borderRadius: '0.3em',
       whiteSpace: 'normal',
     },
@@ -357,14 +355,13 @@ export default getSimpleStyleHook('CoHighlight', (token) => {
         insetInlineEnd: token.sizeXXS,
         zIndex: 10,
       },
-
-      ':root.dark &': {
-        ...getHljsDark(),
-      },
-
-      ':root:not(.dark) &': {
-        ...getHljsLight(),
-      },
     },
+  };
+});
+
+export const useGlobalHighlightStyle = getGlobalStyleHook('CoGlobalHighlight', () => {
+  return {
+    ':root.dark': getHljsDark(),
+    ':root:not(.dark)': getHljsLight(),
   };
 });

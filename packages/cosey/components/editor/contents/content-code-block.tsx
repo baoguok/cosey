@@ -3,11 +3,12 @@ import { useEditor, useElement } from 'slate-vue3';
 import { DOMEditor } from 'slate-vue3/dom';
 import { isString } from '../../../utils';
 import { languageOptions } from '../plugins/code-block';
+import { useGlobalHighlightStyle } from '../../highlight/highlight.style';
 
 export default defineComponent({
   name: 'CoEditorContentCodeBlock',
   props: {
-    value: {
+    language: {
       type: String,
       default: 'text',
     },
@@ -16,27 +17,31 @@ export default defineComponent({
     'update:value': (value: string) => isString(value),
   },
   setup(props, { slots }) {
-    const innerValue = useModel(props, 'value');
+    useGlobalHighlightStyle();
+
+    const language = useModel(props, 'language');
     const editor = useEditor();
 
     const element = useElement();
 
     const onChange = (e: Event) => {
-      innerValue.value = (e.target as HTMLSelectElement).value;
+      language.value = (e.target as HTMLSelectElement).value;
 
       const path = DOMEditor.findPath(editor, element.value);
-      editor.setNodes({ language: innerValue.value }, { at: path });
+      editor.setNodes({ language: language.value }, { at: path });
     };
 
     return () => {
       return (
-        <pre class={`language-${innerValue.value}`}>
-          <select value={innerValue.value} contenteditable={false} onChange={onChange}>
-            {languageOptions.map((option) => (
-              <option value={option.value}>{option.label}</option>
-            ))}
-          </select>
-          <div>{slots.default?.()}</div>
+        <pre class={`language-${language.value}`}>
+          <code class={`language-${language.value}`}>
+            <select value={language.value} contenteditable={false} onChange={onChange}>
+              {languageOptions.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
+            </select>
+            <div>{slots.default?.()}</div>
+          </code>
         </pre>
       );
     };

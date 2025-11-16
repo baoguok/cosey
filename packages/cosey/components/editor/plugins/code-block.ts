@@ -27,6 +27,7 @@ export const languageOptions = [
   { value: 'json', label: 'JSON' },
   { value: 'markdown', label: 'Markdown' },
   { value: 'php', label: 'PHP' },
+  { value: 'bash', label: 'Bash' },
   { value: 'java', label: 'Java' },
   { value: 'python', label: 'Python' },
   { value: 'sql', label: 'SQL' },
@@ -416,7 +417,14 @@ export function withCodeBlock(editor: Editor) {
     const { attributes, children, element } = props;
 
     if (element.type === 'code-block') {
-      return h(ContentCodeBlock, useInheritRef(attributes), () => children);
+      return h(
+        ContentCodeBlock,
+        {
+          ...useInheritRef(attributes),
+          language: element.language,
+        },
+        () => children,
+      );
     }
     if (element.type === 'code-line') {
       return h('div', { ...attributes, style: { position: 'relative' } }, children);
