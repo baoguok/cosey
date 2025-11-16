@@ -1,5 +1,5 @@
 <template>
-  <co-highlight :code="code" lang="json"></co-highlight>
+  <co-highlight :code="code" lang="json" />
 </template>
 
 <script lang="ts" setup>

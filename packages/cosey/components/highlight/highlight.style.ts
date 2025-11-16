@@ -3,110 +3,333 @@ import { getSimpleStyleHook } from '../theme';
 
 export function getHljsDark(): CSSObject {
   return {
-    '.hljs': {
-      color: '#abb2bf',
-      background: '#282c34',
+    'pre[class*="language-"], code[class*="language-"]': {
+      color: '#d4d4d4',
+      fontSize: '13px',
+      textShadow: 'none',
+      fontFamily: 'Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace',
+      direction: 'ltr',
+      textAlign: 'left',
+      whiteSpace: 'pre',
+      wordSpacing: 'normal',
+      wordBreak: 'normal',
+      lineHeight: 1.5,
+      mozTabSize: 4,
+      oTabSize: 4,
+      tabSize: 4,
+      webkitHyphens: 'none',
+      mozHyphens: 'none',
+      msHyphens: 'none',
+      hyphens: 'none',
     },
-
-    '.hljs-comment,.hljs-quote': {
-      color: '#5c6370',
-      fontStyle: 'italic',
-    },
-
-    '.hljs-doctag,.hljs-keyword,.hljs-formula': {
-      color: '#c678dd',
-    },
-
-    '.hljs-section,.hljs-name,.hljs-selector-tag,.hljs-deletion,.hljs-subst': {
-      color: '#e06c75',
-    },
-
-    '.hljs-literal': {
-      color: '#56b6c2',
-    },
-
-    '.hljs-string,.hljs-regexp,.hljs-addition,.hljs-attribute,.hljs-meta .hljs-string': {
-      color: '#98c379',
-    },
-
-    '.hljs-attr,.hljs-variable,.hljs-template-variable,.hljs-type,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-number':
+    'pre[class*="language-"]::selection, code[class*="language-"]::selection, pre[class*="language-"] *::selection, code[class*="language-"] *::selection':
       {
-        color: '#d19a66',
+        textShadow: 'none',
+        background: '#264F78',
       },
-
-    '.hljs-symbol,.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-title': {
-      color: '#61aeee',
+    '@media print': {
+      'pre[class*="language-"], code[class*="language-"]': {
+        textShadow: 'none',
+      },
     },
-
-    '.hljs-built_in,.hljs-title.class_,.hljs-class .hljs-title': {
-      color: '#e6c07b',
+    'pre[class*="language-"]': {
+      padding: '1em',
+      margin: '.5em 0',
+      overflow: 'auto',
+      background: '#1e1e1e',
     },
-
-    '.hljs-emphasis': {
+    ':not(pre) > code[class*="language-"]': {
+      padding: '.1em .3em',
+      borderRadius: '.3em',
+      color: '#db4c69',
+      background: '#1e1e1e',
+    },
+    '.namespace': {
+      opacity: 0.7,
+    },
+    '.token.doctype .token.doctype-tag': {
+      color: '#569CD6',
+    },
+    '.token.doctype .token.name': {
+      color: '#9cdcfe',
+    },
+    '.token.comment, .token.prolog': {
+      color: '#6a9955',
+    },
+    '.token.punctuation, .language-html .language-css .token.punctuation, .language-html .language-javascript .token.punctuation':
+      {
+        color: '#d4d4d4',
+      },
+    '.token.property, .token.tag, .token.boolean, .token.number, .token.constant, .token.symbol, .token.inserted, .token.unit':
+      {
+        color: '#b5cea8',
+      },
+    '.token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.deleted':
+      {
+        color: '#ce9178',
+      },
+    '.language-css .token.string.url': {
+      textDecoration: 'underline',
+    },
+    '.token.operator, .token.entity': {
+      color: '#d4d4d4',
+    },
+    '.token.operator.arrow': {
+      color: '#569CD6',
+    },
+    '.token.atrule': {
+      color: '#ce9178',
+    },
+    '.token.atrule .token.rule': {
+      color: '#c586c0',
+    },
+    '.token.atrule .token.url': {
+      color: '#9cdcfe',
+    },
+    '.token.atrule .token.url .token.function': {
+      color: '#dcdcaa',
+    },
+    '.token.atrule .token.url .token.punctuation': {
+      color: '#d4d4d4',
+    },
+    '.token.keyword': {
+      color: '#569CD6',
+    },
+    '.token.keyword.module, .token.keyword.control-flow': {
+      color: '#c586c0',
+    },
+    '.token.function, .token.function .token.maybe-class-name': {
+      color: '#dcdcaa',
+    },
+    '.token.regex': {
+      color: '#d16969',
+    },
+    '.token.important': {
+      color: '#569cd6',
+    },
+    '.token.italic': {
       fontStyle: 'italic',
     },
-
-    '.hljs-strong': {
-      fontWeight: 'bold',
+    '.token.constant': {
+      color: '#9cdcfe',
     },
-
-    '.hljs-link': {
-      textDecoration: 'underline',
+    '.token.class-name, .token.maybe-class-name': {
+      color: '#4ec9b0',
+    },
+    '.token.console': {
+      color: '#9cdcfe',
+    },
+    '.token.parameter': {
+      color: '#9cdcfe',
+    },
+    '.token.interpolation': {
+      color: '#9cdcfe',
+    },
+    '.token.punctuation.interpolation-punctuation': {
+      color: '#569cd6',
+    },
+    '.token.boolean': {
+      color: '#569cd6',
+    },
+    '.token.property, .token.variable, .token.imports .token.maybe-class-name, .token.exports .token.maybe-class-name':
+      {
+        color: '#9cdcfe',
+      },
+    '.token.selector': {
+      color: '#d7ba7d',
+    },
+    '.token.escape': {
+      color: '#d7ba7d',
+    },
+    '.token.tag': {
+      color: '#569cd6',
+    },
+    '.token.tag .token.punctuation': {
+      color: '#808080',
+    },
+    '.token.cdata': {
+      color: '#808080',
+    },
+    '.token.attr-name': {
+      color: '#9cdcfe',
+    },
+    '.token.attr-value, .token.attr-value .token.punctuation': {
+      color: '#ce9178',
+    },
+    '.token.attr-value .token.punctuation.attr-equals': {
+      color: '#d4d4d4',
+    },
+    '.token.entity': {
+      color: '#569cd6',
+    },
+    '.token.namespace': {
+      color: '#4ec9b0',
+    },
+    'pre[class*="language-javascript"], code[class*="language-javascript"], pre[class*="language-jsx"], code[class*="language-jsx"], pre[class*="language-typescript"], code[class*="language-typescript"], pre[class*="language-tsx"], code[class*="language-tsx"]':
+      {
+        color: '#9cdcfe',
+      },
+    'pre[class*="language-css"], code[class*="language-css"]': {
+      color: '#ce9178',
+    },
+    'pre[class*="language-html"], code[class*="language-html"]': {
+      color: '#d4d4d4',
+    },
+    '.language-regex .token.anchor': {
+      color: '#dcdcaa',
+    },
+    '.language-html .token.punctuation': {
+      color: '#808080',
+    },
+    'pre[class*="language-"] > code[class*="language-"]': {
+      position: 'relative',
+      zIndex: 1,
+    },
+    '.line-highlight.line-highlight': {
+      background: '#f7ebc6',
+      boxShadow: 'inset 5px 0 0 #f7d87c',
+      zIndex: 0,
     },
   };
 }
 
 export function getHljsLight(): CSSObject {
   return {
-    '.hljs': {
-      color: '#383a42',
-      background: '#fafafa',
+    'code[class*="language-"], pre[class*="language-"]': {
+      background: 'hsl(230, 1%, 98%)',
+      color: 'hsl(230, 8%, 24%)',
+      fontFamily: '"Fira Code", "Fira Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace',
+      direction: 'ltr',
+      textAlign: 'left',
+      whiteSpace: 'pre',
+      wordSpacing: 'normal',
+      wordBreak: 'normal',
+      lineHeight: 1.5,
+      mozTabSize: 2,
+      oTabSize: 2,
+      tabSize: 2,
+      webkitHyphens: 'none',
+      mozHyphens: 'none',
+      msHyphens: 'none',
+      hyphens: 'none',
     },
-
-    '.hljs-comment,.hljs-quote': {
-      color: '#a0a1a7',
-      fontStyle: 'italic',
-    },
-
-    '.hljs-doctag,.hljs-keyword,.hljs-formula': {
-      color: '#a626a4',
-    },
-
-    '.hljs-section,.hljs-name,.hljs-selector-tag,.hljs-deletion,.hljs-subst': {
-      color: '#e45649',
-    },
-
-    '.hljs-literal': {
-      color: '#0184bb',
-    },
-
-    '.hljs-string,.hljs-regexp,.hljs-addition,.hljs-attribute,.hljs-meta .hljs-string': {
-      color: '#50a14f',
-    },
-
-    '.hljs-attr,.hljs-variable,.hljs-template-variable,.hljs-type,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-number':
+    'code[class*="language-"]::-moz-selection, code[class*="language-"] *::-moz-selection, pre[class*="language-"] *::-moz-selection':
       {
-        color: '#986801',
+        background: 'hsl(230, 1%, 90%)',
+        color: 'inherit',
       },
-
-    '.hljs-symbol,.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-title': {
-      color: '#4078f2',
+    'code[class*="language-"]::selection, code[class*="language-"] *::selection, pre[class*="language-"] *::selection':
+      {
+        background: 'hsl(230, 1%, 90%)',
+        color: 'inherit',
+      },
+    'pre[class*="language-"]': {
+      padding: '1em',
+      margin: '0.5em 0',
+      overflow: 'auto',
+      borderRadius: '0.3em',
     },
-
-    '.hljs-built_in,.hljs-title.class_,.hljs-class .hljs-title': {
-      color: '#c18401',
+    ':not(pre) > code[class*="language-"]': {
+      padding: '0.2em 0.3em',
+      borderRadius: '0.3em',
+      whiteSpace: 'normal',
     },
-
-    '.hljs-emphasis': {
+    '.token.comment, .token.prolog, .token.cdata': {
+      color: 'hsl(230, 4%, 64%)',
+    },
+    '.token.doctype, .token.punctuation, .token.entity': {
+      color: 'hsl(230, 8%, 24%)',
+    },
+    '.token.attr-name, .token.class-name, .token.boolean, .token.constant, .token.number, .token.atrule':
+      {
+        color: 'hsl(35, 99%, 36%)',
+      },
+    '.token.keyword': {
+      color: 'hsl(301, 63%, 40%)',
+    },
+    '.token.property, .token.tag, .token.symbol, .token.deleted, .token.important': {
+      color: 'hsl(5, 74%, 59%)',
+    },
+    '.token.selector, .token.string, .token.char, .token.builtin, .token.inserted, .token.regex, .token.attr-value, .token.attr-value > .token.punctuation':
+      {
+        color: 'hsl(119, 34%, 47%)',
+      },
+    '.token.variable, .token.operator, .token.function': {
+      color: 'hsl(221, 87%, 60%)',
+    },
+    '.token.url': {
+      color: 'hsl(198, 99%, 37%)',
+    },
+    '.token.attr-value > .token.punctuation.attr-equals, .token.special-attr > .token.attr-value > .token.value.css':
+      {
+        color: 'hsl(230, 8%, 24%)',
+      },
+    '.language-css .token.selector': {
+      color: 'hsl(5, 74%, 59%)',
+    },
+    '.language-css .token.property': {
+      color: 'hsl(230, 8%, 24%)',
+    },
+    '.language-css .token.function, .language-css .token.url > .token.function': {
+      color: 'hsl(198, 99%, 37%)',
+    },
+    '.language-css .token.url > .token.string.url': {
+      color: 'hsl(119, 34%, 47%)',
+    },
+    '.language-css .token.important, .language-css .token.atrule .token.rule': {
+      color: 'hsl(301, 63%, 40%)',
+    },
+    '.language-javascript .token.operator': {
+      color: 'hsl(301, 63%, 40%)',
+    },
+    '.language-javascript .token.template-string > .token.interpolation > .token.interpolation-punctuation.punctuation':
+      {
+        color: 'hsl(344, 84%, 43%)',
+      },
+    '.language-json .token.operator': {
+      color: 'hsl(230, 8%, 24%)',
+    },
+    '.language-json .token.null.keyword': {
+      color: 'hsl(35, 99%, 36%)',
+    },
+    '.language-markdown .token.url, .language-markdown .token.url > .token.operator, .language-markdown .token.url-reference.url > .token.string':
+      {
+        color: 'hsl(230, 8%, 24%)',
+      },
+    '.language-markdown .token.url > .token.content': {
+      color: 'hsl(221, 87%, 60%)',
+    },
+    '.language-markdown .token.url > .token.url, .language-markdown .token.url-reference.url': {
+      color: 'hsl(198, 99%, 37%)',
+    },
+    '.language-markdown .token.blockquote.punctuation, .language-markdown .token.hr.punctuation': {
+      color: 'hsl(230, 4%, 64%)',
       fontStyle: 'italic',
     },
-
-    '.hljs-strong': {
+    '.language-markdown .token.code-snippet': {
+      color: 'hsl(119, 34%, 47%)',
+    },
+    '.language-markdown .token.bold .token.content': {
+      color: 'hsl(35, 99%, 36%)',
+    },
+    '.language-markdown .token.italic .token.content': {
+      color: 'hsl(301, 63%, 40%)',
+    },
+    '.language-markdown .token.strike .token.content, .language-markdown .token.strike .token.punctuation, .language-markdown .token.list.punctuation, .language-markdown .token.title.important > .token.punctuation':
+      {
+        color: 'hsl(5, 74%, 59%)',
+      },
+    '.token.bold': {
       fontWeight: 'bold',
     },
-
-    '.hljs-link': {
-      textDecoration: 'underline',
+    '.token.comment, .token.italic': {
+      fontStyle: 'italic',
+    },
+    '.token.entity': {
+      cursor: 'help',
+    },
+    '.token.namespace': {
+      opacity: 0.8,
     },
   };
 }
@@ -135,10 +358,12 @@ export default getSimpleStyleHook('CoHighlight', (token) => {
         zIndex: 10,
       },
 
-      ...getHljsLight(),
-
       ':root.dark &': {
         ...getHljsDark(),
+      },
+
+      ':root:not(.dark) &': {
+        ...getHljsLight(),
       },
     },
   };

@@ -1,6 +1,6 @@
 import { computed, defineComponent } from 'vue';
 import { ElScrollbar } from 'element-plus';
-import { hljs, highlightProps, highlightSlots } from './highlight.api';
+import { Prism, highlightProps, highlightSlots } from './highlight.api';
 import useStyle from './highlight.style';
 import { useComponentConfig } from '../config-provider';
 import Copy from '../copy/copy';
@@ -14,11 +14,12 @@ export default defineComponent({
 
     const { hashId } = useStyle(prefixCls);
 
-    const highlightedCode = computed(
-      () =>
-        hljs.highlight(props.code || '', {
-          language: props.lang || 'txt',
-        }).value,
+    const highlightedCode = computed(() =>
+      Prism.highlight(
+        props.code || '',
+        Prism.languages[props.lang] || Prism.languages['txt'],
+        props.lang,
+      ),
     );
 
     return () => {
@@ -27,10 +28,10 @@ export default defineComponent({
           <ElScrollbar
             tag="pre"
             class={`${prefixCls.value}-scroll`}
-            view-class="hljs"
+            view-class={`language-${props.lang}`}
             maxHeight={props.maxHeight}
           >
-            <code innerHTML={highlightedCode.value}></code>
+            <code class={`language-${props.lang}`} innerHTML={highlightedCode.value}></code>
           </ElScrollbar>
           <div class={`${prefixCls.value}-copy`}>
             <Copy text={props.code} class={`${prefixCls.value}-copy`} />

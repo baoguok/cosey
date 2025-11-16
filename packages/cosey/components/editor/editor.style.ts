@@ -242,12 +242,8 @@ const getEditorStyle: GenerateStyle<AliasTokenWithCommonCls, CSSInterpolation> =
         overflow: 'auto',
       },
 
-      [`${toolbarCls} ~ ${containerCls}`]: {
-        borderTop: 0,
-      },
-
       '&.is-error': {
-        [`${toolbarCls}, ${containerCls}`]: {
+        [`&, ${toolbarCls}`]: {
           borderColor: token.colorError,
         },
       },

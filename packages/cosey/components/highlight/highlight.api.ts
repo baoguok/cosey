@@ -1,50 +1,62 @@
-import hljs from 'highlight.js/lib/core';
-import typescript from 'highlight.js/lib/languages/typescript';
-import javascript from 'highlight.js/lib/languages/javascript';
-import json from 'highlight.js/lib/languages/json';
-import plaintext from 'highlight.js/lib/languages/plaintext';
-import xml from 'highlight.js/lib/languages/xml';
-import css from 'highlight.js/lib/languages/css';
-import scss from 'highlight.js/lib/languages/scss';
-import less from 'highlight.js/lib/languages/less';
-import { ExtractPropTypes, PropType, SlotsType } from 'vue';
+import type { ExtractPropTypes, PropType, SlotsType } from 'vue';
 
-hljs.registerLanguage('typescript', typescript);
-hljs.registerLanguage('javascript', javascript);
-hljs.registerLanguage('json', json);
-hljs.registerLanguage('plaintext', plaintext);
-hljs.registerLanguage('xml', xml);
-hljs.registerLanguage('css', css);
-hljs.registerLanguage('scss', scss);
-hljs.registerLanguage('less', less);
+import Prism from 'prismjs';
+import 'prismjs';
+import 'prismjs/components/prism-scss';
+import 'prismjs/components/prism-sass';
+import 'prismjs/components/prism-less';
 
-export { hljs };
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-tsx';
 
-type xml =
-  | 'xml'
-  | 'html'
-  | 'xhtml'
-  | 'rss'
-  | 'atom'
-  | 'xjb'
-  | 'xsd'
-  | 'xsl'
-  | 'plist'
-  | 'wsf'
-  | 'svg';
-type json = 'json';
-type js = 'javascript' | 'js' | 'jsx' | 'mjs' | 'cjs';
-type ts = 'typescript' | 'ts' | 'tsx' | 'mts' | 'cts';
-type plaintext = 'plaintext' | 'text' | 'txt';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-json5';
+
+import 'prismjs/components/prism-markdown';
+
+import 'prismjs/components/prism-bash';
+
+import 'prismjs/components/prism-nginx';
+
+import 'prismjs/components/prism-markup-templating';
+import 'prismjs/components/prism-php';
+import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-sql';
+
+export { Prism };
+
+type LangText = 'plain' | 'plaintext' | 'text' | 'txt';
+type LangXml = 'markup' | 'html' | 'mathml' | 'svg' | 'xml' | 'ssml' | 'atom' | 'rss';
+type LangCss = 'css' | 'less' | 'sass' | 'scss';
+type LangJs = 'javascript' | 'js' | 'typescript' | 'ts' | 'jsx' | 'tsx';
+type LangJson = 'json' | 'json5';
+type LangMd = 'markdown' | 'md';
+type LangBash = 'bash' | 'sh' | 'shell';
+type LangPython = 'python' | 'py';
+
+type Lang =
+  | LangText
+  | LangXml
+  | LangCss
+  | LangJs
+  | 'clike'
+  | LangJson
+  | LangMd
+  | LangBash
+  | 'nginx'
+  | 'php'
+  | 'java'
+  | 'sql'
+  | LangPython;
 
 export const highlightProps = {
   code: {
     type: String,
   },
   lang: {
-    type: String as PropType<
-      xml | json | js | ts | plaintext | 'css' | 'scss' | 'less' | (string & {})
-    >,
+    type: String as PropType<Lang | (string & {})>,
+    default: 'txt',
   },
   maxHeight: {
     type: String,

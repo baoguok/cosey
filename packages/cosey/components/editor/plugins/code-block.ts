@@ -1,21 +1,9 @@
-import 'prismjs';
 import Prism from 'prismjs';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-jsx';
-import 'prismjs/components/prism-typescript';
-import 'prismjs/components/prism-tsx';
-import 'prismjs/components/prism-markdown';
-import 'prismjs/components/prism-python';
-import 'prismjs/components/prism-php';
-import 'prismjs/components/prism-sql';
-import 'prismjs/components/prism-java';
 
-import 'prismjs/themes/prism-okaidia.css';
-
+import { h } from 'vue';
 import { type RenderElementProps, toRawWeakMap, useInheritRef } from 'slate-vue3';
 import { Editor, Element, Node, NodeEntry, Path, Range, Text } from 'slate-vue3/core';
 import { CodeBlockElement, ParagraphElement } from '../types';
-import { h } from 'vue';
 import ContentCodeBlock from '../contents/content-code-block';
 import { Hotkeys } from './keyboard';
 import {
@@ -27,18 +15,21 @@ import {
 } from '../utils';
 
 export const languageOptions = [
+  { value: 'text', label: 'PlainText' },
   { value: 'css', label: 'CSS' },
+  { value: 'less', label: 'Less' },
+  { value: 'scss', label: 'Scss' },
   { value: 'html', label: 'HTML' },
-  { value: 'java', label: 'Java' },
   { value: 'javascript', label: 'JavaScript' },
   { value: 'jsx', label: 'JSX' },
+  { value: 'typescript', label: 'TypeScript' },
+  { value: 'tsx', label: 'TSX' },
+  { value: 'json', label: 'JSON' },
   { value: 'markdown', label: 'Markdown' },
   { value: 'php', label: 'PHP' },
+  { value: 'java', label: 'Java' },
   { value: 'python', label: 'Python' },
   { value: 'sql', label: 'SQL' },
-  { value: 'tsx', label: 'TSX' },
-  { value: 'typescript', label: 'TypeScript' },
-  { value: 'text', label: 'PlainText' },
 ];
 
 declare module 'slate-vue3/core' {
