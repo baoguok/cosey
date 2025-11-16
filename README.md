@@ -68,7 +68,6 @@ Cosey 基于 element-plus 并补充了众多组件，意在使开发者更加专
 - 打包案例 `npm run build`
 - 打包文档 `npm run docs:build`
 - 部署案例和文档 `npm run cosey:deploy`
-- 更新 `create-cosey` 中 `cosey` 包的版本
 
 ## 推送代码流程
 
