@@ -1,5 +1,10 @@
 import { Editor, Element, Path } from 'slate-vue3/core';
-import { type ListItemElement, type ListType, type ParagraphElement } from '../../types';
+import {
+  type CustomElement,
+  type ListItemElement,
+  type ListType,
+  type ParagraphElement,
+} from '../../types';
 import { type NodeEntry } from 'slate-vue3/core';
 import { getListTypeAtStartPoint, isList, isListItem } from './utils';
 import { isBlockElement } from '../../utils';
@@ -21,7 +26,7 @@ function isSameParent(path: Path, another: Path) {
 }
 
 function findConsecutiveListItems(editor: Editor) {
-  const groups = [];
+  const groups: { node: CustomElement; path: Path }[][] = [];
   let currentGroup: {
     node: ListItemElement;
     path: Path;

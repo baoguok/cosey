@@ -218,7 +218,7 @@ function deserialize(node: Node, markAttributes = {}): DeserializeResult {
           type: 'code-block',
           language: getLanguageByClass(element.getAttribute('class') || ''),
         },
-        element.textContent.split('\n').map((text) =>
+        (element.textContent || '').split('\n').map((text) =>
           jsx(
             'element',
             {

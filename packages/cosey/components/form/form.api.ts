@@ -9,7 +9,7 @@ import {
 } from 'element-plus';
 import { ExtractPropTypes, SlotsType, type PropType } from 'vue';
 import { type RowProps } from '../row';
-import { type ColPublicProps, type ColProps } from '../col';
+import { type ColPublicProps } from '../col';
 import { type FormItemWidth } from './form-item.api';
 import { Arrayable } from '@vueuse/core';
 
@@ -125,7 +125,7 @@ const elFormExposeKeys = [
 export const formExposeKeys = [...elFormExposeKeys, 'submit', 'reset'];
 
 export interface FormContext {
-  colProps?: ColProps;
+  colProps?: ColPublicProps;
   grid?: boolean;
   readonly?: boolean;
   width?: FormItemWidth;
