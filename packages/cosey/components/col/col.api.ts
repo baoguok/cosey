@@ -1,7 +1,6 @@
 import {
-  CSSProperties,
-  ExtractPropTypes,
-  ExtractPublicPropTypes,
+  type ExtractPropTypes,
+  type ExtractPublicPropTypes,
   type PropType,
   type SlotsType,
 } from 'vue';
@@ -54,9 +53,6 @@ export const colProps = {
   },
   xxl: {
     type: [Number, Object] as PropType<ColSize>,
-  },
-  style: {
-    type: [Object, String] as PropType<CSSProperties | string>,
   },
 };
 

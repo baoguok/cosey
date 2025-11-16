@@ -1,12 +1,12 @@
+import { type PropType, type ExtractPropTypes, MaybeRef } from 'vue';
+import { camelCase, omit, upperFirst } from 'lodash-es';
 import { TableColumnCtx, type PaginationProps } from 'element-plus';
 import elTableProps from 'element-plus/es/components/table/src/table/defaults.mjs';
-import { type PropType, type ExtractPropTypes, MaybeRef } from 'vue';
 import { type MayBeTableColumnProps } from './table-column/table-column.api';
-import { camelCase, omit, upperFirst } from 'lodash-es';
 import {
-  TableQueryExpose,
-  tableQueryExposeKeys,
+  type TableQueryExpose,
   type TableQueryProps,
+  tableQueryExposeKeys,
 } from './table-query/table-query.api';
 import { TableStatisticsColumn } from './table-stats/table-stats.api';
 
