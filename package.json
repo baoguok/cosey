@@ -25,7 +25,8 @@
     "cosey:publish": "tsx ./scripts/publish.ts",
     "cosey:deploy": "tsx ./scripts/deploy.ts",
     "changelog": "tsx ./scripts/changelog.ts",
-    "tag": "tsx ./scripts/tag.ts"
+    "tag": "tsx ./scripts/tag.ts",
+    "push": "git push origin && git push origin --tags --force"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue}": "eslint --fix",

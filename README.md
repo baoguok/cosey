@@ -76,4 +76,4 @@ Cosey 基于 element-plus 并补充了众多组件，意在使开发者更加专
 - 打标签 `npm run tag`
 - 生成更新日志 `npm run changelog`
 - 暂存、提交 changelog `git commit -a -m 'chore: changelog'`
-- 推送
+- 推送 `npm run push`
