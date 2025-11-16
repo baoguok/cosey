@@ -212,6 +212,8 @@ const getEditorStyle: GenerateStyle<AliasTokenWithCommonCls, CSSInterpolation> =
     [componentCls]: {
       position: 'relative',
       lineHeight: token.lineHeight,
+      borderRadius: token.borderRadius,
+      border: `1px solid ${token.colorBorder}`,
 
       [toolbarCls]: {
         display: 'flex',
@@ -220,16 +222,11 @@ const getEditorStyle: GenerateStyle<AliasTokenWithCommonCls, CSSInterpolation> =
         rowGap: token.sizeXXS,
         paddingInline: token.paddingSM,
         paddingBlock: token.paddingXS,
-        border: `1px solid ${token.colorBorder}`,
-        borderTopLeftRadius: token.borderRadius,
-        borderTopRightRadius: token.borderRadius,
+        borderBottom: `1px solid ${token.colorBorder}`,
       },
 
       [containerCls]: {
         position: 'relative',
-        border: `1px solid ${token.colorBorder}`,
-        borderBottomLeftRadius: token.borderRadius,
-        borderBottomRightRadius: token.borderRadius,
 
         '&.is-focus::before': {
           content: '""',
@@ -256,11 +253,21 @@ const getEditorStyle: GenerateStyle<AliasTokenWithCommonCls, CSSInterpolation> =
       },
 
       [contentCls]: {
+        minHeight: '100% !important',
         padding: token.paddingSM,
+        borderRadius: token.borderRadius,
         fontSize: token.fontSize,
         outline: 'none',
 
         ...getArticleStyle(token),
+      },
+
+      '&.is-disabled': {
+        [contentCls]: {
+          backgroundColor: token.colorBgContainerDisabled,
+          color: token.colorTextDisabled,
+          cursor: 'not-allowed',
+        },
       },
     },
   };

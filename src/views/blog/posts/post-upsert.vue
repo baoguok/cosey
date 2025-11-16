@@ -26,9 +26,16 @@
           rows: 2,
         }"
       />
-      <co-form-item prop="content" :label="t('post.content')" required>
-        <co-editor v-model="model.content" height="400px" />
-      </co-form-item>
+      <co-form-item
+        v-model="model.content"
+        prop="content"
+        :label="t('post.content')"
+        field-type="editor"
+        :field-props="{
+          height: '400px',
+        }"
+        required
+      />
     </co-form>
   </co-form-dialog>
 </template>

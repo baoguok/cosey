@@ -30,13 +30,14 @@ editor/validate
 
 ### EditorProps
 
-| 属性                  | 描述           | 类型                                                          | 默认值 |
-| --------------------- | -------------- | ------------------------------------------------------------- | ------ |
-| model-value (v-model) | 编辑器当前值   | string                                                        | -      |
-| placeholder           | 编辑器占位文本 | string                                                        | -      |
-| height                | 编辑器高度     | string \| number                                              | 400    |
-| readonly              | 是否只读       | boolean                                                       | false  |
-| request               | 上传接口       | (data: Blob, config?: AxiosRequestConfig) => Promise\<string> | -      |
+| 属性                  | 描述           | 类型    | 默认值 |
+| --------------------- | -------------- | ------- | ------ |
+| model-value (v-model) | 编辑器当前值   | string  | -      |
+| placeholder           | 编辑器占位文本 | string  | -      |
+| height                | 编辑器高度     | string  | -      |
+| max-height            | 编辑器最大高度 | string  | -      |
+| readonly              | 是否只读       | boolean | false  |
+| disabled              | 是否禁用       | boolean | false  |
 
 ### EditorEmits
 

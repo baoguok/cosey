@@ -33,7 +33,7 @@ import { withDefaultPlugins } from './plugins';
 import contentPlaceholder from './contents/content-placeholder';
 import { useLocale } from '../../hooks';
 import { usePopoverContainer } from './usePopoverContainer';
-import { CHANGE_EVENT, useFormItem } from 'element-plus';
+import { CHANGE_EVENT, useFormDisabled, useFormItem } from 'element-plus';
 import { debugWarn } from '../../utils';
 
 export default defineComponent({
@@ -108,6 +108,9 @@ export default defineComponent({
       }
     };
 
+    // disabled
+    const disabled = useFormDisabled();
+
     return () => {
       return (
         <div
@@ -116,6 +119,7 @@ export default defineComponent({
             prefixCls.value,
             {
               'is-error': formItem?.validateState === 'error',
+              'is-disabled': disabled.value,
             },
           ]}
         >
@@ -127,59 +131,61 @@ export default defineComponent({
             decorate={editor.decorate}
             onValuechange={onValueChange}
           >
-            <Toolbar>
-              <ButtonGroup>
-                <FormatHeading />
-                <FormatFont />
-                <FormatSize />
-              </ButtonGroup>
-              <ButtonGroup>
-                <FormatMark format="bold" icon="co:text-bold" />
-                <FormatMark format="italic" icon="co:text-italic" />
-                <FormatMark format="underline" icon="co:text-underline" />
-                <FormatMark format="strikethrough" icon="co:text-strikethrough" />
-              </ButtonGroup>
-              <ButtonGroup>
-                <FormatMark format="superscript" icon="co:text-superscript" />
-                <FormatMark format="subscript" icon="co:text-subscript" />
-              </ButtonGroup>
-              <ButtonGroup>
-                <FormatColor />
-                <FormatBackground />
-              </ButtonGroup>
-              <ButtonGroup>
-                <ListType format="numbered-list" icon="co:list-numbered" />
-                <ListType format="bulleted-list" icon="co:list-bulleted" />
-              </ButtonGroup>
-              <ButtonGroup>
-                <FormatIndent delta={-1} icon="co:text-indent-less" />
-                <FormatIndent delta={+1} icon="co:text-indent-more" />
-              </ButtonGroup>
-              <ButtonGroup>
-                <FormatAlign format="left" icon="co:text-align-left" />
-                <FormatAlign format="center" icon="co:text-align-center" />
-                <FormatAlign format="right" icon="co:text-align-right" />
-                <FormatAlign format="justify" icon="co:text-align-justify" />
-              </ButtonGroup>
-              <ButtonGroup>
-                <FormatBlockQuote />
-                <FormatMark format="code" icon="co:code" />
-              </ButtonGroup>
-              <ButtonGroup>
-                <FormatLink />
-                <FormatImage />
-                <FormatVideo />
-                <FormatTable />
-                <FormatCodeBlock />
-                <FormatFormula />
-              </ButtonGroup>
-              <ButtonGroup>
-                <FormatClear />
-              </ButtonGroup>
-              <ButtonGroup>
-                <FormatSource />
-              </ButtonGroup>
-            </Toolbar>
+            {!props.readonly && !disabled.value && (
+              <Toolbar>
+                <ButtonGroup>
+                  <FormatHeading />
+                  <FormatFont />
+                  <FormatSize />
+                </ButtonGroup>
+                <ButtonGroup>
+                  <FormatMark format="bold" icon="co:text-bold" />
+                  <FormatMark format="italic" icon="co:text-italic" />
+                  <FormatMark format="underline" icon="co:text-underline" />
+                  <FormatMark format="strikethrough" icon="co:text-strikethrough" />
+                </ButtonGroup>
+                <ButtonGroup>
+                  <FormatMark format="superscript" icon="co:text-superscript" />
+                  <FormatMark format="subscript" icon="co:text-subscript" />
+                </ButtonGroup>
+                <ButtonGroup>
+                  <FormatColor />
+                  <FormatBackground />
+                </ButtonGroup>
+                <ButtonGroup>
+                  <ListType format="numbered-list" icon="co:list-numbered" />
+                  <ListType format="bulleted-list" icon="co:list-bulleted" />
+                </ButtonGroup>
+                <ButtonGroup>
+                  <FormatIndent delta={-1} icon="co:text-indent-less" />
+                  <FormatIndent delta={+1} icon="co:text-indent-more" />
+                </ButtonGroup>
+                <ButtonGroup>
+                  <FormatAlign format="left" icon="co:text-align-left" />
+                  <FormatAlign format="center" icon="co:text-align-center" />
+                  <FormatAlign format="right" icon="co:text-align-right" />
+                  <FormatAlign format="justify" icon="co:text-align-justify" />
+                </ButtonGroup>
+                <ButtonGroup>
+                  <FormatBlockQuote />
+                  <FormatMark format="code" icon="co:code" />
+                </ButtonGroup>
+                <ButtonGroup>
+                  <FormatLink />
+                  <FormatImage />
+                  <FormatVideo />
+                  <FormatTable />
+                  <FormatCodeBlock />
+                  <FormatFormula />
+                </ButtonGroup>
+                <ButtonGroup>
+                  <FormatClear />
+                </ButtonGroup>
+                <ButtonGroup>
+                  <FormatSource />
+                </ButtonGroup>
+              </Toolbar>
+            )}
             <div
               class={[
                 `${prefixCls.value}-container`,
@@ -198,6 +204,7 @@ export default defineComponent({
               >
                 <Editable
                   placeholder=" "
+                  readOnly={props.readonly || disabled.value}
                   class={`${prefixCls.value}-content`}
                   {...{ onFocus: onFocus, onBlur: onBlur, onKeydown: editor.onKeydown }}
                 />

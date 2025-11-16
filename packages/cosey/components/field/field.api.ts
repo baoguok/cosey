@@ -10,6 +10,7 @@ import { type FieldDateRangeProps } from './components/date-range/date-range';
 import { type FieldDateTimeProps } from './components/date-time/date-time';
 import { type FieldDateTimeRangeProps } from './components/date-time-range/date-time-range';
 import { type FieldDatesProps } from './components/dates/dates';
+import { type FieldEditorProps } from './components/editor/editor';
 import { type FieldInputProps } from './components/input/input';
 import { type FieldInputTagProps } from './components/input-tag/input-tag';
 import { type FieldMentionProps } from './components/mention/mention';
@@ -50,6 +51,7 @@ import DateRange from './components/date-range/date-range.vue';
 import DateTime from './components/date-time/date-time.vue';
 import DateTimeRange from './components/date-time-range/date-time-range.vue';
 import Dates from './components/dates/dates.vue';
+import Editor from './components/editor/editor.vue';
 import Input from './components/input/input.vue';
 import InputTag from './components/input-tag/input-tag.vue';
 import Mention from './components/mention/mention.vue';
@@ -89,6 +91,7 @@ export interface MapFieldTypeComponentProps {
   date: FieldDateProps;
   daterange: FieldDateRangeProps;
   dates: FieldDatesProps;
+  editor: FieldEditorProps;
   datetime: FieldDateTimeProps;
   datetimerange: FieldDateTimeRangeProps;
   input: FieldInputProps;
@@ -132,6 +135,7 @@ export const mapFieldTypeComponent = {
   date: Date,
   daterange: DateRange,
   dates: Dates,
+  editor: Editor,
   datetime: DateTime,
   datetimerange: DateTimeRange,
   input: Input,
