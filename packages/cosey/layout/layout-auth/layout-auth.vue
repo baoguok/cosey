@@ -11,6 +11,7 @@
 
     <div :class="`${prefixCls}-widget`">
       <component :is="AuthWidget" />
+      <MergedLayoutLocale />
       <MergedLayoutColorScheme />
     </div>
   </div>
@@ -19,6 +20,7 @@
 <script setup lang="ts">
 import MergedLayoutColorScheme from '../merged/layout-color-scheme';
 import MergedLayoutBrand from '../merged/layout-brand';
+import MergedLayoutLocale from '../merged/layout-locale';
 import useStyle from './style';
 import { useComponentConfig } from '../../components';
 import { defineTemplate } from '../../utils';

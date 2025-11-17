@@ -15,8 +15,7 @@ import LayoutSetting from '@/components/layout-setting';
 import LayoutHttpMessage from '@/components/layout-http-message';
 import LoginTips from '@/components/login-tips.vue';
 
-import LayoutLocale from '@/components/layout-locale';
-import { setupI18n } from '@/locale';
+import { i18nConfig } from '@/locale';
 
 import 'virtual:svg-icons-register';
 import { icons as carbonIcons } from '@iconify-json/carbon';
@@ -47,6 +46,7 @@ async function bootstrap() {
       logo: import.meta.env.VITE_APP_LOGO,
       description: import.meta.env.VITE_APP_DESCRIPTION,
     },
+    i18n: i18nConfig,
     api: {
       upload: () => {
         return useUploadApi().singleUpload;
@@ -78,7 +78,6 @@ async function bootstrap() {
           <>
             <LayoutSetting />
             <LayoutHttpMessage />
-            <LayoutLocale />
           </>
         );
       },
@@ -88,7 +87,6 @@ async function bootstrap() {
             <LoginTips />
             <LayoutSetting />
             <LayoutHttpMessage />
-            <LayoutLocale />
           </>
         );
       },
@@ -96,9 +94,6 @@ async function bootstrap() {
   });
 
   app.use(cosey);
-
-  // 国际化
-  setupI18n(app);
 
   // 请求拦截
   const mock = createMock({

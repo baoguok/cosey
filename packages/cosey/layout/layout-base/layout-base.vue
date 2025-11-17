@@ -52,6 +52,7 @@
           <template #right>
             <MergedLayoutSearch />
             <component :is="TopbarWidget" />
+            <MergedLayoutLocale />
             <MergedLayoutColorScheme />
             <MergedLayoutUserMenu />
             <component :is="TopbarRight" />
@@ -70,6 +71,7 @@ import MergedLayoutBrand from '../merged/layout-brand';
 import MergedLayoutBreadcrumb from '../merged/layout-breadcrumb';
 import MergedLayoutContent from '../merged/layout-content';
 import MergedLayoutHeader from '../merged/layout-header';
+import MergedLayoutLocale from '../merged/layout-locale';
 import MergedLayoutMain from '../merged/layout-main';
 import MergedLayoutMask from '../merged/layout-mask';
 import MergedLayoutMenu from '../merged/layout-menu';

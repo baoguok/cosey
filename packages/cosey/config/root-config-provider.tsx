@@ -10,6 +10,7 @@ import 'element-plus/dist/index.css';
 import 'element-plus/theme-chalk/dark/css-vars.css';
 import { ElConfigProvider } from 'element-plus';
 import { provideUploadConfig } from './upload';
+import { useCoseyLocale } from '../locale';
 
 export default defineComponent({
   name: 'CoRootConfigProvider',
@@ -27,12 +28,8 @@ export default defineComponent({
       };
     });
 
-    const mergedConfigProviderProps = computed(() => {
-      return {
-        ...props,
-        theme: themeConfig.value,
-      };
-    });
+    // locale
+    const coseyLocale = useCoseyLocale();
 
     // upload
     const apiConfig = useGlobalConfig()?.api;
@@ -56,6 +53,15 @@ export default defineComponent({
 
     // stack dialog
     useStackDialogProvide();
+
+    // props
+    const mergedConfigProviderProps = computed(() => {
+      return {
+        ...props,
+        locale: coseyLocale.value,
+        theme: themeConfig.value,
+      };
+    });
 
     return () => {
       return (

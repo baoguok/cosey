@@ -1,18 +1,18 @@
-import { defaultRouterConfig, type RequiredRouterConfig, type RouterConfig } from './router';
-import { defaultPersistConfig, type PersistConfig } from './persist';
-import { defaultLayoutConfig, type LayoutConfig, type RequiredLayoutConfig } from './layout';
-import { defaultSiteConfig, type SiteConfig, type RequiredSiteConfig } from './site';
-
-import { type RequiredHttpConfig, type HttpConfig, defaultHttpConfig } from './http';
-
-import { type RequiredApiConfig, type ApiConfig, defaultApiConfig } from './api';
-
-import { defaultsDeep } from 'lodash-es';
 import { type App, type Component, type InjectionKey, type VNodeChild, inject } from 'vue';
+import { defaultsDeep } from 'lodash-es';
 
-import { type CoseyRouterOptions } from '../router';
+import { type RouterConfig, type RequiredRouterConfig, defaultRouterConfig } from './router';
+import { type LayoutConfig, type RequiredLayoutConfig, defaultLayoutConfig } from './layout';
+import { type SiteConfig, type RequiredSiteConfig, defaultSiteConfig } from './site';
+import { type HttpConfig, type RequiredHttpConfig, defaultHttpConfig } from './http';
+import { type ApiConfig, type RequiredApiConfig, defaultApiConfig } from './api';
+import { type PersistConfig, defaultPersistConfig } from './persist';
+import { I18nConfig } from './i18n';
+
 import { type RouteRecordRaw } from 'vue-router';
+import { type CoseyRouterOptions } from '../router';
 import { createPersist, persistContextKey } from '../hooks';
+import { setupLocale } from '../locale';
 
 export interface LayoutComponents {
   base?: string | Component;
@@ -72,6 +72,7 @@ export type CoseyOptions = {
   defineAuthority?: { hook: () => DefineAuthorityHandler } | DefineAuthorityHandler;
   components?: LayoutComponents;
   slots?: LayoutSlots;
+  i18n?: I18nConfig;
 };
 
 export interface GlobalConfig {
@@ -100,13 +101,17 @@ export function provideGlobalConfig(app: App, options: CoseyOptions) {
     defineAuthority = () => void 0,
     components = {},
     slots = {},
+    i18n = {},
   } = options;
 
   const persistConfig = defaultsDeep(persist, defaultPersistConfig);
+  const persistIns = createPersist(persistConfig.name, persistConfig.type);
 
-  app.provide(persistContextKey, createPersist(persistConfig.name, persistConfig.type));
+  setupLocale(app, i18n, persistIns);
 
-  app.provide(globalConfigContextKey, {
+  app.provide(persistContextKey, persistIns);
+
+  const globalConfig = {
     router: defaultsDeep({ homePath, loginPath, changePasswordPath }, defaultRouterConfig),
     http: defaultsDeep(http, defaultHttpConfig),
     layout: defaultsDeep(layout, defaultLayoutConfig),
@@ -116,7 +121,12 @@ export function provideGlobalConfig(app: App, options: CoseyOptions) {
     defineAuthority,
     components,
     slots,
-  });
+    persist: persistIns,
+  };
+
+  app.provide(globalConfigContextKey, globalConfig);
+
+  return globalConfig;
 }
 
 export function useGlobalConfig() {

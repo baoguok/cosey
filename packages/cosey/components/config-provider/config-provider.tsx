@@ -10,7 +10,7 @@ import { useThemeProvide, useToken } from '../theme';
 import useOverrideElementPlus from './override-element-plus';
 import { ThemeManager } from '../theme/theme-context';
 import { localeContextKey, outsideLocale } from '../../hooks';
-import { en } from '../../locale';
+import en from '../../locale/lang/en';
 
 export default defineComponent({
   name: 'CoConfigProvider',

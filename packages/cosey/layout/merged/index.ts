@@ -12,6 +12,7 @@ export { default as MergedLayoutForbidden } from './layout-forbidden';
 export { default as MergedLayoutHeader } from './layout-header';
 export { default as MergedLayoutIframe } from './layout-iframe';
 export { default as MergedLayoutInternalServerError } from './layout-internal-server-error';
+export { default as MergedLayoutLocale } from './layout-locale';
 export { default as MergedLayoutLogin } from './layout-login';
 export { default as MergedLayoutMain } from './layout-main';
 export { default as MergedLayoutMask } from './layout-mask';
