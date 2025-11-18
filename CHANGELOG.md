@@ -1,4 +1,13 @@
-## 0.0.0 (2025-11-16)
+## 0.0.0 (2025-11-18)
+
+## <small>0.10.9 (2025-11-18)</small>
+
+- fix: 修复highlight打包被摇掉问题 ([91419b9](https://github.com/sutras/cosey/commit/91419b9))
+- fix(editor): 修复代码样式缺失问题 ([025d24b](https://github.com/sutras/cosey/commit/025d24b))
+- refactor: i18n内置到库 ([4096687](https://github.com/sutras/cosey/commit/4096687))
+- docs: update ([ca26b42](https://github.com/sutras/cosey/commit/ca26b42))
+- chore: add npm script ([64a41c9](https://github.com/sutras/cosey/commit/64a41c9))
+- build: changelog ([7157c4b](https://github.com/sutras/cosey/commit/7157c4b))
 
 ## 0.10.0 (2025-11-16)
 
