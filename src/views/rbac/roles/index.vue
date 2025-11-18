@@ -47,7 +47,7 @@
 
 <script lang="tsx" setup>
 import { ElMessage } from 'element-plus';
-import { useRolesApi } from '@/api/rbac/roles';
+import rolesApi from '@/api/rbac/roles';
 import { useOuterUpsert } from 'cosey/hooks';
 import { useTable } from 'cosey/components';
 import PermissionsUpsert from './permissions-upsert.vue';
@@ -64,7 +64,7 @@ defineOptions({
 
 const { can, cannot } = useAbility();
 
-const { deleteRole, getRoles } = useRolesApi();
+const { deleteRole, getRoles } = rolesApi;
 
 const [tableProps, { reload }] = useTable(
   computed(() => ({

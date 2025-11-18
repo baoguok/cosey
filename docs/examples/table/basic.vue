@@ -32,9 +32,9 @@
 import { ElMessage } from 'element-plus';
 import * as mock from '@gunny/mock';
 import { useTable } from 'cosey/components';
-import { useUsersApi } from '@/api/users';
+import usersApi from '@/api/users';
 
-const { getUsers, deleteUser } = useUsersApi();
+const { getUsers, deleteUser } = usersApi;
 
 const [tableProps, { reload }] = useTable({
   height: '600px',

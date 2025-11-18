@@ -14,7 +14,6 @@ export * from './useTwoWayBinding';
 export * from './useUpsert';
 export * from './useVisible';
 export * from './useWindowResize';
-export * from './usePersist';
 export * from './useRectObserver';
 export * from './useTreeCheck';
 export * from './useOptionalComponent';

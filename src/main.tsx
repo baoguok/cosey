@@ -2,11 +2,11 @@ import '@/styles/index.css';
 import '@/styles/override-element-plus.scss';
 
 import { createApp } from 'vue';
-import { createCosey } from 'cosey';
+import { launch } from 'cosey';
 import App from '@/App.vue';
 import { dynamicRoutes, staticRoutes } from '@/routes';
-import { useUploadApi } from '@/api/common';
-import { useAuthApi } from '@/api/rbac/auth';
+import commonApi from '@/api/common';
+import authApi from '@/api/rbac/auth';
 
 import { AbilityBuilder, createMongoAbility, defineAbility } from '@casl/ability';
 import { ABILITY_TOKEN } from '@casl/vue';
@@ -36,7 +36,7 @@ async function bootstrap() {
   app.provide(ABILITY_TOKEN, ability);
 
   // cosey
-  const cosey = createCosey({
+  launch(app, {
     router: { dynamic: dynamicRoutes, static: staticRoutes, history: createWebHashHistory() },
     http: {
       baseURL: import.meta.env.VITE_BASE_URL,
@@ -48,18 +48,10 @@ async function bootstrap() {
     },
     i18n: i18nConfig,
     api: {
-      upload: () => {
-        return useUploadApi().singleUpload;
-      },
-      login: () => {
-        return useAuthApi().login;
-      },
-      getUserInfo: () => {
-        return useAuthApi().getUserInfo;
-      },
-      changePassword: () => {
-        return useAuthApi().changePassword;
-      },
+      upload: commonApi.singleUpload,
+      login: authApi.login,
+      getUserInfo: authApi.getUserInfo,
+      changePassword: authApi.changePassword,
     },
     defineAuthority({ permissions = [] }) {
       const { can, rules } = new AbilityBuilder(createMongoAbility);
@@ -92,8 +84,6 @@ async function bootstrap() {
       },
     },
   });
-
-  app.use(cosey);
 
   // 请求拦截
   const mock = createMock({

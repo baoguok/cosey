@@ -38,7 +38,6 @@
 
 <script lang="tsx" setup>
 import { ElMessage } from 'element-plus';
-import { useAdminsApi } from '@/api/rbac/admins';
 import AdminUpsert from './admin-upsert.vue';
 import { useOuterUpsert } from 'cosey/hooks';
 import { useUserStore } from 'cosey';
@@ -46,6 +45,7 @@ import { useTable } from 'cosey/components';
 import { useAbility } from '@casl/vue';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import adminApi from '@/api/rbac/admins';
 
 const { t } = useI18n();
 
@@ -55,7 +55,8 @@ defineOptions({
 
 const { can, cannot } = useAbility();
 
-const { getAdmins, deleteAdmin } = useAdminsApi();
+const { getAdmins, deleteAdmin } = adminApi;
+
 const userStore = useUserStore();
 
 const [tableProps, { reload }] = useTable(

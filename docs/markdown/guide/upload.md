@@ -3,13 +3,11 @@
 Cosey 的 `Upload` 和 `Editor` 组件涉及到文件上传，因此需要提供一个上传接口供其调用。
 
 ```ts
-import { useUploadApi } from '@/api/common';
+import commonApi from '@/api/common';
 
-createCosey({
+launch(app, {
   api: {
-    upload: () => {
-      return useUploadApi().singleUpload;
-    },
+    upload: commonApi.singleUpload,
   },
 });
 ```

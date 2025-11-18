@@ -17,20 +17,16 @@ Cosey 封装了认证流程：
 1.登录 --------> 2.获取登录用户信息 -----------> 3.授权 -> 4.动态添加路由 -> 5.跳转到首页
 ```
 
-可以看到，登录和用户信息接口是基础且必须的，需要在 `createCosey` 函数配置项 `api` 进行配置：
+可以看到，登录和用户信息接口是基础且必须的，需要在 `launch` 函数配置项 `api` 进行配置：
 
 ```ts [main.ts]
-import { createCosey } from 'cosey';
-import { useAuthApi } from '@/api/auth';
+import { launch } from 'cosey';
+import authApi from '@/api/auth';
 
-createCosey({
+launch(app, {
   api: {
-    login: () => {
-      return useAuthApi().login;
-    },
-    getUserInfo: () => {
-      return useAuthApi().getUserInfo;
-    },
+    login: authApi.login,
+    getUserInfo: authApi.getUserInfo,
   },
 });
 ```
@@ -44,11 +40,9 @@ createCosey({
 修改密码是可选的，如果提供了修改密码功能，需要配置对应的接口：
 
 ```ts
-createCosey({
+launch(app, {
   api: {
-    changePassword: () => {
-      return useAuthApi().changePassword;
-    },
+    changePassword: authApi.changePassword,
   },
 });
 ```
@@ -58,11 +52,9 @@ createCosey({
 退出登录会清空认证信息并回到登录页，如果需要与服务端通信，也可以提供退出登录接口：
 
 ```ts
-createCosey({
+launch(app, {
   api: {
-    logout: () => {
-      return useAuthApi().logout;
-    },
+    logout: authApi.logout,
   },
 });
 ```
@@ -73,10 +65,10 @@ createCosey({
 
 ### 权限配置
 
-`createCosey` 函数提供了配置项 `defineAuthority` 用于定义权限信息，此函数会在上面的认证流程步骤3调用，接收登录用户信息，具体权限处理全凭开发者， Cosey 并不关心。
+`launch` 函数提供了配置项 `defineAuthority` 用于定义权限信息，此函数会在上面的认证流程步骤3调用，接收登录用户信息，具体权限处理全凭开发者， Cosey 并不关心。
 
 ```ts
-createCosey({
+launch(app, {
   defineAuthority(userInfo) {
     // userInfo
   },
@@ -90,7 +82,7 @@ createCosey({
 Cosey 提供了一个配置项 `filterRoute` 用于过滤路由，此函数接收 `RouteRecordRaw` 路由对象，只有返回 `truthy` 才会添加此路由。
 
 ```ts
-createCosey({
+launch(app, {
   filterRoute(route) {
     // 根据用户信息判断此路由是否通过
   },
@@ -98,24 +90,6 @@ createCosey({
 ```
 
 同样，Cosey 并不关心具体判断逻辑。
-
-如果需要在 `filterRoute` 中访问钩子函数，可以传递一个带有 `hook` 属性的对象：
-
-```ts
-createCosey({
-  filterRoute: {
-    hook() {
-      const persist = usePersist();
-
-      return (route) => {
-        // 使用 persist
-
-        // 根据用户信息判断此路由是否通过
-      },
-    }
-  }
-});
-```
 
 `defineAuthority` 和 `filterRoute` 配置项就是 Cosey 对外进行权限管理的全部了。
 
@@ -146,7 +120,7 @@ app.provide(ABILITY_TOKEN, ability);
 ```ts
 import { AbilityBuilder, createMongoAbility } from '@casl/ability';
 
-createCosey({
+launch(app, {
   defineAuthority({ permissions = [] }) {
     // 假设 permissions 是包含在用户信息的权限列表
     const { can, rules } = new AbilityBuilder(createMongoAbility);
@@ -171,7 +145,7 @@ createCosey({
 路由过滤：
 
 ```ts
-createCosey({
+launch(app, {
   filterRoute(route) {
     // 假设路由 meta 有配置 authority 函数
     const authority = route.meta?.authority;

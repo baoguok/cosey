@@ -2,15 +2,6 @@ import type { Theme } from 'vitepress';
 
 import './style.css';
 
-import { createI18n } from 'vue-i18n';
-const i18n = createI18n({
-  legacy: false,
-  missingWarn: false,
-  fallbackWarn: false,
-  silentTranslationWarn: true,
-  silentFallbackWarn: true,
-});
-
 import dayjs from 'dayjs';
 import dayjsZhCn from 'dayjs/locale/zh-cn';
 
@@ -23,7 +14,7 @@ import 'virtual:svg-icons-register';
 
 // import 'virtual:ssr-style.css';
 
-import { createCosey } from 'cosey';
+import { launch } from 'cosey';
 
 import { createMock } from '@cosey/mock';
 
@@ -31,7 +22,7 @@ import { icons as carbonIcons } from '@iconify-json/carbon';
 import { addIconifyIcon } from 'cosey/components';
 
 import 'virtual:group-icons.css';
-import { useUploadApi } from '@/api/common';
+import commonApi from '@/api/common';
 import { createMemoryHistory } from 'vue-router';
 
 addIconifyIcon('carbon', carbonIcons);
@@ -70,7 +61,7 @@ export default {
   async enhanceApp({ app }) {
     registerVPGlobalComponents(app);
 
-    const cosey = createCosey({
+    launch(app, {
       router: {
         listening: false,
         history: createMemoryHistory(),
@@ -79,17 +70,11 @@ export default {
         baseURL: '/mock/api',
       },
       api: {
-        login: () => async () => '',
-        getUserInfo: () => async () => ({}),
-        upload: () => {
-          return useUploadApi().singleUpload;
-        },
+        login: () => Promise.resolve(''),
+        getUserInfo: () => Promise.resolve({}),
+        upload: commonApi.singleUpload,
       },
     });
-
-    app.use(cosey);
-
-    app.use(i18n);
 
     if (!import.meta.env.SSR) {
       const mock = createMock({

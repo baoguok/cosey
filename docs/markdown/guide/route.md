@@ -1,6 +1,6 @@
 # 路由与菜单
 
-在使用 `createCosey` 函数创建 cosey 时，会根据所传参数自动创建路由，并且根据路由创建菜单，路由和菜单属于映射关系，没有添加的路由也不会生成对应菜单。
+在调用 `launch` 函数时，会根据所传参数自动创建路由，并且根据路由创建菜单，路由和菜单属于映射关系，没有添加的路由也不会生成对应菜单。
 
 ## 路由类型
 
@@ -90,14 +90,14 @@ export default defineRoutes({
 
 ## 路由注册
 
-`createCosey` 函数配置项 `router` 用于注册路由，继承于 `RouterConfig` 并通过 `dynamic` 注册动态路由，通过 `static` 注册静态路由。
+`launch` 函数配置项 `router` 用于注册路由，继承于 `RouterConfig` 并通过 `dynamic` 注册动态路由，通过 `static` 注册静态路由。
 
 ```ts
-import { createCosey } from 'cosey';
+import { launch } from 'cosey';
 import { createWebHistory } from 'vue-router';
 import { dynamicRoutes, staticRoutes } from '@/routes';
 
-createCosey({
+launch(app, {
   router: { dynamic: dynamicRoutes, static: staticRoutes, history: createWebHistory() },
 });
 ```

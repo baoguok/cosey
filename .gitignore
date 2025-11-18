@@ -34,3 +34,4 @@ cache
 pnpm-lock.yaml
 
 /.vitepress
+.eslintcache

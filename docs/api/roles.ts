@@ -1,39 +1,37 @@
-import { useRequest } from 'cosey';
+import { http } from 'cosey';
 
 const Api = {
   RolesResource: '/rbac/roles',
 };
 
-export const useRolesApi = () => {
-  return useRequest().map({
-    getRoles: (http) => (params?: any) => {
-      return http.get(Api.RolesResource, {
-        params,
-      });
-    },
+export default {
+  getRoles: (params?: any) => {
+    return http.get(Api.RolesResource, {
+      params,
+    });
+  },
 
-    getRole: (http) => (id: number) => {
-      return http.get(`${Api.RolesResource}/${id}`);
-    },
+  getRole: (id: number) => {
+    return http.get(`${Api.RolesResource}/${id}`);
+  },
 
-    addRole: (http) => (data: any) => {
-      return http.post(Api.RolesResource, data);
-    },
+  addRole: (data: any) => {
+    return http.post(Api.RolesResource, data);
+  },
 
-    updateRole: (http) => (id: number, data: any) => {
-      return http.patch(`${Api.RolesResource}/${id}`, data);
-    },
+  updateRole: (id: number, data: any) => {
+    return http.patch(`${Api.RolesResource}/${id}`, data);
+  },
 
-    deleteRole: (http) => (id: number) => {
-      return http.delete(`${Api.RolesResource}/${id}`);
-    },
+  deleteRole: (id: number) => {
+    return http.delete(`${Api.RolesResource}/${id}`);
+  },
 
-    getRolePermissions: (http) => (id: number) => {
-      return http.get(`${Api.RolesResource}/${id}/permissions`);
-    },
+  getRolePermissions: (id: number) => {
+    return http.get(`${Api.RolesResource}/${id}/permissions`);
+  },
 
-    updateRolePermissions: (http) => (id: number, data: any) => {
-      return http.patch(`${Api.RolesResource}/${id}/permissions`, data);
-    },
-  });
+  updateRolePermissions: (id: number, data: any) => {
+    return http.patch(`${Api.RolesResource}/${id}/permissions`, data);
+  },
 };

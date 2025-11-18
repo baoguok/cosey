@@ -1,10 +1,11 @@
-import { defineStore } from 'pinia';
-import { RouteMeta, useRoute } from 'vue-router';
-import { getAllStaticRoutes, getBreadcrumbRoutes, getMenus, getMenusMap } from '../router';
-import { useGlobalConfig } from '../config';
 import { computed, nextTick, ref, watch } from 'vue';
+import { type RouteMeta } from 'vue-router';
+import { defineStore, type StoreGeneric } from 'pinia';
+import { getAllStaticRoutes, getBreadcrumbRoutes, getMenus, getMenusMap, router } from '../router';
 import { useWindowResize } from '../hooks';
-import { useUserStore } from './user';
+import { useOuterUserStore, useUserStore } from './user';
+import { pinia } from './pinia';
+import { globalConfig } from '../config';
 
 export type LayoutMenuType =
   | 'vertical'
@@ -21,9 +22,9 @@ export interface LayoutTab {
 export const useLayoutStore = defineStore(
   'cosey-layout',
   () => {
-    const { layout: layoutConfig } = useGlobalConfig();
-    const route = useRoute();
-    const userStore = useUserStore();
+    const { layout: layoutConfig } = globalConfig;
+    const currentRoute = router.currentRoute;
+    const userStore = useOuterUserStore();
 
     // 是否显示侧边栏
     const sidebarVisible = ref(layoutConfig.sidebarVisible);
@@ -156,8 +157,8 @@ export const useLayoutStore = defineStore(
     });
 
     // 根据当前路由切换选中的菜单项
-    watch([() => route.name, menus], () => {
-      const node = menusMap.value[route.name as string];
+    watch([() => currentRoute.value.name, menus], () => {
+      const node = menusMap.value[currentRoute.value.name as string];
       if (node) {
         const nodes = getBreadcrumbRoutes(node);
 
@@ -226,12 +227,14 @@ export const useLayoutStore = defineStore(
      */
     const reload = () => {
       refreshing.value = true;
-      if (keepAliveInclude.value.includes(route.name as string)) {
-        keepAliveInclude.value = keepAliveInclude.value.filter((item) => item !== route.name);
+      if (keepAliveInclude.value.includes(currentRoute.value.name as string)) {
+        keepAliveInclude.value = keepAliveInclude.value.filter(
+          (item) => item !== currentRoute.value.name,
+        );
       }
       nextTick(() => {
         refreshing.value = false;
-        keepAliveInclude.value = [...keepAliveInclude.value, route.name as string];
+        keepAliveInclude.value = [...keepAliveInclude.value, currentRoute.value.name as string];
       });
     };
 
@@ -357,3 +360,7 @@ export const useLayoutStore = defineStore(
     },
   },
 );
+
+export const useOuterLayoutStore = (hot?: StoreGeneric) => {
+  return useUserStore(pinia, hot);
+};

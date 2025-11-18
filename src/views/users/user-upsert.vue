@@ -79,14 +79,14 @@
 
 <script lang="ts" setup>
 import { computed, reactive } from 'vue';
-import { useUsersApi } from '@/api/users';
+import usersApi from '@/api/users';
 import { useUpsert } from 'cosey/hooks';
 import * as mock from '@gunny/mock';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const { addUser, updateUser } = useUsersApi();
+const { addUser, updateUser } = usersApi;
 
 interface Model {
   nickname?: string;

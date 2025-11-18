@@ -1,19 +1,20 @@
 import { ref, shallowRef } from 'vue';
-import { type RouteRecordRaw, useRoute, useRouter } from 'vue-router';
-import { defineStore } from 'pinia';
-import { getAllDynamicRoutes } from '../router';
-import { usePersist } from '../hooks';
+import { type RouteRecordRaw } from 'vue-router';
+import { defineStore, type StoreGeneric } from 'pinia';
+import { getAllDynamicRoutes, router } from '../router';
 import { TOKEN_NAME } from '../constant';
 /**
  * 用于解决ts错误提示：
  * The inferred type of '' cannot be named without a reference to '.pnpm/@vue+shared@3.5.13/node_modules/@vue/shared'. This is likely not portable. A type annotation is necessary.
  */
 import type {} from '@vue/shared';
-import { useGlobalConfig } from '../config';
-import { isFunction, warningOnce } from '../utils';
+import { warningOnce } from '../utils';
 import { NOT_FOUND_ROUTE_NAME, NotFoundRoute } from '../router/not-found';
+import { persist } from '../persist';
+import { pinia } from './pinia';
+import { globalConfig } from '../config';
 
-interface UserInfo {
+export interface UserInfo {
   id?: number;
   username?: string;
   nickname: string;
@@ -22,21 +23,7 @@ interface UserInfo {
 }
 
 export const useUserStore = defineStore('cosey-user', () => {
-  const route = useRoute();
-  const router = useRouter();
-  const persist = usePersist();
-  const {
-    router: routerConfig,
-    api: apiConfig,
-    filterRoute,
-    defineAuthority,
-  } = useGlobalConfig() || {};
-
-  const filterRouteHandler = isFunction(filterRoute) ? filterRoute : filterRoute.hook();
-
-  const defineAuthorityHandler = isFunction(defineAuthority)
-    ? defineAuthority
-    : defineAuthority.hook();
+  const { router: routerConfig, api: apiConfig, filterRoute, defineAuthority } = globalConfig;
 
   if (!apiConfig?.login) {
     warningOnce(!!apiConfig?.login, 'The "login" api is required.');
@@ -46,10 +33,10 @@ export const useUserStore = defineStore('cosey-user', () => {
     warningOnce(!!apiConfig?.getUserInfo, 'The "getUserInfo" api is required.');
   }
 
-  const loginApi = apiConfig?.login?.();
-  const getUserInfoApi = apiConfig?.getUserInfo?.();
-  const changePasswordApi = apiConfig?.changePassword?.();
-  const logoutApi = apiConfig?.logout?.();
+  const loginApi = apiConfig?.login;
+  const getUserInfoApi = apiConfig?.getUserInfo;
+  const changePasswordApi = apiConfig?.changePassword;
+  const logoutApi = apiConfig?.logout;
 
   // 当前动态添加的路由
   const dynamicRoutes = shallowRef<any[]>([]);
@@ -65,7 +52,7 @@ export const useUserStore = defineStore('cosey-user', () => {
   const login = async (data: any) => {
     await loginApi?.(data).then((token: string) => {
       persist.set(TOKEN_NAME, token);
-      router.push((route.query.redirect as string) || routerConfig!.homePath);
+      router.push((router.currentRoute.value.query.redirect as string) || routerConfig!.homePath);
     });
   };
 
@@ -100,13 +87,13 @@ export const useUserStore = defineStore('cosey-user', () => {
    * 设置权限
    */
   const setAuthorization = async () => {
-    return defineAuthorityHandler(userInfo.value!);
+    return defineAuthority(userInfo.value!);
   };
 
   const mapRoute = (routes: RouteRecordRaw[]): RouteRecordRaw[] => {
     return routes
       .map((route) => {
-        const result = filterRouteHandler(route);
+        const result = filterRoute(route);
         const node = result === true ? route : result;
 
         if (node && node.children && node.children.length) {
@@ -178,3 +165,7 @@ export const useUserStore = defineStore('cosey-user', () => {
     logout,
   };
 });
+
+export const useOuterUserStore = (hot?: StoreGeneric) => {
+  return useUserStore(pinia, hot);
+};

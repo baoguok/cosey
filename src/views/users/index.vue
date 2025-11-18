@@ -52,7 +52,7 @@
 
 <script lang="tsx" setup>
 import { ElMessage } from 'element-plus';
-import { useUsersApi } from '@/api/users';
+import usersApi from '@/api/users';
 import UserUpsert from './user-upsert.vue';
 import { useOuterUpsert } from 'cosey/hooks';
 import { useTable } from 'cosey/components';
@@ -70,7 +70,7 @@ defineOptions({
 
 const { can, cannot } = useAbility();
 
-const { getUsers, deleteUser, updateUser, updateBulkSilent } = useUsersApi();
+const { getUsers, deleteUser, updateUser, updateBulkSilent } = usersApi;
 
 const [tableProps, { reload, getSelectionRows }] = useTable(
   computed(() => ({

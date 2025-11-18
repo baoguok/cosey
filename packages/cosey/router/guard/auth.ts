@@ -1,8 +1,8 @@
 import { type Router } from 'vue-router';
-import { useGlobalConfig } from '../../config';
+import { globalConfig } from '../../config';
 import { useUserStore } from '../../store';
-import { usePersist } from '../../hooks';
 import { ROUTER_TO, TOKEN_NAME } from '../../constant';
+import { persist } from '../../persist';
 
 /**
  * 身份验证路由守卫
@@ -11,8 +11,7 @@ export function registerAuthGuard(router: Router) {
   let firstTimeAddRoutes = false;
 
   router.beforeEach(async (to) => {
-    const persist = usePersist();
-    const routerConfig = useGlobalConfig().router;
+    const { router: routerConfig } = globalConfig;
 
     const token = persist.get(TOKEN_NAME);
     const userStore = useUserStore();

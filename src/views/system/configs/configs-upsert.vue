@@ -100,15 +100,15 @@
 
 <script lang="ts" setup>
 import { computed, reactive, ref } from 'vue';
-import { useConfigGroupsApi, useConfigsApi } from '@/api/system/configs';
 import { useFetch, useUpsert } from 'cosey/hooks';
-import { useEnumsApi } from '@/api/system/enums';
 import { omit } from 'lodash-es';
 import { useI18n } from 'vue-i18n';
+import configsApi from '@/api/system/configs';
+import enumsApi from '@/api/system/enums';
 
 const { t } = useI18n();
 
-const { addConfig, updateConfig } = useConfigsApi();
+const { addConfig, updateConfig, getConfigGroups } = configsApi;
 
 interface Model {
   groupId?: number;
@@ -171,13 +171,11 @@ const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
 
 defineExpose(expose);
 
-const { getEnumItemsByEnumName } = useEnumsApi();
+const { getEnumItemsByEnumName } = enumsApi;
 
 const { data: configTypes } = useFetch<any[]>(() => getEnumItemsByEnumName('config_type'));
 
 // group
-
-const { getConfigGroups } = useConfigGroupsApi();
 
 const configGroups = ref<any[]>([]);
 

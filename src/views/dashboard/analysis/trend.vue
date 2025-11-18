@@ -18,14 +18,14 @@
 </template>
 
 <script lang="ts" setup>
-import { useStatisticsApi } from '@/api/statistics';
+import statisticsApi from '@/api/statistics';
 import { useEcharts, useFetch } from 'cosey/hooks';
 import { computed, reactive, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const { getStatTrend } = useStatisticsApi();
+const { getStatTrend } = statisticsApi;
 
 const elRef = useTemplateRef('elRef');
 

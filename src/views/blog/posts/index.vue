@@ -48,7 +48,7 @@
 
 <script lang="tsx" setup>
 import { ElMessage } from 'element-plus';
-import { usePostsApi } from '@/api/blog';
+import postsApi from '@/api/blog';
 import PostsUpsert from './post-upsert.vue';
 import { useOuterUpsert } from 'cosey/hooks';
 import { useTable } from 'cosey/components';
@@ -65,7 +65,7 @@ defineOptions({
 
 const { can, cannot } = useAbility();
 
-const { getPosts, deletePost } = usePostsApi();
+const { getPosts, deletePost } = postsApi;
 
 const [tableProps, { reload }] = useTable(
   computed(() => ({

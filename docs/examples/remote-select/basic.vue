@@ -16,10 +16,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useUsersApi } from '@/api/users';
+import usersApi from '@/api/users';
 import { ref } from 'vue';
 
-const { getUsers } = useUsersApi();
+const { getUsers } = usersApi;
 
 const value = ref();
 </script>

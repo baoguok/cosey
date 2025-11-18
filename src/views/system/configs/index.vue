@@ -47,7 +47,7 @@
 
 <script lang="tsx" setup>
 import { ElMessage } from 'element-plus';
-import { useConfigGroupsApi, useConfigsApi } from '@/api/system/configs';
+import configsApi from '@/api/system/configs';
 import ConfigUpsert from './configs-upsert.vue';
 import { useFetch, useOuterUpsert } from 'cosey/hooks';
 import { LongText, MediaCard, MediaCardGroup, useTable } from 'cosey/components';
@@ -64,8 +64,7 @@ defineOptions({
 
 const { can, cannot } = useAbility();
 
-const { getConfigs, deleteConfig } = useConfigsApi();
-const { getConfigGroups } = useConfigGroupsApi();
+const { getConfigs, deleteConfig, getConfigGroups } = configsApi;
 
 const configGroupOptions = ref<any[]>([]);
 

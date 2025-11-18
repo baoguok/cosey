@@ -1,62 +1,56 @@
 # 接口请求
 
-cosey 对 `axios` 进行了封装，对外提供了 `useRequest` 钩子来创建接口发送请求。使用钩子的考量有二。一是可以借助钩子消费上下文数据；二是每次都能生成新的请求对象，使其可以处理当前接口请求的终止。
+cosey 对 `axios` 进行了封装，对外提供了 `http` 对象来发送请求。
 
 ## 定义接口
 
 通常接口根据不同模块存放在不同的文件中，例如博客模块的接口，就可以这样存放和定义：
 
 ```ts [api/blog.ts]
-import { useRequest } from 'cosey';
+import { http } from 'cosey';
 
 const Api = {
   PostsResource: '/blog/posts',
 };
 
-export const usePostsApi = () => {
-  return useRequest().map({
-    getPosts: (http) => (params?: any) => {
-      return http.get(Api.PostsResource, {
-        params,
-      });
-    },
+export default {
+  getPosts: (params?: any) => {
+    return http.get(Api.PostsResource, {
+      params,
+    });
+  },
 
-    getPost: (http) => (id: number) => {
-      return http.get(`${Api.PostsResource}/${id}`);
-    },
+  getPost: (id: number) => {
+    return http.get(`${Api.PostsResource}/${id}`);
+  },
 
-    addPost: (http) => (data: any) => {
-      return http.post(Api.PostsResource, data);
-    },
+  addPost: (data: any) => {
+    return http.post(Api.PostsResource, data);
+  },
 
-    updatePost: (http) => (id: number, data: any) => {
-      return http.patch(`${Api.PostsResource}/${id}`, data);
-    },
+  updatePost: (id: number, data: any) => {
+    return http.patch(`${Api.PostsResource}/${id}`, data);
+  },
 
-    deletePost: (http) => (id: number) => {
-      return http.delete(`${Api.PostsResource}/${id}`);
-    },
-  });
+  deletePost: (id: number) => {
+    return http.delete(`${Api.PostsResource}/${id}`);
+  },
 };
 ```
 
 上面定义了博客模块的 RESTful 风格的接口。
 
-`useRequest` 可接收 `CreateAxiosDefaults` 类型参数自定义请求；`useRequest().map` 方法可以定义相同配置下的一组方法，消费组件可将其扩展使用。
-
-`http` 对象定义了多个和 axios 相同接口的方法。
+`http` 对象定义了多个方法，这些方法在 axios 方法接口基础上添加了一个参数，用于扩展 axios 的使用。
 
 ## 使用接口
 
 ```ts
-import { usePostsApi } from '@/api/blog';
+import postsApi from '@/api/blog';
 
-const { getPosts } = usePostsApi();
+const { getPosts } = postsApi;
 
-onMounted(async () => {
-  getPosts().then((data) => {
-    console.log(data);
-  });
+getPosts().then((data) => {
+  console.log(data);
 });
 ```
 
@@ -68,7 +62,7 @@ getPosts.abort();
 
 ## 接口配置
 
-`createCosey` 函数配置项 `http` 用于接口相关的配置。
+`launch` 函数配置项 `http` 用于接口相关的配置，类型为 `HttpConfig`。
 
 ### baseURL
 
@@ -171,3 +165,77 @@ Token 添加到的请求头字段的键名
 - 默认值：`false`
 
 是否直接返回 AxiosResponse.data 属性值。
+
+## 创建自定义 Http
+
+除了使用默认的 `http` 对象，还可以根据配置创建自定义的请求对象。
+
+```ts
+import { createHttp } from 'cosey';
+
+export const http = createHttp({
+  baseURL: '/another-api',
+});
+```
+
+### createHttp 接口
+
+```ts
+function createHttp(axiosConfig?: CreateAxiosDefaults<any>, createCfg?: HttpConfig): Http;
+```
+
+## Http 方法
+
+### request
+
+```ts
+Http.request<T = any, D = any>(config: AxiosRequestConfig<D>, httpConfig?: HttpConfig): Promise<T>
+```
+
+### get
+
+```ts
+Http.get<T = any, D = any>(url: string, config?: AxiosRequestConfig<D> | undefined, httpConfig?: HttpConfig): Promise<T>
+```
+
+### delete
+
+```ts
+Http.delete<T = any, D = any>(url: string, config?: AxiosRequestConfig<D> | undefined, httpConfig?: HttpConfig): Promise<T>
+```
+
+### head
+
+```ts
+Http.head<T = any, D = any>(url: string, config?: AxiosRequestConfig<D> | undefined, httpConfig?: HttpConfig): Promise<T>
+```
+
+### options
+
+```ts
+Http.options<T = any, D = any>(url: string, config?: AxiosRequestConfig<D> | undefined, httpConfig?: HttpConfig): Promise<T>
+```
+
+### post
+
+```ts
+Http.post<T = any, D = any>(url: string, data?: D | undefined, config?: AxiosRequestConfig<D> | undefined, httpConfig?: HttpConfig): Promise<T>
+```
+
+### put
+
+```ts
+Http.put<T = any, D = any>(url: string, data?: D | undefined, config?: AxiosRequestConfig<D> | undefined, httpConfig?: HttpConfig): Promise<T>
+```
+
+### patch
+
+```ts
+Http.patch<T = any, D = any>(url: string, data?: D | undefined, config?: AxiosRequestConfig<D> | undefined, httpConfig?: HttpConfig): Promise<T>
+```
+
+## 配置覆盖规则
+
+```
+launch http 配置 <- createHttp 参数 <- Http 方法参数
+```

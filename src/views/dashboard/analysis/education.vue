@@ -8,14 +8,14 @@
 </template>
 
 <script lang="ts" setup>
-import { useStatisticsApi } from '@/api/statistics';
+import statisticsApi from '@/api/statistics';
 import { useEcharts, useFetch } from 'cosey/hooks';
 import { computed, ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const { getStatEducation } = useStatisticsApi();
+const { getStatEducation } = statisticsApi;
 
 const elRef = useTemplateRef('elRef');
 

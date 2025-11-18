@@ -1,6 +1,6 @@
 import { type PiniaPluginContext } from 'pinia';
 import { watch } from 'vue';
-import { usePersist } from '../hooks';
+import { persist } from '../persist';
 
 declare module 'pinia' {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -14,23 +14,21 @@ declare module 'pinia' {
 export function piniaPluginPersist(context: PiniaPluginContext) {
   const {
     store,
-    options: { persist },
+    options: { persist: persistConfig },
   } = context;
 
-  const pickKeys = persist?.pick || [];
-
-  const persistIns = usePersist();
+  const pickKeys = persistConfig?.pick || [];
 
   const persistKey = `Cosey:pinia:${store.$id}`;
 
-  const localData = persistIns.get(persistKey) || {};
+  const localData = persist.get(persistKey) || {};
 
   store.$patch(localData);
 
   watch(
     pickKeys.map((key) => () => store[key]),
     () => {
-      persistIns.set(persistKey, Object.fromEntries(pickKeys.map((key) => [key, store[key]])));
+      persist.set(persistKey, Object.fromEntries(pickKeys.map((key) => [key, store[key]])));
     },
   );
 }

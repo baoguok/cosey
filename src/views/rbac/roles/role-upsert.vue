@@ -9,12 +9,12 @@
 <script lang="ts" setup>
 import { computed, reactive } from 'vue';
 import { useUpsert } from 'cosey/hooks';
-import { useRolesApi } from '@/api/rbac/roles';
+import rolesApi from '@/api/rbac/roles';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const { addRole, updateRole } = useRolesApi();
+const { addRole, updateRole } = rolesApi;
 
 interface Model {
   name?: string;

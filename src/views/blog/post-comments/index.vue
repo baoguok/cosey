@@ -35,7 +35,7 @@
 import PostCommentsUpsert from './post-comment-upsert.vue';
 import { useOuterUpsert } from 'cosey/hooks';
 import { useTable } from 'cosey/components';
-import { usePostCommentsApi } from '@/api/blog';
+import postCommentsApi from '@/api/blog';
 import { ElMessage } from 'element-plus';
 import { useAbility } from '@casl/vue';
 import { computed } from 'vue';
@@ -49,7 +49,7 @@ defineOptions({
 
 const { cannot } = useAbility();
 
-const { getPostComments, deletePostComment } = usePostCommentsApi();
+const { getPostComments, deletePostComment } = postCommentsApi;
 
 const [tableProps, { reload }] = useTable(
   computed(() => ({

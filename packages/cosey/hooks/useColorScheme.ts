@@ -15,8 +15,8 @@ import {
   ref,
   watch,
 } from 'vue';
-import { usePersist } from './usePersist';
 import { isClient } from '../utils';
+import { persist } from '../persist';
 
 const colorSchemeContextSymbol = Symbol('colorScheme');
 
@@ -44,8 +44,6 @@ export const colorSchemeOptions: ColorSchemeOption[] = [
 ];
 
 export function useColorSchemeProvide() {
-  const persist = usePersist();
-
   const defaultColorScheme = (persist.get(colorSchemeKey) || 'auto') as ColorScheme;
 
   const colorScheme = ref<ColorScheme>(defaultColorScheme);

@@ -4,12 +4,12 @@ Cosey 提供了默认的布局，也可以自定义布局。
 
 ## 配置默认值
 
-`createCosey` 函数配置项 `layout` 用于配置布局相关默认值。
+`launch` 函数配置项 `layout` 用于配置布局相关默认值。
 
 ```ts
-import { createCosey } from 'cosey';
+import { launch } from 'cosey';
 
-createCosey({
+launch(app, {
   layout: {
     menuType: 'biserial',
   },
@@ -86,13 +86,13 @@ export const defaultLayoutConfig = {
 
 如果默认的布局组件不能满足需求，可以进行替换。
 
-`createCosey` 函数配置项 `components` 用于替换默认布局组件。可以复用现有的布局组件，或者定义全新的布局组件。
+`launch` 函数配置项 `components` 用于替换默认布局组件。可以复用现有的布局组件，或者定义全新的布局组件。
 
 ```ts
 import { defineComponent } from 'vue';
-import { createCosey } from 'cosey';
+import { launch } from 'cosey';
 
-createCosey({
+launch(app, {
   components: {
     login: defineComponent({
       render: () => '自定义登录页组件',

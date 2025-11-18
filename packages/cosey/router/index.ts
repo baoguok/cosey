@@ -4,12 +4,15 @@ import {
   type RouterHistory,
   createWebHashHistory,
   createRouter,
+  Router,
 } from 'vue-router';
 
 import type { AnyAbility } from '@casl/ability';
 
 import { staticRoutes } from './routes';
 import { cloneDeep } from 'lodash-es';
+import { App } from 'vue';
+import { registerRouterGuard } from './guard';
 
 export {
   type MenuItem,
@@ -21,6 +24,8 @@ export {
 } from './menus';
 
 export { defineRoute, defineRoutes, mergeRouteModules } from './utils';
+
+export let router: Router;
 
 export interface CoseyRouterOptions extends Omit<RouterOptions, 'routes' | 'history'> {
   history?: RouterHistory;
@@ -40,7 +45,7 @@ export const getAllStaticRoutes = () => {
   return [...staticRoutes, ...customStaticRoutes];
 };
 
-export function createCoseyRouter(options: CoseyRouterOptions = {}) {
+export function launchRouter(app: App, options: CoseyRouterOptions = {}) {
   const { static: static$ = [], dynamic = [], listening = true, ...restOptions } = options;
 
   customStaticRoutes = static$;
@@ -59,11 +64,15 @@ export function createCoseyRouter(options: CoseyRouterOptions = {}) {
     },
   );
 
-  const router = createRouter(mergedOptions);
+  router = createRouter(mergedOptions);
 
   router.listening = listening;
 
-  return router;
+  if (listening) {
+    registerRouterGuard(router);
+  }
+
+  app.use(router);
 }
 
 declare module 'vue-router' {

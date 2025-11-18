@@ -1,31 +1,29 @@
-import { useRequest } from 'cosey';
+import { http } from 'cosey';
 
 const Api = {
   AdminsResource: '/rbac/admins',
 };
 
-export const useAdminsApi = () => {
-  return useRequest().map({
-    getAdmins: (http) => (params?: any) => {
-      return http.get(Api.AdminsResource, {
-        params,
-      });
-    },
+export default {
+  getAdmins: (params?: any) => {
+    return http.get(Api.AdminsResource, {
+      params,
+    });
+  },
 
-    getAdmin: (http) => (id: number) => {
-      return http.get(`${Api.AdminsResource}/${id}`);
-    },
+  getAdmin: (id: number) => {
+    return http.get(`${Api.AdminsResource}/${id}`);
+  },
 
-    addAdmin: (http) => (data: any) => {
-      return http.post(Api.AdminsResource, data);
-    },
+  addAdmin: (data: any) => {
+    return http.post(Api.AdminsResource, data);
+  },
 
-    updateAdmin: (http) => (id: number, data: any) => {
-      return http.patch(`${Api.AdminsResource}/${id}`, data);
-    },
+  updateAdmin: (id: number, data: any) => {
+    return http.patch(`${Api.AdminsResource}/${id}`, data);
+  },
 
-    deleteAdmin: (http) => (id: number) => {
-      return http.delete(`${Api.AdminsResource}/${id}`);
-    },
-  });
+  deleteAdmin: (id: number) => {
+    return http.delete(`${Api.AdminsResource}/${id}`);
+  },
 };

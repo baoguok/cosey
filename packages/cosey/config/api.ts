@@ -8,27 +8,33 @@ export const defaultApiConfig = {
   /**
    * 文件上传
    */
-  upload: null as (() => (data: Blob, config?: AxiosRequestConfig) => Promise<string>) | null,
+  upload: null as
+    | ((
+        data: Blob,
+        config?: AxiosRequestConfig,
+        extra?: Record<PropertyKey, any>,
+      ) => Promise<string>)
+    | null,
 
   /**
    * 登录
    */
-  login: null as (() => (data: any, config?: AxiosRequestConfig) => Promise<string>) | null,
+  login: null as ((data: any, config?: AxiosRequestConfig) => Promise<string>) | null,
 
   /**
    * 获取用户详情
    */
-  getUserInfo: null as (() => (config?: AxiosRequestConfig) => Promise<any>) | null,
+  getUserInfo: null as ((config?: AxiosRequestConfig) => Promise<any>) | null,
 
   /**
    * 修改密码
    */
-  changePassword: null as (() => (data: any, config?: AxiosRequestConfig) => Promise<any>) | null,
+  changePassword: null as ((data: any, config?: AxiosRequestConfig) => Promise<any>) | null,
 
   /**
    * 退出
    */
-  logout: null as (() => (config?: AxiosRequestConfig) => Promise<any>) | null,
+  logout: null as ((config?: AxiosRequestConfig) => Promise<any>) | null,
 };
 
 export type ApiConfig = DeepPartial<typeof defaultApiConfig>;

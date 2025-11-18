@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useStatisticsApi } from '@/api/statistics';
+import statisticsApi from '@/api/statistics';
 import { useFetch } from 'cosey/hooks';
 import { type NumberFormatProps } from 'cosey/components';
 import { ref } from 'vue';
@@ -41,7 +41,7 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const { getStatOverview } = useStatisticsApi();
+const { getStatOverview } = statisticsApi;
 
 const columns = ref<
   {

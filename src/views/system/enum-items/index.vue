@@ -38,7 +38,7 @@
 
 <script lang="tsx" setup>
 import { ElMessage } from 'element-plus';
-import { useEnumsApi } from '@/api/system/enums';
+import enumsApi from '@/api/system/enums';
 import Upsert from './enum-item-upsert.vue';
 import { useOuterUpsert } from 'cosey/hooks';
 import { useTable } from 'cosey/components';
@@ -59,7 +59,7 @@ const enumId = ref<number>();
 
 const route = useRoute();
 
-const { getEnumItems, deleteEnumItem } = useEnumsApi();
+const { getEnumItems, deleteEnumItem } = enumsApi;
 
 const [tableProps, { reload }] = useTable(
   computed(() => ({

@@ -54,7 +54,7 @@ export const uploadProps = {
     default: 'large' as const,
   },
   request: {
-    type: Function as PropType<UploadContext['request']>,
+    type: [Function, null] as PropType<UploadContext['request']>,
   },
   requestConfig: {
     type: Object as PropType<AxiosRequestConfig>,

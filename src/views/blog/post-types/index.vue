@@ -40,7 +40,7 @@
 import PosttypesUpsert from './post-type-upsert.vue';
 import { useOuterUpsert } from 'cosey/hooks';
 import { useTable } from 'cosey/components';
-import { usePosttypesApi } from '@/api/blog';
+import posttypesApi from '@/api/blog';
 import { ElMessage } from 'element-plus';
 import { useAbility } from '@casl/vue';
 import { computed } from 'vue';
@@ -54,7 +54,7 @@ defineOptions({
 
 const { can, cannot } = useAbility();
 
-const { getPosttypes, deletePosttype } = usePosttypesApi();
+const { getPosttypes, deletePosttype } = posttypesApi;
 
 const [tableProps, { reload }] = useTable(
   computed(() => ({

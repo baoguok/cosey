@@ -48,7 +48,7 @@
 
 <script lang="tsx" setup>
 import { ElMessage } from 'element-plus';
-import { useEnumsApi } from '@/api/system/enums';
+import enumsApi from '@/api/system/enums';
 import Upsert from './enum-upsert.vue';
 import { useOuterUpsert } from 'cosey/hooks';
 import { useTable } from 'cosey/components';
@@ -65,7 +65,7 @@ defineOptions({
 
 const { can, cannot } = useAbility();
 
-const { getEnums, deleteEnum } = useEnumsApi();
+const { getEnums, deleteEnum } = enumsApi;
 
 const [tableProps, { reload }] = useTable(
   computed(() => ({

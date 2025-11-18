@@ -2,7 +2,7 @@
 
 ## 简介
 
-图片上传依赖于 `createCosey api.upload` 接口，需要保证接口返回一个文件地址。
+图片上传依赖于 `launch api.upload` 接口，需要保证接口返回一个文件地址。
 
 ## 代码演示
 

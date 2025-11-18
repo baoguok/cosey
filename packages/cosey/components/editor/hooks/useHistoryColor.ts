@@ -1,13 +1,11 @@
 import { ref, Ref } from 'vue';
-import { usePersist } from '../../../hooks';
+import { persist } from '../../../persist';
 
 const historyColorKey = 'Cosey:historyColor';
 
 let historyColors: Ref<string[]> | null = null;
 
 export function useHistoryColor() {
-  const persist = usePersist();
-
   if (!historyColors) {
     historyColors = ref(persist.get(historyColorKey) || []);
   }

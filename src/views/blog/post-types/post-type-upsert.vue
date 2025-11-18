@@ -16,12 +16,12 @@
 <script lang="ts" setup>
 import { computed, reactive } from 'vue';
 import { useUpsert } from 'cosey/hooks';
-import { usePosttypesApi } from '@/api/blog';
+import posttypesApi from '@/api/blog';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const { addPosttype, updatePosttype } = usePosttypesApi();
+const { addPosttype, updatePosttype } = posttypesApi;
 
 interface Model {
   name?: string;

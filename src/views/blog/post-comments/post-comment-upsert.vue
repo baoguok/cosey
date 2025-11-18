@@ -15,12 +15,12 @@
 <script lang="ts" setup>
 import { computed, reactive } from 'vue';
 import { useUpsert } from 'cosey/hooks';
-import { usePostCommentsApi } from '@/api/blog';
+import postCommentsApi from '@/api/blog';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const { addPostComment, updatePostComment } = usePostCommentsApi();
+const { addPostComment, updatePostComment } = postCommentsApi;
 
 interface Model {
   content?: string;

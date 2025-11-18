@@ -13,14 +13,14 @@
 </template>
 
 <script lang="ts" setup>
-import { usePermissionsApi } from '@/api/permissions';
-import { useRolesApi } from '@/api/roles';
+import permissionsApi from '@/api/permissions';
+import rolesApi from '@/api/roles';
 import { type HorizontalTreeExpose } from 'cosey/components';
 import { useFetch } from 'cosey/hooks';
 import { nextTick, ref, useTemplateRef } from 'vue';
 
-const { getPermissionTree } = usePermissionsApi();
-const { getRolePermissions } = useRolesApi();
+const { getPermissionTree } = permissionsApi;
+const { getRolePermissions } = rolesApi;
 
 const treeRef = useTemplateRef<HorizontalTreeExpose>('tree');
 

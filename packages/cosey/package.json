@@ -1,6 +1,6 @@
 {
   "name": "cosey",
-  "version": "0.10.9",
+  "version": "0.10.11",
   "description": "基于 Vue3 + vite 的后台管理系统框架",
   "type": "module",
   "main": "index.ts",
@@ -15,7 +15,7 @@
     "@emotion/hash": "^0.9.2",
     "@emotion/unitless": "^0.10.0",
     "@floating-ui/dom": "^1.6.13",
-    "@gunny/persist": "^1.0.2",
+    "@gunny/persist": "^1.0.3",
     "@iconify/types": "^2.0.0",
     "@types/is-hotkey": "^0.1.10",
     "@types/nprogress": "^0.2.3",

@@ -18,7 +18,12 @@ export class Http {
     }
   }
 
-  _request<T = any, D = any>(config: AxiosRequestConfig<D>, httpConfig?: HttpConfig) {
+  _request<T = any, D = any>(
+    config: AxiosRequestConfig<D> & {
+      coseyHttpConfig?: HttpConfig;
+    },
+    httpConfig?: HttpConfig,
+  ) {
     if (!config.signal) {
       config.signal = this.controller.signal;
     }
@@ -26,6 +31,8 @@ export class Http {
     if (!this.axiosIns) {
       this.axiosIns = this.axiosFactory(httpConfig);
     }
+
+    config.coseyHttpConfig = httpConfig;
 
     return this.axiosIns.request<T, T, D>(config);
   }

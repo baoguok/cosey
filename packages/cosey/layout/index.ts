@@ -3,10 +3,7 @@ import ElementPlus from 'element-plus';
 
 import coseyComponents from '../components';
 
-export function registerGlobalComponents(app: App) {
+export function launchGlobalComponents(app: App) {
   app.use(ElementPlus);
   app.use(coseyComponents);
 }
-
-export * from './layout';
-export * from './merged';

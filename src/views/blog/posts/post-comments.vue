@@ -34,7 +34,7 @@
 <script lang="ts" setup>
 import { useAbility } from '@casl/vue';
 import PostCommentsUpsert from '../post-comments/post-comment-upsert.vue';
-import { usePostCommentsApi } from '@/api/blog';
+import postCommentsApi from '@/api/blog';
 import { useTable } from 'cosey/components';
 import { useOuterUpsert } from 'cosey/hooks';
 import { ElMessage } from 'element-plus';
@@ -49,7 +49,7 @@ const postId = ref<number>();
 
 const visible = ref(false);
 
-const { getPostComments, deletePostComment } = usePostCommentsApi();
+const { getPostComments, deletePostComment } = postCommentsApi;
 
 const [tableProps, { reload }] = useTable(
   computed(() => ({

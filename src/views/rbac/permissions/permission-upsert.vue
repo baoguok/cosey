@@ -41,13 +41,13 @@
 <script lang="ts" setup>
 import { computed, reactive } from 'vue';
 import { useFetch, useUpsert } from 'cosey/hooks';
-import { usePermissionsApi } from '@/api/rbac/permissions';
+import permissionsApi from '@/api/rbac/permissions';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
 const { addPermission, updatePermission, getPermissionParentTree, getPermissionTree } =
-  usePermissionsApi();
+  permissionsApi;
 
 const { data: permissionTree, execute } = useFetch<any[], () => any>(
   (api) => {

@@ -1,13 +1,5 @@
-import { createPinia } from 'pinia';
-import { useLayoutStore } from './layout';
-import { useUserStore } from './user';
-import { useAppearanceStore } from './appearance';
-import { piniaPluginPersist } from './plugin';
+import { pinia, launchStore } from './pinia';
+import { useLayoutStore, useOuterLayoutStore } from './layout';
+import { useUserStore, useOuterUserStore } from './user';
 
-export function createPiniaStore() {
-  const pinia = createPinia();
-  pinia.use(piniaPluginPersist);
-  return pinia;
-}
-
-export { useUserStore, useAppearanceStore, useLayoutStore };
+export { pinia, launchStore, useUserStore, useOuterUserStore, useLayoutStore, useOuterLayoutStore };

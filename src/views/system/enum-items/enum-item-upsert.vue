@@ -9,13 +9,13 @@
 
 <script lang="ts" setup>
 import { computed, reactive } from 'vue';
-import { useEnumsApi } from '@/api/system/enums';
+import enumsApi from '@/api/system/enums';
 import { useUpsert } from 'cosey/hooks';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const { addEnumItem, updateEnumItem } = useEnumsApi();
+const { addEnumItem, updateEnumItem } = enumsApi;
 
 interface Model {
   name?: string;

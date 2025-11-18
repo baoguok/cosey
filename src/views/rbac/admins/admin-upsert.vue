@@ -33,15 +33,16 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref } from 'vue';
-import { useAdminsApi } from '@/api/rbac/admins';
-import { useRolesApi } from '@/api/rbac/roles';
+import adminsApi from '@/api/rbac/admins';
+import rolesApi from '@/api/rbac/roles';
 import { useUpsert } from 'cosey/hooks';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const { addAdmin, updateAdmin } = useAdminsApi();
-const { getRoles } = useRolesApi();
+const { addAdmin, updateAdmin } = adminsApi;
+
+const { getRoles } = rolesApi;
 
 interface Model {
   username?: string;

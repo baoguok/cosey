@@ -8,13 +8,13 @@
 
 <script lang="ts" setup>
 import { computed, reactive } from 'vue';
-import { useConfigGroupsApi } from '@/api/system/configs';
+import configGroupsApi from '@/api/system/configs';
 import { useUpsert } from 'cosey/hooks';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const { addConfigGroup, updateConfigGroup } = useConfigGroupsApi();
+const { addConfigGroup, updateConfigGroup } = configGroupsApi;
 
 interface Model {
   name?: string;

@@ -35,7 +35,7 @@ export default defineComponent({
     const apiConfig = useGlobalConfig()?.api;
 
     if (apiConfig) {
-      const uploadApi = apiConfig.upload?.();
+      const uploadApi = apiConfig.upload;
       provideUploadConfig({
         request: uploadApi,
       });
@@ -66,7 +66,7 @@ export default defineComponent({
     return () => {
       return (
         <ConfigProvider {...mergedConfigProviderProps.value}>
-          <ElConfigProvider locale={props.locale} v-slots={slots}></ElConfigProvider>
+          <ElConfigProvider locale={coseyLocale.value} v-slots={slots}></ElConfigProvider>
         </ConfigProvider>
       );
     };

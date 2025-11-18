@@ -38,7 +38,7 @@
 
 <script lang="tsx" setup>
 import { ElMessage } from 'element-plus';
-import { useConfigGroupsApi } from '@/api/system/configs';
+import configGroupsApi from '@/api/system/configs';
 import ConfigGroupUpsert from './config-group-upsert.vue';
 import { useOuterUpsert } from 'cosey/hooks';
 import { useTable } from 'cosey/components';
@@ -54,7 +54,7 @@ defineOptions({
 
 const { can, cannot } = useAbility();
 
-const { getConfigGroups, deleteConfigGroup } = useConfigGroupsApi();
+const { getConfigGroups, deleteConfigGroup } = configGroupsApi;
 
 const [tableProps, { reload }] = useTable(
   computed(() => ({

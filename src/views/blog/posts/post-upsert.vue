@@ -43,13 +43,13 @@
 <script lang="ts" setup>
 import { computed, reactive, ref } from 'vue';
 import { useUpsert } from 'cosey/hooks';
-import { usePostsApi, usePosttypesApi } from '@/api/blog';
+import postsApi from '@/api/blog';
 import { ElMessageBox } from 'element-plus';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const { addPost, updatePost, getPost } = usePostsApi();
+const { addPost, updatePost, getPost, getPosttypes } = postsApi;
 
 interface Model {
   postTypeId?: string;
@@ -75,8 +75,6 @@ const model = reactive<Model>({
   digest: undefined,
   content: undefined,
 });
-
-const { getPosttypes } = usePosttypesApi();
 
 const { dialogProps, formProps, expose } = useUpsert<Model, Row>(
   computed(() => ({

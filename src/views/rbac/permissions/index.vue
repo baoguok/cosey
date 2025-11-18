@@ -45,7 +45,7 @@ import PermissionUpsert from './permission-upsert.vue';
 import { useOuterUpsert } from 'cosey/hooks';
 import { useTable } from 'cosey/components';
 import { ElMessage } from 'element-plus';
-import { usePermissionsApi } from '@/api/rbac/permissions';
+import permissionsApi from '@/api/rbac/permissions';
 import { reactive } from 'vue';
 import { useAbility } from '@casl/vue';
 import { useI18n } from 'vue-i18n';
@@ -58,7 +58,7 @@ defineOptions({
 
 const { can, cannot } = useAbility();
 
-const { deletePermission, getPermissionTree } = usePermissionsApi();
+const { deletePermission, getPermissionTree } = permissionsApi;
 
 const [tableProps, { reload, expandAll, collapseAll }] = useTable(
   reactive({

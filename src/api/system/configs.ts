@@ -1,4 +1,4 @@
-import { useRequest } from 'cosey';
+import { http } from 'cosey';
 
 const Api = {
   ConfigGroupsResource: '/system/config-groups',
@@ -6,55 +6,48 @@ const Api = {
 };
 
 // configs
-export const useConfigsApi = () => {
-  return useRequest().map({
-    getConfigs: (http) => (params?: any) => {
-      return http.get(Api.ConfigsResource, {
-        params,
-      });
-    },
+export default {
+  getConfigs: (params?: any) => {
+    return http.get(Api.ConfigsResource, {
+      params,
+    });
+  },
 
-    getConfig: (http) => (id: number) => {
-      return http.get(`${Api.ConfigsResource}/${id}`);
-    },
+  getConfig: (id: number) => {
+    return http.get(`${Api.ConfigsResource}/${id}`);
+  },
 
-    addConfig: (http) => (data: any) => {
-      return http.post(Api.ConfigsResource, data);
-    },
+  addConfig: (data: any) => {
+    return http.post(Api.ConfigsResource, data);
+  },
 
-    updateConfig: (http) => (id: number, data: any) => {
-      return http.patch(`${Api.ConfigsResource}/${id}`, data);
-    },
+  updateConfig: (id: number, data: any) => {
+    return http.patch(`${Api.ConfigsResource}/${id}`, data);
+  },
 
-    deleteConfig: (http) => (id: number) => {
-      return http.delete(`${Api.ConfigsResource}/${id}`);
-    },
-  });
-};
+  deleteConfig: (id: number) => {
+    return http.delete(`${Api.ConfigsResource}/${id}`);
+  },
 
-// config-groups
-export const useConfigGroupsApi = () => {
-  return useRequest().map({
-    getConfigGroups: (http) => (params?: any) => {
-      return http.get(Api.ConfigGroupsResource, {
-        params,
-      });
-    },
+  getConfigGroups: (params?: any) => {
+    return http.get(Api.ConfigGroupsResource, {
+      params,
+    });
+  },
 
-    getConfigGroup: (http) => (id: number) => {
-      return http.get(`${Api.ConfigGroupsResource}/${id}`);
-    },
+  getConfigGroup: (id: number) => {
+    return http.get(`${Api.ConfigGroupsResource}/${id}`);
+  },
 
-    addConfigGroup: (http) => (data: any) => {
-      return http.post(Api.ConfigGroupsResource, data);
-    },
+  addConfigGroup: (data: any) => {
+    return http.post(Api.ConfigGroupsResource, data);
+  },
 
-    updateConfigGroup: (http) => (id: number, data: any) => {
-      return http.patch(`${Api.ConfigGroupsResource}/${id}`, data);
-    },
+  updateConfigGroup: (id: number, data: any) => {
+    return http.patch(`${Api.ConfigGroupsResource}/${id}`, data);
+  },
 
-    deleteConfigGroup: (http) => (id: number) => {
-      return http.delete(`${Api.ConfigGroupsResource}/${id}`);
-    },
-  });
+  deleteConfigGroup: (id: number) => {
+    return http.delete(`${Api.ConfigGroupsResource}/${id}`);
+  },
 };

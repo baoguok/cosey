@@ -1,49 +1,42 @@
 import { type App } from 'vue';
 
-import { createCoseyRouter } from './router';
-import { registerRouterGuard } from './router/guard';
-import { type CoseyOptions, provideGlobalConfig } from './config';
-import { registerGlobalComponents } from './layout';
-import { createPiniaStore } from './store';
+import { launchRouter } from './router';
+import { type CoseyOptions, launchGlobalConfig } from './config';
+import { launchGlobalComponents } from './layout';
+import { launchStore } from './store';
 import { isClient } from './utils';
 
-export * from './request';
-export * from './layout';
-export * from './router';
+export { Http, createHttp, http } from './request';
+
+export * from './layout/layout';
+export * from './layout/merged';
+export { defineRoute, defineRoutes, mergeRouteModules, router } from './router';
+export {
+  pinia,
+  useUserStore,
+  useOuterUserStore,
+  useLayoutStore,
+  useOuterLayoutStore,
+} from './store';
+export { type CoseyOptions, type LayoutComponents, type LayoutSlots } from './config';
+export { persist } from './persist';
 export { i18n } from './locale';
-export { useUserStore, useAppearanceStore, useLayoutStore } from './store';
-export * from './config';
+
 export * from './config/root-config-provider.api';
 export { default as RootConfigProvider } from './config/root-config-provider';
 
-export interface CoseyApp<HostElement> extends App<HostElement> {}
+export function launch(app: App, options: CoseyOptions = {}) {
+  // 路由
+  launchRouter(app, options.router);
 
-export const createCosey = (options: CoseyOptions = {}) => {
-  const pinia = createPiniaStore();
-  const router = createCoseyRouter(options.router);
+  // 全局状态管理
+  launchStore(app);
 
-  return {
-    install(app: App) {
-      // 全局配置，仅非ssr
-      if (isClient()) {
-        provideGlobalConfig(app, options);
-      }
+  // 全局组件
+  launchGlobalComponents(app);
 
-      // 路由
-      app.use(router);
-
-      // 路由守卫
-      if (router.listening) {
-        registerRouterGuard(router);
-      }
-
-      // 全局状态管理
-      app.use(pinia);
-
-      // 全局组件
-      registerGlobalComponents(app);
-    },
-    pinia,
-    router,
-  };
-};
+  // 全局配置，仅非ssr
+  if (isClient()) {
+    launchGlobalConfig(app, options);
+  }
+}
