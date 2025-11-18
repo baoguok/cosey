@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from 'cosey/components';
+import { Icon } from '../../components';
 import { useLocaleMessages } from '../../locale';
 import { useI18n } from 'vue-i18n';
 

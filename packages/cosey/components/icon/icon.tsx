@@ -7,9 +7,8 @@ import { useComponentConfig } from '../config-provider';
 
 export default defineComponent({
   name: 'CoIcon',
-  inheritAttrs: false,
   props: iconProps,
-  setup(props, { slots, attrs }) {
+  setup(props, { slots }) {
     const { prefixCls } = useComponentConfig('icon', props);
 
     const { hashId } = useStyle(prefixCls);
@@ -56,17 +55,15 @@ export default defineComponent({
 
     return () => {
       return (
-        <>
+        <span class={[hashId.value, `${prefixCls.value}-wrapper`]}>
           {slots.default ? (
-            <span {...attrs} {...mergedProps.value}>
-              <slot></slot>
-            </span>
+            <span {...mergedProps.value}>{slots.default()}</span>
           ) : prefix.value === 'svg' ? (
-            <SvgIcon {...attrs} {...mergedProps.value} />
+            <SvgIcon {...mergedProps.value} />
           ) : (
-            <IconifyIcon {...attrs} {...mergedProps.value} prefix={prefix.value} />
+            <IconifyIcon {...mergedProps.value} prefix={prefix.value} />
           )}
-        </>
+        </span>
       );
     };
   },

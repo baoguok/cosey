@@ -83,14 +83,19 @@ export async function compileAllScript(options: {
     ignore: '**/node_modules/**',
   });
 
+  const sideEffects = ['element-plus/dist/index.css', 'element-plus/theme-chalk/dark/css-vars.css'];
+
   const bundle = await rollup({
     input: files,
     external: (source) => externals.some((item) => source.startsWith(item)),
     treeshake: {
-      moduleSideEffects: [
-        'element-plus/dist/index.css',
-        'element-plus/theme-chalk/dark/css-vars.css',
-      ],
+      moduleSideEffects: (id) => {
+        if (sideEffects.includes(id) || id.startsWith('prismjs')) {
+          return true;
+        } else {
+          return false;
+        }
+      },
     },
     plugins: [transformPlugin(), json()],
     logLevel: 'silent',

@@ -30,6 +30,10 @@ function getMessages(config: RequiredI18nConfig, type: 'dayjs' | 'cosey' | 'app'
 const coseyLocaleKey = Symbol('coseyLocale') as InjectionKey<Record<string, any>>;
 const localeMessagesKey = Symbol('localeMessages') as InjectionKey<RequiredI18nConfig['messages']>;
 
+export let i18n = createI18n({
+  legacy: false,
+});
+
 export function setupLocale(app: App, config: I18nConfig = {}, persist: Persist) {
   const mergedConfig: RequiredI18nConfig = defaultsDeep(config, defaultI18nConfig);
 
@@ -40,7 +44,7 @@ export function setupLocale(app: App, config: I18nConfig = {}, persist: Persist)
   const locale = persist.get(langKey) || mergedConfig.locale;
   const coseyLocale = shallowRef<Record<string, any>>({});
 
-  const i18n = createI18n({
+  i18n = createI18n({
     legacy: false,
     locale: locale,
     fallbackLocale: locale,

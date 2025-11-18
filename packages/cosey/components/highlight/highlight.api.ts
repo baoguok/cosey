@@ -1,4 +1,4 @@
-import type { ExtractPropTypes, PropType, SlotsType } from 'vue';
+import type { ExtractPropTypes, ExtractPublicPropTypes, PropType, SlotsType } from 'vue';
 
 import Prism from 'prismjs';
 import 'prismjs';
@@ -64,6 +64,7 @@ export const highlightProps = {
 };
 
 export type HighlightProps = ExtractPropTypes<typeof highlightProps>;
+export type HighlightPublicProps = ExtractPublicPropTypes<typeof highlightProps>;
 
 export interface HighlightSlots {
   default: {};

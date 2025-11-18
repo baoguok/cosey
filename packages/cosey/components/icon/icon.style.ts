@@ -4,6 +4,9 @@ export default getSimpleStyleHook('CoIcon', (token) => {
   const { componentCls } = token;
 
   return {
+    [`${componentCls}-wrapper`]: {
+      display: 'inline-flex',
+    },
     [componentCls]: {
       display: 'inline-flex',
       width: '1em',

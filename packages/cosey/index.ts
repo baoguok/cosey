@@ -10,6 +10,7 @@ import { isClient } from './utils';
 export * from './request';
 export * from './layout';
 export * from './router';
+export { i18n } from './locale';
 export { useUserStore, useAppearanceStore, useLayoutStore } from './store';
 export * from './config';
 export * from './config/root-config-provider.api';
