@@ -35,6 +35,12 @@ const getFormItemStyle: GenerateStyle<FormToken, CSSObject> = (token) => {
 
       [`${formItemCls}-content`]: {
         maxWidth: '100%',
+
+        '@media(max-width: 768px)': {
+          '&': {
+            width: '100% !important',
+          },
+        },
       },
 
       [`${formItemCls}-extra`]: {

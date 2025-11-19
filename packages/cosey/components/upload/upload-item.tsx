@@ -125,7 +125,7 @@ export default defineComponent({
           </Transition>
           {showRemove.value && (
             <div class={`${prefixCls.value}-remove`} onClick={() => emit('remove')}>
-              <Icon name="co:close-large" />
+              <Icon name="co:close-large" size="md" />
             </div>
           )}
         </div>

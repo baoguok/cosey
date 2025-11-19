@@ -12,6 +12,12 @@ export default getSimpleStyleHook('CoStackDialog', (token) => {
       height: 'calc(100vh - 15vh)',
       transition: token.motionDurationSlow,
 
+      '@media(max-width: 768px)': {
+        '&': {
+          width: '100%',
+        },
+      },
+
       [`${componentCls}-header`]: {
         flex: 'none',
       },

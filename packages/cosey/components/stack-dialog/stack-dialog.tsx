@@ -20,7 +20,6 @@ export default defineComponent({
   emits: stackDialogEmits,
   setup(props, { slots, emit, expose: _expose }) {
     const { prefixCls } = useComponentConfig('stack-dialog', props);
-
     const { hashId } = useStyle(prefixCls);
 
     const elPopupRef = ref();

@@ -267,7 +267,7 @@ type FormItemWidth = number | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});
 
 ### FormGroupProps
 
-继承 `element-plus` 的 [Space Attributes](https://element-plus.org/zh-CN/component/space.html#attributes) 和 [Divider Attributes](https://element-plus.org/zh-CN/component/divider.html#attributes) ，并添加以下属性：
+继承 `element-plus` 的 [Space Attributes](https://element-plus.org/zh-CN/component/space.html#attributes)，并添加以下属性：
 
 | 属性         | 描述                     | 类型                                                          | 默认值       |
 | ------------ | ------------------------ | ------------------------------------------------------------- | ------------ |

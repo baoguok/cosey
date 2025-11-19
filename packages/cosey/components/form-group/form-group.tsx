@@ -18,6 +18,7 @@ export default defineComponent({
 
     const spaceProps = reactiveOmit(props, [
       'title',
+      'tooltip',
       'borderStyle',
       'position',
       'collapsible',
@@ -89,7 +90,7 @@ export default defineComponent({
           <el-space
             v-show={!innerCollapsed.value}
             {...spaceProps}
-            style={{ display: 'flex', minWidth: 0 }}
+            class={`${prefixCls.value}-space`}
           >
             {slots.default?.({})}
           </el-space>
