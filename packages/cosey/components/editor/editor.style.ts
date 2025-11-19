@@ -37,6 +37,7 @@ export const getButtonStyle: GenerateStyle<AliasTokenWithCommonCls, CSSObject> =
 
       '&-group': {
         display: 'flex',
+        flexWrap: 'wrap',
         gap: 2,
       },
 

@@ -238,10 +238,11 @@ const template = defineTemplate(() => {
         <div class={[hashId.value, prefixCls.value]}>
           {props.modelValue.length > 0 && (
             <ElSpace
+              class={[`${prefixCls.value}-space`, 'is-head']}
               style={{
                 marginInlineStart: props.draggable ? token.value.marginLG + 'px' : '',
               }}
-              size="large"
+              size={[16, 16]}
             >
               {columns.value.map((column: any) => {
                 return (
@@ -260,8 +261,12 @@ const template = defineTemplate(() => {
               <InternalTransitionGroup effect="slide">
                 {props.modelValue.map((row, index) => {
                   return (
-                    <DndSortItem key={getKey(row)} index={index}>
-                      <ElSpace size="large">
+                    <DndSortItem
+                      key={getKey(row)}
+                      index={index}
+                      class={`${prefixCls.value}-sort-item`}
+                    >
+                      <ElSpace size={[16, 16]} class={`${prefixCls.value}-space`}>
                         {slots.default?.({
                           row,
                           index,

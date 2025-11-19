@@ -15,7 +15,7 @@
               <co-dnd-sort-item v-for="(row, index) in list" :key="getKey(row)" :index="index">
                 <el-card shadow="never" class="relative gap-4">
                   <el-space direction="vertical" fill size="large">
-                    <el-space size="large">
+                    <co-form-group size="large">
                       <co-form-item
                         v-model="row.name"
                         :prop="getProp(index, 'name')"
@@ -32,8 +32,8 @@
                         width="sm"
                         required
                       />
-                    </el-space>
-                    <el-space size="large">
+                    </co-form-group>
+                    <co-form-group size="large">
                       <co-form-item
                         v-model="row.num"
                         :prop="getProp(index, 'num')"
@@ -48,7 +48,7 @@
                         width="sm"
                         required
                       />
-                    </el-space>
+                    </co-form-group>
                     <co-form-item
                       v-model="row.address"
                       :prop="getProp(index, 'address')"
@@ -57,7 +57,7 @@
                       required
                     />
                   </el-space>
-                  <el-button class="absolute end-3 top-3" link type="danger" @click="remove(index)">
+                  <el-button class="absolute end-1 top-1" link type="danger" @click="remove(index)">
                     <co-icon name="carbon:trash-can" size="lg" />
                   </el-button>
                 </el-card>

@@ -1,3 +1,5 @@
+import dayjsZhCn from 'dayjs/locale/zh-cn';
+import coseyZhCn from '../locale/lang/zh-cn';
 import type { DeepPartial } from '../types/helper';
 
 /**
@@ -5,7 +7,9 @@ import type { DeepPartial } from '../types/helper';
  */
 export const defaultI18nConfig = {
   locale: 'zh-cn' as string,
-  messages: [] as {
+  messages: [
+    { value: 'zh-cn', label: '简体中文', dayjs: dayjsZhCn, cosey: coseyZhCn, app: {} },
+  ] as {
     value: string;
     label: string;
     dayjs: Record<string, any>;

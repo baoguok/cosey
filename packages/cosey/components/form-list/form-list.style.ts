@@ -28,6 +28,42 @@ export default getSimpleStyleHook('CoFormList', (token) => {
 
       '.el-form-item__label': {
         display: 'none',
+        '@media(max-width: 768px)': {
+          '&': {
+            display: 'inline-flex',
+          },
+        },
+      },
+
+      [`${componentCls}-sort-item`]: {
+        '@media(max-width: 768px)': {
+          '&': {
+            width: '100%',
+          },
+        },
+      },
+
+      [`${componentCls}-space`]: {
+        display: 'flex',
+        flexWrap: 'wrap',
+
+        '&.is-head': {
+          '@media(max-width: 768px)': {
+            '&': {
+              display: 'none',
+            },
+          },
+        },
+
+        '& > *': {
+          maxWidth: '100%',
+
+          '@media(max-width: 768px)': {
+            '&': {
+              width: '100%',
+            },
+          },
+        },
       },
     },
   };
