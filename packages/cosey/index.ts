@@ -12,6 +12,7 @@ export * from './layout/layout';
 export * from './layout/merged';
 export { defineRoute, defineRoutes, mergeRouteModules, router } from './router';
 export {
+  type UserInfo,
   pinia,
   useUserStore,
   useOuterUserStore,

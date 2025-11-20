@@ -59,11 +59,18 @@ export default getSimpleStyleHook('CoTable', (token) => {
         },
       },
 
+      [`${componentCls}-before-body`]: {
+        flex: 'none',
+        paddingBlockStart: token.paddingSM,
+        paddingInline: token.paddingSM,
+      },
+
       [`${componentCls}-stats-wrapper`]: {
         paddingBlockStart: token.paddingSM,
       },
 
       [`${componentCls}-before-table`]: {
+        flex: 'none',
         paddingBlockStart: token.paddingSM,
         paddingInline: token.paddingSM,
       },

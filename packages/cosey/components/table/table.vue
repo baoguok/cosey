@@ -16,6 +16,12 @@
         <TableQuery ref="tableQuery" v-bind="formProps" :reset="onReset" :submit="onSubmit" />
       </div>
 
+      <div v-if="$slots['before-body']" :class="`${prefixCls}-before-body`">
+        <slot name="before-body"></slot>
+      </div>
+
+      <slot name="before-body-plain"></slot>
+
       <div :class="`${prefixCls}-body`">
         <div
           v-if="
@@ -113,10 +119,13 @@
             </div>
           </div>
         </div>
+
         <div v-if="$slots['before-table']" :class="`${prefixCls}-before-table`">
           <slot name="before-table"></slot>
         </div>
-        <slot name="stats-table"></slot>
+
+        <slot name="before-table-plain"></slot>
+
         <div :class="`${prefixCls}-table`" dir="ltr">
           <el-table
             ref="elTableRef"

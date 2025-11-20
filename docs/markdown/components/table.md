@@ -152,12 +152,14 @@ const defaultTableConfig = {
 
 继承 `element-plus` 的 [Table 插槽](https://element-plus.org/zh-CN/component/table#table-%E6%8F%92%E6%A7%BD) 和以下插槽，并能定义 `TableColumnProps["slots"]` 中同名的插槽。
 
-| 插槽          | 描述                   | 属性 |
-| ------------- | ---------------------- | ---- |
-| toolbar-left  | 自定义工具栏左边的内容 | -    |
-| toolbar-right | 自定义工具栏右边的内容 | -    |
-| before-table  | 自定义表格上边内容     | -    |
-| stats-table   | 自定义表格统计内容     | -    |
+| 插槽               | 描述                                           | 属性 |
+| ------------------ | ---------------------------------------------- | ---- |
+| toolbar-left       | 自定义工具栏左边的内容                         | -    |
+| toolbar-right      | 自定义工具栏右边的内容                         | -    |
+| before-body        | 自定义主体前面内容（工具栏上面）               | -    |
+| before-body-plain  | 自定义主体前面内容（工具栏上面），没有包裹容器 | -    |
+| before-table       | 自定义表格前面内容（工具栏下面）               | -    |
+| before-table-plain | 自定义表格前面内容（工具栏下面），没有包裹容器 | -    |
 
 ### TableEmits
 

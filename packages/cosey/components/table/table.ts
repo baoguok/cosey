@@ -127,8 +127,10 @@ export interface TableSlots {
   empty?: (props: Record<string, never>) => any;
   'toolbar-left'?: (props: Record<string, never>) => any;
   'toolbar-right'?: (props: Record<string, never>) => any;
+  'before-body'?: (props: Record<string, never>) => any;
+  'before-body-plain'?: (props: Record<string, never>) => any;
   'before-table'?: (props: Record<string, never>) => any;
-  'stats-table'?: (props: Record<string, never>) => any;
+  'before-table-plain'?: (props: Record<string, never>) => any;
 }
 
 export const elSlotsName = ['default', 'append', 'empty'] as const;

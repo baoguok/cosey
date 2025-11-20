@@ -1,6 +1,6 @@
 import { computed, defineComponent, nextTick, ref, unref } from 'vue';
-import { reactiveComputed, reactiveOmit } from '@vueuse/core';
-import { get, merge } from 'lodash-es';
+import { reactiveComputed } from '@vueuse/core';
+import { get, merge, omit } from 'lodash-es';
 import { ElOption, ElPagination, ElSelect, PaginationProps } from 'element-plus';
 import { remoteSelectEmits, remoteSelectProps, remoteSelectSlots } from './remote-select.api';
 import useStyle from './remote-select.style';
@@ -151,21 +151,23 @@ export default defineComponent({
 
     const events = bulkBindEvents(remoteSelectEmits, emit);
 
-    const selectProps = reactiveOmit(props, [
-      'optionProps',
-      'api',
-      'pagination',
-      'formProps',
-      'transformParams',
-      'keys',
-      'immediate',
-    ]);
+    const selectProps = computed(() => {
+      return omit(props, [
+        'optionProps',
+        'api',
+        'pagination',
+        'formProps',
+        'transformParams',
+        'keys',
+        'immediate',
+      ]);
+    });
 
     return () => {
       return (
         <ElSelect
           {...attrs}
-          {...selectProps}
+          {...selectProps.value}
           {...events}
           class={`${hashId.value} ${prefixCls.value}`}
           popper-class={`${hashId.value} ${prefixCls.value}-popper ${popperId}`}
