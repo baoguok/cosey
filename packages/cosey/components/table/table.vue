@@ -8,6 +8,7 @@
         prefixCls,
         {
           'is-fullpage': isFullPage,
+          'is-split': isSplit,
         },
       ]"
       :style="{ ...containerStyle, zIndex }"
@@ -20,7 +21,9 @@
         <slot name="before-body"></slot>
       </div>
 
-      <slot name="before-body-plain"></slot>
+      <div v-if="$slots['before-body-plain']" :class="`${prefixCls}-before-body-plain`">
+        <slot name="before-body-plain"></slot>
+      </div>
 
       <div :class="`${prefixCls}-body`">
         <div
@@ -124,7 +127,9 @@
           <slot name="before-table"></slot>
         </div>
 
-        <slot name="before-table-plain"></slot>
+        <div v-if="$slots['before-table-plain']" :class="`${prefixCls}-before-table-plain`">
+          <slot name="before-table-plain"></slot>
+        </div>
 
         <div :class="`${prefixCls}-table`" dir="ltr">
           <el-table
@@ -295,6 +300,10 @@ const { table: tableConfig } = useConfig();
 
 const tableKeys = reactiveComputed(() => {
   return merge({}, defaultTableConfig.keys, unref(tableConfig)?.keys, props.keys);
+});
+
+const isSplit = computed(() => {
+  return props.split ?? unref(tableConfig)?.split ?? defaultTableConfig.split;
 });
 
 const passedElSlotsName = computed(() => {

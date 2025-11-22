@@ -110,6 +110,10 @@ const tableExtraProps = {
   transformSummary: {
     type: Function as PropType<(sums: any[]) => any[]>,
   },
+  split: {
+    type: Boolean,
+    default: undefined,
+  },
 };
 
 export const tableProps = {
@@ -256,6 +260,7 @@ export const defaultTableConfig = {
     pageSize: 10,
   },
   height: undefined,
+  split: false,
 };
 
 export interface TableConfig {
@@ -271,4 +276,5 @@ export interface TableConfig {
   };
   pagination?: Partial<PaginationProps>;
   height?: number | string;
+  split?: boolean;
 }

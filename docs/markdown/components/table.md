@@ -48,6 +48,7 @@ table/basic
 | stats-data         | 统计数据                                                                    | MaybeRef\<Record<string, any>>                                                                       | -                          |
 | summary-properties | 设置默认合计时仅展示指定列数据                                              | string[]                                                                                             | -                          |
 | transform-summary  | 转换合计列数据                                                              | (sums: any[]) => any[]                                                                               | -                          |
+| split              | 分隔表格主体和头部等，显示分隔条                                            | boolean                                                                                              | false                      |
 
 ### TableQueryProps
 

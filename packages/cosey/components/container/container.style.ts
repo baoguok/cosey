@@ -7,7 +7,7 @@ export default getSimpleStyleHook('CoContainer', (token) => {
     [componentCls]: {
       padding: token.padding,
 
-      '@media(max-height: 800px)': {
+      '@media(max-width: 768px), (max-height: 800px)': {
         '&': {
           height: 'auto !important',
         },

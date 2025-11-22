@@ -61,8 +61,11 @@ export default getSimpleStyleHook('CoTable', (token) => {
 
       [`${componentCls}-before-body`]: {
         flex: 'none',
-        paddingBlockStart: token.paddingSM,
-        paddingInline: token.paddingSM,
+        padding: token.paddingSM,
+      },
+
+      [`${componentCls}-before-body-plain`]: {
+        flex: 'none',
       },
 
       [`${componentCls}-stats-wrapper`]: {
@@ -91,6 +94,28 @@ export default getSimpleStyleHook('CoTable', (token) => {
         justifyContent: 'flex-end',
         paddingBlockEnd: token.paddingSM,
         paddingInline: token.paddingSM,
+      },
+
+      '&.is-split': {
+        backgroundColor: token.colorBgLayout,
+
+        [`${componentCls}-header`]: {
+          marginBlockEnd: token.marginSM,
+          backgroundColor: token.colorBgContainer,
+        },
+
+        [`${componentCls}-before-body`]: {
+          marginBlockEnd: token.marginSM,
+          backgroundColor: token.colorBgContainer,
+        },
+
+        [`${componentCls}-before-body-plain`]: {
+          marginBlockEnd: token.marginSM,
+        },
+
+        [`${componentCls}-body`]: {
+          backgroundColor: token.colorBgContainer,
+        },
       },
     },
   };
