@@ -81,9 +81,16 @@
     "type": "git",
     "url": "git+https://github.com/sutras/cosey.git"
   },
+  "homepage": "https://docs.cosey.wzt.zone/",
   "author": "wuzhitao",
   "license": "MIT",
   "dependencies": {
     "@cosey/icons": "^0.1.8"
-  }
+  },
+  "keywords": [
+    "admin",
+    "backstage management system",
+    "vue3",
+    "vite"
+  ]
 }

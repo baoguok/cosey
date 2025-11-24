@@ -15,6 +15,9 @@ export default getSimpleStyleHook('CoLayoutMenu', (token) => {
     },
 
     [`${componentCls}-icon`]: {
+      display: 'inline-flex',
+      justifyContent: 'center',
+      alignItems: 'center',
       marginInlineEnd: token.marginXXS,
       width: 'var(--el-menu-icon-width)',
       flex: 'none',

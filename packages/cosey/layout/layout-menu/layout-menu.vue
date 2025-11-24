@@ -68,13 +68,14 @@ function renderMenu(menuItems: MenuItem[]) {
     return menuItems.map((item) => {
       const iconVNode = () =>
         item.icon && (
-          <Icon
-            name={item.icon}
+          <div
             class={`${prefixCls.value}-icon`}
             style={{
               margin: collapse.value ? 0 : undefined,
             }}
-          />
+          >
+            <Icon name={item.icon} />
+          </div>
         );
       const titleVNode = () => {
         const title = t(item.title ?? '');
