@@ -70,6 +70,11 @@ export default defineComponent({
         onSuccess(res) {
           tableData.value = (tableKeys.list ? get(res, tableKeys.list) : res) || [];
           total.value = +get(res, tableKeys.total) || 0;
+
+          const el = document.querySelector(`.${popperId} .el-scrollbar__wrap`) as HTMLElement;
+          if (el) {
+            el.scrollTop = 0;
+          }
         },
         onFinally() {
           isFirstFetch.value = false;
@@ -170,7 +175,7 @@ export default defineComponent({
           {...selectProps.value}
           {...events}
           class={`${hashId.value} ${prefixCls.value}`}
-          popper-class={`${hashId.value} ${prefixCls.value}-popper ${popperId}`}
+          popper-class={`${hashId.value} ${prefixCls.value}-popper ${popperId} ${selectProps.value.popperClass}`}
           onVisible-change={onVisibleChange}
         >
           {{
