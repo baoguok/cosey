@@ -1,4 +1,14 @@
-## 0.0.0 (2025-11-19)
+## 0.0.0 (2025-12-23)
+
+## <small>0.10.21 (2025-12-23)</small>
+
+- fix: 修复上传项样式 ([0208e6b](https://github.com/sutras/cosey/commit/0208e6b))
+- fix: 修复对话框表单回车提交问题 ([41fb75a](https://github.com/sutras/cosey/commit/41fb75a))
+- fix(layout-menu): 修复菜单图标折叠隐藏问题 ([63bc47b](https://github.com/sutras/cosey/commit/63bc47b))
+- fix(remote-select): 切换分页滚动到顶部 ([8dcbed3](https://github.com/sutras/cosey/commit/8dcbed3))
+- feat(table): 新增 split 属性 ([9b8e3bf](https://github.com/sutras/cosey/commit/9b8e3bf))
+- feat(table): 新增插槽 ([60db813](https://github.com/sutras/cosey/commit/60db813))
+- build: changelog ([8522a45](https://github.com/sutras/cosey/commit/8522a45))
 
 ## <small>0.10.13 (2025-11-19)</small>
 
