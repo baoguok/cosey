@@ -28,12 +28,6 @@ export function useBubbleTemplate(options: UseBubbleTemplateOptions) {
 
   const formBubbleData = ref<FormBubbleData>();
 
-  provide<FormBubbleContext>(formBubbleContextSymbol, {
-    setFormBubbleData(data) {
-      formBubbleData.value = data;
-    },
-  });
-
   const visible = useTwoWayBinding(props, emit, 'modelValue');
 
   let closeType: 'cancel' | 'confirm' | null = null;
@@ -83,6 +77,13 @@ export function useBubbleTemplate(options: UseBubbleTemplateOptions) {
     closeType = null;
     emit('closed');
   };
+
+  provide<FormBubbleContext>(formBubbleContextSymbol, {
+    setFormBubbleData(data) {
+      formBubbleData.value = data;
+    },
+    confirm,
+  });
 
   const buttonTemplate = defineTemplate(() => {
     return (

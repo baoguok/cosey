@@ -146,6 +146,7 @@ export interface FormBubbleData {
 
 export interface FormBubbleContext {
   setFormBubbleData: (data: FormBubbleData) => void;
+  confirm: () => Promise<void>;
 }
 
 export const formBubbleContextSymbol = Symbol('formBubble');

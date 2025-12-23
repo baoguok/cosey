@@ -55,7 +55,12 @@ export default defineComponent({
           {...{
             onSubmit: (event: SubmitEvent) => {
               event.preventDefault();
-              submit();
+
+              if (formBubbleContext) {
+                formBubbleContext.confirm();
+              } else {
+                submit();
+              }
             },
           }}
         >
