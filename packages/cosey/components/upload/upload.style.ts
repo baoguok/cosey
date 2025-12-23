@@ -24,7 +24,7 @@ export default getSimpleStyleHook('CoUpload', (token) => {
 
       [`${componentCls}-item`]: {
         ...getMediaCardStyle(token),
-        border: undefined,
+        border: '',
 
         '&.is-small, &.is-mini': {
           [`${componentCls}-actions`]: {
@@ -32,11 +32,9 @@ export default getSimpleStyleHook('CoUpload', (token) => {
           },
         },
 
-        '&.is-mini': {
-          [`${componentCls}-actions`]: {
-            button: {
-              fontSize: 10,
-            },
+        [`&.is-mini ${componentCls}-actions`]: {
+          button: {
+            fontSize: 10,
           },
         },
       },
